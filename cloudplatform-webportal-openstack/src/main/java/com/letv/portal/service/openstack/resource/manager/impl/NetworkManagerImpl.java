@@ -15,16 +15,18 @@ import java.util.Set;
 
 import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.event.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.util.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
@@ -2553,7 +2555,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 	}
 
-	public void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, FloatingIpCreateListener listener, Object listenerUserData) throws OpenStackException {
+	private void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, List<FloatingIP> successCreatedFloatingIps) throws OpenStackException {
 		final String region = createConf.getRegion();
 		final String name = createConf.getName();
 		final String publicNetworkId = createConf.getPublicNetworkId();
@@ -2632,9 +2634,45 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		for (int i = 0; i < count; i++) {
 			FloatingIP floatingIP = floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
 					.name(name).fipQos(createFipQos(bandWidth)).build());
-			if (listener != null) {
+			if (successCreatedFloatingIps != null) {
+				successCreatedFloatingIps.add(floatingIP);
+			}
+		}
+	}
+
+	public void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, FloatingIpCreateListener listener, Object listenerUserData) throws OpenStackException {
+		List<FloatingIP> successCreatedFloatingIps = null;
+		if(listener!=null){
+			successCreatedFloatingIps = new LinkedList<FloatingIP>();
+		}
+
+		try {
+			createFloatingIp(neutronApi,createConf,successCreatedFloatingIps);
+		} catch (Exception e){
+			notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,e,listener,listenerUserData);
+			Util.throwException(e);
+		}
+		notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,null,listener,listenerUserData);
+	}
+
+	private void notifyFloatingIpCreateListener(FloatingIpCreateConf createConf, List<FloatingIP> successCreatedFloatingIps, Exception exception, FloatingIpCreateListener listener, Object listenerUserData){
+		if (listener != null) {
+			int successCreatedFloatingIpsCount = successCreatedFloatingIps.size();
+			int floatingIpCount = createConf.getCount();
+			int floatingIpIndex = 0;
+
+			for (; floatingIpIndex < successCreatedFloatingIpsCount; floatingIpIndex++) {
 				try {
-					listener.floatingIpCreated(new FloatingIpCreateEvent(region, floatingIP.getId(), i, listenerUserData));
+					listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), successCreatedFloatingIps.get(floatingIpIndex).getId(), floatingIpIndex, listenerUserData));
+				} catch (Exception e) {
+					Util.processBillingException(e);
+				}
+			}
+
+			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			for (; floatingIpIndex < floatingIpCount; floatingIpIndex++) {
+				try {
+					listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndex, reason, listenerUserData));
 				} catch (Exception e) {
 					Util.processBillingException(e);
 				}
