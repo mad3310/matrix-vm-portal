@@ -2604,6 +2604,16 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	@Override
+	public void checkCreateFloatingIp(FloatingIpCreateConf floatingIpCreateConf) {
+
+	}
+
+	@Override
+	public void checkCreateRouter(RouterCreateConf routerCreateConf) {
+
+	}
+
 	Set<String> listPublicFloatingIpAddressAsSet(final String region) throws OpenStackException {
 		return runWithApi(new ApiRunnable<NeutronApi, Set<String>>() {
 			@Override

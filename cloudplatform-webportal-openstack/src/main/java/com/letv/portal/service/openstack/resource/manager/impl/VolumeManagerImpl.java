@@ -836,6 +836,11 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
+	@Override
+	public void checkCreate(VolumeCreateConf volumeCreateConf) {
+
+	}
+
 	public void waitingVolumeSnapshot(final SnapshotApi snapshotApi, final String snapshotId,
 									  final Checker<Snapshot> checker) throws OpenStackException {
 		try {
