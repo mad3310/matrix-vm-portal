@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
@@ -67,6 +68,7 @@ public class VMCreate {
                 checkVmCreateFail(multiVmCreateContext, ex);
                 Util.throwException(translateExceptionMessage(ex));
             }
+            notifyListener(multiVmCreateContext,"后台错误");
         } else {
             throw new UserOperationException(
                     "Virtual machine number cannot be less than or equal to 0.",
@@ -95,17 +97,23 @@ public class VMCreate {
     }
 
     private void checkVmCreateFail(MultiVmCreateContext context, Exception exception) throws OpenStackException {
+        final String reason = "虚拟机创建失败，原因：" + getUserMessageOfException(translateExceptionMessage(exception));
+        notifyListener(context,reason);
+    }
+
+    private void notifyListener(MultiVmCreateContext context,String reason){
         if (context.getVmCreateListener() != null) {
-            final String reason = "虚拟机创建失败，原因：" + getUserMessageOfException(translateExceptionMessage(exception));
             for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
                 VmCreateContext vmCreateContext = context.getVmCreateContexts().get(i);
-                if (vmCreateContext.getServerCreated() == null) {
-                    try {
+                try {
+                    if (vmCreateContext.getServerCreated() == null) {
                         context.getVmCreateListener().vmCreateFailed(
                                 new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
-                    } catch (Exception ex) {
-                        Util.processBillingException(ex);
+                    } else {
+                        context.getVmCreateListener().vmCreated(new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), i, context.getListenerUserData()));
                     }
+                } catch (Exception ex) {
+                    Util.processBillingException(ex);
                 }
             }
         }
