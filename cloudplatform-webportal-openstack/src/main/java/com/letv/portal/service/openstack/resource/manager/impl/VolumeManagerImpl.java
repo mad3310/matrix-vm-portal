@@ -441,6 +441,87 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
+	@Override
+	public void checkCreate(final VolumeCreateConf volumeCreateConf) throws OpenStackException {
+		runWithApi(new ApiRunnable<CinderApi, Void>() {
+			@Override
+			public Void run(CinderApi cinderApi) throws Exception {
+				checkCreate(cinderApi, volumeCreateConf);
+				return null;
+			}
+		});
+	}
+
+	private void checkCreate(CinderApi cinderApi, VolumeCreateConf volumeCreateConf) throws OpenStackException {
+		checkUserEmail();
+
+		checkRegion(volumeCreateConf.getRegion());
+		if (volumeCreateConf.getSize() <= 0) {
+			throw new UserOperationException(
+					"The size of the cloud disk can not be less than or equal to zero.",
+					"云硬盘的大小不能小于或等于零。");
+		}
+
+		CreateVolumeOptions createVolumeOptions = new CreateVolumeOptions();
+
+		if (StringUtils.isNotEmpty(volumeCreateConf.getVolumeTypeId())) {
+			VolumeTypeApi volumeTypeApi = cinderApi.getVolumeTypeApi(volumeCreateConf.getRegion());
+			VolumeType volumeType = volumeTypeApi.get(volumeCreateConf.getVolumeTypeId());
+			if (volumeType == null) {
+				throw new ResourceNotFoundException("Volume Type", "云硬盘类型", volumeCreateConf.getVolumeTypeId());
+			}
+			createVolumeOptions.volumeType(volumeType.getId());
+		}
+
+		if (volumeCreateConf.getName() != null) {
+			createVolumeOptions.name(volumeCreateConf.getName());
+		}
+		if (volumeCreateConf.getDescription() != null) {
+			createVolumeOptions.description(volumeCreateConf.getDescription());
+		}
+		if (volumeCreateConf.getVolumeSnapshotId() != null) {
+			Snapshot snapshot = cinderApi.getSnapshotApi(volumeCreateConf.getRegion()).get(volumeCreateConf.getVolumeSnapshotId());
+			if (snapshot == null) {
+				throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeCreateConf.getVolumeSnapshotId());
+			} else {
+				createVolumeOptions.snapshotId(volumeCreateConf.getVolumeSnapshotId());
+			}
+		}
+		Integer count = volumeCreateConf.getCount();
+		if (count == null) {
+			count = 1;
+		}
+		if (count <= 0) {
+			throw new UserOperationException(
+					"The count of volume is less than or equal to zero.",
+					"云硬盘的数量不能小于或等于0");
+		}
+
+		VolumeApi volumeApi = cinderApi.getVolumeApi(volumeCreateConf.getRegion());
+
+		{
+			List<? extends Volume> volumes = volumeApi.list().toList();
+			List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(volumeCreateConf.getRegion()).list().toList();
+
+			VolumeQuota volumeQuota = cinderApi.getQuotaApi(volumeCreateConf.getRegion())
+					.getByTenant(openStackUser.getTenantId());
+			if (volumeQuota == null) {
+				throw new OpenStackException(
+						"Volume quota is not available.", "云硬盘配额不可用。");
+			}
+			if (sumGigabytes(volumes, snapshots) + count * volumeCreateConf.getSize() > volumeQuota.getGigabytes()) {
+				throw new UserOperationException(
+						"Volume size exceeding the quota.",
+						"云硬盘大小超过配额。");
+			}
+			if (volumes.size() + count > volumeQuota.getVolumes()) {
+				throw new UserOperationException(
+						"Volume count exceeding the quota.",
+						"云硬盘数量超过配额。");
+			}
+		}
+	}
+
 	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
 			throws OpenStackException {
 		checkUserEmail();
@@ -834,11 +915,6 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				return null;
 			}
 		});
-	}
-
-	@Override
-	public void checkCreate(VolumeCreateConf volumeCreateConf) {
-
 	}
 
 	public void waitingVolumeSnapshot(final SnapshotApi snapshotApi, final String snapshotId,
