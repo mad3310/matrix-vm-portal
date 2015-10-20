@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -463,13 +464,31 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	//创建云主机
-	private void createVm(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
+	private void createVm(final List<OrderSub> orderSubs, long createUser, String params, final List<ProductInfoRecord> records) {
 		logger.info("开始创建云主机！");
 		this.resourceCreateService.createVm(createUser, params, new VmCreateAdapter() {
+			private Integer successCount=0;
+			private Integer failCount=0;
+			private Integer total=orderSubs.size();
+
+			private void checkOrderFinished(){
+				if(successCount+failCount==total){
+					logger.info("total finished.");
+				}
+			}
+
 			@Override
 			public void vmCreated(VmCreateEvent event) throws Exception {
+				successCount++;
+				checkOrderFinished();
 				serviceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVmIndex(), event.getUserData());
 				logger.info("云主机回调成功! num="+event.getVmIndex());
+			}
+
+			@Override
+			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
+				failCount++;
+				checkOrderFinished();
 			}
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
