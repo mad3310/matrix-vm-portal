@@ -15,6 +15,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
+import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
@@ -169,6 +170,11 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         } catch (Exception e) {
             return new CheckResult(Util.getUserMessage(e));
         }
+    }
+
+    @Override
+    public VolumeTypeResource getVolumeType(long userId, String region, String volumeTypeId) throws MatrixException {
+        return null;
     }
 
     @Async
