@@ -87,8 +87,8 @@ define(['controllers/app.controller'], function (controllerModule) {
         bandWidth:$scope.networkBandWidth,
         keyPairName:'',
         count:$scope.vmCount,
-        privateSubnetId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmImage.id:'',
-        snapshotId:'',
+        privateSubnetId:'',
+        snapshotId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmImage.id:'',
         order_time: $scope.vmBuyPeriod.toString(),
       };
       $scope.isOrderSubmiting=true;
