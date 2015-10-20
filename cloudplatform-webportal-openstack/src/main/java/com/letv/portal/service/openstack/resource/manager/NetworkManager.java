@@ -97,7 +97,7 @@ public interface NetworkManager extends ResourceManager {
 
 	void checkCreateFloatingIp(FloatingIpCreateConf floatingIpCreateConf) throws OpenStackException;
 
-	void checkCreateRouter(RouterCreateConf routerCreateConf);
+	void checkCreateRouter(RouterCreateConf routerCreateConf) throws OpenStackException;
 
 	// void editPort(String region, String portId, String name)
 	// throws OpenStackException;
