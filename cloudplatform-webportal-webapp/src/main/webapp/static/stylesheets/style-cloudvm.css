@@ -54,12 +54,12 @@
 .body-right .right-top span{margin-right: 5px;}
 .right-top ul{margin:30px 0 0 0;padding:0;}
 .right-top ul li{margin-bottom:10px;list-style:none;font-size:12px;color:#666;}
-.right-top li span.title{display: inline-block;width: 60px;text-align: right;}
-.right-top li span.value{}
-.body-right .right-bottom{padding:10px 0 0 25px;}
-.body-right .right-bottom > span{display: block;line-height: 30px;height: 30px;}
-.body-right .right-bottom span.title,.body-right .right-bottom span.unit{vertical-align: middle}
-.body-right .right-bottom span.price{padding:0 5px 0 0;font-size:18px;color:#ff3c37;vertical-align: middle}
+.right-top li span.title{display: inline-block;width: 60px;text-align: right;vertical-align: top;}
+.right-top li span.value{display: inline-block;width: 120px;}
+.body-right .right-bottom{padding:15px 0 0 0;}
+.body-right .right-bottom .row-order-price > span{margin-left: 25px;}
+.body-right .right-bottom span.price{padding:0 5px 0 0;font-size:18px;color:#ff3c37;}
+.body-right .right-bottom .row-submit-order{text-align: center;}
 .body-right .right-bottom .btn-submit-order{margin-top: 10px;}
 /*.body-left .left-button{margin-top:60px;}*/
 .flowthree-type{padding:7px 0;}
