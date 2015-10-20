@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
@@ -13,71 +14,101 @@ import com.letv.portal.service.openstack.util.Util;
 
 public class VMCreate {
 
-	private VMCreateConf2 vmCreateConf;
-	private VmCreateListener vmCreateListener;
-	private Object listenerUserData;
-	private VMManagerImpl vmManager;
-	private NetworkManagerImpl networkManager;
-	private VolumeManagerImpl volumeManager;
-	private Long userId;
+    private VMCreateConf2 vmCreateConf;
+    private VmCreateListener vmCreateListener;
+    private Object listenerUserData;
+    private VMManagerImpl vmManager;
+    private NetworkManagerImpl networkManager;
+    private VolumeManagerImpl volumeManager;
+    private Long userId;
 
-	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
-			NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager) {
-		this(null, vmCreateConf, vmManager, networkManager, volumeManager, null, null);
-	}
+    public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
+                    NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager) {
+        this(null, vmCreateConf, vmManager, networkManager, volumeManager, null, null);
+    }
 
-	public VMCreate(Long userId, VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
-					NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager, VmCreateListener vmCreateListener, Object listenerUserData) {
-		this.userId = userId;
-		this.vmCreateConf = vmCreateConf;
-		this.vmCreateListener = vmCreateListener;
-		this.listenerUserData = listenerUserData;
-		this.vmManager = vmManager;
-		this.networkManager = networkManager;
-		this.volumeManager = volumeManager;
-	}
+    public VMCreate(Long userId, VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
+                    NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager, VmCreateListener vmCreateListener, Object listenerUserData) {
+        this.userId = userId;
+        this.vmCreateConf = vmCreateConf;
+        this.vmCreateListener = vmCreateListener;
+        this.listenerUserData = listenerUserData;
+        this.vmManager = vmManager;
+        this.networkManager = networkManager;
+        this.volumeManager = volumeManager;
+    }
 
-	public void run() throws OpenStackException {
-		if (vmCreateConf.getCount() > 0) {
-			try {
-				MultiVmCreateContext multiVmCreateContext = new MultiVmCreateContext();
-				multiVmCreateContext.setVmCreateConf(vmCreateConf);
-				multiVmCreateContext.setVmManager(vmManager);
-				multiVmCreateContext.setNetworkManager(networkManager);
-				multiVmCreateContext.setVolumeManager(volumeManager);
-				multiVmCreateContext.setVmCreateListener(vmCreateListener);
-				multiVmCreateContext.setListenerUserData(listenerUserData);
-				multiVmCreateContext.setUserId(userId);
+    public void run() throws OpenStackException {
+        if (vmCreateConf.getCount() > 0) {
+            MultiVmCreateContext multiVmCreateContext = new MultiVmCreateContext();
+            try {
+                multiVmCreateContext.setVmCreateConf(vmCreateConf);
+                multiVmCreateContext.setVmManager(vmManager);
+                multiVmCreateContext.setNetworkManager(networkManager);
+                multiVmCreateContext.setVolumeManager(volumeManager);
+                multiVmCreateContext.setVmCreateListener(vmCreateListener);
+                multiVmCreateContext.setListenerUserData(listenerUserData);
+                multiVmCreateContext.setUserId(userId);
 
-				List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
-				tasks.add(new CheckVmCreateConfTask());
-				tasks.add(new CheckNovaQuotaTask());
-				tasks.add(new CreateFloatingIpTask());
-				tasks.add(new CreateVolumeTask());
-				tasks.add(new CreateSubnetPortsTask());
-				tasks.add(new CreateVmsTask());
-				tasks.add(new AddVmsCreateListenerTask());
-				tasks.add(new EmailVmsCreatedTask());
+                List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
+                tasks.add(new CheckVmCreateConfTask());
+                tasks.add(new CheckNovaQuotaTask());
+                tasks.add(new CreateFloatingIpTask());
+                tasks.add(new CreateVolumeTask());
+                tasks.add(new CreateSubnetPortsTask());
+                tasks.add(new CreateVmsTask());
+                tasks.add(new AddVmsCreateListenerTask());
+                tasks.add(new EmailVmsCreatedTask());
 
-				VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
-						tasks, multiVmCreateContext);
-				executor.run();
-			} catch (OpenStackException ex) {
-				throw ex;
-			} catch (Exception ex) {
-				if (ex.getMessage() != null
-						&& ex.getMessage()
-								.contains(
-										"Flavor's disk is too small for requested image.")) {
-					throw new UserOperationException("硬件配置过低，不满足镜像的要求。", ex);
-				}
-				Util.throwException(ex);
-			}
-		} else {
-			throw new UserOperationException(
-					"Virtual machine number cannot be less than or equal to 0.",
-					"虚拟机数量不能小于或等于0");
-		}
-	}
+                VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
+                        tasks, multiVmCreateContext);
+                executor.run();
+            } catch (Exception ex) {
+                checkVmCreateFail(multiVmCreateContext, ex);
+                Util.throwException(translateExceptionMessage(ex));
+            }
+        } else {
+            throw new UserOperationException(
+                    "Virtual machine number cannot be less than or equal to 0.",
+                    "虚拟机数量不能小于或等于0");
+        }
+    }
+
+    private Exception translateExceptionMessage(Exception exception) {
+        if (exception.getMessage() != null
+                && exception.getMessage()
+                .contains(
+                        "Flavor's disk is too small for requested image.")) {
+            return new UserOperationException("硬件配置过低，不满足镜像的要求。", exception);
+        }
+        return exception;
+    }
+
+    private String getUserMessageOfException(Exception exception) {
+        String userMessage;
+        if (exception instanceof OpenStackException) {
+            userMessage = ((OpenStackException) exception).getUserMessage();
+        } else {
+            userMessage = exception.getMessage();
+        }
+        return userMessage;
+    }
+
+    private void checkVmCreateFail(MultiVmCreateContext context, Exception exception) throws OpenStackException {
+        if (context.getVmCreateListener() != null) {
+            final String reason = "虚拟机创建失败，原因：" + getUserMessageOfException(translateExceptionMessage(exception));
+            for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
+                VmCreateContext vmCreateContext = context.getVmCreateContexts().get(i);
+                if (vmCreateContext.getServerCreated() == null) {
+                    try {
+                        context.getVmCreateListener().vmCreateFailed(
+                                new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
+                    } catch (Exception ex) {
+                        Util.processBillingException(ex);
+                    }
+                }
+            }
+        }
+    }
 
 }

@@ -1,30 +1,33 @@
 package com.letv.portal.service.openstack.billing.impl;
 
 import com.letv.common.exception.MatrixException;
+import com.letv.common.session.Session;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.billing.*;
-import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
+import com.letv.portal.service.openstack.billing.CheckResult;
+import com.letv.portal.service.openstack.billing.ResourceCreateService;
+import com.letv.portal.service.openstack.billing.listeners.*;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.util.Util;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
+import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,12 +57,32 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Autowired
     private ApiService apiService;
 
+    @Autowired
+    private SessionServiceImpl sessionService;
+
     private OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
         String email = userVo.getEmail();
         String userName = userVo.getUsername();
         OpenStackSession openStackSession = openStackService.createSession(email, email, userName);
         openStackSession.init(null);
+        return openStackSession;
+    }
+
+    private OpenStackSession getOpenStackSession() throws OpenStackException {
+        Session session = sessionService.getSession();
+        OpenStackSessionImpl openStackSession = null;
+        if (session != null) {
+            openStackSession = (OpenStackSessionImpl) session.getOpenStackSession();
+            openStackSession.init(session);
+        }
+
+//        if (openStackSession != null) {
+//            return openStackSession;
+//        } else {
+//            return createOpenStackSession(userId);
+//        }
+
         return openStackSession;
     }
 
@@ -94,6 +117,19 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
+    public CheckResult checkVmCreatePara(String reqParaJson) {
+        try {
+            VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
+            }, true);
+            OpenStackSession openStackSession = getOpenStackSession();
+            openStackSession.getVMManager().checkCreate2(vmCreateConf);
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
+        return new CheckResult();
+    }
+
+    @Override
     public FlavorResource getFlavor(long userId, String region, String flavorId) throws MatrixException {
         try {
             OpenStackSession openStackSession = createOpenStackSession(userId);
@@ -122,6 +158,16 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         }
     }
 
+    @Override
+    public CheckResult checkVolumeCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
+        return new CheckResult();
+    }
+
     @Async
     @Override
     public void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException {
@@ -141,6 +187,16 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         }
     }
 
+    @Override
+    public CheckResult checkFloatingIpCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
+        return new CheckResult();
+    }
+
     @Async
     @Override
     public void createRouter(long userId, String reqParaJson, RouterCreateListener listener, Object listenerUserData) throws MatrixException {
@@ -158,5 +214,44 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         } catch (Exception e) {
             processException(e, "计费调用创建路由", userId, reqParaJson);
         }
+    }
+
+    @Override
+    public CheckResult checkRouterCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
+        return new CheckResult();
+    }
+
+    @Async
+    @Override
+    public void createVmSnapshot(long userId, String reqParaJson, VmSnapshotCreateListener listener, Object listenerUserData) throws MatrixException {
+        try {
+            VmSnapshotCreateConf vmSnapshotCreateConf = Util.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
+            }, true);
+            final String sessionId = Util.generateRandomSessionId();
+            final OpenStackSession openStackSession = createOpenStackSession(userId);
+            try {
+                NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
+                ((VMManagerImpl) openStackSession.getVMManager()).createImageFromVm(novaApi, vmSnapshotCreateConf, listener, listenerUserData);
+            } finally {
+                apiService.clearCache(userId, sessionId);
+            }
+        } catch (Exception e) {
+            processException(e, "计费调用创建虚拟机快照", userId, reqParaJson);
+        }
+    }
+
+    @Override
+    public CheckResult checkVmSnapshotCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
+        return new CheckResult();
     }
 }

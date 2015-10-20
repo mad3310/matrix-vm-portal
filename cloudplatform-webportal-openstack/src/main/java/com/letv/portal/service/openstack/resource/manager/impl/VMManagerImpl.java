@@ -9,6 +9,8 @@ import com.letv.portal.model.cloudvm.CloudvmVmCount;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.event.VmSnapshotCreateEvent;
 import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
@@ -19,15 +21,13 @@ import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
-import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
-import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
-import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreate;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
+import com.letv.portal.service.openstack.util.Util;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -1689,23 +1689,39 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     @Override
-    public void createImageFromVm(final String region,final String vmId,final String name) throws OpenStackException {
+    public void createImageFromVm(final VmSnapshotCreateConf createConf) throws OpenStackException {
         runWithApi(new ApiRunnable<NovaApi, Void>() {
             @Override
             public Void run(NovaApi novaApi) throws Exception {
-                checkRegion(region);
-
-                ServerApi serverApi = novaApi.getServerApi(region);
-                Server server = serverApi.get(vmId);
-                if (server == null) {
-                    throw new ResourceNotFoundException("VM", "虚拟机", vmId);
-                }
-
-                serverApi.createImageFromServer(name, vmId);
+                createImageFromVm(novaApi, createConf, null, null);
 
                 return null;
             }
         });
+    }
+
+    public void createImageFromVm(NovaApi novaApi, VmSnapshotCreateConf createConf, VmSnapshotCreateListener listener, Object listenerUserData) throws OpenStackException {
+        final String region = createConf.getRegion();
+        final String vmId = createConf.getVmId();
+        final String name = createConf.getName();
+
+        checkRegion(region);
+
+        ServerApi serverApi = novaApi.getServerApi(region);
+        Server server = serverApi.get(vmId);
+        if (server == null) {
+            throw new ResourceNotFoundException("VM", "虚拟机", vmId);
+        }
+
+        String imageId = serverApi.createImageFromServer(name, vmId);
+
+        if (listener != null) {
+            try {
+                listener.vmSnapshotCreated(new VmSnapshotCreateEvent(region, imageId, listenerUserData));
+            } catch (Exception e) {
+                Util.processBillingException(e);
+            }
+        }
     }
 
     private static boolean isPublicIp(FloatingIP floatingIP) {
@@ -1716,6 +1732,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     public void create2(VMCreateConf2 conf) throws OpenStackException {
         checkUserEmail();
         new VMCreate(conf, this, this.networkManager, this.volumeManager).run();
+    }
+
+    @Override
+    public void checkCreate2(VMCreateConf2 conf)throws OpenStackException{
+
     }
 
     @Override
