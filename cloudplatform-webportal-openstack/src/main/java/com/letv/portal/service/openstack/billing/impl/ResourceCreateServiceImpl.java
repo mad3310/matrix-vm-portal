@@ -5,6 +5,7 @@ import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.listeners.*;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
@@ -93,6 +94,11 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
+    public CheckResult checkVmCreatePara(long userId, String reqParaJson) {
+        return new CheckResult();
+    }
+
+    @Override
     public FlavorResource getFlavor(long userId, String region, String flavorId) throws MatrixException {
         try {
             OpenStackSession openStackSession = createOpenStackSession(userId);
@@ -121,6 +127,11 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         }
     }
 
+    @Override
+    public CheckResult checkVolumeCreatePara(long userId, String reqParaJson) {
+        return new CheckResult();
+    }
+
     @Async
     @Override
     public void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException {
@@ -138,6 +149,11 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         } catch (Exception e) {
             processException(e, "计费调用创建公网IP", userId, reqParaJson);
         }
+    }
+
+    @Override
+    public CheckResult checkFloatingIpCreatePara(long userId, String reqParaJson) {
+        return new CheckResult();
     }
 
     @Async
@@ -159,6 +175,11 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         }
     }
 
+    @Override
+    public CheckResult checkRouterCreatePara(long userId, String reqParaJson) {
+        return new CheckResult();
+    }
+
     @Async
     @Override
     public void createVmSnapshot(long userId, String reqParaJson, VmSnapshotCreateListener listener, Object listenerUserData) throws MatrixException {
@@ -176,5 +197,10 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         } catch (Exception e) {
             processException(e, "计费调用创建虚拟机快照", userId, reqParaJson);
         }
+    }
+
+    @Override
+    public CheckResult checkVmSnapshotCreatePara(long userId, String reqParaJson) {
+        return new CheckResult();
     }
 }
