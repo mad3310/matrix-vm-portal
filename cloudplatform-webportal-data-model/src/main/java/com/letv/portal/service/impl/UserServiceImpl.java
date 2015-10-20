@@ -109,7 +109,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		Map<String,Object> resultMap = this.transResult(result);
 		UserVo user = new UserVo();
 		
-		user.setUserId(Long.valueOf((Integer) resultMap.get("id")));
+		user.setUserId(userId);
 		user.setUsername((String) resultMap.get("contacts"));
 		user.setEmail((String) resultMap.get("email"));
 		user.setMobile((String) resultMap.get("mobile"));
