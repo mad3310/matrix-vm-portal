@@ -95,8 +95,8 @@ public class VolumeController {
 		return result;
 	}
 
-	@RequestMapping(value = "/region/{region}/volume-create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject create(@PathVariable String region,
+	@RequestMapping(value = "/volume/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject create(@RequestParam String region,
 			@RequestParam int size,
 			@RequestParam(required = false) String volumeTypeId,
 			@RequestParam(required = false) String volumeSnapshotId,
