@@ -90,7 +90,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     private void processException(Exception e, String function, Long userId, String contextMessage) {
         logger.error(e.getMessage(), e);
         errorEmailService.sendExceptionEmail(e, function, userId, contextMessage);
-        Util.throwMatrixException(e);
+//        Util.throwMatrixException(e);
     }
 
     @Async
