@@ -28,6 +28,7 @@ import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
+import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IHostProductService;
@@ -117,8 +118,9 @@ public class ProductController {
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		} else if(id==3) {//云硬盘
-			billingParams.put("os_storage", params.get("volumeSize")+"");
-			billingParams.put("os_storage_type", params.get("volumeType")+"");
+			VolumeTypeResource volume = this.resourceCreateService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
+			billingParams.put("os_storage", params.get("size")+"");
+			billingParams.put("os_storage_type", volume.getName()+"");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		} else if(id==4) {//公网IP
@@ -126,6 +128,7 @@ public class ProductController {
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		} else if(id==5) {//路由器
+			billingParams.put("os_router", "router");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		}
@@ -158,12 +161,12 @@ public class ProductController {
 	@RequestMapping(value="/buy/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String displayData, ResultObject obj) {
 		//去服务提供方验证参数是否合法
-		CheckResult validateResult = validateParamsDataByServiceProvider(id, paramsData);
-		if(!validateResult.isSuccess()) {
-			obj.setResult(0);
-			obj.addMsg(validateResult.getFailureReason());
-			return obj;
-		}
+//		CheckResult validateResult = validateParamsDataByServiceProvider(id, paramsData);
+//		if(!validateResult.isSuccess()) {
+//			obj.setResult(0);
+//			obj.addMsg(validateResult.getFailureReason());
+//			return obj;
+//		}
 		Map<String, Object> paramsDataMap = JSONObject.parseObject(paramsData, Map.class);
 		Map<String, Object> billingParams = new HashMap<String, Object>();
 		
