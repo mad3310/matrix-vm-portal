@@ -124,9 +124,11 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="vpcCreate.name"
-                                   name="vpc_name" text-restrict/>
-                            <span ng-show="(vm_vpc_create_form.$submitted || vm_vpc_create_form.vpc_name.$touched) && vm_vpc_create_form.vpc_name.$error.textRestrict"
-                                  class="le-input-validation">名称不符合规则</span>
+                                   name="vpc_name" name-input-restrict />
+                            <span ng-show="(vm_vpc_create_form.$submitted || vm_vpc_create_form.vpc_name.$touched) && vm_vpc_create_form.vpc_name.$error.nameInputRestrict" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'
+                                  class="le-input-validation">
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="le-row">
@@ -156,9 +158,11 @@
                     </div>
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control input-disk-name" ng-model="vpcEdit.name"
-                               name="edit_vpc_name" text-restrict/>
-                        <span ng-show="(vm_vpc_edit_form.$submitted || vm_vpc_edit_form.edit_vpc_name.$touched) && vm_vpc_edit_form.edit_vpc_name.$error.textRestrict"
-                              class="le-input-validation">名称不符合规则</span>
+                               name="edit_vpc_name" name-input-restrict/>
+                        <span ng-show="(vm_vpc_edit_form.$submitted || vm_vpc_edit_form.edit_vpc_name.$touched) && vm_vpc_edit_form.edit_vpc_name.$error.nameInputRestrict" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'
+                              class="le-input-validation">
+                            <i class="iconfont icon-icon1"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="le-row">
@@ -184,9 +188,11 @@
                     </div>
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control input-disk-name" ng-model="subnetEdit.name"
-                               name="edit_subnet_name" text-restrict/>
-                        <span ng-show="(vm_subnet_edit_form.$submitted || vm_subnet_edit_form.edit_subnet_name.$touched) && vm_subnet_edit_form.edit_subnet_name.$error.textRestrict"
-                              class="le-input-validation">名称不符合规则</span>
+                               name="edit_subnet_name" name-input-restrict/>
+                        <span ng-show="(vm_subnet_edit_form.$submitted || vm_subnet_edit_form.edit_subnet_name.$touched) && vm_subnet_edit_form.edit_subnet_name.$error.nameInputRestrict" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'
+                              class="le-input-validation">
+                            <i class="iconfont icon-icon1"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="le-row">
@@ -213,9 +219,11 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="subnetCreate.name"
-                                   name="subnet_name" text-restrict/>
-                            <span ng-show="(subnet_create_form.$submitted || subnet_create_form.subnet_name.$touched) && subnet_create_form.subnet_name.$error.textRestrict"
-                                  class="le-input-validation">名称不符合规则</span>
+                                   name="subnet_name" name-input-restrict/>
+                            <span ng-show="(subnet_create_form.$submitted || subnet_create_form.subnet_name.$touched) && subnet_create_form.subnet_name.$error.nameInputRestrict" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'
+                                  class="le-input-validation">
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="le-row">
@@ -270,9 +278,11 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="subnetCreate.name"
-                                   name="subnet_name" text-restrict/>
-                            <span ng-show="(subnet_create_with_vpc_form.$submitted || subnet_create_with_vpc_form.subnet_name.$touched) && subnet_create_with_vpc_form.subnet_name.$error.textRestrict"
-                                  class="le-input-validation">名称不符合规则</span>
+                                   name="subnet_name" name-input-restrict/>
+                            <span ng-show="(subnet_create_with_vpc_form.$submitted || subnet_create_with_vpc_form.subnet_name.$touched) && subnet_create_with_vpc_form.subnet_name.$error.nameInputRestrict" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'
+                                  class="le-input-validation">
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="le-row">
