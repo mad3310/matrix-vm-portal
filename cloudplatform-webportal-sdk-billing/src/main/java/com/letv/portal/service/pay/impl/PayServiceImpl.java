@@ -16,15 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateFailEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateFailEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +45,14 @@ import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateAdapt
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateAdapter;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateAdapter;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubDetailService;
@@ -592,10 +591,7 @@ public class PayServiceImpl implements IPayService {
 	//服务创建失败后回调
 	private void serviceCallbackWithFailed(List<OrderSub> orderSubs, String region, int index, Object userData) {
 		//①更改该条订阅为0-无效
-		Subscription subscription = new Subscription();
-		subscription.setId(orderSubs.get(index).getSubscriptionId());
-		subscription.setValid(0);
-		this.subscriptionService.update(subscription);
+		orderSubs.get(index).getSubscription().setValid(0);
 	}
 	
 	private void updateSubscriptionAndOrderTime(List<OrderSub> orderSubs) {
@@ -615,6 +611,9 @@ public class PayServiceImpl implements IPayService {
 	        cal.set(Calendar.MILLISECOND, 0);
 	        cal.add(Calendar.DAY_OF_MONTH, 1);
 			subscription.setEndTime(cal.getTime());
+			if(orderSub.getSubscription().getValid()!=null) {
+				subscription.setValid(orderSub.getSubscription().getValid());
+			}
 			this.subscriptionService.updateBySelective(subscription);
 			
 			updateParams.put("endTime", cal.getTime());
