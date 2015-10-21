@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
@@ -45,12 +46,13 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 		}
 
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
-			vmCreateContext.setVolume(context
+			Volume volume=context
 					.getApiCache()
 					.getVolumeApi()
 					.create(context.getVmCreateConf().getVolumeSize(),
 							new CreateVolumeOptions().volumeType(context
-									.getVolumeType().getId())));
+									.getVolumeType().getId()));
+			vmCreateContext.setVolume(volume);
 		}
 	}
 

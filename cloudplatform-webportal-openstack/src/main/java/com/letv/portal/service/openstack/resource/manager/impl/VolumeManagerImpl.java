@@ -618,6 +618,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 		for (int i = 0; i < count; i++) {
 			Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
+			OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService().create(openStackUser.getUserVoUserId(),openStackUser.getUserVoUserId(),volumeCreateConf.getRegion(),volume);
 			if (successCreatedVolumes != null) {
 				successCreatedVolumes.add(volume);
 			}
@@ -715,6 +716,8 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				return volume == null;
 			}
 		});
+
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService().delete(openStackUser.getUserVoUserId(),region,volumeResource.getId());
 	}
 
 	public void waitingVolume(final String region, final String volumeId,

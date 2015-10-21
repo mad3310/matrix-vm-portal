@@ -124,7 +124,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		
 		session.setUserVo(new UserVo(userId,username,email,mobile,mobileStatus));
 		
-		session.setOpenStackSession(openStackService.createSession(email,email,username));
+		session.setOpenStackSession(openStackService.createSession(userId,email,email,username));
 		return session;
 	}
 

@@ -1,5 +1,7 @@
 package com.letv.portal.controller.cloudvm;
 
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
+import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,12 @@ public class VolumeController {
 
 	@Autowired
 	private SessionServiceImpl sessionService;
+
+	@Autowired
+	private LocalVolumeService localVolumeService;
+
+	@Autowired
+	private LocalVolumeTypeService localVolumeTypeService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -52,8 +60,7 @@ public class VolumeController {
 			@PathVariable String volumeId) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util.session(sessionService).getVolumeManager()
-					.get(region, volumeId));
+			result.setData(localVolumeService.get(Util.userId(sessionService),region,volumeId));
 		} catch (VolumeNotFoundException e) {
 			result.addMsg("没有此云硬盘");
 		} catch (OpenStackException e) {
@@ -69,11 +76,7 @@ public class VolumeController {
 			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util
-					.session(sessionService)
-					.getVolumeManager()
-					.list(region, Util.optPara(name), currentPage,
-							recordsPerPage));
+			result.setData(localVolumeService.list(Util.userId(sessionService),region,name,currentPage,recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -141,12 +144,24 @@ public class VolumeController {
 		return result;
 	}
 
+	@RequestMapping(value = "/volume/edit", method = RequestMethod.POST)
+	public
+	@ResponseBody
+	ResultObject edit(@RequestParam String region,
+						@RequestParam String volumeId,
+						@RequestParam String name,
+						@RequestParam String description) {
+		ResultObject result = new ResultObject();
+		long userId = Util.userId(sessionService);
+		localVolumeService.updateNameAndDesc(userId, userId, region, volumeId, name, description);
+		return result;
+	}
+
 	@RequestMapping(value = "/volume/type/list", method = RequestMethod.GET)
 	public @ResponseBody ResultObject listVolumeType(@RequestParam String region) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util.session(sessionService).getVolumeManager()
-					.listVolumeType(region));
+			result.setData(localVolumeTypeService.list(region));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

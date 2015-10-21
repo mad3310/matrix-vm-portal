@@ -65,7 +65,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         UserVo userVo = userService.getUcUserById(userId);
         String email = userVo.getEmail();
         String userName = userVo.getUsername();
-        OpenStackSession openStackSession = openStackService.createSession(email, email, userName);
+        OpenStackSession openStackSession = openStackService.createSession(userId, email, email, userName);
         openStackSession.init(null);
         return openStackSession;
     }

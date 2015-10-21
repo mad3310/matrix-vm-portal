@@ -81,10 +81,10 @@ public class VolumeResourceImpl extends AbstractResource implements
 		return volume.getDescription();
 	}
 
-	@Override
-	public String getTenantId() {
-		return volume.getTenantId();
-	}
+//	@Override
+//	public String getTenantId() {
+//		return volume.getTenantId();
+//	}
 
 	@Override
 	public Set<VolumeAttachmentResource> getAttachments() {

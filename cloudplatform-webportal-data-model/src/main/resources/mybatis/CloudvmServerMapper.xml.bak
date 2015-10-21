@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmServerDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmServer">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="SERVER_ID" property="serverId"/>
+		<result column="FLAVOR_ID" property="flavorId" />
+		<result column="NAME" property="name"/>
+		<result column="SERVER_UUID" property="serverUuid"/>
+		<result column="TENANT_ID" property="tenantId"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="UPDATED" property="updated"/>
+		<result column="CREATED" property="created"/>
+		<result column="HOST_ID" property="hostId"/>
+		<result column="ACCESS_IPV4" property="accessIpv4"/>
+		<result column="ACCESS_IPV6" property="accessIpv6"/>
+		<result column="STATUS" property="status"/>
+		<result column="IMAGE_ID" property="imageId"/>
+		<result column="KEY_NAME" property="keyName"/>
+		<result column="CONFIG_DRIVE" property="configDrive"/>
+		<result column="EXTENDED_STATUS_TASK_STATE" property="extendedStatusTaskState"/>
+		<result column="EXTENDED_STATUS_VM_STATE" property="extendedStatusVmState"/>
+		<result column="EXTENDED_STATUS_POWER_STATE" property="extendedPowerState"/>
+		<result column="EXTENDED_ATTRIBUTES_INSTANCE_NAME" property="extendedAttributesInstanceName"/>
+		<result column="EXTENDED_ATTRIBUTES_HOST_NAME" property="extendedAttributesHostName"/>
+		<result column="EXTENDED_ATTRIBUTES_HYPERVISOR_HOST_NAME" property="extendedAttributesHypervisorHostName"/>
+		<result column="DISK_CONFIG" property="diskConfig"/>
+		<result column="AVAILABILITY_ZONE" property="availabilityZone"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_SERVER table all fields -->
+	<sql id="Base_Column_List">
+		s.ID,s.REGION,s.SERVER_ID,s.FLAVOR_ID,s.NAME,s.SERVER_UUID,s.TENANT_ID,
+		s.USER_ID,s.UPDATED,s.CREATED,s.HOST_ID,s.ACCESS_IPV4,s.ACCESS_IPV6,
+		s.STATUS,s.IMAGE_ID,s.KEY_NAME,s.CONFIG_DRIVE,
+		s.EXTENDED_STATUS_TASK_STATE,s.EXTENDED_STATUS_VM_STATE,s.EXTENDED_STATUS_POWER_STATE,
+		s.EXTENDED_ATTRIBUTES_INSTANCE_NAME,s.EXTENDED_ATTRIBUTES_HOST_NAME,s.EXTENDED_ATTRIBUTES_HYPERVISOR_HOST_NAME,
+		s.DISK_CONFIG,s.AVAILABILITY_ZONE,
+		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and s.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and s.REGION=#{region}
+			</if>
+			<if test="serverId != null ">
+				and s.SERVER_ID=#{serverId}
+			</if>
+			<if test="flavorId != null ">
+				and s.FLAVOR_ID=#{flavorId}
+			</if>
+			<if test="name != null  and name != ''  and name != 'null'">
+				and s.NAME like CONCAT('%','${name}','%') escape '^'
+			</if>
+			<if test="tenantId != null ">
+				and s.TENANT_ID=#{tenantId}
+			</if>
+			<if test="availabilityZone != null ">
+				and s.AVAILABILITY_ZONE=#{availabilityZone}
+			</if>
+			<if test="deleted != null  ">
+				and s.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and s.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and s.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and s.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and s.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmServer" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_SERVER(REGION,SERVER_ID,FLAVOR_ID,`NAME`,SERVER_UUID,TENANT_ID,
+		USER_ID,UPDATED,CREATED,HOST_ID,ACCESS_IPV4,ACCESS_IPV6,
+		STATUS,IMAGE_ID,KEY_NAME,CONFIG_DRIVE,
+		EXTENDED_STATUS_TASK_STATE,EXTENDED_STATUS_VM_STATE,EXTENDED_STATUS_POWER_STATE,
+		EXTENDED_ATTRIBUTES_INSTANCE_NAME,EXTENDED_ATTRIBUTES_HOST_NAME,EXTENDED_ATTRIBUTES_HYPERVISOR_HOST_NAME,
+		DISK_CONFIG,AVAILABILITY_ZONE,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{serverId},#{flavorId},#{name},
+		#{serverUuid},#{tenantId},#{userId},#{updated},#{created},#{hostId},#{accessIpv4},#{accessIpv6},
+		#{status},#{imageId},#{keyName},#{configDrive},
+		#{extendedStatusTaskState},#{extendedStatusVmState},#{extendedPowerState},
+		#{extendedAttributesInstanceName},#{extendedAttributesHostName},#{extendedAttributesHypervisorHostName},
+		#{diskConfig},#{availabilityZone},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmServer">
+		update WEBPORTAL_CLOUDVM_SERVER
+		set
+		ID=#{id},
+		REGION=#{region},
+		SERVER_ID=#{serverId},
+		FLAVOR_ID=#{flavorId},
+		`NAME`=#{name},
+		SERVER_UUID=#{serverUuid},
+		TENANT_ID=#{tenantId},
+		USER_ID=#{userId},
+		UPDATED=#{updated},
+		CREATED=#{created},
+		HOST_ID=#{hostId},
+		ACCESS_IPV4=#{accessIpv4},
+		ACCESS_IPV6=#{accessIpv6},
+		STATUS=#{status},
+		IMAGE_ID=#{imageId},
+		KEY_NAME=#{keyName},
+		CONFIG_DRIVE=#{configDrive},
+		EXTENDED_STATUS_TASK_STATE=#{extendedStatusTaskState},
+		EXTENDED_STATUS_VM_STATE=#{extendedStatusVmState},
+		EXTENDED_STATUS_POWER_STATE=#{extendedPowerState},
+		EXTENDED_ATTRIBUTES_INSTANCE_NAME=#{extendedAttributesInstanceName},
+		EXTENDED_ATTRIBUTES_HOST_NAME=#{extendedAttributesHostName},
+		EXTENDED_ATTRIBUTES_HYPERVISOR_HOST_NAME=#{extendedAttributesHypervisorHostName},
+		DISK_CONFIG=#{diskConfig},
+		AVAILABILITY_ZONE=#{availabilityZone},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<include refid="Example_Where_Clause" />
+		ORDER BY s.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<select id="selectByMapForSync" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<if test="id != null">
+			where s.ID > #{id}
+		</if>
+		ORDER BY s.ID ASC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmServer">
+		delete from WEBPORTAL_CLOUDVM_SERVER where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		where  s.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

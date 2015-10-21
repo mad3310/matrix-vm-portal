@@ -7,6 +7,6 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
  */
 public interface OpenStackService {
 
-    OpenStackSession createSession(String userId,String email,String userName) throws OpenStackException;
-
+    OpenStackSession createSession(long userVoUserId, String userId, String email,
+                                   String userName) throws OpenStackException;
 }

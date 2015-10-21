@@ -11,7 +11,7 @@ public interface VolumeResource extends Resource {
 	String getVolumeType();
 	String getSnapshotId();
 	String getDescription();
-	String getTenantId();
+//	String getTenantId();
 	Set<VolumeAttachmentResource> getAttachments();
 	String getRegionDisplayName();
 }

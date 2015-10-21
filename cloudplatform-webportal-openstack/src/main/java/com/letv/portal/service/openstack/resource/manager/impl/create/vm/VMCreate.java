@@ -8,10 +8,12 @@ import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.util.Util;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
 
 public class VMCreate {
 
@@ -67,6 +69,8 @@ public class VMCreate {
             } catch (Exception ex) {
                 checkVmCreateFail(multiVmCreateContext, ex);
                 Util.throwException(translateExceptionMessage(ex));
+            } finally {
+                saveLocal(multiVmCreateContext);
             }
             notifyListener(multiVmCreateContext, "后台错误");
         } else {
@@ -119,6 +123,18 @@ public class VMCreate {
                     }
                 } catch (Exception ex) {
                     Util.processBillingException(ex);
+                }
+            }
+        }
+    }
+
+    private void saveLocal(MultiVmCreateContext context) {
+        for(int i = 0; i < context.getVmCreateConf().getCount(); i++){
+            if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > i) {
+                VmCreateContext vmCreateContext = context.getVmCreateContexts().get(i);
+                if(vmCreateContext.getVolume()!=null){
+                    Volume volume=vmCreateContext.getVolume();
+                    OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService().create(context.getUserId(),context.getUserId(),context.getVmCreateConf().getRegion(),volume);
                 }
             }
         }

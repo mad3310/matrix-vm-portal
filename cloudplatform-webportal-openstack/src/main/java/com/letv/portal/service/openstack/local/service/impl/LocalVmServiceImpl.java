@@ -1,4 +1,4 @@
-package com.letv.portal.service.openstack.local.query.service.impl;
+package com.letv.portal.service.openstack.local.service.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
@@ -6,11 +6,10 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
-import com.letv.portal.service.openstack.local.query.resource.LocalVmResource;
-import com.letv.portal.service.openstack.local.query.service.RegionQueryService;
-import com.letv.portal.service.openstack.local.query.service.VmQueryService;
+import com.letv.portal.service.openstack.local.resource.LocalVmResource;
+import com.letv.portal.service.openstack.local.service.LocalRegionService;
+import com.letv.portal.service.openstack.local.service.LocalVmService;
 import com.letv.portal.service.openstack.resource.Region;
 import com.letv.portal.service.openstack.resource.VMResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,13 @@ import java.util.List;
  * Created by zhouxianguang on 2015/9/30.
  */
 @Service
-public class VmQueryServiceImpl implements VmQueryService {
+public class LocalVmServiceImpl implements LocalVmService {
 
     @Autowired
     private ICloudvmServerService cloudvmServerService;
 
     @Autowired
-    private RegionQueryService regionQueryService;
+    private LocalRegionService regionQueryService;
 
     @Autowired
     private SessionServiceImpl sessionService;
