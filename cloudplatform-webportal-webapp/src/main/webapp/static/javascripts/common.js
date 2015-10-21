@@ -64,5 +64,41 @@ define(['jquery'],function($){
       }
     }
   });
-  
+  var browserInfo = function(){			
+		var bagent = navigator.userAgent.toLowerCase();
+		var regStr_ie = /msie [\d.]+;/gi ;
+		var regStr_ff = /firefox\/[\d.]+/gi
+		var regStr_chrome = /chrome\/[\d.]+/gi ;
+		var regStr_saf = /safari\/[\d.]+/gi ;
+		//IE
+		if(bagent.indexOf("msie") > 0){
+			return bagent.match(regStr_ie) ;
+		}
+		//firefox
+		if(bagent.indexOf("firefox") > 0){
+			return bagent.match(regStr_ff) ;
+		}
+		//Chrome
+		if(bagent.indexOf("chrome") > 0){
+			return bagent.match(regStr_chrome) ;
+		}
+		//Safari
+		if(bagent.indexOf("safari") > 0 && bagent.indexOf("chrome") < 0){
+			return bagent.match(regStr_saf) ;
+		}
+	}
+	var browserVersion = function(){
+		  var _browser = browserInfo().toString().toLowerCase();
+		  var verinfo = (_browser+"").replace(/[^0-9.]/ig,"");    	 
+		  if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){
+			  window.location.replace="/browserError";
+		  }else if(_browser.indexOf("firefox") >=0 && verinfo < 5.0){
+			  window.location.replace="/browserError";
+		  }else if(_browser.indexOf("chrome") >=0 && verinfo < 7.0){
+			  window.location.replace="/browserError";
+		  }else if(_browser.indexOf("safari") >=0 && verinfo < 4.0){
+			  window.location.replace="/browserError";
+		  }
+	}
+	browserVersion(); //浏览器检测初始化
 });
