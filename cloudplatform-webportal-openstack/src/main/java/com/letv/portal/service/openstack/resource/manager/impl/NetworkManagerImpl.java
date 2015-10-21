@@ -15,16 +15,18 @@ import java.util.Set;
 
 import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.event.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.util.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
@@ -1402,75 +1404,111 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 	}
 
-    public void createRouter(NeutronApi neutronApi, RouterCreateConf routerCreateConf, RouterCreateListener listener, Object listenerUserData) throws OpenStackException {
-        final String region = routerCreateConf.getRegion();
-        final String name = routerCreateConf.getName();
-        final boolean enablePublicNetworkGateway = routerCreateConf.getEnablePublicNetworkGateway();
-        final String publicNetworkId = routerCreateConf.getPublicNetworkId();
+	private void createRouter(NeutronApi neutronApi,RouterCreateConf routerCreateConf,List<Router> successCreatedRouters) throws OpenStackException{
+		final String region = routerCreateConf.getRegion();
+		final String name = routerCreateConf.getName();
+		final boolean enablePublicNetworkGateway = routerCreateConf.getEnablePublicNetworkGateway();
+		final String publicNetworkId = routerCreateConf.getPublicNetworkId();
 
-        checkRegion(neutronApi,region);
+		checkRegion(neutronApi,region);
 
-        Optional<RouterApi> routerApiOptional = neutronApi
-                .getRouterApi(region);
-        if (!routerApiOptional.isPresent()) {
-            throw new APINotAvailableException(RouterApi.class);
-        }
-        RouterApi routerApi = routerApiOptional.get();
+		Optional<RouterApi> routerApiOptional = neutronApi
+				.getRouterApi(region);
+		if (!routerApiOptional.isPresent()) {
+			throw new APINotAvailableException(RouterApi.class);
+		}
+		RouterApi routerApi = routerApiOptional.get();
 
-        int existsRouterCount = routerApi.list().concat().toList()
-                .size();
+		int existsRouterCount = routerApi.list().concat().toList()
+				.size();
 
-        Optional<QuotaApi> quotaApiOptional = neutronApi
-                .getQuotaApi(region);
-        if (!quotaApiOptional.isPresent()) {
-            throw new APINotAvailableException(QuotaApi.class);
-        }
-        QuotaApi quotaApi = quotaApiOptional.get();
+		Optional<QuotaApi> quotaApiOptional = neutronApi
+				.getQuotaApi(region);
+		if (!quotaApiOptional.isPresent()) {
+			throw new APINotAvailableException(QuotaApi.class);
+		}
+		QuotaApi quotaApi = quotaApiOptional.get();
 
-        Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+		Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
 
-        if (quota.getRouter() <= existsRouterCount) {
-            throw new UserOperationException(
-                    "Router count exceeding the quota.", "路由数量超过配额");
-        }
+		if (quota.getRouter() <= existsRouterCount) {
+			throw new UserOperationException(
+					"Router count exceeding the quota.", "路由数量超过配额");
+		}
 
-        Router.CreateBuilder createBuilder = Router.createBuilder()
-                .name(name);
-        if (enablePublicNetworkGateway) {
-            NetworkApi networkApi = neutronApi.getNetworkApi(region);
-            Network publicNetwork = networkApi.get(publicNetworkId);
-            if (publicNetwork == null || !publicNetwork.getExternal()) {
-                throw new ResourceNotFoundException("Public Network",
-                        "线路", publicNetworkId);
-            }
-            createBuilder.externalGatewayInfo(ExternalGatewayInfo
-                    .builder().networkId(publicNetworkId).build());
-        }
-        Router router = routerApi.create(createBuilder.build());
-        if (enablePublicNetworkGateway) {
-            Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
-                    .getFloatingIPApi(region);
-            if (!floatingIPApiOptional.isPresent()) {
-                throw new APINotAvailableException(FloatingIPApi.class);
-            }
-            FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-            floatingIPApi.update(
-                    router.getId(),
-                    FloatingIP
-                            .updateBuilder()
-                            .fipQos(createFipQos(openStackConf
-                                    .getRouterGatewayBandWidth()))
-                            .build());
-        }
+		Router.CreateBuilder createBuilder = Router.createBuilder()
+				.name(name);
+		if (enablePublicNetworkGateway) {
+			NetworkApi networkApi = neutronApi.getNetworkApi(region);
+			Network publicNetwork = networkApi.get(publicNetworkId);
+			if (publicNetwork == null || !publicNetwork.getExternal()) {
+				throw new ResourceNotFoundException("Public Network",
+						"线路", publicNetworkId);
+			}
+			createBuilder.externalGatewayInfo(ExternalGatewayInfo
+					.builder().networkId(publicNetworkId).build());
+		}
+		Router router = routerApi.create(createBuilder.build());
+		if (enablePublicNetworkGateway) {
+			Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+					.getFloatingIPApi(region);
+			if (!floatingIPApiOptional.isPresent()) {
+				throw new APINotAvailableException(FloatingIPApi.class);
+			}
+			FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+			floatingIPApi.update(
+					router.getId(),
+					FloatingIP
+							.updateBuilder()
+							.fipQos(createFipQos(openStackConf
+									.getRouterGatewayBandWidth()))
+							.build());
+		}
 
-        if (listener != null) {
-            try {
-                listener.routerCreated(new RouterCreateEvent(region, router.getId(), 0, listenerUserData));
-            } catch (Exception e) {
-                Util.processBillingException(e);
-            }
-        }
-    }
+		if(successCreatedRouters != null){
+			successCreatedRouters.add(router);
+		}
+	}
+
+	public void createRouter(NeutronApi neutronApi, RouterCreateConf routerCreateConf, RouterCreateListener listener, Object listenerUserData) throws OpenStackException {
+		List<Router> successCreatedRouters = null;
+		if (listener != null) {
+			successCreatedRouters = new LinkedList<Router>();
+		}
+
+		try {
+			createRouter(neutronApi, routerCreateConf, successCreatedRouters);
+		} catch (Exception e) {
+			notifyRouterCreateListener(routerCreateConf, successCreatedRouters, e, listener, listenerUserData);
+			Util.throwException(e);
+		}
+		notifyRouterCreateListener(routerCreateConf, successCreatedRouters, null, listener, listenerUserData);
+	}
+
+	private void notifyRouterCreateListener(RouterCreateConf routerCreateConf,List<Router> successCreatedRouters,Exception exception,RouterCreateListener listener, Object listenerUserData){
+		if(listener != null) {
+			int successCreatedRoutersCount = successCreatedRouters.size();
+			int routersCount = 1;
+			int routerIndex = 0;
+
+			for (; routerIndex < successCreatedRoutersCount; routerIndex++) {
+				try {
+					listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), successCreatedRouters.get(routerIndex).getId(), routerIndex, listenerUserData));
+				} catch (Exception e) {
+					Util.processBillingException(e);
+				}
+			}
+
+			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			for (; routerIndex < routersCount; routerIndex++) {
+				try {
+					listener.routerCreateFailed(new RouterCreateFailEvent(routerCreateConf.getRegion(), routerIndex, reason, listenerUserData));
+				} catch (Exception e) {
+					Util.processBillingException(e);
+				}
+			}
+		}
+	}
 
 	@Override
 	public void createRouter(final RouterCreateConf routerCreateConf) throws OpenStackException {
@@ -2553,7 +2591,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 	}
 
-	public void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, FloatingIpCreateListener listener, Object listenerUserData) throws OpenStackException {
+	private void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, List<FloatingIP> successCreatedFloatingIps) throws OpenStackException {
 		final String region = createConf.getRegion();
 		final String name = createConf.getName();
 		final String publicNetworkId = createConf.getPublicNetworkId();
@@ -2632,9 +2670,45 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		for (int i = 0; i < count; i++) {
 			FloatingIP floatingIP = floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
 					.name(name).fipQos(createFipQos(bandWidth)).build());
-			if (listener != null) {
+			if (successCreatedFloatingIps != null) {
+				successCreatedFloatingIps.add(floatingIP);
+			}
+		}
+	}
+
+	public void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, FloatingIpCreateListener listener, Object listenerUserData) throws OpenStackException {
+		List<FloatingIP> successCreatedFloatingIps = null;
+		if(listener!=null){
+			successCreatedFloatingIps = new LinkedList<FloatingIP>();
+		}
+
+		try {
+			createFloatingIp(neutronApi,createConf,successCreatedFloatingIps);
+		} catch (Exception e){
+			notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,e,listener,listenerUserData);
+			Util.throwException(e);
+		}
+		notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,null,listener,listenerUserData);
+	}
+
+	private void notifyFloatingIpCreateListener(FloatingIpCreateConf createConf, List<FloatingIP> successCreatedFloatingIps, Exception exception, FloatingIpCreateListener listener, Object listenerUserData){
+		if (listener != null) {
+			int successCreatedFloatingIpsCount = successCreatedFloatingIps.size();
+			int floatingIpCount = createConf.getCount();
+			int floatingIpIndex = 0;
+
+			for (; floatingIpIndex < successCreatedFloatingIpsCount; floatingIpIndex++) {
 				try {
-					listener.floatingIpCreated(new FloatingIpCreateEvent(region, floatingIP.getId(), i, listenerUserData));
+					listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), successCreatedFloatingIps.get(floatingIpIndex).getId(), floatingIpIndex, listenerUserData));
+				} catch (Exception e) {
+					Util.processBillingException(e);
+				}
+			}
+
+			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			for (; floatingIpIndex < floatingIpCount; floatingIpIndex++) {
+				try {
+					listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndex, reason, listenerUserData));
 				} catch (Exception e) {
 					Util.processBillingException(e);
 				}

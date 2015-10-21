@@ -284,3 +284,60 @@ function customerToolInit() {
 		});
 	})();
 }
+// common:浏览器信息
+function browserInfo(){			
+	var bagent = navigator.userAgent.toLowerCase();
+	var regStr_ie = /msie [\d.]+;/gi ;
+	var regStr_ff = /firefox\/[\d.]+/gi
+	var regStr_chrome = /chrome\/[\d.]+/gi ;
+	var regStr_saf = /safari\/[\d.]+/gi ;
+	//IE
+	if(bagent.indexOf("msie") > 0){
+		return bagent.match(regStr_ie) ;
+	}
+	//firefox
+	if(bagent.indexOf("firefox") > 0){
+		return bagent.match(regStr_ff) ;
+	}
+	//Chrome
+	if(bagent.indexOf("chrome") > 0){
+		return bagent.match(regStr_chrome) ;
+	}
+	//Safari
+	if(bagent.indexOf("safari") > 0 && bagent.indexOf("chrome") < 0){
+		return bagent.match(regStr_saf) ;
+	}
+}
+// common:监测浏览器版本
+function browerversion(){
+	console.log(browserInfo())
+	var _browser = browserInfo().toString().toLowerCase();
+	var verinfo = (_browser+"").replace(/[^0-9.]/ig,"");    	 
+	if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){
+	  window.location.replace="/browserError";
+	}else if(_browser.indexOf("firefox") >=0 && verinfo < 5.0){
+	  window.location.replace="/browserError";
+	}else if(_browser.indexOf("chrome") >=0 && verinfo < 7.0){
+	  window.location.replace="/browserError";
+	}else if(_browser.indexOf("safari") >=0 && verinfo < 4.0){
+	  window.location.replace="/browserError";
+	}
+}
+// help:帮助中心初始化事件
+function helpInite(){
+	var minheight=document.documentElement.clientHeight-275;
+	$('.help-center').css('min-height',minheight);
+	// 菜单事件
+
+	//子菜单点击
+	$('.menu-sub').unbind('click').click(function(event) {
+		var _target=$(event.target||event.srcElement).closest('li');
+		if(_target.hasClass('active')){
+
+		}else{
+			_target.addClass('active').siblings().removeClass('active')
+		}
+		var _targetPage=_target.attr('self-menu-detailPage');
+		$('.help-center').load(_targetPage+'.html');
+	});	
+}

@@ -44,7 +44,7 @@
 				</div>
 			</div>
 			<div class="nav-item"><a  href="http://matrix.letvcloud.com/profile"><span>控制台</span></a></div>
-			<div class="nav-item"><a href="helpcenter_product.html"><span>帮助中心</span></a></div>
+			<div class="nav-item"><a href="helpcenter.html"><span>帮助中心</span></a></div>
 			<div class="nav-item"><a href="companyIntro.html"><span>关于我们</span></a></div>
 			<div class="clearfix"></div>
 		</div>
@@ -605,18 +605,11 @@ navMore();//登录注册
 scrollNav(645);//滚动事件	
 tabClick();// tab 切换
 iflogged();//判断是否登录
+// browerversion();//判断浏览器版本
 var agent = navigator.userAgent.toLowerCase();
 browser = {  
     //检测当前浏览器是否为IE  
     ie: /(msie\s|trident.*rv:)([\w.]+)/.test(agent), 
-    //检测当前浏览器是否为Opera  
-    // opera: (!!opera && opera.version), 
-    //检测当前浏览器是否是webkit内核的浏览器  
-    // webkit: (agent.indexOf(' applewebkit/') > -1), 
-    //检测当前浏览器是否是运行在mac平台下  
-    // mac: (agent.indexOf('macintosh') > -1), 
-    //检测当前浏览器是否处于“怪异模式”下  
-    // quirks: (document.compatMode == 'BackCompat')  
 };
 if (browser.ie){
 	$('.ie-svgbg').removeClass('hide');
