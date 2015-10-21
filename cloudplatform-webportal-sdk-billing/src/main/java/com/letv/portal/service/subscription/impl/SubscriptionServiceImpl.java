@@ -3,6 +3,8 @@ package com.letv.portal.service.subscription.impl;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -89,6 +91,16 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			this.subscriptionDetailDao.insert(detail);
 		}
 		return sub;
+	}
+
+
+	@Override
+	public List<Subscription> selectValidSubscription() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", sessionService.getSession().getUserId());
+		params.put("valid", 1);
+		params.put("date", new Date());
+		return this.subscriptionDao.selectValidSubscription(params);
 	}
 
 

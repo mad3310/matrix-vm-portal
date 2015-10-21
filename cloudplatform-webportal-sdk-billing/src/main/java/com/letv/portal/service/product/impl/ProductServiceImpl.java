@@ -1,6 +1,8 @@
 package com.letv.portal.service.product.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.base.IBaseRegionDao;
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductDao;
@@ -21,11 +24,15 @@ import com.letv.portal.dao.product.IProductElementDao;
 import com.letv.portal.dao.product.IProductRegionDao;
 import com.letv.portal.model.base.BaseRegion;
 import com.letv.portal.model.base.BaseStandard;
+import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.Product;
 import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.model.product.ProductRegion;
+import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IProductService;
+import com.letv.portal.service.subscription.ISubscriptionService;
 import com.letv.portal.util.ValidateUtil;
 
 @Service("productService")
@@ -47,6 +54,12 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	private IBaseRegionDao baseRegionDao;
 	@Autowired
 	private IProductRegionDao productRegionDao;
+	@Autowired
+	private ISubscriptionService subscriptionService;
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
+	@Autowired
+	private IOrderSubService orderSubService;
 
 	@Override
 	public IBaseDao<Product> getDao() {
@@ -327,6 +340,30 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 			return regions.get(0).getId();
 		}
 		return null;
+	}
+
+	@Override
+	public Map<Long, BigDecimal> dailyConsume() {
+		List<Subscription> subscriptions = this.subscriptionService.selectValidSubscription();
+		Map<Long, BigDecimal> ret = new HashMap<Long, BigDecimal>();
+		for (Subscription subscription : subscriptions) {
+			if(subscription.getChargeType()==0) {//包年包月
+				List<OrderSub> orderSubs = this.orderSubService.selectOrderSubBySubscriptionId(subscription.getId());
+				BigDecimal price = ret.get(subscription.getProductId());
+				if(price==null) {
+					price = new BigDecimal(0);
+				}
+				for (OrderSub orderSub : orderSubs) {
+					long day = (orderSub.getEndTime().getTime()-orderSub.getStartTime().getTime())/(1000*3600*24); 
+					price = orderSub.getDiscountPrice()==null ? price.add(orderSub.getPrice().divide(new BigDecimal(day), 2, BigDecimal.ROUND_HALF_DOWN)): 
+							price.add(orderSub.getDiscountPrice().divide(new BigDecimal(day), 2, BigDecimal.ROUND_HALF_DOWN));
+				}
+				ret.put(subscription.getProductId(), price);
+			} else if(subscription.getChargeType()==1) {//按量TODO
+				
+			}
+		}
+		return ret;
 	}
 
 

@@ -1,5 +1,6 @@
 package com.letv.portal.service.product;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.letv.portal.model.product.Product;
@@ -35,4 +36,13 @@ public interface IProductService extends IBaseService<Product> {
 	  * @date 2015年9月6日 下午5:00:37
 	  */
 	boolean validateData(Long id, Map<String,Object> map);
+	/**
+	  * @Title: dailyConsume
+	  * @Description: 获取该用户下各产品每日消费情况
+	  * @return Map<Long, BigDecimal>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月21日 下午2:20:14
+	  */
+	Map<Long, BigDecimal> dailyConsume();
 }

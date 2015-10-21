@@ -194,5 +194,10 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		return ret;
 	}
 
+	@Override
+	public List<OrderSub> selectOrderSubBySubscriptionId(long subscriptionId) {
+		return this.orderSubDao.selectOrderSubBySubscriptionId(subscriptionId);
+	}
+
 
 }
