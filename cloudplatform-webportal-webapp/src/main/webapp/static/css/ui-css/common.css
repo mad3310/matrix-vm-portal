@@ -1919,17 +1919,19 @@ font-size: 12px;
 	list-style: none;
 	display: inline-block;
 	padding:0px;
+	width:600px\9;
+	margin:0 auto;
 	}
 .ul_horizon li{
 	display:inline-block;
 	_zoom:1;
 	_display:inline;
+	float:left\9;
 	overflow:hidden;
 	margin-right:5px;
 	}
 .ul_horizon li a{
 	padding:5px 10px;
-	/*color:#97a6b6;*/
 	color:#4A4F54;
 	}
 .pd30{

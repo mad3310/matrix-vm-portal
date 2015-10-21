@@ -76,8 +76,10 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" text-restrict/>
-                            <span ng-show="(vm_router_create_form.$submitted || vm_router_create_form.router_name.$touched) && vm_router_create_form.router_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
+                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" name-input-restrict/>
+                            <span ng-show="(vm_router_create_form.$submitted || vm_router_create_form.router_name.$touched) && vm_router_create_form.router_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="le-row">
@@ -135,8 +137,10 @@
                     <span class="letv-control-label">名称：</span>
                 </div>
                 <div class="le-col-9 col-control">
-                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" text-restrict/>
-                    <span ng-show="(vm_router_edit_form.$submitted || vm_router_edit_form.edit_router_name.$touched) && vm_router_edit_form.edit_router_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
+                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" name-input-restrict />
+                    <span ng-show="(vm_router_edit_form.$submitted || vm_router_edit_form.edit_router_name.$touched) && vm_router_edit_form.edit_router_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
+                        名称不符合规则
+                    </span>
                 </div>
             </div>
             <div class="le-row">

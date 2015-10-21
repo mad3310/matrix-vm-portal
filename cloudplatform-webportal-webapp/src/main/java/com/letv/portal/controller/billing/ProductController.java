@@ -222,17 +222,20 @@ public class ProductController {
 		return obj;
 	}
 	
-//	public @ResponseBody ResultObject save(DbModel dbModel,boolean isCreateAdmin,String calculateData) {
-//		Map<String, Object> billingPrams = JSONObject.parseObject(calculateData, Map.class);
-//		Long rdsId = this.dbProxy.save(dbModel,isCreateAdmin);
-//		ResultObject obj = new ResultObject();
-//		Subscription sub = this.subscriptionService.createSubscription(1l, billingPrams, rdsId);
-//		if(sub.getChargeType()==0) {
-//			Long orderId = this.orderService.createOrder(sub.getId());
-//			obj.setData(orderId);
-//		}
-//		return obj;
-//	}
+	/**
+	  * @Title: dailyConsume
+	  * @Description: 每日消费api接口
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月21日 下午5:06:48
+	  */
+	@RequestMapping(value="/product/daily/consume",method=RequestMethod.GET)  
+	public @ResponseBody ResultObject dailyConsume(ResultObject obj) {
+		obj.setData(this.productService.dailyConsume());
+		return obj;
+	}
 	
 	
 	

@@ -185,6 +185,14 @@
 				and sub.USER_ID = #{userId}
 			</if>
 	</select>
+	<select id="selectOrderSubBySubscriptionId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_ORDER_SUB orderSub
+	   	where
+	   		orderSub.SUBSCRIPTION_ID=#{subscriptionId}
+	</select>
 
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">

@@ -15,8 +15,9 @@
 	<link rel="stylesheet" href="/static/staticPage/css/style.css">
 	<title>浏览器版本错误</title>
 	<style>
-	h2{font-size:3rem;font-weight:400}
-	h4{font-size:1.8rem;font-weight:400;margin:0}
+	a{border:0;}
+	h2{font-size:30px;font-weight:400}
+	h4{font-size:18px;font-weight:400;margin:0}
 	</style>
 </head>
 <body>
@@ -24,7 +25,7 @@
 		<p class="mt30">
 		<h2>升级浏览器，升级您的浏览体验</h2>
 		</p>
-		<ul class="ul_horizon mt30">
+		<ul class="ul_horizon mt30 clearfix">
 			<li><a href="https://www.google.com/chrome/browser/"
 				target="_blank"> <img src="static/img/chrome.png">
 			</a>
@@ -37,7 +38,7 @@
 					<a href="http://www.firefox.com.cn/"><h4>FireFox</h4></a>
 				</p></li>
 			<li><a href="http://windows.microsoft.com/zh-cn/internet-explorer" target="_blank"><img
-					src="static/img/ie.png"></a>
+					src="static/img/ie.png" width="124px" height="134px"></a>
 				<p>
 					<a href="http://windows.microsoft.com/zh-cn/internet-explorer"><h4>IE</h4></a>
 				</p></li>

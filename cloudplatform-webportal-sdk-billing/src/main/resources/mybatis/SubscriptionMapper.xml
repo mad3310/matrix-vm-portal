@@ -162,6 +162,17 @@
 	        MATRIX_BILLING_SUBSCRIPTION subscription
 	        <include refid="Common_Where_Clause" />
 	</select>
+	
+	<select id="selectValidSubscription" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_SUBSCRIPTION subscription
+	        <include refid="Common_Where_Clause" />
+	        <if test="date != null and date != '' ">
+	            and subscription.START_TIME &lt; #{date} and subscription.END_TIME &gt;= #{date}
+	        </if>
+	</select>
 
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">

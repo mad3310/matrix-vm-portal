@@ -69,10 +69,10 @@
 		<ul>
 			<li>
 				<div class="menu-coltitle"><i class="iconfont icon-menucol"></i><span>产品中心</span></div>
-				<div class="menu-parent">
+				<div class="menu-parent open" self-menulink="helpcenter_products">
 					<i class="iconfont icon-arrow01"></i><span>云主机</span>
 				</div>
-				<ul class="menu-sub">
+				<ul class="menu-sub helpcenter_products">
 					<li class="active" self-menu-detailPage="helpcenter_product"><span>产品介绍</span></li>
 					<li self-menu-detailPage="helpcenter_price"><span>产品定价</span></li>
 					<li self-menu-detailPage="helpcenter_operate"><span>操作手册</span></li>
@@ -80,7 +80,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="col-md-10 help-center">
+	<div class="col-md-10 helpcenter-center">
 		<div class="clearfix">
 			<div class="col-md-5">
 				<div class="productIntro-title">ECS云主机产品介绍</div>
@@ -471,18 +471,17 @@
 <script>
 topNavHover();//导航滑过效果
 navMore();//登录注册
-scrollNav(400);//滚动事件	
+helpScrollNav(400);//滚动事件	
 tabClick();// tab 切换
 iflogged();//判断是否登录
-// browerversion();//判断浏览器版本
-// helpInite();//帮助中心初始化
+browerversion();//判断浏览器版本
+helpInite();//帮助中心初始化
 var agent = navigator.userAgent.toLowerCase();
 browser = {  
     //检测当前浏览器是否为IE  
     ie: /(msie\s|trident.*rv:)([\w.]+)/.test(agent), 
 };
 if (browser.ie){
-	console.log('aaa')
 	$('.ie-svgbg').removeClass('hide');
 	$('#productsvg').addClass('hide');
 }else{

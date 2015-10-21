@@ -41,13 +41,12 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
-    directiveModule.directive('textRestrict', function() {
-        var TEXT_REGEX= /[a-zA-Z_0-9]{1,15}/g;
+    directiveModule.directive('nameInputRestrict', function(Config) {
         return {
             require: 'ngModel',
             link: function(scope, elm, attrs, ctrl) {
-                ctrl.$validators.textRestrict = function(modelValue, viewValue) {
-                    if (viewValue && viewValue.length>0 && viewValue.length<15) {
+                ctrl.$validators.nameInputRestrict = function(modelValue, viewValue) {
+                    if (viewValue && Config.REGEX.NAME.test(viewValue)) {
                         return true;
                     }
                     return false;

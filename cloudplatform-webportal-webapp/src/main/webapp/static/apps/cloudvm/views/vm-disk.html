@@ -129,8 +129,10 @@
                             <span class="letv-control-label">快照名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-snapshot-name" ng-model="diskSnapshotName" name="disk_snapshot_name" text-restrict />
-                            <span ng-show="(vm_disk_snapshot_create_form.$submitted || vm_disk_snapshot_create_form.disk_snapshot_name.$touched) && vm_disk_snapshot_create_form.disk_snapshot_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
+                            <input type="text" class="le-form-control input-disk-snapshot-name" ng-model="diskSnapshotName" name="disk_snapshot_name" name-input-restrict />
+                            <span ng-show="(vm_disk_snapshot_create_form.$submitted || vm_disk_snapshot_create_form.disk_snapshot_name.$touched) && vm_disk_snapshot_create_form.disk_snapshot_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="le-row">
