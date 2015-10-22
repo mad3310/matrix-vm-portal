@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
+import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,9 @@ public class CronJobsController {
 
 	@Autowired
 	private VmSyncService vmSyncService;
+
+	@Autowired
+	private VolumeSyncService volumeSyncService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(CronJobsController.class);
 		
@@ -344,6 +348,14 @@ public class CronJobsController {
 	@RequestMapping(value="/openstack/sync/vm",method=RequestMethod.GET)
 	public @ResponseBody ResultObject syncVm(@RequestParam int recordsPerPage,ResultObject obj){
 		this.vmSyncService.sync(recordsPerPage);
+		return obj;
+	}
+
+	@RequestMapping(value = "/openstack/sync/volume", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject syncVolume(@RequestParam int recordsPerPage, ResultObject obj) {
+		this.volumeSyncService.sync(recordsPerPage);
 		return obj;
 	}
 }

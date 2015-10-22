@@ -9,4 +9,6 @@ public interface OpenStackService {
 
     OpenStackSession createSession(long userVoUserId, String userId, String email,
                                    String userName) throws OpenStackException;
+
+//    OpenStackSession createSessionForSync(long userVoUserId) throws OpenStackException;
 }

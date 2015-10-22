@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
+import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
@@ -174,6 +175,16 @@ public class OpenStackServiceImpl implements OpenStackService {
 		return new OpenStackSessionImpl(
 				openStackConf, openStackUser);
 	}
+
+//	@Override
+//	public OpenStackSession createSessionForSync(long userVoUserId) throws OpenStackException {
+//		UserVo userVo = userService.getUcUserById(userVoUserId);
+//		String email = userVo.getEmail();
+//		String userName = userVo.getUsername();
+//		OpenStackSession openStackSession = this.createSession(userVoUserId, email, email, userName);
+//		openStackSession.init(null);
+//		return openStackSession;
+//	}
 
 	public static OpenStackServiceGroup getOpenStackServiceGroup() {
 		return INSTANCE.openStackServiceGroup;
