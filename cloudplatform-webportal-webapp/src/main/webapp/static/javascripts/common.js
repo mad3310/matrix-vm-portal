@@ -2,6 +2,55 @@
  * Created by jiangfei on 2015/8/13.
  */
 define(['jquery'],function($){
+  //浏览器版本监测
+  var isIE=function(){
+    if(!!window.ActiveXObject || "ActiveXObject" in window)
+      return true;
+    else
+      return false;
+  }
+  var browserInfo = function(){     
+    var bagent = navigator.userAgent.toLowerCase();
+    var regStr_ie = /msie [\d.]+;/gi ;
+    var regStr_ff = /firefox\/[\d.]+/gi
+    var regStr_chrome = /chrome\/[\d.]+/gi ;
+    var regStr_saf = /safari\/[\d.]+/gi ;
+    if(isIE()){
+      if(bagent.match(regStr_ie)){//ie11以下
+        return bagent.match(regStr_ie);
+      }else{//ie11+
+        return 'ie11+';
+      }
+    }else{
+      //firefox
+      if(bagent.indexOf("firefox") > 0){
+        return bagent.match(regStr_ff) ;
+      }
+      //Chrome
+      if(bagent.indexOf("chrome") > 0){
+        return bagent.match(regStr_chrome) ;
+      }
+      //Safari
+      if(bagent.indexOf("safari") > 0 && bagent.indexOf("chrome") < 0){
+        return bagent.match(regStr_saf) ;
+      }
+    }
+  }
+  var browserVersion = function(){
+    var _browser = browserInfo().toString().toLowerCase();
+    var verinfo = (_browser+"").replace(/[^0-9.]/ig,""); 
+    if(_browser.indexOf("ie11+")>0){//ie11
+    }else if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){//判断ie11以下的浏览器
+      window.location.replace="/browserError";
+    }else if(_browser.indexOf("firefox") >=0 && verinfo < 5.0){
+      window.location.replace="/browserError";
+    }else if(_browser.indexOf("chrome") >=0 && verinfo < 7.0){
+      window.location.replace="/browserError";
+    }else if(_browser.indexOf("safari") >=0 && verinfo < 4.0){
+      window.location.replace="/browserError";
+    }
+  }
+  browserVersion(); //浏览器检测初始化
   /*设置页面的最低高度*/
   var viewHeight = $(window).height() - 70;
   $('.content').css('min-height', viewHeight);
@@ -15,6 +64,7 @@ define(['jquery'],function($){
       {url: '/cvm/#/vm-floatIP',title:'公网IP',icon:'iconfont icon-ipicon'},
       {url: '/cvm/#/vm-router',title:'路由器',icon:'iconfont icon-routeicon'},
       {url: '/cvm/#/vm-snapshot',title:'快照',icon:'iconfont icon-snapshoticon'},
+      {url: '/cvm/#/vm-image',title:'镜像',icon:'iconfont icon-shearicon'},
       {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-rds',isSubmenuFisrt:true}
     ],
     sideMenuItemEl = null,
@@ -64,45 +114,4 @@ define(['jquery'],function($){
       }
     }
   });
-  var browserInfo = function(){			
-		var bagent = navigator.userAgent.toLowerCase();
-		var regStr_ie = /msie [\d.]+;/gi ;
-		var regStr_ff = /firefox\/[\d.]+/gi
-		var regStr_chrome = /chrome\/[\d.]+/gi ;
-		var regStr_saf = /safari\/[\d.]+/gi ;
-		var bagent = navigator.userAgent.toLowerCase();
-		var regStr_ie = /msie [\d.]+;/gi ;
-		var regStr_ff = /firefox\/[\d.]+/gi
-		var regStr_chrome = /chrome\/[\d.]+/gi ;
-		var regStr_saf = /safari\/[\d.]+/gi ;
-		if(bagent.indexOf("msie") > 0||bagent.search(/Trident/i)> 0){//IE11以下
-			return bagent.match(regStr_ie);
-		}
-		//firefox
-		if(bagent.indexOf("firefox") > 0){
-			return bagent.match(regStr_ff) ;
-		}
-		//Chrome
-		if(bagent.indexOf("chrome") > 0){
-			return bagent.match(regStr_chrome) ;
-		}
-		//Safari
-		if(bagent.indexOf("safari") > 0 && bagent.indexOf("chrome") < 0){
-			return bagent.match(regStr_saf) ;
-		}
-	}
-	var browserVersion = function(){
-		var _browser = browserInfo().toString().toLowerCase();
-		var verinfo = (_browser+"").replace(/[^0-9.]/ig,""); 
-		if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){//判断ie11以下的浏览器
-		  window.location.replace="/browserError";
-		}else if(_browser.indexOf("firefox") >=0 && verinfo < 5.0){
-		  window.location.replace="/browserError";
-		}else if(_browser.indexOf("chrome") >=0 && verinfo < 7.0){
-		  window.location.replace="/browserError";
-		}else if(_browser.indexOf("safari") >=0 && verinfo < 4.0){
-		  window.location.replace="/browserError";
-		}
-	}
-	browserVersion(); //浏览器检测初始化
 });
