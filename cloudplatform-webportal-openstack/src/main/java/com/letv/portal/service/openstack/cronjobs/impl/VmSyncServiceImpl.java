@@ -61,15 +61,6 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
     @Autowired
     private OpenStackService openStackService;
 
-    protected OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
-        UserVo userVo = userService.getUcUserById(userId);
-        String email = userVo.getEmail();
-        String userName = userVo.getUsername();
-        OpenStackSession openStackSession = openStackService.createSession(userId, email, email, userName);
-        openStackSession.init(null);
-        return openStackSession;
-    }
-
     @Override
     public void sync(int recordsPerPage) throws MatrixException {
         SyncLocalApiCache apiCache = new SyncLocalApiCache();
