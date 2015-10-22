@@ -1,8 +1,5 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.portal.service.openstack.local.service.LocalVolumeService;
-import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
-import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +10,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
+import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
+import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
+import com.letv.portal.service.operate.IRecentOperateService;
 
 @Controller
 @RequestMapping("/osv")
@@ -30,6 +33,8 @@ public class VolumeController {
 
 	@Autowired
 	private LocalVolumeTypeService localVolumeTypeService;
+	@Autowired
+	private IRecentOperateService recentOperateService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -134,7 +139,10 @@ public class VolumeController {
 		try {
 			VolumeManager volumeManager = Util.session(sessionService)
 					.getVolumeManager();
-			volumeManager.deleteSync(region, volumeManager.get(region, volumeId));
+			VolumeResource volumeResource = volumeManager.get(region, volumeId);
+			volumeManager.deleteSync(region, volumeResource);
+			//保存硬盘删除操作
+			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, volumeResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -199,6 +207,8 @@ public class VolumeController {
 		try {
 			Util.session(sessionService).getVolumeManager()
 					.createVolumeSnapshot(region, volumeId, name, description);
+			//保存启动操作
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, name+"=="+Util.session(sessionService).getVolumeManager().get(region, volumeId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

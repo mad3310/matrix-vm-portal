@@ -9,9 +9,11 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.operate.IRecentOperateDao;
 import com.letv.portal.model.operate.RecentOperate;
 import com.letv.portal.service.impl.BaseServiceImpl;
@@ -29,6 +31,8 @@ public class RecentOperateServiceImpl extends BaseServiceImpl<RecentOperate>  im
 
     @Resource
 	private IRecentOperateDao recentOperateDao;
+    @Autowired
+	private SessionServiceImpl sessionService;
 	
 	public RecentOperateServiceImpl() {
 		super(RecentOperate.class);
@@ -38,15 +42,22 @@ public class RecentOperateServiceImpl extends BaseServiceImpl<RecentOperate>  im
 	public IBaseDao<RecentOperate> getDao() {
 		return this.recentOperateDao;
 	}
+	
 
 	@Override
-	public void saveInfo(String action, String content, Long userId, String descn) {
+	public void saveInfo(String action, String content, Long userId,
+			String descn) {
 		RecentOperate operate = new RecentOperate();
 		operate.setAction(action);
 		operate.setContent(content);
 		operate.setDescn(descn);
 		operate.setCreateUser(userId);
 		this.recentOperateDao.insert(operate);
+	}
+
+	@Override
+	public void saveInfo(String action, String content) {
+		saveInfo(action, content, this.sessionService.getSession().getUserId(), null);
 	}
 
 	@Override
@@ -57,5 +68,6 @@ public class RecentOperateServiceImpl extends BaseServiceImpl<RecentOperate>  im
 		params.put("date", cal.getTime());
 		return this.recentOperateDao.selectByMap(params);
 	}
+
 
 }

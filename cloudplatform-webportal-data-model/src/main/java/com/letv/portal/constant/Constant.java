@@ -56,13 +56,47 @@ public class Constant {
 	public static final String START_OPENSTACK = "启动云主机";
 	//停止云主机
 	public static final String STOP_OPENSTACK = "停止云主机";
+	//绑定云硬盘
+	public static final String ATTACH_VOLUME_OPENSTACK = "绑定云硬盘";
+	//创建快照
+	public static final String SNAPSHOT_CREATE_OPENSTACK = "创建云主机快照";
 	//删除云主机
 	public static final String DELETE_OPENSTACK = "删除云主机";
+	//云主机绑定公网IP
+	public static final String BINDED_FLOATINGIP_OPENSTACK = "云主机绑定公网IP";
+	//云主机解绑公网IP
+	public static final String UNBINDED_FLOATINGIP_OPENSTACK = "云主机解绑公网IP";
+	
 	//创建云硬盘
-	public static final String CREATE_OPENSTACK_VOLUME = "创建云硬盘";
+	public static final String CREATE_VOLUME = "创建云硬盘";
+	//删除云硬盘
+	public static final String DELETE_VOLUME = "删除云硬盘";
+	//创建快照
+	public static final String SNAPSHOT_CREATE_VOLUME = "创建云硬盘快照";
+	
 	//创建公网IP
-	public static final String CREATE_OPENSTACK_FLOATINGIP = "创建公网IP";
+	public static final String CREATE_FLOATINGIP = "创建公网IP";
+	//删除公网IP
+	public static final String DELETE_FLOATINGIP = "删除公网IP";
+	//编辑公网IP
+	public static final String EDIT_FLOATINGIP = "编辑公网IP";
+	
+	
 	//创建路由器
-	public static final String CREATE_OPENSTACK_ROUTER = "创建路由器";
+	public static final String CREATE_ROUTER = "创建路由器";
+	//删除路由器
+	public static final String DELETE_ROUTER = "删除路由器";
+	public static final String BINDED_FLOATINGIP_ROUTER = "路由器绑定公网IP";
+	public static final String UNBINDED_FLOATINGIP_ROUTER = "路由器解绑公网IP";
+	public static final String BINDED_SUBNET_ROUTER = "路由器关联子网";
+	public static final String UNBINDED_SUBNET_ROUTER = "路由器解除关联子网";
+	public static final String EDIT_ROUTER = "编辑路由器";
+	
+	public static final String CREATE_PRIVATE_NET = "创建私网";
+	public static final String EDIT_PRIVATE_NET = "编辑私网";
+	public static final String DELETE_PRIVATE_NET = "删除私网";
+	public static final String CREATE_SUBNET = "创建子网";
+	public static final String EDIT_SUBNET = "编辑子网";
+	public static final String DELETE_SUBNET = "删除子网";
 
 }
