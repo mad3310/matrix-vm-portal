@@ -1,9 +1,12 @@
 package com.letv.portal.service.openstack.local.resource;
 
+import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,9 +15,16 @@ import java.util.Set;
 public class LocalVolumeResource implements VolumeResource {
 
     private CloudvmVolume cloudvmVolume;
+    private Set<VolumeAttachmentResource> attachments;
 
     public LocalVolumeResource(CloudvmVolume cloudvmVolume) {
         this.cloudvmVolume = cloudvmVolume;
+        CloudvmServer server = cloudvmVolume.getServer();
+        String serverId = cloudvmVolume.getServerId();
+        if (serverId != null && server != null && server.getName() != null) {
+            attachments = new HashSet<VolumeAttachmentResource>();
+            attachments.add(new LocalVolumeAttachmentResource(serverId, server.getName()));
+        }
     }
 
     @Override
@@ -64,7 +74,7 @@ public class LocalVolumeResource implements VolumeResource {
 
     @Override
     public Set<VolumeAttachmentResource> getAttachments() {
-        return null;
+        return attachments;
     }
 
     @Override
