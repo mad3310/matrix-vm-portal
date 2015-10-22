@@ -447,7 +447,7 @@ public class PayServiceImpl implements IPayService {
 			}
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
-		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_ROUTER, content, this.sessionService.getSession().getUserId(), null);;
+		this.recentOperateService.saveInfo(Constant.CREATE_ROUTER, content, this.sessionService.getSession().getUserId(), null);;
 		logger.info("调用创建路由器成功!");
 	}
 	
@@ -477,7 +477,7 @@ public class PayServiceImpl implements IPayService {
 			
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
-		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_FLOATINGIP, content, this.sessionService.getSession().getUserId(), null);;
+		this.recentOperateService.saveInfo(Constant.CREATE_FLOATINGIP, content, this.sessionService.getSession().getUserId(), null);;
 		logger.info("调用创建公网IP成功!");
 	}
 
@@ -506,7 +506,7 @@ public class PayServiceImpl implements IPayService {
 			
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
-		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_VOLUME, content, this.sessionService.getSession().getUserId(), null);;
+		this.recentOperateService.saveInfo(Constant.CREATE_VOLUME, content, this.sessionService.getSession().getUserId(), null);;
 		logger.info("调用创建云硬盘成功!");
 	}
 	

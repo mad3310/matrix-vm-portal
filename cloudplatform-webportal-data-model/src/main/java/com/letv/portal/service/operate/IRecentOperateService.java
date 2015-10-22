@@ -20,6 +20,7 @@ public interface IRecentOperateService extends IBaseService<RecentOperate>  {
 	  * @date 2015年10月10日 下午3:44:44
 	  */
 	void saveInfo(String action, String content, Long userId, String descn);
+	void saveInfo(String action, String content);
 	/**
 	  * @Title: selectRecentOperate
 	  * @Description: 获取最新一个月内记录

@@ -1,7 +1,5 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
-import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
+import com.letv.portal.service.openstack.resource.manager.NetworkManager;
+import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
+import com.letv.portal.service.operate.IRecentOperateService;
 
 @Controller
 @RequestMapping("/osn")
@@ -21,6 +24,8 @@ public class NetworkController {
 
 	@Autowired
 	private SessionServiceImpl sessionService;
+	@Autowired
+	private IRecentOperateService recentOperateService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -107,6 +112,8 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.createPrivate(region, name);
+			//保存创建私网操作
+			this.recentOperateService.saveInfo(Constant.CREATE_PRIVATE_NET, name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -121,8 +128,11 @@ public class NetworkController {
 			@RequestParam String networkId, @RequestParam String name) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.editPrivate(region, networkId, name);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String oldName = neworkManager.getPrivate(region, networkId).getName();
+			neworkManager.editPrivate(region, networkId, name);
+			//保存编辑私网操作
+			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName+"=="+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -137,8 +147,10 @@ public class NetworkController {
 			@RequestParam String region, @RequestParam String networkId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.deletePrivate(region, networkId);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			neworkManager.deletePrivate(region, networkId);
+			//保存删除私网操作
+			this.recentOperateService.saveInfo(Constant.DELETE_PRIVATE_NET, neworkManager.getPrivate(region, networkId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -178,6 +190,8 @@ public class NetworkController {
 					.getNetworkManager()
 					.createPrivateSubnet(region, networkId, name, cidr,
 							autoGatewayIp, gatewayIp, false);
+			//保存创建私网操作
+			this.recentOperateService.saveInfo(Constant.CREATE_SUBNET, name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -206,9 +220,11 @@ public class NetworkController {
 			@RequestParam String name, @RequestParam String gatewayIp) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService)
-					.getNetworkManager()
-					.editPrivateSubnet(region, subnetId, name, gatewayIp, false);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String oldName = neworkManager.getPrivateSubnet(region, subnetId).getName();
+			neworkManager.editPrivateSubnet(region, subnetId, name, gatewayIp, false);
+			//保存编辑私网操作
+			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, oldName+"=="+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -223,8 +239,10 @@ public class NetworkController {
 			@RequestParam String region, @RequestParam String subnetId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.deletePrivateSubnet(region, subnetId);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			neworkManager.deletePrivateSubnet(region, subnetId);
+			//保存删除私网操作
+			this.recentOperateService.saveInfo(Constant.DELETE_SUBNET, neworkManager.getPrivateSubnet(region, subnetId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -278,6 +296,8 @@ public class NetworkController {
 			Util.session(sessionService)
 					.getNetworkManager()
 					.createRouter(routerCreateConf);
+			//保存创建路由操作
+			this.recentOperateService.saveInfo(Constant.CREATE_ROUTER, name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -292,8 +312,10 @@ public class NetworkController {
 			@RequestParam String routerId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.deleteRouter(region, routerId);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			neworkManager.deleteRouter(region, routerId);
+			//保存删除路由操作
+			this.recentOperateService.saveInfo(Constant.DELETE_ROUTER, neworkManager.getRouter(region, routerId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -310,10 +332,12 @@ public class NetworkController {
 			@RequestParam String publicNetworkId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService)
-					.getNetworkManager()
-					.editRouter(region, routerId, name,
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String oldName= neworkManager.getRouter(region, routerId).getName();
+			neworkManager.editRouter(region, routerId, name,
 							enablePublicNetworkGateway, publicNetworkId);
+			//保存编辑路由操作
+			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, oldName+"=="+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -355,8 +379,10 @@ public class NetworkController {
 			@RequestParam String subnetId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.associateSubnetWithRouter(region, routerId, subnetId);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			neworkManager.associateSubnetWithRouter(region, routerId, subnetId);
+			//保存路由器关联子网操作
+			this.recentOperateService.saveInfo(Constant.BINDED_SUBNET_ROUTER, neworkManager.getPrivateSubnet(region, subnetId).getName()+"=="+neworkManager.getRouter(region, routerId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -372,8 +398,10 @@ public class NetworkController {
 			@RequestParam String subnetId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.separateSubnetFromRouter(region, routerId, subnetId);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			neworkManager.separateSubnetFromRouter(region, routerId, subnetId);
+			//保存路由器解除关联子网操作
+			this.recentOperateService.saveInfo(Constant.UNBINDED_SUBNET_ROUTER, neworkManager.getPrivateSubnet(region, subnetId).getName()+"=="+neworkManager.getRouter(region, routerId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -401,8 +429,10 @@ public class NetworkController {
 			@RequestParam String region, @RequestParam String floatingIpId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.deleteFloaingIp(region, floatingIpId);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			neworkManager.deleteFloaingIp(region, floatingIpId);
+			//保存删除公网IP操作
+			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, neworkManager.getPrivateSubnet(region, floatingIpId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -438,8 +468,10 @@ public class NetworkController {
 			floatingIpCreateConf.setPublicNetworkId(publicNetworkId);
 			floatingIpCreateConf.setBandWidth(bandWidth);
 			floatingIpCreateConf.setCount(count);
-			Util.session(sessionService).getNetworkManager()
-					.createFloatingIp(floatingIpCreateConf);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			neworkManager.createFloatingIp(floatingIpCreateConf);
+			//保存创建公网IP操作
+			this.recentOperateService.saveInfo(Constant.CREATE_FLOATINGIP, name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -472,8 +504,11 @@ public class NetworkController {
 			@RequestParam Integer bandWidth) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.editFloatingIp(region, floatingIpId, name, bandWidth);
+			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String oldName = neworkManager.getFloatingIp(region, floatingIpId).getName();
+			neworkManager.editFloatingIp(region, floatingIpId, name, bandWidth);
+			//保存编辑公网IP操作
+			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName+"=="+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

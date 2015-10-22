@@ -8,9 +8,9 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
-
 import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.util.Params;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +27,7 @@ import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.operate.IRecentOperateService;
 
@@ -354,8 +355,11 @@ public class VMController {
 			OpenStackSession openStackSession = Util.session(sessionService);
 			VMManager vmManager = openStackSession.getVMManager();
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
-			vmManager.attachVolume(vmManager.get(region, vmId),
-					volumeManager.get(region, volumeId));
+			VMResource vmResource = vmManager.get(region, vmId);
+			VolumeResource volumeResource = volumeManager.get(region, volumeId);
+			vmManager.attachVolume(vmResource, volumeResource);
+			//保存绑定云硬盘操作
+			this.recentOperateService.saveInfo(Constant.ATTACH_VOLUME_OPENSTACK, volumeResource.getName()+"=="+vmResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -415,8 +419,11 @@ public class VMController {
 			@RequestParam String floatingIpId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getVMManager()
-					.bindFloatingIp(region, vmId, floatingIpId);
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			vmManager.bindFloatingIp(region, vmId, floatingIpId);
+			//保存云主机绑定公网IP操作
+			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK, Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName()
+					+"=="+vmManager.get(region, vmId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -432,8 +439,11 @@ public class VMController {
 			@RequestParam String floatingIpId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getVMManager()
-					.unbindFloatingIp(region, vmId, floatingIpId);
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			vmManager.unbindFloatingIp(region, vmId, floatingIpId);
+			//保存云主机解绑公网IP操作
+			this.recentOperateService.saveInfo(Constant.UNBINDED_FLOATINGIP_OPENSTACK, Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName()
+					+"=="+vmManager.get(region, vmId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -488,8 +498,10 @@ public class VMController {
 			createConf.setRegion(region);
 			createConf.setVmId(vmId);
 			createConf.setName(name);
-			Util.session(sessionService).getVMManager()
-					.createImageFromVm(createConf);
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			vmManager.createImageFromVm(createConf);
+			//保存创建快照操作
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK, name+"=="+vmManager.get(region, vmId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
