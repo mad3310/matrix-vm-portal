@@ -132,7 +132,7 @@ public class NetworkController {
 			String oldName = neworkManager.getPrivate(region, networkId).getName();
 			neworkManager.editPrivate(region, networkId, name);
 			//保存编辑私网操作
-			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName+"=="+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName+"=-"+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -224,7 +224,7 @@ public class NetworkController {
 			String oldName = neworkManager.getPrivateSubnet(region, subnetId).getName();
 			neworkManager.editPrivateSubnet(region, subnetId, name, gatewayIp, false);
 			//保存编辑私网操作
-			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, oldName+"=="+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, oldName+"=-"+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -337,7 +337,7 @@ public class NetworkController {
 			neworkManager.editRouter(region, routerId, name,
 							enablePublicNetworkGateway, publicNetworkId);
 			//保存编辑路由操作
-			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, oldName+"=="+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, oldName+"=-"+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -508,7 +508,7 @@ public class NetworkController {
 			String oldName = neworkManager.getFloatingIp(region, floatingIpId).getName();
 			neworkManager.editFloatingIp(region, floatingIpId, name, bandWidth);
 			//保存编辑公网IP操作
-			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName+"=="+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName+"=-"+name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
