@@ -56,7 +56,13 @@ define(['app'],function (app) {
           config: {
             templateUrl: '/static/apps/cloudvm/views/vm-snapshot.html'
           }
-        }];
+        },{
+            url: '/vm-image',
+            title: '镜像',
+            config: {
+              templateUrl: '/static/apps/cloudvm/views/vm-image.html'
+            }
+          }];
     };
 
   app.constant('routes', getRoutes());

@@ -20,7 +20,8 @@ define([
         'controllers/VmRouterEditModalCtrl',
         'controllers/RouterAssociateSubnetModalCtrl',
         'controllers/VmIPcreateModalCtrl',
-        'controllers/VmSnapshotCrtl'
+        'controllers/VmSnapshotCrtl',
+        'controllers/VmImageCrtl'
   ],
   function (controllerModule) {
 

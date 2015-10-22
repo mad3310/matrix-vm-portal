@@ -311,17 +311,20 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     $scope.editDisk = function () {
       var data = {
-        vmId:$scope.selectedVm.value,
-        volumeId:disk.id
+        region:region,
+        volumeId:disk.id,
+        name:$scope.diskName,
+        description:''
       };
-      disk.status='attaching';
-      HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
+      $scope.isFormSubmiting=true;
+      HttpService.doPost(Config.urls.disk_edit, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云硬盘挂载成功');
+          WidgetService.notifySuccess('云硬盘编辑成功');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+          WidgetService.notifyError(data.msgs[0]||'云硬盘编辑失败');
+          $scope.isFormSubmiting=false;
         }
       });
     };
