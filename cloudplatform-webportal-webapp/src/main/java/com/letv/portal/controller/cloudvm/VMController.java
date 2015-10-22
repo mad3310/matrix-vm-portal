@@ -478,7 +478,7 @@ public class VMController {
 		return result;
 	}
 
-	@RequestMapping(value = "/vm/snapshot/create", method = RequestMethod.GET)
+	@RequestMapping(value = "/vm/snapshot/create", method = RequestMethod.POST)
 	public
 	@ResponseBody
 	ResultObject createVmSnapshot(@RequestParam String region, @RequestParam String vmId, @RequestParam String name) {
@@ -499,7 +499,7 @@ public class VMController {
 		return result;
 	}
 
-	@RequestMapping(value = "/vm/snapshot/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/vm/snapshot/delete", method = RequestMethod.POST)
 	public
 	@ResponseBody
 	ResultObject deleteVmSnapshot(@RequestParam String region, @RequestParam String vmSnapshotId) {
