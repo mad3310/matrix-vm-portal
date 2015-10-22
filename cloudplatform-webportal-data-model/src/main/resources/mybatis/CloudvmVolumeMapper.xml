@@ -21,12 +21,16 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+
+		<association property="server" javaType="CloudvmServer">
+			<result column="SERVER_NAME" property="name" />
+		</association>
 	</resultMap>
 
 	<!-- WEBPORTAL_CLOUDVM_VOLUME table all fields -->
 	<sql id="Base_Column_List">
 		v.ID,v.REGION,v.VOLUME_ID,v.STATUS,v.SIZE,v.VOLUME_TYPE,
-		v.SNAPSHOT_ID,v.NAME,v.DESCRIPTION,v.SERVER_ID,v.TENANT_ID,
+		v.SNAPSHOT_ID,v.NAME,v.DESCRIPTION,v.SERVER_ID,v.TENANT_ID,server.NAME as SERVER_NAME,
 		v.DELETED,v.CREATE_TIME,v.CREATE_USER,v.UPDATE_TIME,v.UPDATE_USER
 	</sql>
 
@@ -111,6 +115,8 @@
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CLOUDVM_VOLUME v
+		left join WEBPORTAL_CLOUDVM_SERVER server
+		on v.SERVER_ID = server.SERVER_ID and v.REGION = server.REGION
 		<include refid="Example_Where_Clause" />
 		ORDER BY v.CREATE_TIME DESC
 		<if test="page != null">
@@ -141,6 +147,8 @@
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CLOUDVM_VOLUME v
+		left join WEBPORTAL_CLOUDVM_SERVER server
+		on v.SERVER_ID = server.SERVER_ID and v.REGION = server.REGION
 		where  v.ID = #{id};
 	</select>
 

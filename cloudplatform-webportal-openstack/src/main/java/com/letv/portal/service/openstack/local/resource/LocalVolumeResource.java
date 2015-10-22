@@ -24,7 +24,7 @@ public class LocalVolumeResource implements VolumeResource {
 
     @Override
     public String getStatus() {
-        return cloudvmVolume.getStatus().toString();
+        return cloudvmVolume.getStatus().toString().toLowerCase();
     }
 
     @Override
