@@ -61,7 +61,8 @@ define(['./common.service'], function (serviceModule) {
       snapshot_vm_delete:'/ecs/vm/snapshot/delete'
     };
     config.REGEX= {
-      NAME: /^[a-zA-Z\u4e00-\u9fa5][^\s"@\/:=<>{\[\]}]{1,127}$/
+      NAME: /^[a-zA-Z\u4e00-\u9fa5][^\s"@\/:=<>{\[\]}]{1,127}$/,
+      PASSWORD: /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*)[a-zA-Z0-9]{8,30}$/,
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},

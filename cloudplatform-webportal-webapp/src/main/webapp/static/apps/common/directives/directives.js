@@ -55,6 +55,20 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
+    directiveModule.directive('passwordRestrict', function(Config) {
+        return {
+            require: 'ngModel',
+            link: function(scope, elm, attrs, ctrl) {
+                ctrl.$validators.passwordRestrict = function(modelValue, viewValue) {
+                    if (viewValue && Config.REGEX.PASSWORD.test(viewValue)) {
+                        return true;
+                    }
+                    return false;
+                };
+            }
+        };
+    });
+
     directiveModule.directive('numericInput', function () {
         return {
             restrict: 'AE',
