@@ -83,7 +83,7 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
     }
 
     @Override
-    public void create(long userId, long tenantId, String region, Volume volume) {
+    public CloudvmVolume create(long userId, long tenantId, String region, Volume volume) {
         CloudvmVolume cloudvmVolume = new CloudvmVolume();
         cloudvmVolume.setCreateUser(userId);
         cloudvmVolume.setTenantId(tenantId);
@@ -95,6 +95,7 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         cloudvmVolume.setDescription(volume.getDescription());
         copyProperties(volume, cloudvmVolume);
         cloudvmVolumeService.insert(cloudvmVolume);
+        return cloudvmVolume;
     }
 
     @Override

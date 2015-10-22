@@ -49,6 +49,11 @@ public class Util {
 		OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(ex, "计费系统", null, "");
 	}
 
+	public static void logAndEmail(Exception e){
+		logger.error(e.getMessage(), e);
+		OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(e, "", null, "");
+	}
+
 	public static String generateRandomSessionId(){
 		return UUID.randomUUID().toString();
 	}

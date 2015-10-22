@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
@@ -618,7 +619,17 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 		for (int i = 0; i < count; i++) {
 			Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
-			OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService().create(openStackUser.getUserVoUserId(),openStackUser.getUserVoUserId(),volumeCreateConf.getRegion(),volume);
+			CloudvmVolume cloudvmVolume = OpenStackServiceImpl.getOpenStackServiceGroup()
+					.getLocalVolumeService()
+					.create
+							(openStackUser.getUserVoUserId(), openStackUser.getUserVoUserId(), volumeCreateConf.getRegion(), volume);
+			OpenStackServiceImpl.getOpenStackServiceGroup().getVolumeSyncService().syncStatus
+					(cloudvmVolume, new Checker<Volume>() {
+						@Override
+						public boolean check(Volume volume) throws Exception {
+							return volume.getStatus() != Status.CREATING;
+						}
+					});
 			if (successCreatedVolumes != null) {
 				successCreatedVolumes.add(volume);
 			}

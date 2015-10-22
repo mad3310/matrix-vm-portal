@@ -26,17 +26,17 @@ public class LocalVmResource implements VMResource {
 
     @Override
     public String getAccessIPv4() {
-        return cloudvmServer.getAccessIpv4();
+        return null;
     }
 
     @Override
     public String getAccessIPv6() {
-        return cloudvmServer.getAccessIpv6();
+        return null;
     }
 
     @Override
     public String getStatus() {
-        return cloudvmServer.getStatus();
+        return cloudvmServer.getStatus().name();
     }
 
     @Override
@@ -71,17 +71,17 @@ public class LocalVmResource implements VMResource {
 
     @Override
     public String getAvailabilityZone() {
-        return cloudvmServer.getAvailabilityZone();
+        return null;
     }
 
     @Override
     public String getConfigDrive() {
-        return cloudvmServer.getConfigDrive();
+        return null;
     }
 
     @Override
     public Long getCreated() {
-        Date date = cloudvmServer.getCreated();
+        Date date = cloudvmServer.getCreateTime();
         if (date != null) {
             return date.getTime();
         } else {
@@ -91,7 +91,7 @@ public class LocalVmResource implements VMResource {
 
     @Override
     public Long getUpdated() {
-        Date date = cloudvmServer.getUpdated();
+        Date date = cloudvmServer.getUpdateTime();
         if (date != null) {
             return date.getTime();
         } else {
@@ -101,17 +101,17 @@ public class LocalVmResource implements VMResource {
 
     @Override
     public String getDiskConfig() {
-        return cloudvmServer.getDiskConfig();
+        return null;
     }
 
     @Override
     public String getHostId() {
-        return cloudvmServer.getHostId();
+        return null;
     }
 
     @Override
     public String getKeyName() {
-        return cloudvmServer.getKeyName();
+        return null;
     }
 
     @Override

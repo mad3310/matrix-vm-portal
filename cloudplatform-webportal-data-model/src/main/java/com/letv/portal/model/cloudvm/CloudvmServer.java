@@ -9,232 +9,135 @@ import java.util.Date;
  */
 public class CloudvmServer extends BaseModel {
 
-	private static final long serialVersionUID = 441262241566576508L;
+    private static final long serialVersionUID = 441262241566576508L;
 
-	private String region;
-	private String serverId;
-	private String flavorId;
-	private String name;
-	private String serverUuid;
-	private String tenantId;
-	private String userId;
-	private Date updated;
-	private Date created;
-	private String hostId;
-	private String accessIpv4;
-	private String accessIpv6;
-	private String status;
-	private String imageId;
-	private String keyName;
-	private String configDrive;
-	private String extendedStatusTaskState;
-	private String extendedStatusVmState;
-	private Integer extendedPowerState;
-	private String extendedAttributesInstanceName;
-	private String extendedAttributesHostName;
-	private String extendedAttributesHypervisorHostName;
-	private String diskConfig;
-	private String availabilityZone;
+    private String region;
+    private String serverId;
+    private String flavorId;
+    private String name;
+    private Long tenantId;
+    private CloudvmServerStatus status;
+    private String imageId;
+    private String extendedStatusTaskState;
+    private String extendedStatusVmState;
+    private Integer extendedPowerState;
+    private String publicIp;
+    private String privateIp;
+    private String subnetId;
+    private String networkId;
 
-	public CloudvmServer() {
-	}
+    public CloudvmServer() {
+    }
 
-	public CloudvmServer(String region, String serverId, String flavorId) {
-		this();
-		this.region = region;
-		this.serverId = serverId;
-		this.flavorId = flavorId;
-	}
+    public String getRegion() {
+        return region;
+    }
 
-	public String getServerId() {
-		return serverId;
-	}
+    public void setRegion(String region) {
+        this.region = region;
+    }
 
-	public void setServerId(String serverId) {
-		this.serverId = serverId;
-	}
+    public String getServerId() {
+        return serverId;
+    }
 
-	public String getFlavorId() {
-		return flavorId;
-	}
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
+    }
 
-	public void setFlavorId(String flavorId) {
-		this.flavorId = flavorId;
-	}
+    public String getFlavorId() {
+        return flavorId;
+    }
 
-	public String getRegion() {
-		return region;
-	}
+    public void setFlavorId(String flavorId) {
+        this.flavorId = flavorId;
+    }
 
-	public void setRegion(String region) {
-		this.region = region;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Long getTenantId() {
+        return tenantId;
+    }
 
-	public String getServerUuid() {
-		return serverUuid;
-	}
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+    }
 
-	public void setServerUuid(String serverUuid) {
-		this.serverUuid = serverUuid;
-	}
+    public CloudvmServerStatus getStatus() {
+        return status;
+    }
 
-	public String getTenantId() {
-		return tenantId;
-	}
+    public void setStatus(CloudvmServerStatus status) {
+        this.status = status;
+    }
 
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
-	}
+    public String getImageId() {
+        return imageId;
+    }
 
-	public String getUserId() {
-		return userId;
-	}
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getExtendedStatusTaskState() {
+        return extendedStatusTaskState;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public void setExtendedStatusTaskState(String extendedStatusTaskState) {
+        this.extendedStatusTaskState = extendedStatusTaskState;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
+    public String getExtendedStatusVmState() {
+        return extendedStatusVmState;
+    }
 
-	public String getHostId() {
-		return hostId;
-	}
+    public void setExtendedStatusVmState(String extendedStatusVmState) {
+        this.extendedStatusVmState = extendedStatusVmState;
+    }
 
-	public void setHostId(String hostId) {
-		this.hostId = hostId;
-	}
+    public Integer getExtendedPowerState() {
+        return extendedPowerState;
+    }
 
-	public Date getCreated() {
-		return created;
-	}
+    public void setExtendedPowerState(Integer extendedPowerState) {
+        this.extendedPowerState = extendedPowerState;
+    }
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    public String getPublicIp() {
+        return publicIp;
+    }
 
-	public String getAccessIpv4() {
-		return accessIpv4;
-	}
+    public void setPublicIp(String publicIp) {
+        this.publicIp = publicIp;
+    }
 
-	public void setAccessIpv4(String accessIpv4) {
-		this.accessIpv4 = accessIpv4;
-	}
+    public String getPrivateIp() {
+        return privateIp;
+    }
 
-	public String getAccessIpv6() {
-		return accessIpv6;
-	}
+    public void setPrivateIp(String privateIp) {
+        this.privateIp = privateIp;
+    }
 
-	public void setAccessIpv6(String accessIpv6) {
-		this.accessIpv6 = accessIpv6;
-	}
+    public String getSubnetId() {
+        return subnetId;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setSubnetId(String subnetId) {
+        this.subnetId = subnetId;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getNetworkId() {
+        return networkId;
+    }
 
-	public String getKeyName() {
-		return keyName;
-	}
-
-	public void setKeyName(String keyName) {
-		this.keyName = keyName;
-	}
-
-	public String getImageId() {
-		return imageId;
-	}
-
-	public void setImageId(String imageId) {
-		this.imageId = imageId;
-	}
-
-	public String getConfigDrive() {
-		return configDrive;
-	}
-
-	public void setConfigDrive(String configDrive) {
-		this.configDrive = configDrive;
-	}
-
-	public String getExtendedStatusTaskState() {
-		return extendedStatusTaskState;
-	}
-
-	public void setExtendedStatusTaskState(String extendedStatusTaskState) {
-		this.extendedStatusTaskState = extendedStatusTaskState;
-	}
-
-	public String getExtendedStatusVmState() {
-		return extendedStatusVmState;
-	}
-
-	public void setExtendedStatusVmState(String extendedStatusVmState) {
-		this.extendedStatusVmState = extendedStatusVmState;
-	}
-
-	public Integer getExtendedPowerState() {
-		return extendedPowerState;
-	}
-
-	public void setExtendedPowerState(Integer extendedPowerState) {
-		this.extendedPowerState = extendedPowerState;
-	}
-
-	public String getExtendedAttributesInstanceName() {
-		return extendedAttributesInstanceName;
-	}
-
-	public void setExtendedAttributesInstanceName(String extendedAttributesInstanceName) {
-		this.extendedAttributesInstanceName = extendedAttributesInstanceName;
-	}
-
-	public String getExtendedAttributesHostName() {
-		return extendedAttributesHostName;
-	}
-
-	public void setExtendedAttributesHostName(String extendedAttributesHostName) {
-		this.extendedAttributesHostName = extendedAttributesHostName;
-	}
-
-	public String getExtendedAttributesHypervisorHostName() {
-		return extendedAttributesHypervisorHostName;
-	}
-
-	public void setExtendedAttributesHypervisorHostName(String extendedAttributesHypervisorHostName) {
-		this.extendedAttributesHypervisorHostName = extendedAttributesHypervisorHostName;
-	}
-
-	public String getDiskConfig() {
-		return diskConfig;
-	}
-
-	public void setDiskConfig(String diskConfig) {
-		this.diskConfig = diskConfig;
-	}
-
-	public String getAvailabilityZone() {
-		return availabilityZone;
-	}
-
-	public void setAvailabilityZone(String availabilityZone) {
-		this.availabilityZone = availabilityZone;
-	}
+    public void setNetworkId(String networkId) {
+        this.networkId = networkId;
+    }
 }
