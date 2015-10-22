@@ -17,6 +17,7 @@ import com.letv.portal.service.openstack.resource.Region;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -28,7 +29,9 @@ import java.util.List;
 @Service
 public class LocalVolumeServiceImpl implements LocalVolumeService {
 
+    @Autowired
     private ICloudvmVolumeService cloudvmVolumeService;
+    @Autowired
     private LocalRegionService localRegionService;
 
     @Override
