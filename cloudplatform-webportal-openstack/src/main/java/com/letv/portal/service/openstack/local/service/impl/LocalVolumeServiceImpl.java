@@ -91,6 +91,8 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         cloudvmVolume.setVolumeType(CloudvmVolumeType.valueOf(volume.getVolumeType()));
         cloudvmVolume.setSnapshotId(cloudvmVolume.getSnapshotId());
         cloudvmVolume.setVolumeId(volume.getId());
+        cloudvmVolume.setName(volume.getName());
+        cloudvmVolume.setDescription(volume.getDescription());
         copyProperties(volume, cloudvmVolume);
         cloudvmVolumeService.insert(cloudvmVolume);
     }
