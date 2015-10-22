@@ -9,6 +9,7 @@ import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.SchedulingTaskExecutor;
@@ -111,6 +112,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private IUserService userService;
 
+	@Autowired
+	private LocalVolumeService localVolumeService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -153,12 +157,14 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setVmSyncService(vmSyncService);
 		openStackServiceGroup.setApiService(apiService);
 		openStackServiceGroup.setUserService(userService);
+		openStackServiceGroup.setLocalVolumeService(localVolumeService);
 	}
 
 	@Override
-	public OpenStackSession createSession(String userId, String email,
+	public OpenStackSession createSession(long userVoUserId, String userId, String email,
 			String userName) throws OpenStackException {
 		OpenStackUser openStackUser = new OpenStackUser();
+		openStackUser.setUserVoUserId(userVoUserId);
 		openStackUser.setUserId(userId);
 		openStackUser.setEmail(email);
 		openStackUser.setUserName(userName);

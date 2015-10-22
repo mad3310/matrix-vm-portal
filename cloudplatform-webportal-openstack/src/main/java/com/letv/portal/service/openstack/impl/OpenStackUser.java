@@ -8,6 +8,7 @@ public class OpenStackUser implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -5937930998427002260L;
+	private long userVoUserId;
 	private String userId;
 	private String password;
 	private String email;
@@ -21,6 +22,14 @@ public class OpenStackUser implements Serializable{
 	private String sharedNetworkName;
 	
 	public OpenStackUser(){
+	}
+
+	public long getUserVoUserId() {
+		return userVoUserId;
+	}
+
+	public void setUserVoUserId(long userVoUserId) {
+		this.userVoUserId = userVoUserId;
 	}
 
 	public String getUserId() {

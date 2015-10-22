@@ -6,6 +6,7 @@ import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.springframework.scheduling.SchedulingTaskExecutor;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -28,6 +29,7 @@ public class OpenStackServiceGroup {
 	private VmSyncService vmSyncService;
 	private ApiService apiService;
 	private IUserService userService;
+	private LocalVolumeService localVolumeService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -126,5 +128,13 @@ public class OpenStackServiceGroup {
 
 	public VmSyncService getVmSyncService() {
 		return vmSyncService;
+	}
+
+	public void setLocalVolumeService(LocalVolumeService localVolumeService) {
+		this.localVolumeService = localVolumeService;
+	}
+
+	public LocalVolumeService getLocalVolumeService() {
+		return localVolumeService;
 	}
 }

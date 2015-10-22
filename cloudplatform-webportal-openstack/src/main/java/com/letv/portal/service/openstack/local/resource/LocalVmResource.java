@@ -1,4 +1,4 @@
-package com.letv.portal.service.openstack.local.query.resource;
+package com.letv.portal.service.openstack.local.resource;
 
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.service.openstack.resource.*;

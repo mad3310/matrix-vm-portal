@@ -7,7 +7,7 @@ import java.util.Map;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.local.query.service.VmQueryService;
+import com.letv.portal.service.openstack.local.service.LocalVmService;
 
 import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.util.Params;
@@ -41,7 +41,7 @@ public class VMController {
 	private IRecentOperateService recentOperateService;
 
 	@Autowired
-	private VmQueryService vmQueryService;
+	private LocalVmService vmQueryService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {

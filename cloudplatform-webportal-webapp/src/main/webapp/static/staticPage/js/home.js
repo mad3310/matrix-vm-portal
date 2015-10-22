@@ -146,6 +146,48 @@ function carousels(){
 }
 // products:scroll-nav
 function scrollNav(sheight){
+	// var scrollh=document.body.scrollHeight;
+	var scrollh=$(document).height();
+	$(window).scroll(function(){  
+        var vtop=$(this).scrollTop();
+        var height=$(this).height();
+        var _target=$('.tab-fixed')
+        if(vtop>=sheight){
+        	$('.tab-layout').addClass('hide');
+        	var _tabClone=$('.tab-layout').children().clone();
+        	if(_target.children().length>0){
+        	}else{
+        		_target.append(_tabClone)
+        	}
+        	_target.removeClass('hide');
+        	var tempH=vtop+height;
+        	console.log(tempH+"   "+height+"   "+scrollh)
+        	if(tempH>=scrollh){//到底部
+        		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
+        	}else{
+        		if(vtop>=2077){
+					_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
+	        	}else if(vtop>=1097){
+	        		_target.children().children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
+	        	}else{
+	        		_target.children().children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
+	        	}
+
+        	}
+        }else{
+        	var _tabClone='';
+			if(_target.children().length>0){
+				_tabClone=_target.children().clone();
+				$('.tab-layout').html(_tabClone);
+			}
+        	$('.tab-layout').removeClass('hide');
+        	_target.addClass('hide');
+        	_target.children().remove();
+        }
+	});
+}
+// helpcenter:scroll-nav
+function helpScrollNav(sheight){
 	var scrollh=document.body.scrollHeight;
 	// var scrollh=$(document).height();
 	$(window).scroll(function(){  
@@ -164,12 +206,19 @@ function scrollNav(sheight){
         	if(tempH>=scrollh){//到底部
         		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
         	}else{
-        		if(vtop>=2077){
-					_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
-	        	}else if(vtop>=1097){
-	        		_target.children().children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
+        		console.log(vtop)
+        		if(vtop>=1534){
+        			_target.children('div:eq(5)').addClass('active-item').siblings().removeClass('active-item');
+        		}else if(vtop>=1386){
+					_target.children('div:eq(4)').addClass('active-item').siblings().removeClass('active-item');
+	        	}else if(vtop>=1010){
+	        		_target.children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
+	        	}else if(vtop>=802){
+	        		_target.children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
+	        	}else if(vtop>=594){
+	        		_target.children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
 	        	}else{
-	        		_target.children().children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
+	        		_target.children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
 	        	}
 
         	}
@@ -291,9 +340,8 @@ function browserInfo(){
 	var regStr_ff = /firefox\/[\d.]+/gi
 	var regStr_chrome = /chrome\/[\d.]+/gi ;
 	var regStr_saf = /safari\/[\d.]+/gi ;
-	//IE
-	if(bagent.indexOf("msie") > 0){
-		return bagent.match(regStr_ie) ;
+	if(bagent.indexOf("msie") > 0||bagent.search(/Trident/i)> 0){//IE11以下
+		return bagent.match(regStr_ie);
 	}
 	//firefox
 	if(bagent.indexOf("firefox") > 0){
@@ -310,10 +358,9 @@ function browserInfo(){
 }
 // common:监测浏览器版本
 function browerversion(){
-	console.log(browserInfo())
 	var _browser = browserInfo().toString().toLowerCase();
-	var verinfo = (_browser+"").replace(/[^0-9.]/ig,"");    	 
-	if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){
+	var verinfo = (_browser+"").replace(/[^0-9.]/ig,""); 
+	if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){//判断ie11以下的浏览器
 	  window.location.replace="/browserError";
 	}else if(_browser.indexOf("firefox") >=0 && verinfo < 5.0){
 	  window.location.replace="/browserError";
@@ -326,9 +373,28 @@ function browerversion(){
 // help:帮助中心初始化事件
 function helpInite(){
 	var minheight=document.documentElement.clientHeight-275;
-	$('.help-center').css('min-height',minheight);
+	$('.helpcenter-center').css('min-height',minheight);
 	// 菜单事件
-
+	$('.menu-parent').unbind('click').click(function(event) {
+		if($(this).hasClass('open')){
+			$(this).removeClass('open').children('i').css({
+				transform: 'rotate(180deg)',
+				transition: 'transform .3s ease-in'
+			});
+		}else{
+			$(this).addClass('open').children('i').css({
+				transform: 'rotate(0deg)',
+				transition: 'transform .3s ease-in'
+			});
+		}
+		var submenu=$(this).attr('self-menulink');
+		var _subtarget=$('.menu-sub.'+submenu);
+		if(_subtarget.is(':visible')){
+			_subtarget.addClass('hide')
+		}else{
+			_subtarget.removeClass('hide')
+		}
+	});
 	//子菜单点击
 	$('.menu-sub').unbind('click').click(function(event) {
 		var _target=$(event.target||event.srcElement).closest('li');
@@ -338,6 +404,6 @@ function helpInite(){
 			_target.addClass('active').siblings().removeClass('active')
 		}
 		var _targetPage=_target.attr('self-menu-detailPage');
-		$('.help-center').load(_targetPage+'.html');
+		$('.helpcenter-center').load(_targetPage+'.html');
 	});	
 }

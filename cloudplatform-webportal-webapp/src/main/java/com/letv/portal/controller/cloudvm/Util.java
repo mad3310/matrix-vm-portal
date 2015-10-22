@@ -18,4 +18,8 @@ public class Util {
 		}
 		return para;
 	}
+
+	public static long userId(SessionServiceImpl sessionService){
+		return sessionService.getSession().getUserId();
+	}
 }

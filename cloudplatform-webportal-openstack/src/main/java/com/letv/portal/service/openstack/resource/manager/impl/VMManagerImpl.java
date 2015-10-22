@@ -15,6 +15,8 @@ import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
@@ -1385,6 +1387,12 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                             }
                         });
 
+                LocalVolumeService localVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService();
+                Long userVoUserId = openStackUser.getUserVoUserId();
+                String region = volumeResource.getRegion();
+                Volume volume = ((VolumeResourceImpl) volumeManager.get(region, volumeResource.getId())).volume;
+                localVolumeService.update(userVoUserId, userVoUserId, volumeResource.getRegion(), volume);
+
                 return null;
             }
         });
@@ -1473,6 +1481,13 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                                         || volume.getStatus() == Volume.Status.ERROR_DELETING;
                             }
                         });
+
+                LocalVolumeService localVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService();
+                Long userVoUserId = openStackUser.getUserVoUserId();
+                String region = volumeResource.getRegion();
+                Volume volume = ((VolumeResourceImpl) volumeManager.get(region, volumeResource.getId())).volume;
+                localVolumeService.update(userVoUserId, userVoUserId, volumeResource.getRegion(), volume);
+
                 return null;
             }
         });

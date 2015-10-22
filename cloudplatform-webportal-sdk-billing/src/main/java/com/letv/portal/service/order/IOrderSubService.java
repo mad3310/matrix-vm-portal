@@ -38,6 +38,16 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  */
 	List<OrderSub> selectOrderSubByOrderNumber(String orderNumber);
 	List<OrderSub> selectOrderSubByOrderNumberWithOutSession(String orderNumber);
+	/**
+	  * @Title: selectOrderSubBySubscriptionId
+	  * @Description: 根据订阅id查询子订单
+	  * @param subscriptionId
+	  * @return List<OrderSub>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月21日 下午3:12:47
+	  */
+	List<OrderSub> selectOrderSubBySubscriptionId(long subscriptionId);
 	
 	/**
 	  * @Title: modifyPriceById
