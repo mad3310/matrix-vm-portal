@@ -265,7 +265,37 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.switchTabToVpc=function(){
                 $scope.tabShow='vpc';
                 refreshVpcList();
-            }
+            };
+
+            $scope.openSubnetAssociateVmModal = function (size) {
+                var checkedSubnets=getCheckedSubnet();
+                if(checkedSubnets.length !==1){
+                    WidgetService.notifyWarning('请选中一个子网');
+                    return;
+                }
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'SubnetAssociateVmModalTpl',
+                    controller: 'SubnetAssociateVmModalCtrl',
+                    size: size,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        subnetInfo: function () {
+                            return checkedSubnets[0];
+                        },
+                        region:function(){
+                            return CurrentContext.regionId;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (resultData) {
+                    if (resultData && resultData.result === 1) {
+                        refreshSubnetList();
+                    }
+                }, function () {
+                });
+            };
 
             var refreshVpcList = function () {
                     var queryParams = {
@@ -394,4 +424,48 @@ define(['controllers/app.controller'], function (controllerModule) {
             refreshVpcList();
         }
     ]);
+
+    controllerModule.controller('SubnetAssociateVmModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window,region, subnetInfo) {
+
+        $scope.associatedVmList = [];
+        $scope.selectedAssociatedVm = null;
+
+        $scope.closeModal=function(){
+            $modalInstance.dismiss('cancel');
+        };
+        $scope.selectAssociatedVmImage = function (vm) {
+            $scope.selectedAssociatedVm.push(vm);
+        };
+        $scope.isSelectedAssociatedVmImage = function (vm) {
+            return $scope.associatedVmList.indexOf(vm)>-1;
+        };
+        $scope.associateVm = function () {
+            if (!$scope.vpc_create_form.$valid) return;
+            var data = {
+                region:region,
+                name: $scope.vpcCreate.name,
+            };
+            $scope.isOrderSubmiting=true;
+            HttpService.doPost(Config.urls.vpc_create, data).success(function (data, status, headers, config) {
+                if(data.result===1){
+                    $modalInstance.close({result:1});
+                    WidgetService.notifySuccess(data.msgs[0]||'创建VPC完成');
+                }
+                else{
+                    $scope.isOrderSubmiting=false;
+                    WidgetService.notifyError(data.msgs[0]||'创建VPC失败');
+                }
+            });
+        };
+
+        var initComponents = function () {
+              initAssociatedVmList();
+          },
+          initAssociatedVmList = function () {
+              HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+                  $scope.associatedVmList = data.data.data;
+              });
+          };
+        initComponents();
+    });
 });
