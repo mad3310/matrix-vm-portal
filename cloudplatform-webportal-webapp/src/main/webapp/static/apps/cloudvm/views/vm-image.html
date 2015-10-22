@@ -1,0 +1,43 @@
+<div class="view-common" ng-controller="VmImageCrtl">
+    <div class="le-row list-common">
+        <div class="le-col-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                         <span class="iconfont icon-righticon"  ng-class="{checked:isAllImgChecked()}" ng-click="checkAllimg()"></span>
+                    </th>
+                    <th><span>名称</span></th>
+                    <th><span>大小</span></th>
+                    <th><span>状态</span></th>
+                    <th><span>硬盘数量</span></th>
+                    <th><span>内存</span></th> 
+                    <th><span>创建时间</span></th>
+                </tr>
+                </thead>
+                <tbody id="tby">
+                <tr ng-repeat="img in imageList">
+                    <td>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:img.checked}" ng-click="checkimg(img)"></span>
+                    </td>
+                    <td><span>{{img.name|| '未设置'}}</span></td>
+                    <td><span>{{img.size}}</span></td>
+                    <td><span>{{img.status}}</span></td>
+                    <td><span>{{img.minDisk}}</span></td>
+                    <td><span>{{img.minRam}}</span></td>
+                    <td><span>{{img.createdAt | date:'yyyy-MM-dd'}}</span></td>
+                </tr>
+                <tr ng-if="floatIpList.length==0">
+                    <td colspan=8>暂无镜像，去创建吧。</td>
+                </tr>
+                </tbody>
+            </table>
+            <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                        total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
+                        last-text="&raquo;">
+            </pagination>
+        </div>
+    </div>
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
+    </toaster-container>  
+</div>

@@ -177,6 +177,76 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+      $scope.openDiskDetachModal = function (size) {
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+        if(checkedVms[0].status !=='ACTIVE'){
+          WidgetService.notifyWarning('云主机当前状态不可解挂云硬盘');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'DiskDetachModalTpl',
+          controller: 'DiskDetachModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            vm: function () {
+              return checkedVms[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            refreshVmList();
+          }
+        }, function () {
+        });
+      };
+
+      $scope.openFloatingIpBindModal = function (size) {
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+        if(checkedVms[0].status !=='ACTIVE'){
+          WidgetService.notifyWarning('云主机当前状态不可绑定公网ip');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'FloatingIpBindModalTpl',
+          controller: 'FloatingIpBindModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            vm: function () {
+              return checkedVms[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            refreshVmList();
+          }
+        }, function () {
+        });
+      };
+
       $scope.openVmCreateModal = function (size) {
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
@@ -323,6 +393,99 @@ define(['controllers/app.controller'], function (controllerModule) {
             return new ModelService.SelectModel(disk.name,disk.id);
           });
           $scope.selectedDisk=$scope.diskListSelectorData[0];
+        });
+
+      };
+
+    initComponents();
+
+  });
+
+  controllerModule.controller('DiskDetachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+
+    $scope.diskList=[];
+    $scope.diskListSelectorData=[];
+    $scope.selectedDisk=null;
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.detachDisk = function () {
+      var data = {
+        vmId:vm.id,
+        volumeId:$scope.selectedDisk.value
+      };
+      WidgetService.notifyInfo('云硬盘解挂执行中');
+      HttpService.doPost(Config.urls.disk_detach.replace('{region}',region), data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('云硬盘解挂成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'云硬盘解挂失败');
+        }
+      });
+    };
+
+    var initComponents = function () {
+        initDiskSelector();
+      },
+      initDiskSelector = function () {
+          $scope.diskList = vm.volumes;
+          $scope.diskListSelectorData=$scope.diskList.filter(function(disk){
+            return disk.name && disk.status==='available';
+          }).map(function(disk){
+            return new ModelService.SelectModel(disk.name,disk.id);
+          });
+          $scope.selectedDisk=$scope.diskListSelectorData[0];
+
+      };
+
+    initComponents();
+
+  });
+
+  controllerModule.controller('FloatingIpBindModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+
+    $scope.floatingIpList=[];
+    $scope.floatingIpListSelectorData=[];
+    $scope.selectedFloatingIp=null;
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.bindFloatingIp = function () {
+      var data = {
+        region:region,
+        vmId:vm.id,
+        floatingIpId:$scope.selectedFloatingIp.value
+      };
+      WidgetService.notifyInfo('公网ip绑定执行中');
+      HttpService.doPost(Config.urls.floatIp_bindVm, data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('绑定公网ip成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'绑定公网ip失败');
+        }
+      });
+    };
+
+    var initComponents = function () {
+        initFloatingIpSelector();
+      },
+      initFloatingIpSelector = function () {
+        HttpService.doGet(Config.urls.floatIP_list,{region:region,name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          $scope.floatingIpList = data.data.data;
+          $scope.floatingIpListSelectorData=$scope.floatingIpList.filter(function(floatingIp){
+            return floatingIp.status==='AVAILABLE';
+          }).map(function(floatingIp){
+            return new ModelService.SelectModel(floatingIp.name,floatingIp.id);
+          });
+          $scope.selectedFloatingIp=$scope.floatingIpListSelectorData[0];
         });
 
       };

@@ -239,7 +239,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         'region':region,
         vmId:$scope.selectedVm.value,
         floatingIpId:bindfloatIp.id
-      }
+      };
       HttpService.doPost(Config.urls.floatIp_bindVm,data).success(function(data){
         if(data.result==0){//error
           WidgetService.notifyError(data.msgs[0]||'绑定云主机出错');

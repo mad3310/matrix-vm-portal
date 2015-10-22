@@ -334,33 +334,47 @@ function customerToolInit() {
 	})();
 }
 // common:浏览器信息
+function isIE()
+{
+	if(!!window.ActiveXObject || "ActiveXObject" in window)
+		return true;
+	else
+		return false;
+}
 function browserInfo(){			
 	var bagent = navigator.userAgent.toLowerCase();
 	var regStr_ie = /msie [\d.]+;/gi ;
 	var regStr_ff = /firefox\/[\d.]+/gi
 	var regStr_chrome = /chrome\/[\d.]+/gi ;
 	var regStr_saf = /safari\/[\d.]+/gi ;
-	if(bagent.indexOf("msie") > 0||bagent.search(/Trident/i)> 0){//IE11以下
-		return bagent.match(regStr_ie);
-	}
-	//firefox
-	if(bagent.indexOf("firefox") > 0){
-		return bagent.match(regStr_ff) ;
-	}
-	//Chrome
-	if(bagent.indexOf("chrome") > 0){
-		return bagent.match(regStr_chrome) ;
-	}
-	//Safari
-	if(bagent.indexOf("safari") > 0 && bagent.indexOf("chrome") < 0){
-		return bagent.match(regStr_saf) ;
+	if(isIE()){
+		if(bagent.match(regStr_ie)){//ie11以下
+			return bagent.match(regStr_ie);
+		}else{//ie11+
+			return 'ie11+';
+		}
+	}else{
+		//firefox
+		if(bagent.indexOf("firefox") > 0){
+			return bagent.match(regStr_ff) ;
+		}
+		//Chrome
+		if(bagent.indexOf("chrome") > 0){
+			return bagent.match(regStr_chrome) ;
+		}
+		//Safari
+		if(bagent.indexOf("safari") > 0 && bagent.indexOf("chrome") < 0){
+			return bagent.match(regStr_saf) ;
+		}
 	}
 }
 // common:监测浏览器版本
 function browerversion(){
 	var _browser = browserInfo().toString().toLowerCase();
+	console.log(_browser)
 	var verinfo = (_browser+"").replace(/[^0-9.]/ig,""); 
-	if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){//判断ie11以下的浏览器
+	if(_browser.indexOf("ie11+")>0){//ie11
+	}else if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){//判断ie11以下的浏览器
 	  window.location.replace="/browserError";
 	}else if(_browser.indexOf("firefox") >=0 && verinfo < 5.0){
 	  window.location.replace="/browserError";
@@ -406,4 +420,45 @@ function helpInite(){
 		var _targetPage=_target.attr('self-menu-detailPage');
 		$('.helpcenter-center').load(_targetPage+'.html');
 	});	
+}
+//index:canvas
+function clock(){
+	var canvas=document.getElementById('canvas');
+	canvas.height=54;  
+	canvas.width=54; 
+	var ctx=canvas.getContext("2d");
+	
+	ctx.lineWidth=4;
+	ctx.shadowBlur=3;
+	ctx.shadowOffsetX=3;
+	ctx.shadowColor="rgba(0,0,0,.2)";
+	ctx.strokeStyle="#f5c131";
+	ctx.beginPath();
+	ctx.arc(canvas.width/2,canvas.height/2,22,0,2*Math.PI);
+	ctx.stroke();
+	ctx.save();
+	
+	var date=new Date();
+	var min=date.getMinutes();
+	var sec=date.getSeconds();
+
+	ctx.translate(canvas.width/2,canvas.height/2);
+	ctx.lineCap="round";
+	ctx.rotate(min*(Math.PI/30)+(Math.PI/1800)*sec);
+	ctx.beginPath();
+	ctx.moveTo(-5,0);
+	ctx.lineTo(12,0);
+	ctx.stroke();
+	ctx.restore();
+	ctx.save();
+
+	ctx.translate(canvas.width/2,canvas.height/2);
+	ctx.lineCap="round";
+	ctx.rotate(sec*(Math.PI/30));
+	ctx.beginPath();
+	ctx.moveTo(-5,0);
+	ctx.lineTo(15,0);
+	ctx.stroke();
+	ctx.restore();
+	ctx.save();
 }

@@ -149,12 +149,12 @@ a:hover{cursor:pointer;}
 .dynamics ul li{list-style:square;margin-bottom:10px;white-space:nowrap;overflow:hidde;text-overflow:ellipsis}
 .dynamics img{height:71px;}
 /*页脚*/
-.body-footer{height:200px;padding-top:50px;padding-left:10%\9;padding-right:10%\9;font-size:1.2rem;font-size:12px\9;color:#fff;background:rgba(2,40,56,.9);background-color:#022838\9;}
-.footer ul{margin:25px 0 0 0;padding:0;}
+.body-footer{height:200px;padding-top:50px;font-size:1.2rem;font-size:12px\9;color:#fff;background:rgba(2,40,56,.9);background-color:#022838\9;}
+.footer ul{margin:25px 0 0 0;padding:0;text-align:center\9;}
 .footer ul li{list-style:none;margin-bottom:15px;}
-.footer .footer-linkTitle{font-size:1.4rem;font-size:14px\9;}
+.footer .footer-linkTitle{font-size:1.4rem;font-size:14px\9;text-align:center\9;}
 .footer .footer-right{border-left:1px solid #9aa9af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.footer-right .right-logo img{width:50px;width:100%;min-width:50px;}
+.footer-right .right-logo img{width:50px;width:100%;min-width:50px;width:70px\9;}
 .footer-right .right-logo,.right-logo div{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .footer-right .right-desc{padding:15px 0 0 5px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .right-desc div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -382,7 +382,7 @@ ul.menu-sub li{padding:10px 10px 10px 40px;}
 .buttons .paybtn{width:120px;text-align:center;}
 /*404\500\浏览器提示页*/
 .body-errorimg{padding-top:20%;}
-.body-errorimg img{margin-top:-214px;}
+.body-errorimg img{margin-top:-214px;width:460px\9;height:460px\9;}
 .body-error{margin-top:50px;}
 .body-error .error_text{font-size:2.4rem;font-size:24px\9;font-weight:400;color:#333;}
 .body-error .error_alert{font-size:3rem;font-size:30px\9;font-weight:400;color:#088ac2;}

@@ -59,7 +59,8 @@ define(['./common.service'], function (serviceModule) {
       snapshot_disk_delete:'/osv/volume/snapshot/delete',
       snapshot_vm_list:'/ecs/vm/snapshot/list',
       snapshot_vm_create:'/ecs/vm/snapshot/create',
-      snapshot_vm_delete:'/ecs/vm/snapshot/delete'
+      snapshot_vm_delete:'/ecs/vm/snapshot/delete',
+      image_list:'/osi/image/list'
     };
     config.REGEX= {
       NAME: /^[a-zA-Z\u4e00-\u9fa5][^\s"@\/:=<>{\[\]}]{1,127}$/,

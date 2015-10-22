@@ -4,6 +4,7 @@ import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
+import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
@@ -30,6 +31,7 @@ public class OpenStackServiceGroup {
 	private ApiService apiService;
 	private IUserService userService;
 	private LocalVolumeService localVolumeService;
+	private VolumeSyncService volumeSyncService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -136,5 +138,13 @@ public class OpenStackServiceGroup {
 
 	public LocalVolumeService getLocalVolumeService() {
 		return localVolumeService;
+	}
+
+	public void setVolumeSyncService(VolumeSyncService volumeSyncService) {
+		this.volumeSyncService = volumeSyncService;
+	}
+
+	public VolumeSyncService getVolumeSyncService() {
+		return volumeSyncService;
 	}
 }

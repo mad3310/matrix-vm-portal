@@ -19,8 +19,17 @@ public class CloudvmVolume extends BaseModel{
     private String description;
     private String serverId;
     private Long tenantId;
+    private CloudvmServer server;
 
     public CloudvmVolume() {
+    }
+
+    public CloudvmServer getServer() {
+        return server;
+    }
+
+    public void setServer(CloudvmServer server) {
+        this.server = server;
     }
 
     public String getRegion() {
