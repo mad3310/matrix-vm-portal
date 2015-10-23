@@ -53,7 +53,7 @@
 				and s.FLAVOR_ID=#{flavorId}
 			</if>
 			<if test="name != null  and name != ''  and name != 'null'">
-				and s.NAME like CONCAT('%','${name}','%') escape '^'
+				and s.NAME like CONCAT('%',#{name},'%') escape '^'
 			</if>
 			<if test="tenantId != null ">
 				and s.TENANT_ID=#{tenantId}

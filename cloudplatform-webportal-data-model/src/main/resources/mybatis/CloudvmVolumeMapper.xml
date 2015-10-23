@@ -48,7 +48,7 @@
 				and v.VOLUME_ID=#{volumeId}
 			</if>
 			<if test="name != null  and name != ''  and name != 'null'">
-				and v.NAME like CONCAT('%','${name}','%') escape '^'
+				and v.NAME like CONCAT('%',#{name},'%') escape '^'
 			</if>
 			<if test="serverId != null ">
 				and v.SERVER_ID=#{serverId}

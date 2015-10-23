@@ -44,7 +44,7 @@
 				and i.IMAGE_ID=#{imageId}
 			</if>
 			<if test="name != null  and name != ''  and name != 'null'">
-				and i.NAME like CONCAT('%','${name}','%') escape '^'
+				and i.NAME like CONCAT('%',#{name},'%') escape '^'
 			</if>
 			<if test="tenantId != null ">
 				and i.TENANT_ID=#{tenantId}

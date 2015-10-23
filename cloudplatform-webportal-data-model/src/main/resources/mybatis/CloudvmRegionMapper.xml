@@ -32,10 +32,10 @@
 				and R.ID=#{id}
 			</if>
 			<if test="code != null  and code != ''  and code != 'null'">
-				and R.CODE like CONCAT('%','${code}','%') escape '^'
+				and R.CODE like CONCAT('%',#{code},'%') escape '^'
 			</if>
 			<if test="displayName != null  and displayName != ''  and displayName != 'null'">
-				and R.DISPLAY_NAME like CONCAT('%','${displayName}','%') escape '^'
+				and R.DISPLAY_NAME like CONCAT('%',#{displayName},'%') escape '^'
 			</if>
 			<if test="deleted != null  ">
 				and R.DELETED=#{deleted}
