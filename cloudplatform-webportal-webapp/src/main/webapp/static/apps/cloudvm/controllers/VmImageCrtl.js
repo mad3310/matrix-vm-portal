@@ -40,11 +40,8 @@ define(['controllers/app.controller'], function (controllerModule) {
             currentPage: $scope.currentPage,
             recordsPerPage: $scope.pageSize
           };
-          WidgetService.showSpin();
+          $scope.isListLoading=true;
           HttpService.doGet(Config.urls.image_list_new, queryParams).success(function (data, status, headers, config) {
-            WidgetService.hideSpin();
-        $scope.isListLoading=true;
-          HttpService.doGet(Config.urls.image_list, queryParams).success(function (data, status, headers, config) {
             $scope.isListLoading=false;
             $scope.imageList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
