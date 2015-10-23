@@ -14,4 +14,6 @@ public interface ImageResource extends Resource{
 	String getOwner();
 	Long getSize();
 	String getStatus();
+	String getType();
+	String getPlatform();
 }

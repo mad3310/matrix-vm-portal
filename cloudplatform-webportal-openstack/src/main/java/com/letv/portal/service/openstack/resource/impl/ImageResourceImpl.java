@@ -110,4 +110,14 @@ public class ImageResourceImpl extends AbstractResource implements
 		return image.getStatus().toString();
 	}
 
+	@Override
+	public String getType() {
+		return null;
+	}
+
+	@Override
+	public String getPlatform() {
+		return null;
+	}
+
 }

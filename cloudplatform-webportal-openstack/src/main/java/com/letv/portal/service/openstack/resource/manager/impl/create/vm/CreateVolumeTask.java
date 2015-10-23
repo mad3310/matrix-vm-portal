@@ -1,5 +1,8 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
@@ -53,6 +56,9 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 							new CreateVolumeOptions().volumeType(context
 									.getVolumeType().getId()));
 			vmCreateContext.setVolume(volume);
+			OpenStackServiceImpl.getOpenStackServiceGroup()
+					.getLocalVolumeService()
+					.create(context.getUserId(), context.getUserId(), context.getVmCreateConf().getRegion(), volume, CloudvmVolumeStatus.WAITING_ATTACHING);
 		}
 	}
 
@@ -78,7 +84,21 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 						context.getApiCache().getVolumeApi(), volumeId, 100,
 						volumeChecker);
 				context.getApiCache().getVolumeApi().delete(volumeId);
-			}
+                OpenStackServiceImpl.getOpenStackServiceGroup()
+                        .getLocalVolumeService()
+                        .delete(context.getUserId(), context.getVmCreateConf().getRegion(), volumeId);
+            }
+            if (vmCreateContext.getServerCreated() != null && vmCreateContext.getVolume() != null) {
+                OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
+                CloudvmVolume cloudvmVolume = openStackServiceGroup.getCloudvmVolumeService()
+                        .selectByVolumeId(context.getUserId(), context.getVmCreateConf().getRegion(), vmCreateContext.getVolume().getId());
+                openStackServiceGroup.getVolumeSyncService().syncStatus(cloudvmVolume, new Checker<Volume>() {
+                    @Override
+                    public boolean check(Volume volume) throws Exception {
+                        return volume.getStatus() != Volume.Status.CREATING;
+                    }
+                });
+            }
 		}
 	}
 

@@ -84,7 +84,13 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
 
     @Override
     public CloudvmVolume create(long userId, long tenantId, String region, Volume volume) {
+        return create(userId, tenantId, region, volume, null);
+    }
+
+    @Override
+    public CloudvmVolume create(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) {
         CloudvmVolume cloudvmVolume = new CloudvmVolume();
+        copyProperties(volume, cloudvmVolume);
         cloudvmVolume.setCreateUser(userId);
         cloudvmVolume.setTenantId(tenantId);
         cloudvmVolume.setRegion(region);
@@ -93,8 +99,19 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         cloudvmVolume.setVolumeId(volume.getId());
         cloudvmVolume.setName(volume.getName());
         cloudvmVolume.setDescription(volume.getDescription());
-        copyProperties(volume, cloudvmVolume);
+        if (initStatus != null) {
+            cloudvmVolume.setStatus(initStatus);
+        }
         cloudvmVolumeService.insert(cloudvmVolume);
+        return cloudvmVolume;
+    }
+
+    @Override
+    public CloudvmVolume createIfNotExists(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) {
+        CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volume.getId());
+        if (cloudvmVolume == null) {
+            cloudvmVolume = create(userId, tenantId, region, volume, initStatus);
+        }
         return cloudvmVolume;
     }
 

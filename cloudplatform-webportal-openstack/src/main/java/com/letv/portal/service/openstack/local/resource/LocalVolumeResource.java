@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.local.resource;
 
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
@@ -35,6 +36,9 @@ public class LocalVolumeResource implements VolumeResource {
 
     @Override
     public String getStatus() {
+        if (cloudvmVolume.getStatus() == CloudvmVolumeStatus.WAITING_ATTACHING) {
+            return CloudvmVolumeStatus.ATTACHING.toString().toLowerCase();
+        }
         return cloudvmVolume.getStatus().toString().toLowerCase();
     }
 

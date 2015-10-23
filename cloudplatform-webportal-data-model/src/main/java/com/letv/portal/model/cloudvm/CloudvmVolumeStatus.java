@@ -7,7 +7,7 @@ import com.letv.portal.model.adminoplog.IntEnum;
  */
 public enum CloudvmVolumeStatus implements IntEnum {
     CREATING(1), AVAILABLE(2), ATTACHING(3), IN_USE(4), DELETING(5), ERROR(6), ERROR_DELETING(7),
-    UNRECOGNIZED(8), NIL(0);
+    UNRECOGNIZED(8), NIL(0), WAITING_ATTACHING(9);
 
     private Integer code;
 

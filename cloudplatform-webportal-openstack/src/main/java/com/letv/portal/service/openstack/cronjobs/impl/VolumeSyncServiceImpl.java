@@ -126,8 +126,10 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
         } else {
             final String latestStatus = volume.getStatus().name();
             if (!StringUtils.equals(cloudvmVolume.getStatus().name(), latestStatus)) {
-                cloudvmVolume.setStatus(CloudvmVolumeStatus.valueOf(latestStatus));
-                cloudvmVolumeService.update(cloudvmVolume);
+                if(cloudvmVolume.getStatus()!=CloudvmVolumeStatus.WAITING_ATTACHING) {
+                    cloudvmVolume.setStatus(CloudvmVolumeStatus.valueOf(latestStatus));
+                    cloudvmVolumeService.update(cloudvmVolume);
+                }
             }
         }
     }

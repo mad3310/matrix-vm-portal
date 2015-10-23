@@ -1,6 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.Ref;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
@@ -26,11 +30,22 @@ public class AddVolumeTask implements VmsCreateSubTask {
             if (volumeRef.get() != null && server != null) {
                 Volume volume = volumeRef.get();
                 if (volume.getStatus() == Volume.Status.AVAILABLE && server.getStatus() == Server.Status.ACTIVE && (server.getExtendedStatus().get() == null || server.getExtendedStatus().get().getTaskState() == null)) {
+                    OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
+                    CloudvmVolume cloudvmVolume=openStackServiceGroup.getCloudvmVolumeService()
+                            .selectByVolumeId(context.getUserId(), context.getVmCreateConf().getRegion(), volume.getId());
+                    cloudvmVolume.setStatus(CloudvmVolumeStatus.WAITING_ATTACHING);
+                    openStackServiceGroup.getCloudvmVolumeService().update(cloudvmVolume);
                     context.getApiCache()
                             .getVolumeAttachmentApi()
                             .attachVolumeToServerAsDevice(
                                     vmCreateContext.getVolume().getId(),
                                     vmCreateContext.getServerCreated().getId(), "");
+                    openStackServiceGroup.getVolumeSyncService().syncStatus(cloudvmVolume, new Checker<Volume>() {
+                        @Override
+                        public boolean check(Volume volume) throws Exception {
+                            return volume.getStatus() != Volume.Status.ATTACHING;
+                        }
+                    });
                 }
             }
         }
