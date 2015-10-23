@@ -18,7 +18,7 @@ public class LocalVolumeTypeResource implements VolumeTypeResource {
 
     @Override
     public String getName() {
-        return cloudvmVolumeType.name();
+        return cloudvmVolumeType.getDisplayName();
     }
 
     @Override
