@@ -13,7 +13,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.ecs='';
 			$scope.ecs_sleep='';
 			$scope.expander.layout= "normal";
-
+			$scope.ecsconsume="";
+			$scope.diskconsume="";
+			$scope.floatipconsume="";
+			$scope.routeconsume="";
 			$scope.expanderToggle = function(element){
 				var _target=element.target||element.srcElement;
 				if($(_target).parent().parent().hasClass('zhankai')){
@@ -34,6 +37,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				var billMesurl="/userAccount/order/un/"+userid;
 				var operationurl="/operate";
 				var serviceurl="/service";
+				var consumeurl="/billing/product/daily/consume";
 				$http.get(usinfourl).success(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取用户信息失败！')
@@ -86,6 +90,16 @@ define(['controllers/app.controller'], function (controllerModule) {
 					}else{
 						$scope.ecs=data.data.ecs;
 						$scope.ecs_sleep=data.data['ecs-sleep'];
+					}
+				});
+				$http.get(consumeurl).success(function(data){
+					if(data.result==0){//error
+						WidgetService.notifyError('获取服务信息失败！')
+					}else{
+						$scope.ecsconsume=data.data["2"];
+						$scope.diskconsume=data.data["3"];
+						$scope.floatipconsume=data.data["4"];
+						$scope.routeconsume=data.data["5"];
 					}
 				});
 			}

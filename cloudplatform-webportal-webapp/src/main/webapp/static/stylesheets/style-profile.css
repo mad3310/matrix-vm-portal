@@ -27,6 +27,8 @@
 .operation-title .more{color:#088ac2;float:right;}
 .operation-title .more:hover{cursor:pointer;text-decoration:none;}
 .body-operation .operation-items{height:170px;margin:10px 0 0 0;border:1px solid #ededed;overflow:hidden;}
+.body-operation .operation-items.operation-noitems{font-size:16px;line-height:168px;text-align:center;color:#888;}
+.operation-items.operation-noitems i{font-size:32px;}
 .body-operation .operation-items li{padding:8px 15px 8px 20px;list-style:none;border-bottom:1px solid #ededed;}
 .body-operation .operation-items li.last{border-bottom:0;padding-bottom: 9px;}
 .body-operation .operation-items li.third{border-bottom:0;}
