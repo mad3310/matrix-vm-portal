@@ -90,5 +90,7 @@
     <typeHandlers>
         <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmVolumeStatus"/>
         <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmVolumeType"/>
+        <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmImageStatus"/>
+        <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmImageType"/>
     </typeHandlers>
 </configuration>

@@ -10,6 +10,8 @@ import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
+import com.letv.portal.service.openstack.internal.UserExists;
+import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Value("${openstack.neutron.router.gateway.bandWidth}")
 	private String routerGatewayBandWidth;
+
+	@Value("${openstack.keystone.basic.user.name}")
+	private String basicUserName;
 
 	private String publicEndpoint;
 
@@ -148,6 +153,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackConf.setAdminEndpoint(adminEndpoint);
 		openStackConf.setUserRegisterToken(userRegisterToken);
 		openStackConf.setRouterGatewayBandWidth(Integer.parseInt(routerGatewayBandWidth));
+		openStackConf.setBasicUserName(basicUserName);
 
 		openStackServiceGroup = new OpenStackServiceGroup();
 		openStackServiceGroup.setCloudvmRegionService(cloudvmRegionService);
@@ -179,6 +185,27 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 		return new OpenStackSessionImpl(
 				openStackConf, openStackUser);
+	}
+
+	@Override
+	public boolean isUserExists(String email,String password) throws OpenStackException {
+		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), email,
+				password);
+		return userExists.run();
+	}
+
+	@Override
+	public void registerUser(String email, String password) throws OpenStackException {
+		UserRegister userRegister = new UserRegister(openStackConf.getAdminEndpoint(), email, password, email,
+				openStackConf.getUserRegisterToken());
+		userRegister.run();
+	}
+
+	@Override
+	public void registerUserIfNotExists(String email, String password) throws OpenStackException {
+		if (!isUserExists(email, password)) {
+			registerUser(email, password);
+		}
 	}
 
 //	@Override

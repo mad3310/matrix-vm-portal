@@ -7,7 +7,6 @@ CREATE TABLE `WEBPORTAL_CLOUDVM_IMAGE` (
 	`MIN_DISK` integer unsigned DEFAULT NULL,
 	`MIN_RAM` integer unsigned DEFAULT NULL,
 	`STATUS` tinyint(4) DEFAULT NULL,
-	`IS_PUBLIC` tinyint(4) unsigned DEFAULT NULL,
 	`TENANT_ID` bigint(20) unsigned DEFAULT NULL,
 	`IMAGE_TYPE` tinyint(4) DEFAULT NULL,
 	`DELETED` tinyint(4) DEFAULT NULL,

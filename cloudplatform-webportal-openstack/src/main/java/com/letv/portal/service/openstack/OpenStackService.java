@@ -10,5 +10,11 @@ public interface OpenStackService {
     OpenStackSession createSession(long userVoUserId, String userId, String email,
                                    String userName) throws OpenStackException;
 
+    boolean isUserExists(String email, String password) throws OpenStackException;
+
+    void registerUser(String email, String password) throws OpenStackException;
+
+    void registerUserIfNotExists(String email, String password) throws OpenStackException;
+
 //    OpenStackSession createSessionForSync(long userVoUserId) throws OpenStackException;
 }

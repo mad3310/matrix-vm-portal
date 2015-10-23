@@ -1,6 +1,7 @@
 package com.letv.portal.controller.cloudvm;
 
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.util.Params;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ public class ImageController {
 
     @Autowired
     private SessionServiceImpl sessionService;
+
+    @Autowired
+    private LocalImageService localImageService;
 
     @RequestMapping(value="/regions",method = RequestMethod.GET)
     public
@@ -79,18 +83,12 @@ public class ImageController {
     ResultObject listImage(@RequestParam String region, @RequestParam(required = false) String name,
                                 @RequestParam(required = false) Integer currentPage,
                                 @RequestParam(required = false) Integer recordsPerPage) {
-        Params obj = new Params().p("id", "fake-id").p("name","fake image").p("region","cn-beijing-1").p("createdAt",11111111).p("size",1).p("status","ACTIVE").p("minRam",1).p("minDisk",1);
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        list.add(obj);
-        Page page;
-        if (currentPage == null || recordsPerPage == null) {
-            page = new Page();
-        } else {
-            page = new Page(currentPage, recordsPerPage);
-        }
-        page.setData(list);
         ResultObject result = new ResultObject();
-        result.setData(page);
+        try {
+            result.setData(localImageService.list(region,name,currentPage,recordsPerPage));
+        } catch (OpenStackException e) {
+            throw e.matrixException();
+        }
         return result;
     }
 }

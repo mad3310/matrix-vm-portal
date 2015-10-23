@@ -9,12 +9,19 @@
 		<result column="REGION" property="region"/>
 		<result column="IMAGE_ID" property="imageId"/>
 		<result column="NAME" property="name" />
+		<result column="CONTAINER_FORMAT" property="containerFormat"/>
+		<result column="DISK_FORMAT" property="diskFormat"/>
 		<result column="SIZE" property="size"/>
+		<result column="CHECKSUM" property="checkSum"/>
 		<result column="MIN_DISK" property="minDisk"/>
 		<result column="MIN_RAM" property="minRam"/>
+		<result column="LOCATION" property="location"/>
+		<result column="OWNER" property="owner"/>
+		<result column="UPDATED_AT" property="updatedAt"/>
+		<result column="CREATED_AT" property="createdAt"/>
+		<result column="DELETED_AT" property="deletedAt"/>
 		<result column="STATUS" property="status"/>
-		<result column="TENANT_ID" property="tenantId"/>
-		<result column="IMAGE_TYPE" property="imageType"/>
+		<result column="IS_PUBLIC" property="isPublic"/>
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -25,8 +32,8 @@
 	<!-- WEBPORTAL_CLOUDVM_IMAGE table all fields -->
 	<sql id="Base_Column_List">
 		i.ID,
-		i.REGION,i.IMAGE_ID,i.NAME,i.SIZE,i.MIN_DISK,i.MIN_RAM,
-		i.STATUS,i.TENANT_ID,i.IMAGE_TYPE,
+		i.REGION,i.IMAGE_ID,i.NAME,i.CONTAINER_FORMAT,i.DISK_FORMAT,i.SIZE,i.CHECKSUM,i.MIN_DISK,i.MIN_RAM,
+		i.LOCATION,i.OWNER,i.UPDATED_AT,i.CREATED_AT,i.DELETED_AT,i.STATUS,i.IS_PUBLIC,
 		i.DELETED,i.CREATE_TIME,i.CREATE_USER,i.UPDATE_TIME,i.UPDATE_USER
 	</sql>
 
@@ -45,12 +52,6 @@
 			</if>
 			<if test="name != null  and name != ''  and name != 'null'">
 				and i.NAME like CONCAT('%','${name}','%') escape '^'
-			</if>
-			<if test="tenantId != null ">
-				and i.TENANT_ID=#{tenantId}
-			</if>
-			<if test="imageType != null ">
-				and i.IMAGE_TYPE=#{imageType}
 			</if>
 			<if test="deleted != null  ">
 				and i.DELETED=#{deleted}
@@ -73,12 +74,13 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="CloudvmImage" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_CLOUDVM_IMAGE(REGION,IMAGE_ID,`NAME`,SIZE,MIN_DISK,MIN_RAM,
-		STATUS,TENANT_ID,IMAGE_TYPE,
+		WEBPORTAL_CLOUDVM_IMAGE(REGION,IMAGE_ID,`NAME`,CONTAINER_FORMAT,DISK_FORMAT,`SIZE`,CHECKSUM,MIN_DISK,MIN_RAM,
+		LOCATION,OWNER,UPDATED_AT,CREATED_AT,DELETED_AT,STATUS,IS_PUBLIC,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{region},#{imageId},#{name},#{size},#{minDisk},#{minRam},
-		#{status},#{tenantId},#{imageType},
+		#{region},#{imageId},#{name},#{containerFormat},#{diskFormat},#{size},#{checkSum},
+		#{minDisk},#{minRam},#{location},#{owner},#{updatedAt},#{createdAt},#{deletedAt},
+		#{status},#{isPublic},
 		#{deleted},now(),#{createUser},null,null)
 	</insert>
 
@@ -90,12 +92,19 @@
 		REGION=#{region},
 		IMAGE_ID=#{imageId},
 		`NAME`=#{name},
+		CONTAINER_FORMAT=#{containerFormat},
+		DISK_FORMAT=#{diskFormat},
 		`SIZE`=#{size},
+		CHECKSUM=#{checkSum},
 		MIN_DISK=#{minDisk},
 		MIN_RAM=#{minRam},
+		LOCATION=#{location},
+		OWNER=#{owner},
+		UPDATED_AT=#{updatedAt},
+		CREATED_AT=#{createdAt},
+		DELETED_AT=#{deletedAt},
 		STATUS=#{status},
-		TENANT_ID=#{tenantId},
-		IMAGE_TYPE=#{imageType},
+		IS_PUBLIC=#{isPublic},
 		DELETED=#{deleted},
 		CREATE_TIME=#{createTime},
 		CREATE_USER=#{createUser},

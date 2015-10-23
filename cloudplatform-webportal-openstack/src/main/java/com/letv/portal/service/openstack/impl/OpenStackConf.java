@@ -27,10 +27,20 @@ public class OpenStackConf implements Serializable{
 	private String userRegisterToken;
 	
 	private int routerGatewayBandWidth;
+
+	private String basicUserName;
 	
 	public OpenStackConf() {
 	}
-	
+
+	public void setBasicUserName(String basicUserName) {
+		this.basicUserName = basicUserName;
+	}
+
+	public String getBasicUserName() {
+		return basicUserName;
+	}
+
 	public String getUserPrivateRouterName() {
 		return userPrivateRouterName;
 	}

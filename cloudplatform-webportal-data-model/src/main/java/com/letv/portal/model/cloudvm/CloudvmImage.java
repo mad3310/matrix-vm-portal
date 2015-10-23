@@ -14,19 +14,12 @@ public class CloudvmImage extends BaseModel {
     private String region;
     private String imageId;
     private String name;
-    private String containerFormat;
-    private String diskFormat;
     private Long size;
-    private String checkSum;
     private Long minDisk;
     private Long minRam;
-    private String location;
-    private String owner;
-    private Date updatedAt;
-    private Date createdAt;
-    private Date deletedAt;
-    private String status;
-    private Boolean isPublic;
+    private CloudvmImageStatus status;
+    private Long tenantId;
+    private CloudvmImageType imageType;
 
     public String getRegion() {
         return region;
@@ -52,36 +45,12 @@ public class CloudvmImage extends BaseModel {
         this.name = name;
     }
 
-    public String getContainerFormat() {
-        return containerFormat;
-    }
-
-    public void setContainerFormat(String containerFormat) {
-        this.containerFormat = containerFormat;
-    }
-
-    public String getDiskFormat() {
-        return diskFormat;
-    }
-
-    public void setDiskFormat(String diskFormat) {
-        this.diskFormat = diskFormat;
-    }
-
     public Long getSize() {
         return size;
     }
 
     public void setSize(Long size) {
         this.size = size;
-    }
-
-    public String getCheckSum() {
-        return checkSum;
-    }
-
-    public void setCheckSum(String checkSum) {
-        this.checkSum = checkSum;
     }
 
     public Long getMinDisk() {
@@ -100,59 +69,27 @@ public class CloudvmImage extends BaseModel {
         this.minRam = minRam;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public String getStatus() {
+    public CloudvmImageStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CloudvmImageStatus status) {
         this.status = status;
     }
 
-    public Boolean getIsPublic() {
-        return isPublic;
+    public Long getTenantId() {
+        return tenantId;
     }
 
-    public void setIsPublic(Boolean isPublic) {
-        this.isPublic = isPublic;
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public CloudvmImageType getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(CloudvmImageType imageType) {
+        this.imageType = imageType;
     }
 }
