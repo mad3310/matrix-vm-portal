@@ -38,12 +38,17 @@
                         <td><span>{{snapshot.size}}GB</span></td>
                         <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd'}}</span></td>
                     </tr>
+                    <tr ng-if="!isListLoading && vmSnapshotList.length==0">
+                        <td colspan=10>暂无云主机快照，去创建吧。</td>
+                    </tr>
                     </tbody>
                 </table>
-                <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                <pagination ng-if="vmSnapshotList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                             total-items="vmTotalItems" ng-model="vmCurrentPage" class="pagination-sm" first-text="&laquo;"
                             last-text="&raquo;">
                 </pagination>
+                <div ng-if="isListLoading" class="spin"></div>
+                <div ng-if="isListLoading" class="far-spin"></div>
             </div>
 
         </div>
@@ -85,12 +90,17 @@
                         <td><span>{{snapshot.size}}GB</span></td>
                         <td><span>{{snapshot.created | date:'yyyy-MM-dd'}}</span></td>
                     </tr>
+                    <tr ng-if="!isListLoading && diskSnapshotList.length==0">
+                        <td colspan=10>暂无云硬盘快照，去创建吧。</td>
+                    </tr>
                     </tbody>
                 </table>
-                <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                <pagination ng-if="diskSnapshotList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                             total-items="diskTotalItems" ng-model="diskCurrentPage" class="pagination-sm" first-text="&laquo;"
                             last-text="&raquo;">
                 </pagination>
+                <div ng-if="isListLoading" class="spin"></div>
+                <div ng-if="isListLoading" class="far-spin"></div>
             </div>
 
         </div>

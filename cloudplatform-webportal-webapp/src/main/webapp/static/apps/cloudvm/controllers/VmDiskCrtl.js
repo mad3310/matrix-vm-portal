@@ -237,9 +237,9 @@ define(['controllers/app.controller'], function (controllerModule) {
             currentPage: $scope.currentPage,
             recordsPerPage: $scope.pageSize
           };
-          WidgetService.showSpin();
+          $scope.isListLoading=true;
           HttpService.doGet(Config.urls.disk_list.replace('{region}', CurrentContext.regionId), queryParams).success(function (data, status, headers, config) {
-            WidgetService.hideSpin();
+            $scope.isListLoading=false;
             $scope.diskList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
 
