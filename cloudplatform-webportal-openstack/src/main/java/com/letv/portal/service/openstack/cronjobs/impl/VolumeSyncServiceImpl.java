@@ -7,11 +7,14 @@ import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
+import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
+import com.letv.portal.service.openstack.erroremail.impl.ErrorMailMessageModel;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
+import com.letv.portal.service.openstack.util.Params;
 import com.letv.portal.service.openstack.util.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
@@ -21,6 +24,7 @@ import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +39,9 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
 
     @Autowired
     private LocalVolumeService localVolumeService;
+
+    @Autowired
+    private ErrorEmailService errorEmailService;
 
     @Override
     public void sync(int recordsPerPage) throws MatrixException {
@@ -62,7 +69,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     }
 
     @Override
-    public void syncStatus(final List<CloudvmVolume> cloudvmVolumes,final Checker<Volume>
+    public void syncStatus(final List<CloudvmVolume> cloudvmVolumes, final Checker<Volume>
             checker) {
         Util.concurrentRun(new Runnable() {
             @Override
@@ -96,7 +103,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     }
 
     @Override
-    public void syncStatus(CloudvmVolume cloudvmVolume,  Checker<Volume>
+    public void syncStatus(CloudvmVolume cloudvmVolume, Checker<Volume>
             checker) {
         List<CloudvmVolume> cloudvmVolumes = new LinkedList<CloudvmVolume>();
         cloudvmVolumes.add(cloudvmVolume);
@@ -108,6 +115,13 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
             if (cloudvmVolume.getStatus() != CloudvmVolumeStatus.NIL) {
                 cloudvmVolume.setStatus(CloudvmVolumeStatus.NIL);
                 cloudvmVolumeService.update(cloudvmVolume);
+                errorEmailService.sendErrorEmail(
+                        new ErrorMailMessageModel()
+                                .requestUrl("功能：同步云硬盘")
+                                .exceptionParams("volume.id=" + volume.getId())
+                                .exceptionId("tenantId:" + cloudvmVolume.getTenantId())
+                                .exceptionMessage("云硬盘状态为NIL")
+                                .toMap());
             }
         } else {
             final String latestStatus = volume.getStatus().name();

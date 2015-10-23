@@ -48,6 +48,11 @@ public class ErrorEmailServiceImpl implements ErrorEmailService {
 	}
 
 	@Override
+	public void sendErrorEmail(ErrorMailMessageModel model){
+		sendErrorEmail(model.toMap());
+	}
+
+	@Override
 	public void sendExceptionEmail(Exception exception, String function, Long userId, String contextMessage) {
 		Map<String, Object> mailMessageModel = new HashMap<String, Object>();
 		mailMessageModel.put("requestUrl", "功能: " + function);
