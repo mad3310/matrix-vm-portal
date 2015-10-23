@@ -14,9 +14,9 @@ define(['controllers/app.controller'], function (controllerModule) {
             recordsPerPage: $scope.pageSize
           };
           var url= isVmTabActive?Config.urls.snapshot_vm_list:Config.urls.snapshot_disk_list
-          WidgetService.showSpin();
+          $scope.isListLoading=true;
           HttpService.doGet(url, queryParams).success(function (data, status, headers, config) {
-            WidgetService.hideSpin();
+            $scope.isListLoading=false;
             if(isVmTabActive){
               $scope.vmSnapshotList = data.data.data;
               $scope.vmTotalItems = data.data.totalRecords;

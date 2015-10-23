@@ -304,9 +304,9 @@ define(['controllers/app.controller'], function (controllerModule) {
                         currentPage: $scope.vpc.currentPage,
                         recordsPerPage: $scope.vpc.pageSize
                     };
-                    WidgetService.showSpin();
+                  $scope.isListLoading=true;
                     HttpService.doGet(Config.urls.vpc_list, queryParams).success(function (data, status, headers, config) {
-                        WidgetService.hideSpin();
+                        $scope.isListLoading=false;
                         $scope.vpcList = data.data.data;
                         $scope.vpc.totalItems = data.data.totalRecords;
 
@@ -319,9 +319,9 @@ define(['controllers/app.controller'], function (controllerModule) {
                         currentPage: $scope.subnet.currentPage,
                         recordsPerPage: $scope.subnet.pageSize
                     };
-                    WidgetService.showSpin();
+                    $scope.isListLoading=true;
                     HttpService.doGet(Config.urls.subnet_list, queryParams).success(function (data, status, headers, config) {
-                        WidgetService.hideSpin();
+                        $scope.isListLoading=false;
                         $scope.subnetList = data.data.data;
                         $scope.subnet.totalItems = data.data.totalRecords;
 

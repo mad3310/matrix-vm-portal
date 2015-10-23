@@ -150,9 +150,9 @@ define(['controllers/app.controller'], function (controllerModule) {
               currentPage: $scope.currentPage,
               recordsPerPage: $scope.pageSize
             };
-            WidgetService.showSpin();
+          $scope.isListLoading=true;
             HttpService.doGet(Config.urls.router_list, queryParams).success(function (data, status, headers, config) {
-              WidgetService.hideSpin();
+              $scope.isListLoading=false;
               $scope.routerList = data.data.data;
               $scope.totalItems = data.data.totalRecords;
 

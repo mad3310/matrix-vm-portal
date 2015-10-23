@@ -299,6 +299,12 @@ width:150px;height:40px;
     line-height: 70px;
 }
 
+.header .header-region.open .dropdown-toggle .caret{
+    content: "";
+    border-top: 0;
+    border-bottom: 4px dashed;
+}
+
 .header .header-region .dropdown-menu{
     margin: 0;
     border-radius: 0;
@@ -320,14 +326,13 @@ width:150px;height:40px;
     text-align: center;
     line-height: 25px;
     border-radius: 2px;
-
-}
-.header .header-region .dropdown-menu > li >a.active{
-    background-color: #f5c131;
-}
-.header .header-region .dropdown-menu > li >a:hover{
     background-color: transparent;
 }
+.header .header-region .dropdown-menu > li >a.active,
+.header .header-region .dropdown-menu > li >a:hover{
+    background-color: #f5c131;
+}
+
 /*end header style*/
 
 /*begin footer style*/
@@ -928,7 +933,7 @@ le-select .le-select-menu li a{
     background-size: 50px 50px;
     position: absolute;
     left: 48%;
-    top: 250px;
+    top: 48%;
     z-index: 999;
     text-align: center;
     height: 50px;
@@ -979,6 +984,14 @@ le-select .le-select-menu li a{
     color: white;
     background-color: #b3b3b3;
     text-align: center;
+}
+
+.view-common .list-common{
+    position: relative;
+}
+
+.view-common .list-common table{
+    min-height: 90px;
 }
 
 .view-common .list-common th .icon-righticon{

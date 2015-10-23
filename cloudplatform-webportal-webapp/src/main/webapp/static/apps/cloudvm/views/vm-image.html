@@ -27,15 +27,18 @@
                     <td><span>{{img.minRam}}</span></td>
                     <td><span>{{img.createdAt | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
-                <tr ng-if="floatIpList.length==0">
-                    <td colspan=8>暂无镜像，去创建吧。</td>
+                <tr ng-if="imageList.length==0">
+                    <td ng-if="!isListLoading" colspan=10>暂无镜像，去创建吧。</td>
+                    <td ng-if="isListLoading" colspan=10></td>
                 </tr>
                 </tbody>
             </table>
-            <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+            <pagination ng-if="!isListLoading && imageList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                         total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
                         last-text="&raquo;">
             </pagination>
+            <div ng-if="isListLoading" class="spin"></div>
+            <div ng-if="isListLoading" class="far-spin"></div>
         </div>
     </div>
     <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">

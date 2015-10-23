@@ -53,12 +53,18 @@
                     <td><span>{{(disk.attachments[0] && disk.attachments[0].vmName)|| '未挂载'}}</span></td>
                     <td><span>{{disk.created | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
+                <tr ng-if="diskList.length==0">
+                    <td ng-if="!isListLoading" colspan=10>暂无云硬盘，去创建吧。</td>
+                    <td ng-if="isListLoading" colspan=10></td>
+                </tr>
                 </tbody>
             </table>
-            <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+            <pagination ng-if="!isListLoading && diskList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                         total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
                         last-text="&raquo;">
             </pagination>
+            <div ng-if="isListLoading" class="spin"></div>
+            <div ng-if="isListLoading" class="far-spin"></div>
         </div>
 
     </div>

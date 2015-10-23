@@ -208,9 +208,9 @@ define(['controllers/app.controller'], function (controllerModule) {
             currentPage: $scope.currentPage,
             recordsPerPage: $scope.pageSize
           };
-          WidgetService.showSpin();
+        $scope.isListLoading=true;
           HttpService.doGet(Config.urls.floatIP_list, queryParams).success(function (data, status, headers, config) {
-            WidgetService.hideSpin();
+            $scope.isListLoading=false;
             $scope.floatIpList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
           });

@@ -63,14 +63,17 @@
                     <td><span class="iconfont icon-computer"></span></td>
                 </tr>
                 <tr ng-if="vmList.length==0">
-                    <td colspan=10>暂无云主机，去创建吧。</td>
+                    <td ng-if="!isListLoading" colspan=10>暂无云主机，去创建吧。</td>
+                    <td ng-if="isListLoading" colspan=10></td>
                 </tr>
                 </tbody>
             </table>
-            <pagination ng-if="vmList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+            <pagination ng-if="!isListLoading && vmList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                         total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
                         last-text="&raquo;">
             </pagination>
+            <div ng-if="isListLoading" class="spin"></div>
+            <div ng-if="isListLoading" class="far-spin"></div>
         </div>
 
     </div>
