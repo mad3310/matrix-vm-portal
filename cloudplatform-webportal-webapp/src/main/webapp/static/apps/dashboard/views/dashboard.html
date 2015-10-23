@@ -59,7 +59,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥0.000</span>
+								<span>¥{{ecsconsume || '0'}}</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行{{ecs}}个</span>
@@ -78,7 +78,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥0.000</span>
+								<span>¥{{diskconsume || '0'}}</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行0个</span>
@@ -98,7 +98,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥0.000</span>
+								<span>¥{{floatipconsume || '0'}}</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行0个</span>
@@ -117,7 +117,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥0.000</span>
+								<span>¥{{routeconsume || '0'}}</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行0个</span>
@@ -137,30 +137,29 @@
 				<div class="operation-title">
 					<span class="operation-column"></span>
 					<span class="title">最近操作</span>
-					<a class="more" ng-click='expanderToggle($event)'>更多</a>
+					<a class="more" ng-click='expanderToggle($event)' ng-hide="expander.length<=0">更多</a>
 					<div class="clearfix"></div>
 				</div>
-				<!-- <ul class="operation-items">
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>					
-				</ul> -->
-				<ul class="operation-items">
+				<ul class="operation-items" ng-hide="expander.length<=0">
 					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1&&expander.length>=10,third:$index==2,gotop:$index>2}">
 						<div>{{operation.action}}</div>
 						<div class="items-desc">
-							<span>{{operation.content}}</span>
-							<!-- <span class="pull-right" ng-if="$index>10">{{operation.createTime|date:'yyyy-mm-dd'}}</span>
-							<span class="pull-right" ng-if="$index<=10">{{operation.createTime|date:'hh:mm'}}</span> -->
+							<span class="text-blue" ng-show="operation.content.indexOf('=')<0">{{operation.content}}</span>
+							<span ng-show="operation.content.indexOf('=-')>0">
+								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=-'))}}</span>&nbsp;为&nbsp;
+								<span class="text-yellow">{{operation.content.substring(operation.content.indexOf('=-')+2)}}</span>
+							</span>
+							<span ng-show="operation.content.indexOf('==')>0">
+								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=='))}}</span>&nbsp;到&nbsp;
+								<span class="text-yellow">{{operation.content.substring(operation.content.indexOf('==')+2)}}</span>
+							</span>
 							<span class="pull-right" data-picker>{{operation.createTime|date:'yyyy-MM-dd hh:mm'}}</span>
 							<div class="clearfix"></div>
 						</div>
 					</li>
+				</ul>
+				<ul class="operation-items operation-noitems" ng-hide="expander.length>0">
+					<i class="iconfont icon-baoxiu"></i><span>暂无最近操作</span>
 				</ul>
 			</div>
 			<div class="body-quota">

@@ -146,9 +146,9 @@ function carousels(){
 }
 // products:scroll-nav
 function scrollNav(sheight){
-	// var scrollh=document.body.scrollHeight;
-	var scrollh=$(document).height();
-	$(window).scroll(function(){  
+	var scrollh=document.body.scrollHeight;
+	// var scrollh=$(document).height();
+	$(window).scroll(function(){ 
         var vtop=$(this).scrollTop();
         var height=$(this).height();
         var _target=$('.tab-fixed')
@@ -161,7 +161,7 @@ function scrollNav(sheight){
         	}
         	_target.removeClass('hide');
         	var tempH=vtop+height;
-        	console.log(tempH+"   "+height+"   "+scrollh)
+        	console.log(vtop+"   "+height+"   "+scrollh)
         	if(tempH>=scrollh){//到底部
         		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
         	}else{
@@ -206,7 +206,6 @@ function helpScrollNav(sheight){
         	if(tempH>=scrollh){//到底部
         		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
         	}else{
-        		console.log(vtop)
         		if(vtop>=1534){
         			_target.children('div:eq(5)').addClass('active-item').siblings().removeClass('active-item');
         		}else if(vtop>=1386){
@@ -371,7 +370,6 @@ function browserInfo(){
 // common:监测浏览器版本
 function browerversion(){
 	var _browser = browserInfo().toString().toLowerCase();
-	console.log(_browser)
 	var verinfo = (_browser+"").replace(/[^0-9.]/ig,""); 
 	if(_browser.indexOf("ie11+")>0){//ie11
 	}else if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){//判断ie11以下的浏览器

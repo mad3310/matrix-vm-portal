@@ -41,7 +41,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             recordsPerPage: $scope.pageSize
           };
           WidgetService.showSpin();
-          HttpService.doGet(Config.urls.image_list, queryParams).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.image_list_new, queryParams).success(function (data, status, headers, config) {
             WidgetService.hideSpin();
             $scope.imageList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
