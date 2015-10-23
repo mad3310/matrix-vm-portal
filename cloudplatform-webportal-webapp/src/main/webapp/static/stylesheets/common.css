@@ -933,7 +933,7 @@ le-select .le-select-menu li a{
     background-size: 50px 50px;
     position: absolute;
     left: 48%;
-    top: 100px;
+    top: 48%;
     z-index: 999;
     text-align: center;
     height: 50px;
@@ -988,6 +988,10 @@ le-select .le-select-menu li a{
 
 .view-common .list-common{
     position: relative;
+}
+
+.view-common .list-common table{
+    min-height: 90px;
 }
 
 .view-common .list-common th .icon-righticon{

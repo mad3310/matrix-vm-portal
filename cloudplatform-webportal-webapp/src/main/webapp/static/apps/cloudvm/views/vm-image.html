@@ -27,12 +27,13 @@
                     <td><span>{{img.minRam}}</span></td>
                     <td><span>{{img.createdAt | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
-                <tr ng-if="!isListLoading && imageList.length==0">
-                    <td colspan=8>暂无镜像，去创建吧。</td>
+                <tr ng-if="imageList.length==0">
+                    <td ng-if="!isListLoading" colspan=10>暂无镜像，去创建吧。</td>
+                    <td ng-if="isListLoading" colspan=10></td>
                 </tr>
                 </tbody>
             </table>
-            <pagination ng-if="imageList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+            <pagination ng-if="!isListLoading && imageList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                         total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
                         last-text="&raquo;">
             </pagination>

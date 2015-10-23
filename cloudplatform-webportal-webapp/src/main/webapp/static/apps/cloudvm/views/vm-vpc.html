@@ -40,12 +40,13 @@
                         </td>
                         <td><span>{{vpc.created | date:'yyyy-MM-dd'}}</span></td>
                     </tr>
-                    <tr ng-if="!isListLoading && vpcList.length==0">
-                        <td colspan=10>暂无私有网络，去创建吧。</td>
+                    <tr ng-if="vpcList.length==0">
+                        <td ng-if="!isListLoading" colspan=10>暂无私有网络，去创建吧。</td>
+                        <td ng-if="isListLoading" colspan=10></td>
                     </tr>
                     </tbody>
                 </table>
-                <pagination ng-if="vpcList.length>0" boundary-links="true" direction-links="false" ng-change="vpc.onPageChange()"
+                <pagination ng-if="!isListLoading && vpcList.length>0" boundary-links="true" direction-links="false" ng-change="vpc.onPageChange()"
                             items-per-page="vpc.pageSize" total-items="vpc.totalItems" ng-model="vpc.currentPage"
                             class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
                 </pagination>
@@ -101,12 +102,13 @@
                         <td><span>{{subnet.router.name}}</span></td>
                         <td><span>{{subnet.created | date:'yyyy-MM-dd'}}</span></td>
                     </tr>
-                    <tr ng-if="!isListLoading && subnetList.length==0">
-                        <td colspan=10>暂无子网，去创建吧。</td>
+                    <tr ng-if="subnetList.length==0">
+                        <td ng-if="!isListLoading" colspan=10>暂无子网，去创建吧。</td>
+                        <td ng-if="isListLoading" colspan=10></td>
                     </tr>
                     </tbody>
                 </table>
-                <pagination ng-if="subnetList.length>0" boundary-links="true" direction-links="false" ng-change="subnet.onPageChange()"
+                <pagination ng-if="!isListLoading && subnetList.length>0" boundary-links="true" direction-links="false" ng-change="subnet.onPageChange()"
                             items-per-page="subnet.pageSize" total-items="subnet.totalItems" ng-model="subnet.currentPage"
                             class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
                 </pagination>

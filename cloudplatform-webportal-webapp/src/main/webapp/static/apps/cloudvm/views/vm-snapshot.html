@@ -38,12 +38,13 @@
                         <td><span>{{snapshot.size}}GB</span></td>
                         <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd'}}</span></td>
                     </tr>
-                    <tr ng-if="!isListLoading && vmSnapshotList.length==0">
-                        <td colspan=10>暂无云主机快照，去创建吧。</td>
+                    <tr ng-if="vmSnapshotList.length==0">
+                        <td ng-if="!isListLoading" colspan=10>暂无云主机快照，去创建吧。</td>
+                        <td ng-if="isListLoading" colspan=10></td>
                     </tr>
                     </tbody>
                 </table>
-                <pagination ng-if="vmSnapshotList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                <pagination ng-if="!isListLoading && vmSnapshotList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                             total-items="vmTotalItems" ng-model="vmCurrentPage" class="pagination-sm" first-text="&laquo;"
                             last-text="&raquo;">
                 </pagination>
@@ -90,12 +91,13 @@
                         <td><span>{{snapshot.size}}GB</span></td>
                         <td><span>{{snapshot.created | date:'yyyy-MM-dd'}}</span></td>
                     </tr>
-                    <tr ng-if="!isListLoading && diskSnapshotList.length==0">
-                        <td colspan=10>暂无云硬盘快照，去创建吧。</td>
+                    <tr ng-if="diskSnapshotList.length==0">
+                        <td ng-if="!isListLoading" colspan=10>暂无云硬盘快照，去创建吧。</td>
+                        <td ng-if="isListLoading" colspan=10></td>
                     </tr>
                     </tbody>
                 </table>
-                <pagination ng-if="diskSnapshotList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                <pagination ng-if="!isListLoading && diskSnapshotList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                             total-items="diskTotalItems" ng-model="diskCurrentPage" class="pagination-sm" first-text="&laquo;"
                             last-text="&raquo;">
                 </pagination>
