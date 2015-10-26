@@ -1332,6 +1332,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     @Override
     public void attachVolume(final VMResource vmResource,
                              final VolumeResource volumeResource) throws OpenStackException {
+        volumeManager.checkVolumeOperational(openStackUser.getUserVoUserId(), volumeResource.getRegion(), volumeResource.getId());
         runWithApi(new ApiRunnable<NovaApi, Void>() {
 
             @Override
@@ -1402,6 +1403,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     @Override
     public void detachVolume(final VMResource vmResource,
                              final VolumeResource volumeResource) throws OpenStackException {
+        volumeManager.checkVolumeOperational(openStackUser.getUserVoUserId(), volumeResource.getRegion(), volumeResource.getId());
         runWithApi(new ApiRunnable<NovaApi, Void>() {
 
             @Override

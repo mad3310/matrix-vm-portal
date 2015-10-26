@@ -9,6 +9,7 @@ import com.letv.portal.service.openstack.local.resource.LocalImageResource;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRegionService;
 import com.letv.portal.service.openstack.resource.ImageResource;
+import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class LocalImageServiceImpl implements LocalImageService {
     private LocalRegionService localRegionService;
 
     @Override
-    public Page list(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+    public Page listImage(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
         localRegionService.get(region);
 
         Page page = null;
@@ -53,5 +54,44 @@ public class LocalImageServiceImpl implements LocalImageService {
         page.setTotalRecords(cloudvmImageService.countImageByName(region, name));
         page.setData(imageResources);
         return page;
+    }
+
+    @Override
+    public Page listVmSnapshot(long tenantId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+        localRegionService.get(region);
+
+        Page page = null;
+        if (currentPage != null && recordsPerPage != null) {
+            if (currentPage <= 0) {
+                throw new ValidateException("当前页数不能小于或等于0");
+            }
+            if (recordsPerPage <= 0) {
+                throw new ValidateException("每页记录数不能小于或等于0");
+            }
+            page = new Page(currentPage, recordsPerPage);
+        }
+        List<CloudvmImage> cloudvmImages = cloudvmImageService.selectImageByName(region, name, page);
+        List<ImageResource> imageResources = new LinkedList<ImageResource>();
+        for (CloudvmImage cloudvmImage : cloudvmImages) {
+            imageResources.add(new LocalImageResource(cloudvmImage));
+        }
+
+        if (page == null) {
+            page = new Page();
+        }
+        page.setTotalRecords(cloudvmImageService.countVmSnapshotByName(tenantId, region, name));
+        page.setData(imageResources);
+        return page;
+    }
+
+    @Override
+    public CloudvmImage create(long userId, long tenantId, String region, ImageDetails image) {
+
+        return null;
+    }
+
+    @Override
+    public void delete(long tenantId, String region, String imageId) {
+
     }
 }
