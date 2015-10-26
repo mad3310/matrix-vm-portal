@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
@@ -71,8 +72,6 @@ public class VMCreate {
             } catch (Exception ex) {
                 checkVmCreateFail(multiVmCreateContext, ex);
                 Util.throwException(translateExceptionMessage(ex));
-            } finally {
-                saveLocal(multiVmCreateContext);
             }
             notifyListener(multiVmCreateContext, "后台错误");
         } else {
@@ -125,27 +124,6 @@ public class VMCreate {
                     }
                 } catch (Exception ex) {
                     Util.processBillingException(ex);
-                }
-            }
-        }
-    }
-
-    private void saveLocal(MultiVmCreateContext context) {
-        for(int i = 0; i < context.getVmCreateConf().getCount(); i++){
-            if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > i) {
-                VmCreateContext vmCreateContext = context.getVmCreateContexts().get(i);
-                if(vmCreateContext.getVolume()!=null){
-                    Volume volume=vmCreateContext.getVolume();
-                    CloudvmVolume cloudvmVolume = OpenStackServiceImpl.getOpenStackServiceGroup()
-                            .getLocalVolumeService()
-                            .create(context.getUserId(), context.getUserId(), context.getVmCreateConf().getRegion(), volume);
-                    OpenStackServiceImpl.getOpenStackServiceGroup().getVolumeSyncService().syncStatus
-                            (cloudvmVolume, new Checker<Volume>() {
-                                @Override
-                                public boolean check(Volume volume) throws Exception {
-                                    return volume.getStatus() != Volume.Status.CREATING;
-                                }
-                            });
                 }
             }
         }

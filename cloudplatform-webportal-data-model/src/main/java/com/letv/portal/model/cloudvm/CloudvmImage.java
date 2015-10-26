@@ -20,6 +20,24 @@ public class CloudvmImage extends BaseModel {
     private CloudvmImageStatus status;
     private Long tenantId;
     private CloudvmImageType imageType;
+    private String platform;
+    private CloudvmImageShareType type;
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public CloudvmImageShareType getType() {
+        return type;
+    }
+
+    public void setType(CloudvmImageShareType type) {
+        this.type = type;
+    }
 
     public String getRegion() {
         return region;

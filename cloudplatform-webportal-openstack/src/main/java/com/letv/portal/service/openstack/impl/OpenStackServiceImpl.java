@@ -6,8 +6,7 @@ import javax.annotation.PostConstruct;
 
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
-import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
-import com.letv.portal.service.cloudvm.ICloudvmServerService;
+import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.internal.UserExists;
@@ -21,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.cloudvm.ICloudvmRegionService;
-import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
@@ -125,6 +122,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private VolumeSyncService volumeSyncService;
 
+	@Autowired
+	private ICloudvmVolumeService cloudvmVolumeService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -170,6 +170,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setUserService(userService);
 		openStackServiceGroup.setLocalVolumeService(localVolumeService);
 		openStackServiceGroup.setVolumeSyncService(volumeSyncService);
+		openStackServiceGroup.setCloudvmVolumeService(cloudvmVolumeService);
 	}
 
 	@Override

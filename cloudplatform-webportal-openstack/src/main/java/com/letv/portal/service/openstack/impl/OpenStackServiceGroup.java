@@ -1,8 +1,7 @@
 package com.letv.portal.service.openstack.impl;
 
 import com.letv.portal.service.IUserService;
-import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
-import com.letv.portal.service.cloudvm.ICloudvmServerService;
+import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
@@ -12,8 +11,6 @@ import org.springframework.scheduling.SchedulingTaskExecutor;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.cloudvm.ICloudvmRegionService;
-import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.password.PasswordService;
 
@@ -32,6 +29,7 @@ public class OpenStackServiceGroup {
 	private IUserService userService;
 	private LocalVolumeService localVolumeService;
 	private VolumeSyncService volumeSyncService;
+	private ICloudvmVolumeService cloudvmVolumeService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -146,5 +144,13 @@ public class OpenStackServiceGroup {
 
 	public VolumeSyncService getVolumeSyncService() {
 		return volumeSyncService;
+	}
+
+	public void setCloudvmVolumeService(ICloudvmVolumeService cloudvmVolumeService) {
+		this.cloudvmVolumeService = cloudvmVolumeService;
+	}
+
+	public ICloudvmVolumeService getCloudvmVolumeService() {
+		return cloudvmVolumeService;
 	}
 }

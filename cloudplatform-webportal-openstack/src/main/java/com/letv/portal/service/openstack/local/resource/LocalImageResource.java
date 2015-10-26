@@ -98,6 +98,16 @@ public class LocalImageResource implements ImageResource {
     }
 
     @Override
+    public String getType() {
+        return cloudvmImage.getType().getDisplayName();
+    }
+
+    @Override
+    public String getPlatform() {
+        return cloudvmImage.getPlatform();
+    }
+
+    @Override
     public String getRegion() {
         return cloudvmImage.getRegion();
     }
