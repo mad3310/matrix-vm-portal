@@ -19,4 +19,13 @@ public interface ICloudvmImageService extends IBaseService<CloudvmImage> {
 
     void insertImage(CloudvmImage cloudvmImage);
 
+    CloudvmImage selectVmSnapshotByVmSnapshotId(long tenantId, String region, String vmSnapshotId);
+
+    List<CloudvmImage> selectVmSnapshotForSync(Long minId,Page page);
+
+    List<CloudvmImage> selectVmSnapshotByName(long tenantId, String region, String name, Page page);
+
+    int countVmSnapshotByName(long tenantId, String region, String name);
+
+    void insertVmSnapshot(CloudvmImage cloudvmImage);
 }

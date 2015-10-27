@@ -63,13 +63,6 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
     }
 
     @Override
-    public int selectByTenantIdCount(long tenantId) {
-        Map<String, Object> paras = new HashMap<String, Object>();
-        paras.put("tenantId", tenantId);
-        return cloudvmVolumeDao.selectByMapCount(paras);
-    }
-
-    @Override
     public List<CloudvmVolume> selectForSync(Long minId, Page page) {
         Map<String, Object> paras = new HashMap<String, Object>();
         if (minId != null) {

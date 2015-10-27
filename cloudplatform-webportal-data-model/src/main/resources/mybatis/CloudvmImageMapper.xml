@@ -141,4 +141,17 @@
 		from WEBPORTAL_CLOUDVM_IMAGE i
 		<include refid="Example_Where_Clause" />
 	</select>
+
+	<select id="selectByMapForSync" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE i
+		<if test="id != null">
+			where i.ID > #{id}
+		</if>
+		ORDER BY i.ID ASC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
 </mapper>

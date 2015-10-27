@@ -1,19 +1,12 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.common.paging.impl.Page;
-import com.letv.portal.service.openstack.local.service.LocalImageService;
-import com.letv.portal.service.openstack.util.Params;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/osi")
@@ -85,7 +78,7 @@ public class ImageController {
                                 @RequestParam(required = false) Integer recordsPerPage) {
         ResultObject result = new ResultObject();
         try {
-            result.setData(localImageService.list(region,name,currentPage,recordsPerPage));
+            result.setData(localImageService.listImage(region, name, currentPage, recordsPerPage));
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
