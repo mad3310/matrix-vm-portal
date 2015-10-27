@@ -34,4 +34,12 @@ public interface ISubscriptionService extends IBaseService<Subscription> {
 	  * @date 2015年10月21日 下午2:53:26
 	  */
 	List<Subscription> selectValidSubscription();
+	/**
+	  * @Title: serviceWarn
+	  * @Description: 服务提醒  
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月26日 上午11:40:49
+	 */
+	void serviceWarn();
 }
