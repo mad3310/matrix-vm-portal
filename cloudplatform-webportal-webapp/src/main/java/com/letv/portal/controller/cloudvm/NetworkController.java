@@ -281,31 +281,31 @@ public class NetworkController {
 		return result;
 	}
 
-	@RequestMapping(value = "/router/create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject createRouter(@RequestParam String region,
-			@RequestParam String name,
-			@RequestParam boolean enablePublicNetworkGateway,
-			@RequestParam String publicNetworkId) {
-		ResultObject result = new ResultObject();
-		try {
-			RouterCreateConf routerCreateConf = new RouterCreateConf();
-			routerCreateConf.setRegion(region);
-			routerCreateConf.setName(name);
-			routerCreateConf.setEnablePublicNetworkGateway(enablePublicNetworkGateway);
-			routerCreateConf.setPublicNetworkId(publicNetworkId);
-			Util.session(sessionService)
-					.getNetworkManager()
-					.createRouter(routerCreateConf);
-			//保存创建路由操作
-			this.recentOperateService.saveInfo(Constant.CREATE_ROUTER, name);
-		} catch (UserOperationException e) {
-			result.addMsg(e.getUserMessage());
-			result.setResult(0);
-		} catch (OpenStackException e) {
-			throw e.matrixException();
-		}
-		return result;
-	}
+//	@RequestMapping(value = "/router/create", method = RequestMethod.POST)
+//	public @ResponseBody ResultObject createRouter(@RequestParam String region,
+//			@RequestParam String name,
+//			@RequestParam boolean enablePublicNetworkGateway,
+//			@RequestParam String publicNetworkId) {
+//		ResultObject result = new ResultObject();
+//		try {
+//			RouterCreateConf routerCreateConf = new RouterCreateConf();
+//			routerCreateConf.setRegion(region);
+//			routerCreateConf.setName(name);
+//			routerCreateConf.setEnablePublicNetworkGateway(enablePublicNetworkGateway);
+//			routerCreateConf.setPublicNetworkId(publicNetworkId);
+//			Util.session(sessionService)
+//					.getNetworkManager()
+//					.createRouter(routerCreateConf);
+//			//保存创建路由操作
+//			this.recentOperateService.saveInfo(Constant.CREATE_ROUTER, name);
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
+//		return result;
+//	}
 
 	@RequestMapping(value = "/router/delete", method = RequestMethod.POST)
 	public @ResponseBody ResultObject deleteRouter(@RequestParam String region,
@@ -432,7 +432,7 @@ public class NetworkController {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			neworkManager.deleteFloaingIp(region, floatingIpId);
 			//保存删除公网IP操作
-			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, neworkManager.getPrivateSubnet(region, floatingIpId).getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, neworkManager.getFloatingIp(region, floatingIpId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -454,32 +454,32 @@ public class NetworkController {
 		return result;
 	}
 
-	@RequestMapping(value = "/floatingip/create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject createFloatingIp(
-			@RequestParam String region, @RequestParam String name,
-			@RequestParam String publicNetworkId,
-			@RequestParam Integer bandWidth,
-			@RequestParam Integer count) {
-		ResultObject result = new ResultObject();
-		try {
-			FloatingIpCreateConf floatingIpCreateConf = new FloatingIpCreateConf();
-			floatingIpCreateConf.setRegion(region);
-			floatingIpCreateConf.setName(name);
-			floatingIpCreateConf.setPublicNetworkId(publicNetworkId);
-			floatingIpCreateConf.setBandWidth(bandWidth);
-			floatingIpCreateConf.setCount(count);
-			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
-			neworkManager.createFloatingIp(floatingIpCreateConf);
-			//保存创建公网IP操作
-			this.recentOperateService.saveInfo(Constant.CREATE_FLOATINGIP, name);
-		} catch (UserOperationException e) {
-			result.addMsg(e.getUserMessage());
-			result.setResult(0);
-		} catch (OpenStackException e) {
-			throw e.matrixException();
-		}
-		return result;
-	}
+//	@RequestMapping(value = "/floatingip/create", method = RequestMethod.POST)
+//	public @ResponseBody ResultObject createFloatingIp(
+//			@RequestParam String region, @RequestParam String name,
+//			@RequestParam String publicNetworkId,
+//			@RequestParam Integer bandWidth,
+//			@RequestParam Integer count) {
+//		ResultObject result = new ResultObject();
+//		try {
+//			FloatingIpCreateConf floatingIpCreateConf = new FloatingIpCreateConf();
+//			floatingIpCreateConf.setRegion(region);
+//			floatingIpCreateConf.setName(name);
+//			floatingIpCreateConf.setPublicNetworkId(publicNetworkId);
+//			floatingIpCreateConf.setBandWidth(bandWidth);
+//			floatingIpCreateConf.setCount(count);
+//			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+//			neworkManager.createFloatingIp(floatingIpCreateConf);
+//			//保存创建公网IP操作
+//			this.recentOperateService.saveInfo(Constant.CREATE_FLOATINGIP, name);
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
+//		return result;
+//	}
 
 	@RequestMapping(value = "/floatingip/list", method = RequestMethod.GET)
 	public @ResponseBody ResultObject listFloatingIp(

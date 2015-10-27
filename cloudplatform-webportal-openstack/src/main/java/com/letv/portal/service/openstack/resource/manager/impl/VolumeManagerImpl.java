@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import java.util.*;
 
 import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
@@ -93,6 +94,17 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	@Override
 	public void close() throws IOException {
 		// cinderApi.close();
+	}
+
+	public void checkVolumeOperational(long tenantId,String region,String volumeId) throws OpenStackException {
+		CloudvmVolume cloudvmVolume=OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmVolumeService().selectByVolumeId(tenantId, region, volumeId);
+		if(cloudvmVolume==null){
+			throw new ResourceNotFoundException("Volume","云硬盘",volumeId);
+		}else{
+			if(cloudvmVolume.getStatus()== CloudvmVolumeStatus.WAITING_ATTACHING){
+				throw new UserOperationException("volume.status==WAITING_ATTACHING","云硬盘正在挂载中，请稍后操作");
+			}
+		}
 	}
 
 	@Override
@@ -680,6 +692,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	@Override
 	public void delete(final String region, final VolumeResource volumeResource)
 			throws OpenStackException {
+		checkVolumeOperational(openStackUser.getUserVoUserId(),region,volumeResource.getId());
 		runWithApi(new ApiRunnable<CinderApi, Void>() {
 
 			@Override

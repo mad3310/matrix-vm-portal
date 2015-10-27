@@ -103,34 +103,34 @@ public class VolumeController {
 		return result;
 	}
 
-	@RequestMapping(value = "/volume/create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject create(@RequestParam String region,
-			@RequestParam int size,
-			@RequestParam(required = false) String volumeTypeId,
-			@RequestParam(required = false) String volumeSnapshotId,
-			@RequestParam(required = false) String name,
-			@RequestParam(required = false) String description,
-			@RequestParam(required = false) Integer count) {
-		ResultObject result = new ResultObject();
-		try {
-			VolumeCreateConf volumeCreateConf =new VolumeCreateConf();
-			volumeCreateConf.setRegion(region);
-			volumeCreateConf.setSize(size);
-			volumeCreateConf.setVolumeTypeId(volumeTypeId);
-			volumeCreateConf.setVolumeSnapshotId(volumeSnapshotId);
-			volumeCreateConf.setName(name);
-			volumeCreateConf.setDescription(description);
-			volumeCreateConf.setCount(count);
-			Util.session(sessionService).getVolumeManager()
-					.create(volumeCreateConf);
-		} catch (UserOperationException e) {
-			result.addMsg(e.getUserMessage());
-			result.setResult(0);
-		} catch (OpenStackException e) {
-			throw e.matrixException();
-		}
-		return result;
-	}
+//	@RequestMapping(value = "/volume/create", method = RequestMethod.POST)
+//	public @ResponseBody ResultObject create(@RequestParam String region,
+//			@RequestParam int size,
+//			@RequestParam(required = false) String volumeTypeId,
+//			@RequestParam(required = false) String volumeSnapshotId,
+//			@RequestParam(required = false) String name,
+//			@RequestParam(required = false) String description,
+//			@RequestParam(required = false) Integer count) {
+//		ResultObject result = new ResultObject();
+//		try {
+//			VolumeCreateConf volumeCreateConf =new VolumeCreateConf();
+//			volumeCreateConf.setRegion(region);
+//			volumeCreateConf.setSize(size);
+//			volumeCreateConf.setVolumeTypeId(volumeTypeId);
+//			volumeCreateConf.setVolumeSnapshotId(volumeSnapshotId);
+//			volumeCreateConf.setName(name);
+//			volumeCreateConf.setDescription(description);
+//			volumeCreateConf.setCount(count);
+//			Util.session(sessionService).getVolumeManager()
+//					.create(volumeCreateConf);
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
+//		return result;
+//	}
 
 	@RequestMapping(value = "/region/{region}/volume-delete", method = RequestMethod.POST)
 	public @ResponseBody ResultObject delete(@PathVariable String region,

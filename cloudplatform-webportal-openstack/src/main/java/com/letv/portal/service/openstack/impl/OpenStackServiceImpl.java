@@ -12,6 +12,7 @@ import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.internal.UserExists;
 import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -125,6 +126,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private ICloudvmVolumeService cloudvmVolumeService;
 
+	@Autowired
+	private LocalImageService localImageService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -171,6 +175,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setLocalVolumeService(localVolumeService);
 		openStackServiceGroup.setVolumeSyncService(volumeSyncService);
 		openStackServiceGroup.setCloudvmVolumeService(cloudvmVolumeService);
+		openStackServiceGroup.setLocalImageService(localImageService);
 	}
 
 	@Override

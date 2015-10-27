@@ -21,6 +21,8 @@ import com.letv.portal.dao.letvcloud.BillRechargeRecordMapper;
 import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
 import com.letv.portal.model.letvcloud.BillRechargeRecord;
 import com.letv.portal.model.letvcloud.BillUserAmount;
+import com.letv.portal.model.message.Message;
+import com.letv.portal.service.message.IMessageProxyService;
 
 /**
  * Created by wanglei14 on 2015/6/28.
@@ -35,6 +37,8 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     BillUserAmountMapper billUserAmountMapper;
     @Autowired
     BillRechargeRecordMapper billRechargeRecordMapper;
+    @Autowired
+    IMessageProxyService messageProxyService;
 
     @Override
     public void createUserAmount(Long userId) throws CommonException {
@@ -155,6 +159,29 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             billUserAmountMapper.updateArrearageTime(userId);
         }
         int ret = billUserAmountMapper.addAmount(billUserAmount);
+        
+        //充值成功后保存消息通知
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date d = new Date();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("您在");
+        buffer.append(sdf.format(d));
+        buffer.append("成功充值");
+        buffer.append(amount);
+        buffer.append("元，当前账户余额为[￥");
+        buffer.append(billUserAmount.getAvailableAmount());
+        buffer.append("]，如有问题，可拨打客服电话。");
+        Message msg = new Message();
+        msg.setId(userId);
+        msg.setMsgTitle("成功充值"+amount+"元");
+        msg.setMsgContent(buffer.toString());
+        msg.setMsgStatus("0");//未读
+        msg.setMsgType("2");//个人消息
+        msg.setCreatedTime(d);
+        Map<String,Object> msgRet = this.messageProxyService.saveMessage(msg);
+        if(!(Boolean) msgRet.get("result")) {
+        	logger.error("充值成功后保存消息通知失败，失败原因:"+msgRet.get("message"));
+        }
 
         return ret;
 
@@ -237,7 +264,8 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	}
 	
 	@Override
-	public boolean updateUserAmountFromFreezeToAvailable(long userId, BigDecimal price) {
+	public boolean updateUserAmountFromFreezeToAvailable(long userId, BigDecimal price, String productName, String productType) {
+		boolean ret = false;
 		logger.info("开始转移冻结余额到可用余额,用户id:"+userId+",金额："+price);
 		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
 		synchronized(obj) {
@@ -246,16 +274,44 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
 				billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
 				logger.info("转移冻结余额到可用余额成功,用户id:"+userId+",金额："+price);
-				return true;
+				ret = true;
 			} else {
 				logger.error("账户冻结余额小于需要转移金额,用户id:"+userId+",金额："+price);
-				return false;
 			}
 		}
+		//服务创建失败后保存回退金额消息通知
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date d = new Date();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("您在");
+        buffer.append(sdf.format(d));
+        buffer.append("购买的");
+        buffer.append(productType);
+        buffer.append("【");
+        buffer.append(productName);
+        buffer.append("】");
+        buffer.append("创建失败，系统退回账户");
+        buffer.append(price);
+        buffer.append("元，当前账户余额为[￥");
+        buffer.append(billUserAmount.getAvailableAmount());
+        buffer.append("]，如有问题，可拨打客服电话。");
+        Message msg = new Message();
+        msg.setId(userId);
+        msg.setMsgTitle("退款"+price+"元");
+        msg.setMsgContent(buffer.toString());
+        msg.setMsgStatus("0");//未读
+        msg.setMsgType("2");//个人消息
+        msg.setCreatedTime(d);
+        Map<String,Object> msgRet = this.messageProxyService.saveMessage(msg);
+        if(!(Boolean) msgRet.get("result")) {
+        	logger.error("服务创建失败后保存回退金额消息通知，失败原因:"+msgRet.get("message"));
+        }
+        return ret;
 	}
 
 	@Override
-	public boolean reduceFreezeAmount(long userId, BigDecimal price) {
+	public boolean reduceFreezeAmount(long userId, BigDecimal price, String productName, String productType) {
+		boolean ret = false;
 		logger.info("开始扣除冻结金额,用户id:"+userId+",金额："+price);
 		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
 		synchronized(obj) {
@@ -263,12 +319,39 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
 				billUserAmountMapper.reduceFreezeAmount(billUserAmount);
 				logger.info("扣除冻结金额成功,用户id:"+userId+",金额："+price);
-				return true;
+				ret = true;
 			} else {
 				logger.error("冻结金额小于需要扣除金额,用户id:"+userId+",金额："+price);
-				return false;
 			}
 		}
+		//服务创建成功后保存扣减金额消息通知
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date d = new Date();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("您在");
+        buffer.append(sdf.format(d));
+        buffer.append("购买的");
+        buffer.append(productType);
+        buffer.append("【");
+        buffer.append(productName);
+        buffer.append("】");
+        buffer.append("消费");
+        buffer.append(price);
+        buffer.append("元，当前账户余额为[￥");
+        buffer.append(billUserAmount.getAvailableAmount());
+        buffer.append("]，如有问题，可拨打客服电话。");
+        Message msg = new Message();
+        msg.setId(userId);
+        msg.setMsgTitle("消费金额"+price+"元");
+        msg.setMsgContent(buffer.toString());
+        msg.setMsgStatus("0");//未读
+        msg.setMsgType("2");//个人消息
+        msg.setCreatedTime(d);
+        Map<String,Object> msgRet = this.messageProxyService.saveMessage(msg);
+        if(!(Boolean) msgRet.get("result")) {
+        	logger.error("服务创建成功后保存扣减金额消息通知，失败原因:"+msgRet.get("message"));
+        }
+        return ret;
 	}
 
 }

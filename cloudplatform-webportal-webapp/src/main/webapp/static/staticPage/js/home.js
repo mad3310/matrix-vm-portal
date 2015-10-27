@@ -1,7 +1,173 @@
 (function init(){
 	toTop();
 	customerToolInit();
-})()
+})();
+var client = function() {
+  	var engine = {
+	    ie: 0,
+	    gecko: 0,
+	    webkit: 0,
+	    khtml: 0,
+	    opera: 0,
+
+	    // 具体的版本
+	    ver: null
+	};
+
+  	var browser = {
+	    ie: 0,
+	    firefox: 0,
+	    safari: 0,
+	    konq: 0,
+	    opera: 0,
+	    chrome: 0,
+
+	    // 具体的版本
+	    ver: null
+  	};
+
+  	var system = {
+	    win: false,
+	    mac: false,
+	    xll: false,
+
+	    // 移动设备
+	    iphone: false,
+	    ipod: false,
+	    ipad: false,
+	    ios: false,
+	    android: false,
+	    nokiaN: false,
+	    winMobile: false,
+
+	    // 游戏系统
+	    wii: false,
+	    ps: false
+	 }
+
+  	var ua = window.navigator.userAgent,
+
+	p = window.navigator.platform;
+	system.win = p.indexOf('Win') == 0;
+	system.mac = p.indexOf('Mac') == 0;
+	system.xll = (p.indexOf('Linux') == 0 || p.indexOf('Xll') == 0);
+
+	system.iphone = ua.indexOf('iPhone') > -1;
+	system.ipod = ua.indexOf('iPod') > -1;
+	system.ipad = ua.indexOf('iPad') > -1;
+
+	// ios
+	if (system.mac && ua.indexOf('Mobile') > -1) {
+		if (/CPU (?:iPhone )?OS (\d+_\d+)/.test(ua)) {
+		 	system.ios = parseFloat(RegExp.$1.replace('_', '.'));
+		} else {
+		  	system.ios = 2;
+		}
+	}
+  	// android
+  	if (/Android (\d+\.\d+)/.test(ua)) {
+    	system.android = parseFloat(RegExp.$1);
+  	}
+  	// nokia
+  	system.nokiaN = ua.indexOf('NokiaN') > -1;
+
+  	// windows mobile
+  	if (system.win == 'CE') {
+    	system.winMobile = system.win;
+  	} else if (system.win == 'Ph') {
+    	if (/Windows Phone OS (\d+.\d+)/.test(ua)) {
+	      	system.win = 'Phone';
+	      	system.winMobile = parseFloat(RegExp['$1']);
+    	}
+  	}
+
+  	// game system
+  	system.wii = ua.indexOf('Wii') > -1;
+  	system.ps = /playstation/i.test(ua);
+	if(window.opera){
+	    engine.ver = browser.ver = window.opera.version();
+	    engine.opera = browser.opera = parseFloat(engine.ver);
+	}else if(/AppleWebKit\/(\S+)/i.test(ua)) {
+	    engine.ver = browser.ver = RegExp['$1'];
+	    engine.webkit = parseFloat(engine.ver);
+
+    	// 确定是chrome 还是 safari
+    	if(/Chrome\/(\S+)/i.test(ua)) {
+      		browser.chrome = parseFloat(engine.ver);
+    	}else if(/Version\/(\S+)/i.test(ua)) {
+    		browser.safari = parseFloat(engine.ver);
+    	}else{
+	      	// 近似的确认版本号，早期版本的safari版本中userAgent没有Version
+	      	var safariVersion = 1;
+      		if(engine.webkit<100){
+        		safariVersion=1;
+      		}else if(engine.webkit<312){
+        		safariVersion=1.2;
+      		}else if(engine.webkit<412){                     
+        		safariVersion=1.3;
+      		}else{                     
+        		safariVersion=2;
+      		}
+      		browser.safari=browser.ver=safariVersion;
+    	}
+  	}else if(/KHTML\/(\S+)/i.test(ua)||/Konqueror\/([^;]+)/i.test(ua)){
+    	engine.ver = browser.ver = RegExp['$1'];
+    	engine.khtml = browser.konq = parseFloat(engine.ver);
+  	}else if(/rv:([^\)]+)\) Gecko\/\d{8}/i.test(ua)){
+    	engine.ver = RegExp['$1'];
+    	engine.gecko = parseFloat(engine.ver);
+
+    	// 确定是不是Firefox浏览器
+    	if(/Firefox\/(\S+)/i.test(ua)) {
+	     	browser.ver = RegExp['$1'];
+	     	browser.firefox = parseFloat(browser.ver);
+    	}
+  	}else if(/MSIE\s([^;]+)/i.test(ua)) {
+	    engine.ver = browser.ver = RegExp['$1'];
+	    engine.ie = browser.ie = parseFloat(engine.ver);
+  	}else if (/trident.*rv:([^)]+)/i.test(ua)) {
+	    engine.ver = browser.ver = RegExp['$1'];
+	    engine.ie = browser.ie = parseFloat(engine.ver);
+	}
+  	if (system.win){
+    	if (/Win(?:dows )?([^do]{2})\s?(\d+\.\d+)?/.test(ua)){
+      		if (RegExp['$1'] == 'NT'){
+        		switch(RegExp['$2']) {
+          			case '5.0': system.win = '2000'; break;
+          			case '5.1': system.win = 'XP'; break;
+          			case '6.0': system.win = 'Vista'; break;
+          			case '6.1': system.win = '7'; break;
+          			case '6.2': system.win = '8'; break;
+          			default: system.win = 'NT'; break;
+        		}
+      		}else if(RegExp['$1'] == '9x'){
+        		// 检测windows ME
+        		system.win = 'ME';
+      		}else {
+        		// 检测windows 95、windows 98
+        		system.win = RegExp['$1'];
+      		}
+    	}
+  	}
+  	return {
+    	engine: engine,
+    	browser: browser,
+    	system: system
+  	}
+}();
+// // common:监测浏览器版本
+function browerversion(){
+	var _browser = client.browser;
+	if(_browser.ie&&_browser.ver<9.0){
+	  window.location.replace="/browserError";
+	}else if(_browser.firefox&&_browser.ver< 5.0){
+	  window.location.replace="/browserError";
+	}else if(_browser.chrome&&_browser.ver< 7.0){
+	  window.location.replace="/browserError";
+	}else if(_browser.safari&&_browser.ver<4.0){
+	  window.location.replace="/browserError";
+	}
+}
 function toTop() {
 	var scrollEle = clientEle = document.documentElement, toTopBtn = document.getElementById("toTop"), compatMode = document.compatMode, isChrome = window.navigator.userAgent.indexOf("Chrome") === -1 ? false : true;
 	//不同渲染模式以及Chrome的预处理
@@ -194,6 +360,7 @@ function helpScrollNav(sheight){
         var vtop=$(this).scrollTop();
         var height=$(this).height();
         var _target=$('.tab-fixed')
+        console.log(vtop+"   "+height+"   "+scrollh)
         if(vtop>=sheight){
         	$('.tab-layout').addClass('hide');
         	var _tabClone=$('.tab-layout').children().clone();
@@ -203,6 +370,7 @@ function helpScrollNav(sheight){
         	}
         	_target.removeClass('hide');
         	var tempH=vtop+height;
+        	// console.log(vtop+"   "+height+"   "+scrollh)
         	if(tempH>=scrollh){//到底部
         		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
         	}else{
@@ -331,56 +499,6 @@ function customerToolInit() {
 			_change.find('.hoverTip-desc').text(branddescArray[1]);
 		});
 	})();
-}
-// common:浏览器信息
-function isIE()
-{
-	if(!!window.ActiveXObject || "ActiveXObject" in window)
-		return true;
-	else
-		return false;
-}
-function browserInfo(){			
-	var bagent = navigator.userAgent.toLowerCase();
-	var regStr_ie = /msie [\d.]+;/gi ;
-	var regStr_ff = /firefox\/[\d.]+/gi
-	var regStr_chrome = /chrome\/[\d.]+/gi ;
-	var regStr_saf = /safari\/[\d.]+/gi ;
-	if(isIE()){
-		if(bagent.match(regStr_ie)){//ie11以下
-			return bagent.match(regStr_ie);
-		}else{//ie11+
-			return 'ie11+';
-		}
-	}else{
-		//firefox
-		if(bagent.indexOf("firefox") > 0){
-			return bagent.match(regStr_ff) ;
-		}
-		//Chrome
-		if(bagent.indexOf("chrome") > 0){
-			return bagent.match(regStr_chrome) ;
-		}
-		//Safari
-		if(bagent.indexOf("safari") > 0 && bagent.indexOf("chrome") < 0){
-			return bagent.match(regStr_saf) ;
-		}
-	}
-}
-// common:监测浏览器版本
-function browerversion(){
-	var _browser = browserInfo().toString().toLowerCase();
-	var verinfo = (_browser+"").replace(/[^0-9.]/ig,""); 
-	if(_browser.indexOf("ie11+")>0){//ie11
-	}else if(_browser.indexOf("msie") >=0 && (verinfo < 9.0)){//判断ie11以下的浏览器
-	  window.location.replace="/browserError";
-	}else if(_browser.indexOf("firefox") >=0 && verinfo < 5.0){
-	  window.location.replace="/browserError";
-	}else if(_browser.indexOf("chrome") >=0 && verinfo < 7.0){
-	  window.location.replace="/browserError";
-	}else if(_browser.indexOf("safari") >=0 && verinfo < 4.0){
-	  window.location.replace="/browserError";
-	}
 }
 // help:帮助中心初始化事件
 function helpInite(){

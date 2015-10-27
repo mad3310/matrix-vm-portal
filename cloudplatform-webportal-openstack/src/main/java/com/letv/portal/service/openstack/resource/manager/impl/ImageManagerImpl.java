@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.model.cloudvm.CloudvmImageStatus;
 import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.features.SnapshotApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -179,12 +181,20 @@ public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> impleme
 							"虚拟机快照“{0}”删除失败。", imageId));
 				}
 
+				long userVoUserId = openStackUser.getUserVoUserId();
+				LocalImageService localImageService = OpenStackServiceImpl
+						.getOpenStackServiceGroup().getLocalImageService();
+				localImageService.updateVmSnapshotStatus(userVoUserId, userVoUserId, region, imageId, CloudvmImageStatus.PENDING_DELETE);
+
 				waitingImage(imageApi, imageId, new Checker<ImageDetails>() {
 					@Override
 					public boolean check(ImageDetails image) throws Exception {
 						return image == null;
 					}
 				});
+
+				localImageService
+						.deleteVmSnapshot(userVoUserId, region, imageId);
 
 				return null;
 			}

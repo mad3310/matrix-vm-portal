@@ -56,6 +56,9 @@
 			<if test="tenantId != null ">
 				and v.TENANT_ID=#{tenantId}
 			</if>
+			<if test="status != null ">
+				and v.STATUS=#{status}
+			</if>
 			<if test="deleted != null  ">
 				and v.DELETED=#{deleted}
 			</if>

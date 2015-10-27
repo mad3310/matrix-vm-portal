@@ -7,6 +7,7 @@ import java.util.Map;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
 import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.util.Params;
@@ -43,6 +44,9 @@ public class VMController {
 
 	@Autowired
 	private LocalVmService vmQueryService;
+
+	@Autowired
+	private LocalImageService localImageService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -128,91 +132,91 @@ public class VMController {
 		return result;
 	}
 
-	@RequestMapping(value = "/vm/create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject create(@RequestParam String region,
-			@RequestParam String name, @RequestParam String flavorId,
-			@RequestParam String imageId, @RequestParam String snapshotId,
-			@RequestParam int volumeSize, @RequestParam String volumeTypeId,
-			@RequestParam String privateSubnetId,
-			@RequestParam String sharedNetworkId,
-			@RequestParam boolean bindFloatingIp, @RequestParam int bandWidth,
-			@RequestParam String keyPairName, @RequestParam String adminPass,
-			@RequestParam int count) {
-		ResultObject result = new ResultObject();
-		try {
-			VMCreateConf2 conf = new VMCreateConf2();
-			conf.setRegion(region);
-			conf.setName(name);
-			conf.setFlavorId(flavorId);
-			conf.setImageId(imageId);
-			conf.setSnapshotId(snapshotId);
-			conf.setVolumeSize(volumeSize);
-			conf.setVolumeTypeId(volumeTypeId);
-			conf.setPrivateSubnetId(privateSubnetId);
-			conf.setSharedNetworkId(sharedNetworkId);
-			conf.setBindFloatingIp(bindFloatingIp);
-			conf.setBandWidth(bandWidth);
-			conf.setKeyPairName(keyPairName);
-			conf.setAdminPass(adminPass);
-			conf.setCount(count);
-			Util.session(sessionService).getVMManager().create2(conf);
-		} catch (UserOperationException e) {
-			result.addMsg(e.getUserMessage());
-			result.setResult(0);
-		} catch (OpenStackException e) {
-			throw e.matrixException();
-		}
-		return result;
-	}
+//	@RequestMapping(value = "/vm/create", method = RequestMethod.POST)
+//	public @ResponseBody ResultObject create(@RequestParam String region,
+//			@RequestParam String name, @RequestParam String flavorId,
+//			@RequestParam String imageId, @RequestParam String snapshotId,
+//			@RequestParam int volumeSize, @RequestParam String volumeTypeId,
+//			@RequestParam String privateSubnetId,
+//			@RequestParam String sharedNetworkId,
+//			@RequestParam boolean bindFloatingIp, @RequestParam int bandWidth,
+//			@RequestParam String keyPairName, @RequestParam String adminPass,
+//			@RequestParam int count) {
+//		ResultObject result = new ResultObject();
+//		try {
+//			VMCreateConf2 conf = new VMCreateConf2();
+//			conf.setRegion(region);
+//			conf.setName(name);
+//			conf.setFlavorId(flavorId);
+//			conf.setImageId(imageId);
+//			conf.setSnapshotId(snapshotId);
+//			conf.setVolumeSize(volumeSize);
+//			conf.setVolumeTypeId(volumeTypeId);
+//			conf.setPrivateSubnetId(privateSubnetId);
+//			conf.setSharedNetworkId(sharedNetworkId);
+//			conf.setBindFloatingIp(bindFloatingIp);
+//			conf.setBandWidth(bandWidth);
+//			conf.setKeyPairName(keyPairName);
+//			conf.setAdminPass(adminPass);
+//			conf.setCount(count);
+//			Util.session(sessionService).getVMManager().create2(conf);
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
+//		return result;
+//	}
 
-	@RequestMapping(value = "/region/{region}/vm-create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject create(
-			@PathVariable String region,
-			@RequestParam String name,
-			@RequestParam String imageId,
-			@RequestParam String flavorId,
-			@RequestParam(required = false) String networkIds,
-			@RequestParam(required = false) String adminPass,
-			@RequestParam(required = false, defaultValue = "false", value = "publish") boolean bindFloatingIP,
-			@RequestParam(required = false, value = "volumeSizes") String volumeSizesJson) {
-		ResultObject result = new ResultObject();
-		try {
-			OpenStackSession openStackSession = Util.session(sessionService);
-
-			ImageManager imageManager = openStackSession.getImageManager();
-			NetworkManager networkManager = openStackSession
-					.getNetworkManager();
-			VMManager vmManager = openStackSession.getVMManager();
-
-			ImageResource imageResource = imageManager.get(region, imageId);
-
-			FlavorResource flavorResource = vmManager.getFlavorResource(region,
-					flavorId);
-
-			List<NetworkResource> networkResources = null;
-			if (networkIds != null) {
-				String[] networkIdArray = networkIds.split("__");
-				networkResources = new ArrayList<NetworkResource>(
-						networkIdArray.length);
-				for (String networkId : networkIdArray) {
-					networkResources.add(networkManager.get(region, networkId));
-				}
-			}
-
-			VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource,
-					flavorResource, networkResources, adminPass,
-					bindFloatingIP, volumeSizesJson);
-			VMResource vmResource = vmManager.create(region, vmCreateConf);
-
-			result.setData(vmResource);
-		} catch (UserOperationException e) {
-			result.addMsg(e.getUserMessage());
-			result.setResult(0);
-		} catch (OpenStackException e) {
-			throw e.matrixException();
-		}
-		return result;
-	}
+//	@RequestMapping(value = "/region/{region}/vm-create", method = RequestMethod.POST)
+//	public @ResponseBody ResultObject create(
+//			@PathVariable String region,
+//			@RequestParam String name,
+//			@RequestParam String imageId,
+//			@RequestParam String flavorId,
+//			@RequestParam(required = false) String networkIds,
+//			@RequestParam(required = false) String adminPass,
+//			@RequestParam(required = false, defaultValue = "false", value = "publish") boolean bindFloatingIP,
+//			@RequestParam(required = false, value = "volumeSizes") String volumeSizesJson) {
+//		ResultObject result = new ResultObject();
+//		try {
+//			OpenStackSession openStackSession = Util.session(sessionService);
+//
+//			ImageManager imageManager = openStackSession.getImageManager();
+//			NetworkManager networkManager = openStackSession
+//					.getNetworkManager();
+//			VMManager vmManager = openStackSession.getVMManager();
+//
+//			ImageResource imageResource = imageManager.get(region, imageId);
+//
+//			FlavorResource flavorResource = vmManager.getFlavorResource(region,
+//					flavorId);
+//
+//			List<NetworkResource> networkResources = null;
+//			if (networkIds != null) {
+//				String[] networkIdArray = networkIds.split("__");
+//				networkResources = new ArrayList<NetworkResource>(
+//						networkIdArray.length);
+//				for (String networkId : networkIdArray) {
+//					networkResources.add(networkManager.get(region, networkId));
+//				}
+//			}
+//
+//			VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource,
+//					flavorResource, networkResources, adminPass,
+//					bindFloatingIP, volumeSizesJson);
+//			VMResource vmResource = vmManager.create(region, vmCreateConf);
+//
+//			result.setData(vmResource);
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
+//		return result;
+//	}
 
 	@RequestMapping(value = "/region/{region}/vm-publish", method = RequestMethod.POST)
 	public @ResponseBody ResultObject publish(@PathVariable String region,
@@ -473,18 +477,13 @@ public class VMController {
 	ResultObject listVmSnapshot(@RequestParam String region, @RequestParam(required = false) String name,
 								@RequestParam(required = false) Integer currentPage,
 								@RequestParam(required = false) Integer recordsPerPage) {
-		Params obj = new Params().p("id", "fake-id").p("name","fake vm snapshot").p("region","cn-beijing-1").p("createdAt",11111111).p("size",1).p("status","ACTIVE").p("minRam",1).p("minDisk",1);
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		list.add(obj);
-		Page page;
-		if (currentPage == null || recordsPerPage == null) {
-			page = new Page();
-		} else {
-			page = new Page(currentPage, recordsPerPage);
-		}
-		page.setData(list);
 		ResultObject result = new ResultObject();
-		result.setData(page);
+		try {
+			long userId = Util.userId(sessionService);
+			result.setData(localImageService.listVmSnapshot(userId, region, name, currentPage, recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 
