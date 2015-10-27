@@ -432,7 +432,7 @@ public class NetworkController {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			neworkManager.deleteFloaingIp(region, floatingIpId);
 			//保存删除公网IP操作
-			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, neworkManager.getPrivateSubnet(region, floatingIpId).getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, neworkManager.getFloatingIp(region, floatingIpId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
