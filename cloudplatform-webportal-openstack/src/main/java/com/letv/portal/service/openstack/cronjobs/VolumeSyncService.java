@@ -18,4 +18,6 @@ public interface VolumeSyncService {
 
     void syncStatus(CloudvmVolume cloudvmVolume, Checker<Volume>
             checker);
+
+    void syncStatusAfterServerDeleted(long tenantId, String region, String serverId);
 }

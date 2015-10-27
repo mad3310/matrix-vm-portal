@@ -134,5 +134,14 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
         }
     }
 
-
+    @Override
+    public void syncStatusAfterServerDeleted(long tenantId, String region, String serverId) {
+        List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByServerIdAndStatus(tenantId, region, serverId, CloudvmVolumeStatus.NIL);
+        syncStatus(cloudvmVolumes, new Checker<Volume>() {
+            @Override
+            public boolean check(Volume volume) throws Exception {
+                return true;
+            }
+        });
+    }
 }

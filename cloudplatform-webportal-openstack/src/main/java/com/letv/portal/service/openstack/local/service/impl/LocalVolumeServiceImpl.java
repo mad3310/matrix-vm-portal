@@ -7,6 +7,7 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
+import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.local.resource.LocalVmResource;
