@@ -1,17 +1,13 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import com.letv.common.email.bean.MailMessage;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
-import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
+import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class BindFloatingIpTask extends VmsCreateSubTask {
 
@@ -26,8 +22,8 @@ public class BindFloatingIpTask extends VmsCreateSubTask {
 
 			for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
 				Server server = context.getApiCache().getServerApi().get(vmCreateContext.getServerCreated().getId());
-				FloatingIP floatingIP = context.getApiCache().getNeutronFloatingIpApi().get(vmCreateContext.getFloatingIp().getId());
-				if (server != null && server.getStatus() != Server.Status.ERROR && floatingIP != null) {
+				FloatingIP floatingIP = context.getApiCache().getNovaFloatingIPApi().get(vmCreateContext.getFloatingIp().getId());
+				if (server != null && server.getStatus() != Server.Status.ERROR && floatingIP != null && floatingIP.getInstanceId() == null) {
 					context.getApiCache()
 							.getNovaFloatingIPApi()
 							.addToServer(
