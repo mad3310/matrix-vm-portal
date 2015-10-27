@@ -143,4 +143,14 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
             cloudvmVolumeService.delete(cloudvmVolume);
         }
     }
+
+    @Override
+    public void detachVolumesOfServer(long userId, long tenantId, String region, String serverId) {
+        List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByServerId(tenantId, region, serverId);
+        for (CloudvmVolume cloudvmVolume : cloudvmVolumes) {
+            cloudvmVolume.setStatus(CloudvmVolumeStatus.AVAILABLE);
+            cloudvmVolume.setUpdateUser(userId);
+            cloudvmVolumeService.update(cloudvmVolume);
+        }
+    }
 }

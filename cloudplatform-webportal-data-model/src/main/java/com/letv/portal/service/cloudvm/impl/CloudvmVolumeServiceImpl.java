@@ -9,6 +9,7 @@ import com.letv.portal.dao.cloudvm.ICloudvmServerDao;
 import com.letv.portal.dao.cloudvm.ICloudvmVolumeDao;
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
 import com.letv.portal.service.impl.BaseServiceImpl;
@@ -103,6 +104,21 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
             paras.put("name", name);
         }
         return cloudvmVolumeDao.selectByMapCount(paras);
+    }
+
+    @Override
+    public List<CloudvmVolume> selectByServerId(long tenantId, String region, String serverId) {
+        if (StringUtils.isEmpty(region)) {
+            throw new ValidateException("地域不能为空");
+        }
+        if (StringUtils.isEmpty(serverId)) {
+            throw new ValidateException("虚拟机ID不能为空");
+        }
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("region", region);
+        paras.put("serverId", serverId);
+        return cloudvmVolumeDao.selectByMap(paras);
     }
 
 }
