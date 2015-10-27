@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.ibatis.type.Alias;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.model.product.ProductInfoRecord;
 
 
 /**Program Name: Subscription <br>
@@ -35,6 +36,14 @@ public class Subscription extends BaseModel{
 	private String productDescn;//产品描述
 	private String baseRegionName;//地域名称
 	
+	private ProductInfoRecord productInfoRecord;//商品记录表
+	
+	public ProductInfoRecord getProductInfoRecord() {
+		return productInfoRecord;
+	}
+	public void setProductInfoRecord(ProductInfoRecord productInfoRecord) {
+		this.productInfoRecord = productInfoRecord;
+	}
 	public String getProductDescn() {
 		return productDescn;
 	}

@@ -586,17 +586,16 @@ public class PayServiceImpl implements IPayService {
 		        buffer.append("]，用户名[root]，密码[");
 		        buffer.append(serviceParams.get("adminPass"));
 		        buffer.append("]，资源ID[");
-		        buffer.append(buffer.toString());
+		        buffer.append(ids.toString());
 		        buffer.append("]。");
 		        buffer.append("注意：如不能正常使用，可及时联系运维人员。");
 		        Message msg = new Message();
-		        msg.setId(orderSubs.get(0).getCreateUser());
 		        msg.setMsgTitle(productType+"创建成功");
 		        msg.setMsgContent(buffer.toString());
 		        msg.setMsgStatus("0");//未读
 		        msg.setMsgType("2");//个人消息
 		        msg.setCreatedTime(d);
-		        Map<String,Object> msgRet = this.messageProxyService.saveMessage(msg);
+		        Map<String,Object> msgRet = this.messageProxyService.saveMessage(orderSubs.get(0).getCreateUser(), msg);
 		        if(!(Boolean) msgRet.get("result")) {
 		        	logger.error("保存服务创建成功通知，失败原因:"+msgRet.get("message"));
 		        }

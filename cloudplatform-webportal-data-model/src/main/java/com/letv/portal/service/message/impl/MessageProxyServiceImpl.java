@@ -72,7 +72,7 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 		StringBuffer buffer = new StringBuffer();
 		Map<String, String> map = CommonUtil.convertBeanToMap(msg);
 		buffer.append(UC_AUTH_API_HTTP).append("/saveMessage.do?userId=").append(userId);
-		//logger.info("saveMessage url:{}",buffer.toString());
+		logger.info("saveMessage url:{}",buffer.toString());
 		//String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
 		//return analyzeRestServiceResult(result, buffer.toString());
 		logger.info("保存消息:"+map.toString());

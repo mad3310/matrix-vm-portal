@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,12 +163,12 @@ public class ProductController {
 	@RequestMapping(value="/buy/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String displayData, ResultObject obj) {
 		//去服务提供方验证参数是否合法
-//		CheckResult validateResult = validateParamsDataByServiceProvider(id, paramsData);
-//		if(!validateResult.isSuccess()) {
-//			obj.setResult(0);
-//			obj.addMsg(validateResult.getFailureReason());
-//			return obj;
-//		}
+		CheckResult validateResult = validateParamsDataByServiceProvider(id, paramsData);
+		if(!validateResult.isSuccess()) {
+			obj.setResult(0);
+			obj.addMsg(validateResult.getFailureReason());
+			return obj;
+		}
 		Map<String, Object> paramsDataMap = JSONObject.parseObject(paramsData, Map.class);
 		Map<String, Object> billingParams = new HashMap<String, Object>();
 		
@@ -237,6 +239,11 @@ public class ProductController {
 		return obj;
 	}
 	
-	
+
+	@RequestMapping(value="/service/warn",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject serviceWarn(HttpServletRequest request,ResultObject obj) {
+		this.subscriptionService.serviceWarn();
+		return obj;
+	}
 	
 }

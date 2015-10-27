@@ -172,13 +172,12 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         buffer.append(billUserAmount.getAvailableAmount());
         buffer.append("]，如有问题，可拨打客服电话。");
         Message msg = new Message();
-        msg.setId(userId);
         msg.setMsgTitle("成功充值"+amount+"元");
         msg.setMsgContent(buffer.toString());
         msg.setMsgStatus("0");//未读
         msg.setMsgType("2");//个人消息
         msg.setCreatedTime(d);
-        Map<String,Object> msgRet = this.messageProxyService.saveMessage(msg);
+        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
         if(!(Boolean) msgRet.get("result")) {
         	logger.error("充值成功后保存消息通知失败，失败原因:"+msgRet.get("message"));
         }
@@ -296,13 +295,12 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         buffer.append(billUserAmount.getAvailableAmount());
         buffer.append("]，如有问题，可拨打客服电话。");
         Message msg = new Message();
-        msg.setId(userId);
         msg.setMsgTitle("退款"+price+"元");
         msg.setMsgContent(buffer.toString());
         msg.setMsgStatus("0");//未读
         msg.setMsgType("2");//个人消息
         msg.setCreatedTime(d);
-        Map<String,Object> msgRet = this.messageProxyService.saveMessage(msg);
+        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
         if(!(Boolean) msgRet.get("result")) {
         	logger.error("服务创建失败后保存回退金额消息通知，失败原因:"+msgRet.get("message"));
         }
@@ -341,13 +339,12 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         buffer.append(billUserAmount.getAvailableAmount());
         buffer.append("]，如有问题，可拨打客服电话。");
         Message msg = new Message();
-        msg.setId(userId);
         msg.setMsgTitle("消费金额"+price+"元");
         msg.setMsgContent(buffer.toString());
         msg.setMsgStatus("0");//未读
         msg.setMsgType("2");//个人消息
         msg.setCreatedTime(d);
-        Map<String,Object> msgRet = this.messageProxyService.saveMessage(msg);
+        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
         if(!(Boolean) msgRet.get("result")) {
         	logger.error("服务创建成功后保存扣减金额消息通知，失败原因:"+msgRet.get("message"));
         }
