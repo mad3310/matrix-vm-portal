@@ -3,7 +3,7 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 
-public class CreateApiCacheTask implements VmsCreateSubTask {
+public class CreateApiCacheTask extends VmsCreateSubTask {
 
 	private ApiSession apiSession;
 

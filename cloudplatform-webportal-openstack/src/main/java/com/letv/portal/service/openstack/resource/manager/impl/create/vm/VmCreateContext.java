@@ -6,6 +6,8 @@ import org.jclouds.openstack.neutron.v2.domain.Port;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 
+import java.util.Date;
+
 public class VmCreateContext {
 
 	private Port subnetPort;
@@ -13,6 +15,7 @@ public class VmCreateContext {
 	private FloatingIP floatingIp;
 	private ServerCreated serverCreated;
 	private Server server;
+	private Date floatingIpBindDate;
 
 	public void setServer(Server server) {
 		this.server = server;
@@ -54,4 +57,11 @@ public class VmCreateContext {
 		this.serverCreated = serverCreated;
 	}
 
+	public Date getFloatingIpBindDate() {
+		return floatingIpBindDate;
+	}
+
+	public void setFloatingIpBindDate(Date floatingIpBindDate) {
+		this.floatingIpBindDate = floatingIpBindDate;
+	}
 }

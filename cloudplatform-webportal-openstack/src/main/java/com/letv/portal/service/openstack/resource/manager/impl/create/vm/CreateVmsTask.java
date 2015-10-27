@@ -11,7 +11,7 @@ import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 
-public class CreateVmsTask implements VmsCreateSubTask {
+public class CreateVmsTask extends VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
@@ -63,4 +63,8 @@ public class CreateVmsTask implements VmsCreateSubTask {
 			throws OpenStackException {
 	}
 
+	@Override
+	boolean needContinueAfterException() {
+		return true;
+	}
 }

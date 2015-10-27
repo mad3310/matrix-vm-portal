@@ -12,7 +12,7 @@ import org.jclouds.openstack.nova.v2_0.domain.Server;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 
-public class CheckNovaQuotaTask implements VmsCreateSubTask {
+public class CheckNovaQuotaTask extends VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {

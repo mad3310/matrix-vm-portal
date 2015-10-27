@@ -10,7 +10,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 
-public class CreateFloatingIpTask implements VmsCreateSubTask {
+public class CreateFloatingIpTask extends VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {

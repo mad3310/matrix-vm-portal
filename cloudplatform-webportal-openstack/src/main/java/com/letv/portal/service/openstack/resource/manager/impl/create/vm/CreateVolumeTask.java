@@ -1,22 +1,22 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
-import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+import com.letv.portal.service.openstack.erroremail.impl.ErrorMailMessageModel;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.resource.manager.impl.Checker;
-
+import java.text.MessageFormat;
 import java.util.List;
 
-public class CreateVolumeTask implements VmsCreateSubTask {
+public class CreateVolumeTask extends VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
@@ -76,6 +76,7 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 				return volume.getStatus() == Volume.Status.CREATING;
 			}
 		};
+		OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
 			if (vmCreateContext.getServerCreated() == null
 					&& vmCreateContext.getVolume() != null) {
@@ -83,22 +84,31 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 				context.getVolumeManager().waitingVolume(
 						context.getApiCache().getVolumeApi(), volumeId, 100,
 						volumeChecker);
-				context.getApiCache().getVolumeApi().delete(volumeId);
-                OpenStackServiceImpl.getOpenStackServiceGroup()
-                        .getLocalVolumeService()
-                        .delete(context.getUserId(), context.getVmCreateConf().getRegion(), volumeId);
-            }
-            if (vmCreateContext.getServerCreated() != null && vmCreateContext.getVolume() != null) {
-                OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
-                CloudvmVolume cloudvmVolume = openStackServiceGroup.getCloudvmVolumeService()
-                        .selectByVolumeId(context.getUserId(), context.getVmCreateConf().getRegion(), vmCreateContext.getVolume().getId());
-                openStackServiceGroup.getVolumeSyncService().syncStatus(cloudvmVolume, new Checker<Volume>() {
-                    @Override
-                    public boolean check(Volume volume) throws Exception {
-                        return volume.getStatus() != Volume.Status.CREATING;
-                    }
-                });
-            }
+				boolean isSuccess = context.getApiCache().getVolumeApi().delete(volumeId);
+				if (isSuccess) {
+					OpenStackServiceImpl.getOpenStackServiceGroup()
+							.getLocalVolumeService()
+							.delete(context.getUserId(), context.getVmCreateConf().getRegion(), volumeId);
+				} else {
+					OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService()
+							.sendErrorEmail(
+									new ErrorMailMessageModel()
+											.exceptionMessage("创建云主机的云硬盘回滚时删除失败")
+											.exceptionParams(MessageFormat.format("userId={0},region={1},volumeId={2}", context.getUserId(),context.getVmCreateConf().getRegion(), volumeId))
+											.toMap());
+				}
+			}
+//            if (vmCreateContext.getServerCreated() != null && vmCreateContext.getVolume() != null) {
+//                OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
+//                CloudvmVolume cloudvmVolume = openStackServiceGroup.getCloudvmVolumeService()
+//                        .selectByVolumeId(context.getUserId(), context.getVmCreateConf().getRegion(), vmCreateContext.getVolume().getId());
+//                openStackServiceGroup.getVolumeSyncService().syncStatus(cloudvmVolume, new Checker<Volume>() {
+//                    @Override
+//                    public boolean check(Volume volume) throws Exception {
+//                        return volume.getStatus() != Volume.Status.CREATING;
+//                    }
+//                });
+//            }
 		}
 	}
 

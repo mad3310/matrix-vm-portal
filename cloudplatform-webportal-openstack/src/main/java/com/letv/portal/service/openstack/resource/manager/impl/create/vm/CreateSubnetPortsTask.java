@@ -6,7 +6,7 @@ import org.jclouds.openstack.neutron.v2.domain.Port;
 import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 
-public class CreateSubnetPortsTask implements VmsCreateSubTask {
+public class CreateSubnetPortsTask extends VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {

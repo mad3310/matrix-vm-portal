@@ -63,8 +63,22 @@ public class VMCreate {
                 tasks.add(new CreateVolumeTask());
                 tasks.add(new CreateSubnetPortsTask());
                 tasks.add(new CreateVmsTask());
-                tasks.add(new AddVmsCreateListenerTask());
-                tasks.add(new EmailVmsCreatedTask());
+//                tasks.add(new AddVmsCreateListenerTask());
+                BindFloatingIpTask bindFloatingIpTask = new BindFloatingIpTask();
+                AddVolumeTask addVolumeTask = new AddVolumeTask();
+                boolean emailLast = false;
+                if (addVolumeTask.isEnable(multiVmCreateContext) || bindFloatingIpTask.isEnable(multiVmCreateContext)) {
+                    emailLast = true;
+                }
+                if (!emailLast) {
+                    tasks.add(new EmailVmsCreatedTask());
+                }
+                tasks.add(new WaitingVmsCreatedTask());
+                tasks.add(bindFloatingIpTask);
+                tasks.add(addVolumeTask);
+                if (emailLast) {
+                    tasks.add(new EmailVmsCreatedTask());
+                }
 
                 VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
                         tasks, multiVmCreateContext);

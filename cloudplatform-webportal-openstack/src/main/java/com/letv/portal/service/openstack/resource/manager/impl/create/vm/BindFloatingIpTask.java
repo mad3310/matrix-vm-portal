@@ -13,27 +13,33 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
-public class BindFloatingIpTask implements VmsCreateSubTask {
+public class BindFloatingIpTask extends VmsCreateSubTask {
+
+	@Override
+	boolean isEnable(MultiVmCreateContext context) {
+		return context.getVmCreateConf().getBindFloatingIp();
+	}
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
-		Map<String, Date> floatingIpIdToBindDate = new HashMap<String, Date>();
+		if (isEnable(context) && context.getVmCreateContexts() != null) {
 
-		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
-			Server server = context.getApiCache().getServerApi().get(vmCreateContext.getServerCreated().getId());
-			FloatingIP floatingIP = context.getApiCache().getNeutronFloatingIpApi().get(vmCreateContext.getFloatingIp().getId());
-			if (server != null && server.getStatus() != Server.Status.ERROR && floatingIP != null) {
-				context.getApiCache()
-						.getNovaFloatingIPApi()
-						.addToServer(
-								vmCreateContext.getFloatingIp()
-										.getFloatingIpAddress(),
-								vmCreateContext.getServerCreated().getId());
-				floatingIpIdToBindDate.put(vmCreateContext.getFloatingIp().getId(), new Date());
+			for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
+				Server server = context.getApiCache().getServerApi().get(vmCreateContext.getServerCreated().getId());
+				FloatingIP floatingIP = context.getApiCache().getNeutronFloatingIpApi().get(vmCreateContext.getFloatingIp().getId());
+				if (server != null && server.getStatus() != Server.Status.ERROR && floatingIP != null) {
+					context.getApiCache()
+							.getNovaFloatingIPApi()
+							.addToServer(
+									vmCreateContext.getFloatingIp()
+											.getFloatingIpAddress(),
+									vmCreateContext.getServerCreated().getId());
+					vmCreateContext.setFloatingIpBindDate(new Date());
+				}
 			}
-		}
 
-		emailBindFloatingIp(context, floatingIpIdToBindDate);
+//		emailBindFloatingIp(context, floatingIpIdToBindDate);
+		}
 	}
 
 	private void emailBindFloatingIp(MultiVmCreateContext context,
@@ -75,4 +81,8 @@ public class BindFloatingIpTask implements VmsCreateSubTask {
 			throws OpenStackException {
 	}
 
+	@Override
+	boolean needContinueAfterException() {
+		return true;
+	}
 }

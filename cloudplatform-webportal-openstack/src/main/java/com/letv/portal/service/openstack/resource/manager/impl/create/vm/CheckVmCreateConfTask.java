@@ -19,7 +19,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 
-public class CheckVmCreateConfTask implements VmsCreateSubTask {
+public class CheckVmCreateConfTask extends VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext multiVmCreateContext)

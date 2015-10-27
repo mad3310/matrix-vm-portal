@@ -13,7 +13,7 @@ import com.letv.common.util.ExceptionUtils;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 
-public class AddVmsCreateListenerTask implements VmsCreateSubTask {
+public class AddVmsCreateListenerTask extends VmsCreateSubTask {
 
 	private Logger logger = LoggerFactory
 			.getLogger(AddVmsCreateListenerTask.class);

@@ -12,22 +12,30 @@ public class VmsCreateSubTasksExecutor {
 		this.context = context;
 	}
 
+    private void runTasksFromIndex(final int taskBeginIndex) throws Exception {
+        int taskIndex = taskBeginIndex;
+        try {
+            for (; taskIndex < tasks.size(); taskIndex++) {
+                tasks.get(taskIndex).run(context);
+            }
+        } catch (Exception ex) {
+            boolean needContinueAfterException = tasks.get(taskIndex).needContinueAfterException();
+            for (; taskIndex >= taskBeginIndex; taskIndex--) {
+                tasks.get(taskIndex).rollback(context);
+            }
+            if (needContinueAfterException) {
+                runTasksFromIndex(taskIndex + 1);
+            }
+            throw ex;
+        }
+    }
+
 	public void run() throws Exception {
 		ApiSession apiSession = new ApiSession(context.getVmManager()
 				.getOpenStackConf(), context.getVmManager().getOpenStackUser());
 		try {
 			tasks.add(0, new CreateApiCacheTask(apiSession));
-			int taskIndex = 0;
-			try {
-				for (; taskIndex < tasks.size(); taskIndex++) {
-					tasks.get(taskIndex).run(context);
-				}
-			} catch (Exception ex) {
-				for (; taskIndex >= 0; taskIndex--) {
-					tasks.get(taskIndex).rollback(context);
-				}
-				throw ex;
-			}
+            runTasksFromIndex(0);
 		} finally {
 			apiSession.close();
 		}

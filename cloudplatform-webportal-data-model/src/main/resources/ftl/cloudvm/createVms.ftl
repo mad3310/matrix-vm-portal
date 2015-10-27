@@ -45,6 +45,9 @@ p {
         <th width="100px">密钥名</th>
 		<th width="100px">密码</th>
 		<th width="400px">创建时间</th>
+        <th width="100px">绑定的公网IP</th>
+        <th width="100px">端口号</th>
+        <th width="400px">绑定时间</th>
 	</tr>
 	<#list vmList as vm>
 	<tr>
@@ -55,6 +58,9 @@ p {
         <td>${vm.keyPairName!''}</td>
 		<td>${vm.password!''}</td>
 		<td>${vm.createTime}</td>
+        <td>${vm.ip!''}</td>
+        <td>${vm.port!''}</td>
+        <td>${vm.bindTime!''}</td>
 	</tr>
 	</#list>
 </table>
