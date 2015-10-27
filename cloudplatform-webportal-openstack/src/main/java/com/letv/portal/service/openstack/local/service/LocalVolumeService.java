@@ -26,6 +26,4 @@ public interface LocalVolumeService {
     void updateNameAndDesc(long userId, long tenantId, String region, String volumeId, String name, String description);
 
     void delete(long tenantId, String region, String volumeId);
-
-    void detachVolumesOfServer(long userId, long tenantId, String region, String serverId);
 }

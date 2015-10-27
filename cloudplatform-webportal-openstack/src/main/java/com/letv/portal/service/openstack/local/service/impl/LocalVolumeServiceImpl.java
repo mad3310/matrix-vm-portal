@@ -7,6 +7,7 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
+import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.local.resource.LocalVmResource;
@@ -141,16 +142,6 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volumeId);
         if (cloudvmVolume != null) {
             cloudvmVolumeService.delete(cloudvmVolume);
-        }
-    }
-
-    @Override
-    public void detachVolumesOfServer(long userId, long tenantId, String region, String serverId) {
-        List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByServerId(tenantId, region, serverId);
-        for (CloudvmVolume cloudvmVolume : cloudvmVolumes) {
-            cloudvmVolume.setStatus(CloudvmVolumeStatus.AVAILABLE);
-            cloudvmVolume.setUpdateUser(userId);
-            cloudvmVolumeService.update(cloudvmVolume);
         }
     }
 }

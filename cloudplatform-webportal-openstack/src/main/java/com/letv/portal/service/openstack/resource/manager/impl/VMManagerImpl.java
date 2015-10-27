@@ -1045,8 +1045,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 }
 
                 long userVoUserId = openStackUser.getUserVoUserId();
-                OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService()
-                        .detachVolumesOfServer(userVoUserId, userVoUserId, region, vmId);
+                OpenStackServiceImpl.getOpenStackServiceGroup().getVolumeSyncService()
+                        .syncStatusAfterServerDeleted(userVoUserId, region, vmId);
 
                 return null;
             }

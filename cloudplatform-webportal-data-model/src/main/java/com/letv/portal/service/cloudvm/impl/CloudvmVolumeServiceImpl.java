@@ -107,7 +107,7 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
     }
 
     @Override
-    public List<CloudvmVolume> selectByServerId(long tenantId, String region, String serverId) {
+    public List<CloudvmVolume> selectByServerIdAndStatus(long tenantId, String region, String serverId, CloudvmVolumeStatus status) {
         if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }
@@ -118,6 +118,9 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
         paras.put("tenantId", tenantId);
         paras.put("region", region);
         paras.put("serverId", serverId);
+        if (status != null) {
+            paras.put("status", status);
+        }
         return cloudvmVolumeDao.selectByMap(paras);
     }
 
