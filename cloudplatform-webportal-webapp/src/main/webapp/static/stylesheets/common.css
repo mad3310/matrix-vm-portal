@@ -769,28 +769,26 @@ width:150px;height:40px;
 }
 .le-confirm .confirm-content{
     width: 100%;
-    height: 100px;
-    min-height:100px;
-    height:auto;
-    padding:20px 15px;
-    clear:both;
-    /*text-align: center;*/
+    min-height: 100px;
+    padding:30px 20px 20px 40px;
 }
-.confirm-content i{width:20%;display:block;text-align:center;float:left;}
-.confirm-content>span{width:80%;padding:12px 0 8px;display:block;float:left;}
 .le-confirm .confirm-content .confirm-message{
-    /*line-height: 100px;*/
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 30px;
+    width: 280px;
 }
 
 .le-confirm .confirm-content i{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 30px;
     font-size: 35px;
-    /*line-height: 100px;*/
-    vertical-align: middle;
     color: #ff3c37;
 }
 
 .le-confirm .confirm-operation{
-    width: 100%;
+    width:100%;
     height: 50px;
     padding: 0;
     text-align: center;
