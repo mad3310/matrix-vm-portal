@@ -27,6 +27,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreat
 import com.letv.portal.service.openstack.util.Util;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.slf4j.Logger;
@@ -256,7 +257,8 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
                 NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
-                ((VMManagerImpl) openStackSession.getVMManager()).createImageFromVm(novaApi, vmSnapshotCreateConf, listener, listenerUserData);
+                GlanceApi glanceApi = apiService.getGlanceApi(userId, sessionId);
+                ((VMManagerImpl) openStackSession.getVMManager()).createImageFromVm(novaApi, glanceApi, vmSnapshotCreateConf, listener, listenerUserData);
             } finally {
                 apiService.clearCache(userId, sessionId);
             }

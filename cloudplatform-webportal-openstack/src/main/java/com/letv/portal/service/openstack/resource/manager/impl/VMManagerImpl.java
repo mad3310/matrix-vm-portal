@@ -16,6 +16,7 @@ import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -39,6 +40,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
+import org.jclouds.openstack.glance.v1_0.GlanceApi;
+import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
+import org.jclouds.openstack.glance.v1_0.features.ImageApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.*;
@@ -278,7 +282,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                             break;
                         }
                     }
-                    if(!isBindedPublicIp) {
+                    if (!isBindedPublicIp) {
                         vmResources.add(new VMResourceImpl(region, server));
                     }
                 }
@@ -1711,7 +1715,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         runWithApi(new ApiRunnable<NovaApi, Void>() {
             @Override
             public Void run(NovaApi novaApi) throws Exception {
-                createImageFromVm(novaApi, createConf, null, null);
+                GlanceApi glanceApi = OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().getGlanceApi();
+                createImageFromVm(novaApi, glanceApi, createConf, null, null);
 
                 return null;
             }
@@ -1723,7 +1728,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
     }
 
-    public void createImageFromVm(NovaApi novaApi, VmSnapshotCreateConf createConf, VmSnapshotCreateListener listener, Object listenerUserData) throws OpenStackException {
+    public void createImageFromVm(NovaApi novaApi, GlanceApi glanceApi, VmSnapshotCreateConf createConf, VmSnapshotCreateListener listener, Object listenerUserData) throws OpenStackException {
         final String region = createConf.getRegion();
         final String vmId = createConf.getVmId();
         final String name = createConf.getName();
@@ -1738,9 +1743,19 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
         String imageId = serverApi.createImageFromServer(name, vmId);
 
+        ImageApi imageApi = glanceApi.getImageApi(region);
+        ImageDetails image = imageApi.get(imageId);
+        LocalImageService localImageService = OpenStackServiceImpl.getOpenStackServiceGroup()
+                .getLocalImageService();
+        long userVoUserId = openStackUser.getUserVoUserId();
+        localImageService
+                .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image);
+
         if (listener != null) {
             try {
-                listener.vmSnapshotCreated(new VmSnapshotCreateEvent(region, imageId, listenerUserData));
+                listener
+                        .vmSnapshotCreated(new VmSnapshotCreateEvent(region, imageId
+                                , listenerUserData));
             } catch (Exception e) {
                 Util.processBillingException(e);
             }

@@ -3,6 +3,9 @@ package com.letv.portal.service.openstack.local.service.impl;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmImage;
+import com.letv.portal.model.cloudvm.CloudvmImageShareType;
+import com.letv.portal.model.cloudvm.CloudvmImageStatus;
+import com.letv.portal.model.cloudvm.CloudvmImageType;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.local.resource.LocalImageResource;
@@ -85,13 +88,38 @@ public class LocalImageServiceImpl implements LocalImageService {
     }
 
     @Override
-    public CloudvmImage create(long userId, long tenantId, String region, ImageDetails image) {
-
-        return null;
+    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image) {
+        CloudvmImage cloudvmImage = new CloudvmImage();
+        cloudvmImage.setType(CloudvmImageShareType.PRIVATE);
+        cloudvmImage.setCreateUser(userId);
+        cloudvmImage.setTenantId(tenantId);
+        cloudvmImage.setRegion(region);
+        cloudvmImage.setImageId(image.getId());
+        cloudvmImage.setMinDisk(image.getMinDisk());
+        cloudvmImage.setMinRam(image.getMinRam());
+        cloudvmImage.setName(image.getName());
+        cloudvmImage.setSize(image.getSize().get());
+        cloudvmImage.setStatus(CloudvmImageStatus.valueOf(image.getStatus().name()));
+        cloudvmImage.setImageType(CloudvmImageType.SNAPSHOT);
+        cloudvmImageService.insert(cloudvmImage);
+        return cloudvmImage;
     }
 
     @Override
-    public void delete(long tenantId, String region, String imageId) {
+    public void updateVmSnapshotStatus(long userId, long tenantId, String region, String vmSnapshotId, CloudvmImageStatus status) {
+        CloudvmImage cloudvmImage = cloudvmImageService.selectVmSnapshotByVmSnapshotId(tenantId, region, vmSnapshotId);
+        if (cloudvmImage != null) {
+            cloudvmImage.setUpdateUser(userId);
+            cloudvmImage.setStatus(status);
+            cloudvmImageService.update(cloudvmImage);
+        }
+    }
 
+    @Override
+    public void deleteVmSnapshot(long tenantId, String region, String vmSnapshotId) {
+        CloudvmImage cloudvmImage = cloudvmImageService.selectVmSnapshotByVmSnapshotId(tenantId, region, vmSnapshotId);
+        if (cloudvmImage != null) {
+            cloudvmImageService.delete(cloudvmImage);
+        }
     }
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
 import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.util.Params;
@@ -43,6 +44,9 @@ public class VMController {
 
 	@Autowired
 	private LocalVmService vmQueryService;
+
+	@Autowired
+	private LocalImageService localImageService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -473,18 +477,13 @@ public class VMController {
 	ResultObject listVmSnapshot(@RequestParam String region, @RequestParam(required = false) String name,
 								@RequestParam(required = false) Integer currentPage,
 								@RequestParam(required = false) Integer recordsPerPage) {
-		Params obj = new Params().p("id", "fake-id").p("name","fake vm snapshot").p("region","cn-beijing-1").p("createdAt",11111111).p("size",1).p("status","ACTIVE").p("minRam",1).p("minDisk",1);
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		list.add(obj);
-		Page page;
-		if (currentPage == null || recordsPerPage == null) {
-			page = new Page();
-		} else {
-			page = new Page(currentPage, recordsPerPage);
-		}
-		page.setData(list);
 		ResultObject result = new ResultObject();
-		result.setData(page);
+		try {
+			long userId = Util.userId(sessionService);
+			result.setData(localImageService.listVmSnapshot(userId, region, name, currentPage, recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 
