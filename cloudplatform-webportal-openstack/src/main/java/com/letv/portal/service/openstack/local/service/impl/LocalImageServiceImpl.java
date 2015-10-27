@@ -73,7 +73,7 @@ public class LocalImageServiceImpl implements LocalImageService {
             }
             page = new Page(currentPage, recordsPerPage);
         }
-        List<CloudvmImage> cloudvmImages = cloudvmImageService.selectImageByName(region, name, page);
+        List<CloudvmImage> cloudvmImages = cloudvmImageService.selectVmSnapshotByName(tenantId, region, name, page);
         List<ImageResource> imageResources = new LinkedList<ImageResource>();
         for (CloudvmImage cloudvmImage : cloudvmImages) {
             imageResources.add(new LocalImageResource(cloudvmImage));
