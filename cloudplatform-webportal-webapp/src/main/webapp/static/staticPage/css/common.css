@@ -93,8 +93,23 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .col-md-offset-1{margin-left:8.33333333%;}
 .col-md-offset-0{margin-left:0;}
 /* font-face */
-@font-face {font-family: "iconfont";src: url('../../fonts/iconfont.eot'); /* IE9*/src: url('../../fonts/iconfont.eot?#iefix') format('embedded-opentype'),url('../../fonts/iconfont.woff') format('woff'), /* chrome、firefox */url('../../fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/url('../../fonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */}
-.iconfont{font-family:"iconfont" !important;font-size:16px;font-style:normal;-webkit-font-smoothing: antialiased;-webkit-text-stroke-width: 0.2px;-moz-osx-font-smoothing: grayscale;}
+
+@font-face {font-family: "iconfont";
+    src: url('../../fonts/iconfont.eot'); /* IE9*/
+    src: url('../../fonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../../fonts/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('../../fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('../../fonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
 .icon-roundcheckfill:before { content: "\e600"; }
 .icon-roundcheck:before { content: "\e601"; }
 .icon-myfill:before { content: "\e602"; }
@@ -103,6 +118,7 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .icon-roundaddfill:before { content: "\e605"; }
 .icon-roundadd:before { content: "\e606"; }
 .icon-info:before { content: "\e607"; }
+.icon-user:before { content: "\e637"; }
 .icon-shenfenrenzheng:before { content: "\e62c"; }
 .icon-icon:before { content: "\e608"; }
 .icon-camera:before { content: "\e609"; }
@@ -116,6 +132,7 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .icon-attentionfill:before { content: "\e611"; }
 .icon-attention:before { content: "\e612"; }
 .icon-computer:before { content: "\e62f"; }
+.icon-dot:before { content: "\e636"; }
 .icon-arrow01:before { content: "\e62e"; }
 .icon-radiobox:before { content: "\e613"; }
 .icon-rounddown:before { content: "\e614"; }
@@ -149,3 +166,6 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .icon-baoxiu:before { content: "\e633"; }
 .icon-menucol:before { content: "\e634"; }
 .icon-menuquick:before { content: "\e635"; }
+.icon-xin:before { content: "\e638"; }
+.icon-user-line:before { content: "\e639"; }
+.icon-plus-circle:before { content: "\e63a"; }

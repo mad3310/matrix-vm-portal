@@ -253,9 +253,38 @@ a:hover{cursor:pointer;}
 .tab-companydesc.company-staggerer{margin-top:25px;}
 .tab-companydesc .companydesc-title{font-size:1.6rem;font-size:16px\9;text-align:center;color:#088ac2}
 .tab-companydesc .companydesc-desc{margin-top:25px;}
-.companydesc-desc.desc-stagger{position:relative;}
+.companydesc-desc.desc-stagger{position:relative;width:1079px;height:367px;margin: auto;}
+.companydesc-desc.desc-stagger .vertical-line{display: block;width: 2px;border-left: 2px solid #cfcfcf;min-height: 2px;}
+.companydesc-desc.desc-stagger .solid-circle{display: block;width: 12px;height:12px;border-radius: 50%;background: #088ac2;}
+.companydesc-desc.desc-stagger .millstone{width: 160px;}
+.companydesc-desc.desc-stagger .millstone .millstone-time{height: 40px;line-height: 40px;}
+.companydesc-desc.desc-stagger .millstone .millstone-time .millstone-icon{display:inline-block;width: 40px;height: 40px;border-radius: 50%;line-height: 40px;text-align: center;vertical-align: middle;}
+.companydesc-desc.desc-stagger .millstone .millstone-time .millstone-icon i{color: white;}
+.companydesc-desc.desc-stagger .millstone .millstone-time .millstone-icon .icon-plus-circle{font-size: 32px;}
+.companydesc-desc.desc-stagger .millstone .millstone-time .millstone-icon .icon-xin{font-size: 30px;position: relative;top: 2px;}
+.companydesc-desc.desc-stagger .millstone .millstone-time .millstone-icon .icon-user-line{font-size: 28px;position: relative;top: -2px;}
+.companydesc-desc.desc-stagger .millstone .millstone-time span{font-size: 18px;vertical-align: middle;color: black;}
+.companydesc-desc.desc-stagger .millstone .millstone-info{font-size: 14px;margin-top: 10px;margin-bottom: 0;}
+.companydesc-desc.desc-stagger .millstone.rolling-over .millstone-info{margin-top: 0;margin-bottom: 10px;}
+.companydesc-desc.desc-stagger .step{font-size: 24px;position: absolute;opacity: 0;}
+.companydesc-desc.desc-stagger .step.step1{top: 240px;left: 150px;transition:all 0.2s linear 1s;}
+.companydesc-desc.desc-stagger .step.step2{top: 253px;left: 155px;transition:all 0.2s linear 2s;height: 53px;}
+.companydesc-desc.desc-stagger .step.step3{top: 305px;left: 136px;transition:all 1s linear 3s;}
+.companydesc-desc.desc-stagger .step.step4{top: 290px;left: 400px;transition:all 0.2s linear 4s;}
+.companydesc-desc.desc-stagger .step.step5{top: 188px;left: 405px;transition:all 0.2s linear 5s;height: 100px;}
+.companydesc-desc.desc-stagger .step.step6{top: 85px;left: 386px;transition:all 1s linear 6s;}
+.companydesc-desc.desc-stagger .step.step7{top: 263px;left: 700px;transition:all 0.2s linear 7s;}
+.companydesc-desc.desc-stagger .step.step8{top: 277px;left: 705px;transition:all 0.2s linear 8s;height: 30px;}
+.companydesc-desc.desc-stagger .step.step9{top: 305px;left: 687px;transition:all 1s linear 9s;}
+.companydesc-desc.desc-stagger .step.step10{top: 213px;left: 825px;transition:all 0.2s linear 10s;}
+.companydesc-desc.desc-stagger .step.step11{top: 132px;left: 830px;transition:all 0.2s linear 11s;height: 80px;}
+.companydesc-desc.desc-stagger .step.step12{top: 30px;left: 810px;transition:all 1s linear 12s;}
+.companydesc-desc.desc-stagger .millstone.step3 .millstone-time .millstone-icon{background: #08aec2;}
+.companydesc-desc.desc-stagger .millstone.step6 .millstone-time .millstone-icon{background: #f5c131;}
+.companydesc-desc.desc-stagger .millstone.step9 .millstone-time .millstone-icon{background: #a94ff2;}
+.companydesc-desc.desc-stagger .millstone.step12 .millstone-time .millstone-icon{background: #ee326e;}
 .companydesc-desc p{text-indent:2rem;text-indent:20px\9;line-height:2.8rem;line-height:28px\9;margin:0}
-.companydesc-desc .company-staggerImg{width:1079px;height:432px;}
+.companydesc-desc .company-staggerImg{width:1079px;height:367px;}
 .tab-companyImg{margin-top:30px;}
 .tab-companyImg>div{padding-right:15px;}
 .tab-companyImg .last{padding-right:0;}

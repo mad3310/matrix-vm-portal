@@ -725,9 +725,69 @@
 			<div class="companydesc-title">
 				<span>大事件</span>
 			</div>
-			<div class="companydesc-desc desc-stagger text-center">
-				<img class="company-staggerImg" src="/static/staticPage/img/company-staggerer.png">
-				
+			<div class="companydesc-desc desc-stagger">
+				<img class="company-staggerImg" src="/static/staticPage/img/guiji.png">
+				<i class="step step1 solid-circle"></i>
+				<i class="step step2 vertical-line"></i>
+				<div class="step step3 millstone">
+					<div class="millstone-time">
+						<div class="millstone-icon">
+							<i class="iconfont icon-plus-circle"></i>
+						</div>
+						<span>1月27日</span>
+					</div>
+					<div class="millstone-info">
+						乐视云计算有限公司成立
+					</div>
+				</div>
+				<i class="step step4 solid-circle"></i>
+				<i class="step step5 vertical-line"></i>
+				<div class="step step6 millstone rolling-over">
+					<div class="millstone-info">
+						推出三大产品服务
+					</div>
+					<div class="millstone-info">
+						云点播，云直播，CDN
+					</div>
+					<div class="millstone-time">
+						<div class="millstone-icon">
+							<i class="iconfont icon-xin"></i>
+						</div>
+						<span>4月16日</span>
+					</div>
+				</div>
+				<i class="step step7 solid-circle"></i>
+				<i class="step step8 vertical-line"></i>
+				<div class="step step9 millstone">
+					<div class="millstone-time">
+						<div class="millstone-icon">
+							<i class="iconfont icon-user-line"></i>
+						</div>
+						<span>6月21日</span>
+					</div>
+					<div class="millstone-info">
+						GCP通用云平台部分成立
+					</div>
+					<div class="millstone-info">
+						推出Matrix系统
+					</div>
+				</div>
+				<i class="step step10 solid-circle"></i>
+				<i class="step step11 vertical-line"></i>
+				<div class="step step12 millstone rolling-over">
+					<div class="millstone-info">
+						推出三大产品服务
+					</div>
+					<div class="millstone-info">
+						云点播，云直播，CDN
+					</div>
+					<div class="millstone-time">
+						<div class="millstone-icon">
+							<i class="iconfont icon-xin"></i>
+						</div>
+						<span>8月18日</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -893,6 +953,10 @@ $('.circleR3').css({
 $('.circleR2').css({
 	opacity:'1',
 	transition: 'all 1s linear 10s',
+});
+
+$('.companydesc-desc.desc-stagger .step').css({
+	opacity:'1'
 });
 var agent = navigator.userAgent.toLowerCase();
 browser = {  

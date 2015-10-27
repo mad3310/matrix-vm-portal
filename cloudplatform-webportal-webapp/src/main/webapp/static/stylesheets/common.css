@@ -37,6 +37,7 @@ body {
 .icon-roundaddfill:before { content: "\e605"; }
 .icon-roundadd:before { content: "\e606"; }
 .icon-info:before { content: "\e607"; }
+.icon-user:before { content: "\e637"; }
 .icon-shenfenrenzheng:before { content: "\e62c"; }
 .icon-icon:before { content: "\e608"; }
 .icon-camera:before { content: "\e609"; }
@@ -50,6 +51,7 @@ body {
 .icon-attentionfill:before { content: "\e611"; }
 .icon-attention:before { content: "\e612"; }
 .icon-computer:before { content: "\e62f"; }
+.icon-dot:before { content: "\e636"; }
 .icon-arrow01:before { content: "\e62e"; }
 .icon-radiobox:before { content: "\e613"; }
 .icon-rounddown:before { content: "\e614"; }
@@ -83,6 +85,9 @@ body {
 .icon-baoxiu:before { content: "\e633"; }
 .icon-menucol:before { content: "\e634"; }
 .icon-menuquick:before { content: "\e635"; }
+.icon-xin:before { content: "\e638"; }
+.icon-user-line:before { content: "\e639"; }
+.icon-plus-circle:before { content: "\e63a"; }
 /*end custom iconfont style*/
 
 /*begin override bootstrap style*/
