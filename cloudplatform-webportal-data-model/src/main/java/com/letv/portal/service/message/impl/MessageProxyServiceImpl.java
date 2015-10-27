@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CommonUtil;
@@ -17,6 +18,7 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.model.message.Message;
 import com.letv.portal.service.message.IMessageProxyService;
 
+@Service("messageProxyService")
 public class MessageProxyServiceImpl implements IMessageProxyService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(MessageProxyServiceImpl.class);
@@ -31,14 +33,6 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 		return saveMessage(this.sessionService.getSession().getUserId(), msg);
 	}
 	
-	private Map<String,Object> saveMessage(Long userId, Message msg) {
-		StringBuffer buffer = new StringBuffer();
-		Map<String, String> map = CommonUtil.convertBeanToMap(msg);
-		buffer.append(UC_AUTH_API_HTTP).append("/saveMessage.do?userId=").append(userId);
-		logger.info("getUnReadMessage url:{}",buffer.toString());
-		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
-		return analyzeRestServiceResult(result, buffer.toString());
-	}
 	
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> analyzeRestServiceResult(String result, String url) {
@@ -60,16 +54,31 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 	
 	@SuppressWarnings("unchecked")
 	private Map<String,Object> transResult(String result){
-		if(StringUtils.isEmpty(result))
-			return null;
-		ObjectMapper resultMapper = new ObjectMapper();
 		Map<String,Object> jsonResult = new HashMap<String,Object>();
+		if(StringUtils.isEmpty(result))
+			return jsonResult;
+		ObjectMapper resultMapper = new ObjectMapper();
 		try {
 			jsonResult = resultMapper.readValue(result, Map.class);
 		}catch (Exception e) {
 			logger.error("转换string到map出现异常：", e);
 		}
 		return jsonResult;
+	}
+
+
+	@Override
+	public Map<String, Object> saveMessage(Long userId, Message msg) {
+		StringBuffer buffer = new StringBuffer();
+		Map<String, String> map = CommonUtil.convertBeanToMap(msg);
+		buffer.append(UC_AUTH_API_HTTP).append("/saveMessage.do?userId=").append(userId);
+		//logger.info("saveMessage url:{}",buffer.toString());
+		//String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
+		//return analyzeRestServiceResult(result, buffer.toString());
+		logger.info("保存消息:"+map.toString());
+		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("result", true);
+		return ret;
 	}
 	
 }

@@ -17,5 +17,6 @@ public interface IMessageProxyService {
 	  * @date 2015年10月23日 下午4:44:22
 	  */
 	Map<String,Object> saveMessage(Message msg);
+	Map<String,Object> saveMessage(Long userId, Message msg);
 
 }
