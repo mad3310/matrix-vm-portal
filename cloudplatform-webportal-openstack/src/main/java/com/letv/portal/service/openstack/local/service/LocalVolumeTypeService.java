@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface LocalVolumeTypeService {
     List<VolumeTypeResource> list(String region) throws OpenStackException;
+
+    VolumeTypeResource get(String region, String volumeTypeId) throws OpenStackException;
 }
