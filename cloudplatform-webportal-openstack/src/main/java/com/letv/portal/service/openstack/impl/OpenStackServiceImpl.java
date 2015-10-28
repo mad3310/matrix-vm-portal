@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
+import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.internal.UserExists;
@@ -129,6 +130,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private LocalImageService localImageService;
 
+	@Autowired
+	private ImageSyncService imageSyncService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -176,6 +180,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setVolumeSyncService(volumeSyncService);
 		openStackServiceGroup.setCloudvmVolumeService(cloudvmVolumeService);
 		openStackServiceGroup.setLocalImageService(localImageService);
+		openStackServiceGroup.setImageSyncService(imageSyncService);
 	}
 
 	@Override

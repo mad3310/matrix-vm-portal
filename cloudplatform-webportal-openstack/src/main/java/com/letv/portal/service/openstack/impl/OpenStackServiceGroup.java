@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.impl;
 
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
+import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
@@ -32,6 +33,7 @@ public class OpenStackServiceGroup {
 	private VolumeSyncService volumeSyncService;
 	private ICloudvmVolumeService cloudvmVolumeService;
 	private LocalImageService localImageService;
+	private ImageSyncService imageSyncService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -162,5 +164,13 @@ public class OpenStackServiceGroup {
 
 	public LocalImageService getLocalImageService() {
 		return localImageService;
+	}
+
+	public void setImageSyncService(ImageSyncService imageSyncService) {
+		this.imageSyncService = imageSyncService;
+	}
+
+	public ImageSyncService getImageSyncService() {
+		return imageSyncService;
 	}
 }
