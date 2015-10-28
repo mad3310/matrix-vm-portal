@@ -199,4 +199,24 @@ define(['./common.filter'], function (filterModule) {
       return out;
     }
   }]);
+
+  filterModule.filter('imageSizeFilter',[function(){
+    return function (input) {
+      var out = '';
+      if (input / (1024 * 1024 * 1024) >= 1) {
+        out = (input / (1024 * 1024 * 1024)).toFixed(2) + 'GB';
+      }
+      else if (input / (1024 * 1024) >= 1) {
+        out = (input / (1024 * 1024)).toFixed(2) + 'MB';
+      }
+      else if (input / (1024) >= 1) {
+        out = (input / 1024).toFixed(2) + 'KB';
+      }
+      else {
+        out = input + 'B';
+      }
+      return out;
+    }
+  }]);
+
 });
