@@ -902,13 +902,14 @@
 </html>
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
 <script src="/static/staticPage/js/home.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/staticPage/js/browserCheck.js" type="text/javascript" charset="utf-8"></script>
 <script>
+var client=new ClientInfor();
+browerversion(client);//判断浏览器版本
 topNavHover();//导航滑过效果
 navMore();//登录注册
 iflogged();//判断是否登录
-browerversion();//判断浏览器版本
-</script>
-<script>
+var browser=client.getBrowserInfor();
 $('.top-ul a').unbind('click').click(function(event) {
 	var _target=$(this);
 	if(_target.hasClass('active')){
@@ -958,11 +959,7 @@ $('.circleR2').css({
 $('.companydesc-desc.desc-stagger .step').css({
 	opacity:'1'
 });
-var agent = navigator.userAgent.toLowerCase();
-browser = {  
-    //检测当前浏览器是否为IE  
-    ie: /(msie\s|trident.*rv:)([\w.]+)/.test(agent), 
-};
+
 if (browser.ie){
 	$('.ie-img').removeClass('hide');
 	$('#tree-svg').addClass('hide');

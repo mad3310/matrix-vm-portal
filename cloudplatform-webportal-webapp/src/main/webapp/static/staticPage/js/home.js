@@ -1,163 +1,208 @@
 (function init(){
+	// var engine={},browser={},system={};
 	toTop();
 	customerToolInit();
 })();
-var client = function() {
-  	var engine = {
-	    ie: 0,
-	    gecko: 0,
-	    webkit: 0,
-	    khtml: 0,
-	    opera: 0,
+function ClientInfor(){
+  this.engine={
+    ie: 0,
+    gecko: 0,
+    webkit: 0,
+    khtml: 0,
+    opera: 0,
 
-	    // 具体的版本
-	    ver: null
-	};
+    // 具体的版本
+    ver: null
+  };
+  this.browser = {
+    ie: 0,
+    firefox: 0,
+    safari: 0,
+    konq: 0,
+    opera: 0,
+    chrome: 0,
 
-  	var browser = {
-	    ie: 0,
-	    firefox: 0,
-	    safari: 0,
-	    konq: 0,
-	    opera: 0,
-	    chrome: 0,
+    // 具体的版本
+    ver: null
+  };
+  this.system = {
+    win: false,
+    mac: false,
+    xll: false,
 
-	    // 具体的版本
-	    ver: null
-  	};
+    // 移动设备
+    iphone: false,
+    ipod: false,
+    ipad: false,
+    ios: false,
+    android: false,
+    nokiaN: false,
+    winMobile: false,
 
-  	var system = {
-	    win: false,
-	    mac: false,
-	    xll: false,
+    // 游戏系统
+    wii: false,
+    ps: false
+  }
+  this.ua=window.navigator.userAgent;
+  this.p=window.navigator.platform;
+  this.getSystemInfor=function(){
+    this.system.win=this.p.indexOf('Win') == 0;
+    this.system.mac=this.p.indexOf('Mac') == 0;
+    this.system.xll=(this.p.indexOf('Linux') == 0 || this.p.indexOf('Xll') == 0);
 
-	    // 移动设备
-	    iphone: false,
-	    ipod: false,
-	    ipad: false,
-	    ios: false,
-	    android: false,
-	    nokiaN: false,
-	    winMobile: false,
+    this.system.iphone = this.ua.indexOf('iPhone') > -1;
+    this.system.ipod = this.ua.indexOf('iPod') > -1;
+    this.system.ipad = this.ua.indexOf('iPad') > -1;
+    // ios
+    if (this.system.mac && this.ua.indexOf('Mobile') > -1) {
+      if (/CPU (?:iPhone )?OS (\d+_\d+)/.test(this.ua)) {
+        this.system.ios = parseFloat(RegExp.$1.replace('_', '.'));
+      } else {
+          this.system.ios = 2;
+      }
+    }
+      // android
+      if (/Android (\d+\.\d+)/.test(this.ua)) {
+        this.system.android = parseFloat(RegExp.$1);
+      }
+      // nokia
+      this.system.nokiaN=this.ua.indexOf('NokiaN') > -1;
 
-	    // 游戏系统
-	    wii: false,
-	    ps: false
-	 }
+      // windows mobile
+      if (this.system.win == 'CE') {
+        this.system.winMobile = this.system.win;
+      } else if (this.system.win == 'Ph') {
+        if (/Windows Phone OS (\d+.\d+)/.test(this.ua)) {
+            this.system.win = 'Phone';
+            this.system.winMobile = parseFloat(RegExp['$1']);
+        }
+      }
 
-  	var ua = window.navigator.userAgent,
+      // game system
+      this.system.wii = this.ua.indexOf('Wii') > -1;
+      this.system.ps = /playstation/i.test(this.ua);
+      if (this.system.win){
+        if (/Win(?:dows )?([^do]{2})\s?(\d+\.\d+)?/.test(this.ua)){
+          if (RegExp['$1'] == 'NT'){
+            switch(RegExp['$2']) {
+                case '5.0': this.system.win = '2000'; break;
+                case '5.1': this.system.win = 'XP'; break;
+                case '6.0': this.system.win = 'Vista'; break;
+                case '6.1': this.system.win = '7'; break;
+                case '6.2': this.system.win = '8'; break;
+                default: this.system.win = 'NT'; break;
+            }
+          }else if(RegExp['$1'] == '9x'){
+            // 检测windows ME
+            this.system.win = 'ME';
+          }else {
+            // 检测windows 95、windows 98
+            this.system.win = RegExp['$1'];
+          }
+      }
+    }
+    return this.system;
+  }
+  this.getBrowserInfor=function(){
+    if(window.opera){
+      this.engine.ver = this.browser.ver = window.opera.version();
+      this.engine.opera = this.browser.opera = parseFloat(this.engine.ver);
+    }else if(/AppleWebKit\/(\S+)/i.test(this.ua)) {
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.webkit = parseFloat(this.engine.ver);
 
-	p = window.navigator.platform;
-	system.win = p.indexOf('Win') == 0;
-	system.mac = p.indexOf('Mac') == 0;
-	system.xll = (p.indexOf('Linux') == 0 || p.indexOf('Xll') == 0);
+      // 确定是chrome 还是 safari
+      if(/Chrome\/(\S+)/i.test(this.ua)) {
+          this.browser.chrome = parseFloat(this.engine.ver);
+      }else if(/Version\/(\S+)/i.test(this.ua)) {
+        this.browser.safari = parseFloat(this.engine.ver);
+      }else{
+          // 近似的确认版本号，早期版本的safari版本中userAgent没有Version
+          var safariVersion = 1;
+          if(this.engine.webkit<100){
+            safariVersion=1;
+          }else if(this.engine.webkit<312){
+            safariVersion=1.2;
+          }else if(this.engine.webkit<412){                     
+            safariVersion=1.3;
+          }else{                     
+            safariVersion=2;
+          }
+          this.browser.safari=this.browser.ver=safariVersion;
+      }
+    }else if(/KHTML\/(\S+)/i.test(this.ua)||/Konqueror\/([^;]+)/i.test(this.ua)){
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.khtml = this.browser.konq = parseFloat(this.engine.ver);
+    }else if(/rv:([^\)]+)\) Gecko\/\d{8}/i.test(this.ua)){
+      this.engine.ver = RegExp['$1'];
+      this.engine.gecko = parseFloat(this.engine.ver);
 
-	system.iphone = ua.indexOf('iPhone') > -1;
-	system.ipod = ua.indexOf('iPod') > -1;
-	system.ipad = ua.indexOf('iPad') > -1;
+      // 确定是不是Firefox浏览器
+      if(/Firefox\/(\S+)/i.test(this.ua)) {
+        this.browser.ver = RegExp['$1'];
+        this.browser.firefox = parseFloat(this.browser.ver);
+      }
+    }else if(/MSIE\s([^;]+)/i.test(this.ua)) {
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.ie = this.browser.ie = parseFloat(this.engine.ver);
+    }else if (/trident.*rv:([^)]+)/i.test(this.ua)) {
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.ie = this.browser.ie = parseFloat(this.engine.ver);
+    }
+    return this.browser;
+  }
+  this.getEngineInfor=function(){
+    if(window.opera){
+      this.engine.ver = this.browser.ver = window.opera.version();
+      this.engine.opera = this.browser.opera = parseFloat(this.engine.ver);
+    }else if(/AppleWebKit\/(\S+)/i.test(this.ua)) {
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.webkit = parseFloat(this.engine.ver);
 
-	// ios
-	if (system.mac && ua.indexOf('Mobile') > -1) {
-		if (/CPU (?:iPhone )?OS (\d+_\d+)/.test(ua)) {
-		 	system.ios = parseFloat(RegExp.$1.replace('_', '.'));
-		} else {
-		  	system.ios = 2;
-		}
-	}
-  	// android
-  	if (/Android (\d+\.\d+)/.test(ua)) {
-    	system.android = parseFloat(RegExp.$1);
-  	}
-  	// nokia
-  	system.nokiaN = ua.indexOf('NokiaN') > -1;
+      // 确定是chrome 还是 safari
+      if(/Chrome\/(\S+)/i.test(this.ua)) {
+          this.browser.chrome = parseFloat(this.engine.ver);
+      }else if(/Version\/(\S+)/i.test(this.ua)) {
+        this.browser.safari = parseFloat(this.engine.ver);
+      }else{
+          // 近似的确认版本号，早期版本的safari版本中userAgent没有Version
+          var safariVersion = 1;
+          if(this.engine.webkit<100){
+            safariVersion=1;
+          }else if(this.engine.webkit<312){
+            safariVersion=1.2;
+          }else if(this.engine.webkit<412){                     
+            safariVersion=1.3;
+          }else{                     
+            safariVersion=2;
+          }
+          this.browser.safari=this.browser.ver=safariVersion;
+      }
+    }else if(/KHTML\/(\S+)/i.test(this.ua)||/Konqueror\/([^;]+)/i.test(this.ua)){
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.khtml = this.browser.konq = parseFloat(this.engine.ver);
+    }else if(/rv:([^\)]+)\) Gecko\/\d{8}/i.test(this.ua)){
+      this.engine.ver = RegExp['$1'];
+      this.engine.gecko = parseFloat(this.engine.ver);
 
-  	// windows mobile
-  	if (system.win == 'CE') {
-    	system.winMobile = system.win;
-  	} else if (system.win == 'Ph') {
-    	if (/Windows Phone OS (\d+.\d+)/.test(ua)) {
-	      	system.win = 'Phone';
-	      	system.winMobile = parseFloat(RegExp['$1']);
-    	}
-  	}
-
-  	// game system
-  	system.wii = ua.indexOf('Wii') > -1;
-  	system.ps = /playstation/i.test(ua);
-	if(window.opera){
-	    engine.ver = browser.ver = window.opera.version();
-	    engine.opera = browser.opera = parseFloat(engine.ver);
-	}else if(/AppleWebKit\/(\S+)/i.test(ua)) {
-	    engine.ver = browser.ver = RegExp['$1'];
-	    engine.webkit = parseFloat(engine.ver);
-
-    	// 确定是chrome 还是 safari
-    	if(/Chrome\/(\S+)/i.test(ua)) {
-      		browser.chrome = parseFloat(engine.ver);
-    	}else if(/Version\/(\S+)/i.test(ua)) {
-    		browser.safari = parseFloat(engine.ver);
-    	}else{
-	      	// 近似的确认版本号，早期版本的safari版本中userAgent没有Version
-	      	var safariVersion = 1;
-      		if(engine.webkit<100){
-        		safariVersion=1;
-      		}else if(engine.webkit<312){
-        		safariVersion=1.2;
-      		}else if(engine.webkit<412){                     
-        		safariVersion=1.3;
-      		}else{                     
-        		safariVersion=2;
-      		}
-      		browser.safari=browser.ver=safariVersion;
-    	}
-  	}else if(/KHTML\/(\S+)/i.test(ua)||/Konqueror\/([^;]+)/i.test(ua)){
-    	engine.ver = browser.ver = RegExp['$1'];
-    	engine.khtml = browser.konq = parseFloat(engine.ver);
-  	}else if(/rv:([^\)]+)\) Gecko\/\d{8}/i.test(ua)){
-    	engine.ver = RegExp['$1'];
-    	engine.gecko = parseFloat(engine.ver);
-
-    	// 确定是不是Firefox浏览器
-    	if(/Firefox\/(\S+)/i.test(ua)) {
-	     	browser.ver = RegExp['$1'];
-	     	browser.firefox = parseFloat(browser.ver);
-    	}
-  	}else if(/MSIE\s([^;]+)/i.test(ua)) {
-	    engine.ver = browser.ver = RegExp['$1'];
-	    engine.ie = browser.ie = parseFloat(engine.ver);
-  	}else if (/trident.*rv:([^)]+)/i.test(ua)) {
-	    engine.ver = browser.ver = RegExp['$1'];
-	    engine.ie = browser.ie = parseFloat(engine.ver);
-	}
-  	if (system.win){
-    	if (/Win(?:dows )?([^do]{2})\s?(\d+\.\d+)?/.test(ua)){
-      		if (RegExp['$1'] == 'NT'){
-        		switch(RegExp['$2']) {
-          			case '5.0': system.win = '2000'; break;
-          			case '5.1': system.win = 'XP'; break;
-          			case '6.0': system.win = 'Vista'; break;
-          			case '6.1': system.win = '7'; break;
-          			case '6.2': system.win = '8'; break;
-          			default: system.win = 'NT'; break;
-        		}
-      		}else if(RegExp['$1'] == '9x'){
-        		// 检测windows ME
-        		system.win = 'ME';
-      		}else {
-        		// 检测windows 95、windows 98
-        		system.win = RegExp['$1'];
-      		}
-    	}
-  	}
-  	return {
-    	engine: engine,
-    	browser: browser,
-    	system: system
-  	}
-}();
-// // common:监测浏览器版本
-function browerversion(){
-	var _browser = client.browser;
+      // 确定是不是Firefox浏览器
+      if(/Firefox\/(\S+)/i.test(this.ua)) {
+        this.browser.ver = RegExp['$1'];
+        this.browser.firefox = parseFloat(this.browser.ver);
+      }
+    }else if(/MSIE\s([^;]+)/i.test(this.ua)) {
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.ie = this.browser.ie = parseFloat(this.engine.ver);
+    }else if (/trident.*rv:([^)]+)/i.test(this.ua)) {
+      this.engine.ver = this.browser.ver = RegExp['$1'];
+      this.engine.ie = this.browser.ie = parseFloat(this.engine.ver);
+    }
+    return this.engine;
+  }
+}
+//  common:监测浏览器版本
+function browerversion(obj){
+	var _browser=obj.getBrowserInfor();
 	if(_browser.ie&&_browser.ver<9.0){
 	  window.location.replace="/browserError";
 	}else if(_browser.firefox&&_browser.ver< 5.0){
@@ -327,9 +372,8 @@ function scrollNav(sheight){
         	}
         	_target.removeClass('hide');
         	var tempH=vtop+height;
-        	console.log(vtop+"   "+height+"   "+scrollh)
-        	if(tempH>=scrollh){//到底部
-        		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
+        	if(tempH+232>=scrollh){//到底部
+        		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
         	}else{
         		if(vtop>=2077){
 					_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
@@ -355,12 +399,11 @@ function scrollNav(sheight){
 // helpcenter:scroll-nav
 function helpScrollNav(sheight){
 	var scrollh=document.body.scrollHeight;
-	// var scrollh=$(document).height();
 	$(window).scroll(function(){  
         var vtop=$(this).scrollTop();
         var height=$(this).height();
-        var _target=$('.tab-fixed')
-        console.log(vtop+"   "+height+"   "+scrollh)
+        var _target=$('.tab-fixed');
+        console.log(vtop+"  "+height+"   "+scrollh);
         if(vtop>=sheight){
         	$('.tab-layout').addClass('hide');
         	var _tabClone=$('.tab-layout').children().clone();
@@ -370,19 +413,16 @@ function helpScrollNav(sheight){
         	}
         	_target.removeClass('hide');
         	var tempH=vtop+height;
-        	// console.log(vtop+"   "+height+"   "+scrollh)
-        	if(tempH>=scrollh){//到底部
-        		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
+        	if(tempH+90>=scrollh||vtop>=1700){//到底部
+        		_target.children('div:eq(5)').addClass('active-item').siblings().removeClass('active-item');
         	}else{
-        		if(vtop>=1534){
-        			_target.children('div:eq(5)').addClass('active-item').siblings().removeClass('active-item');
-        		}else if(vtop>=1386){
+        		if(vtop>=1380){
 					_target.children('div:eq(4)').addClass('active-item').siblings().removeClass('active-item');
-	        	}else if(vtop>=1010){
+	        	}else if(vtop>=1000){
 	        		_target.children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
-	        	}else if(vtop>=802){
+	        	}else if(vtop>=800){
 	        		_target.children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
-	        	}else if(vtop>=594){
+	        	}else if(vtop>=570){
 	        		_target.children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
 	        	}else{
 	        		_target.children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
@@ -416,6 +456,7 @@ function tabClick(){
 		var _anchor=_target.children('a').attr('href');
 		var _top=$(_anchor).offset();
 		if(_top){
+			console.log('tabclick    '+_top.top)
 			// $('html, body').animate({
 			// 	scrollTop:$(_anchor).offset().top
 			// },500);
@@ -508,13 +549,13 @@ function helpInite(){
 	$('.menu-parent').unbind('click').click(function(event) {
 		if($(this).hasClass('open')){
 			$(this).removeClass('open').children('i').css({
-				transform: 'rotate(180deg)',
-				transition: 'transform .3s ease-in'
+				transform: 'rotate(-90deg)',
+				transition: 'transform .2s ease-in'
 			});
 		}else{
 			$(this).addClass('open').children('i').css({
 				transform: 'rotate(0deg)',
-				transition: 'transform .3s ease-in'
+				transition: 'transform .2s ease-in'
 			});
 		}
 		var submenu=$(this).attr('self-menulink');

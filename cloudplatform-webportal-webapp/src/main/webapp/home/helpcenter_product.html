@@ -256,7 +256,7 @@
 		</div>
 		<div id="anchor-snap" class="product-intro">
 			<div>快照</div>
-			<div class="intro-desc">是指云主机或云硬盘在某一特定时间点的完整内容及结构的副本。快照的作用主要是在线数据备份与恢复，当设备发生应用故障或者文件损坏时，，用户可以随时按快照点进行快速的数据恢复，从而实现包括增量备份等各种形式的备份服务。
+			<div class="intro-desc">是指云主机或云硬盘在某一特定时间点的完整内容及结构的副本。快照的作用主要是在线数据备份与恢复，当设备发生应用故障或者文件损坏时，用户可以随时按快照点进行快速的数据恢复，从而实现包括增量备份等各种形式的备份服务。
 有计划地对云主机和云硬盘创建快照，是一个保证您业务可持续运行的非常好的习惯</div>
 		</div>
 		<div id="anchor-net" class="product-intro">
@@ -317,11 +317,7 @@
 		</div>
 	</div>
 <script>
-var agent = navigator.userAgent.toLowerCase();
-browser = {  
-    //检测当前浏览器是否为IE  
-    ie: /(msie\s|trident.*rv:)([\w.]+)/.test(agent), 
-};
+tabClick();// tab 切换
 if (browser.ie){
 	$('.ie-svgbg').removeClass('hide');
 	$('#productsvg').addClass('hide');
