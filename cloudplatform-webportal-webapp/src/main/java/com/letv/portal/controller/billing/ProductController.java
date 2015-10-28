@@ -29,6 +29,7 @@ import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
+import com.letv.portal.service.openstack.billing.ResourceQueryService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.order.IOrderService;
@@ -77,6 +78,8 @@ public class ProductController {
 	private IHostCalculateService hostCalculateService;
 	@Autowired
 	private ResourceCreateService resourceCreateService;
+	@Autowired
+	private ResourceQueryService resourceQueryService;
 	
 	
 	@RequestMapping(value="/product/{id}",method=RequestMethod.GET)   
@@ -111,16 +114,17 @@ public class ProductController {
 	
 	private void transferParamsDateToCalculate(Map<String, Object> params, Long id, Map<String, Object> billingParams) {
 		if(id==2) {//云主机参数转换
-			FlavorResource flavor = resourceCreateService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
+			FlavorResource flavor = resourceQueryService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
+			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
 			billingParams.put("os_cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
 			billingParams.put("os_cpu_ram_type", flavor.getVcpus()+"_"+flavor.getRam());
 			billingParams.put("os_storage", params.get("volumeSize")+"");
-			billingParams.put("os_storage_type", "SATA");
+			billingParams.put("os_storage_type", volume.getName()+"");
 			billingParams.put("os_broadband", params.get("bandWidth")+"");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		} else if(id==3) {//云硬盘
-			VolumeTypeResource volume = this.resourceCreateService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
+			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
 			billingParams.put("os_storage", params.get("size")+"");
 			billingParams.put("os_storage_type", volume.getName()+"");
 			billingParams.put("order_num", params.get("count")+"");

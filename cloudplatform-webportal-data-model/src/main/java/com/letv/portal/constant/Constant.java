@@ -51,7 +51,7 @@ public class Constant {
 	public static boolean QUERY_MYSQL_CONSTANT_DATA = false;
 	
 	//创建云主机
-	public static final String CREATE_OPENSTACK = "创建云主机";
+	public static final String CREATE_OPENSTACK = "云主机";
 	//启动云主机
 	public static final String START_OPENSTACK = "启动云主机";
 	//停止云主机
@@ -68,14 +68,14 @@ public class Constant {
 	public static final String UNBINDED_FLOATINGIP_OPENSTACK = "云主机解绑公网IP";
 	
 	//创建云硬盘
-	public static final String CREATE_VOLUME = "创建云硬盘";
+	public static final String CREATE_VOLUME = "云硬盘";
 	//删除云硬盘
 	public static final String DELETE_VOLUME = "删除云硬盘";
 	//创建快照
 	public static final String SNAPSHOT_CREATE_VOLUME = "创建云硬盘快照";
 	
 	//创建公网IP
-	public static final String CREATE_FLOATINGIP = "创建公网IP";
+	public static final String CREATE_FLOATINGIP = "公网IP";
 	//删除公网IP
 	public static final String DELETE_FLOATINGIP = "删除公网IP";
 	//编辑公网IP
@@ -83,7 +83,7 @@ public class Constant {
 	
 	
 	//创建路由器
-	public static final String CREATE_ROUTER = "创建路由器";
+	public static final String CREATE_ROUTER = "路由器";
 	//删除路由器
 	public static final String DELETE_ROUTER = "删除路由器";
 	public static final String BINDED_FLOATINGIP_ROUTER = "路由器绑定公网IP";

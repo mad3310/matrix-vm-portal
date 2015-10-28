@@ -148,9 +148,10 @@ public class NetworkController {
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String privateName = neworkManager.getPrivate(region, networkId).getName();
 			neworkManager.deletePrivate(region, networkId);
 			//保存删除私网操作
-			this.recentOperateService.saveInfo(Constant.DELETE_PRIVATE_NET, neworkManager.getPrivate(region, networkId).getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_PRIVATE_NET, privateName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -260,9 +261,10 @@ public class NetworkController {
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String privateSubnetName = neworkManager.getPrivateSubnet(region, subnetId).getName();
 			neworkManager.deletePrivateSubnet(region, subnetId);
 			//保存删除私网操作
-			this.recentOperateService.saveInfo(Constant.DELETE_SUBNET, neworkManager.getPrivateSubnet(region, subnetId).getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_SUBNET, privateSubnetName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -333,9 +335,10 @@ public class NetworkController {
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String routerName = neworkManager.getRouter(region, routerId).getName();
 			neworkManager.deleteRouter(region, routerId);
 			//保存删除路由操作
-			this.recentOperateService.saveInfo(Constant.DELETE_ROUTER, neworkManager.getRouter(region, routerId).getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_ROUTER, routerName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -450,9 +453,10 @@ public class NetworkController {
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
+			String floatingIpName = neworkManager.getFloatingIp(region, floatingIpId).getName();
 			neworkManager.deleteFloaingIp(region, floatingIpId);
 			//保存删除公网IP操作
-			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, neworkManager.getFloatingIp(region, floatingIpId).getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, floatingIpName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

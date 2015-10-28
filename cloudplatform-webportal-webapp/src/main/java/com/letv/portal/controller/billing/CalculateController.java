@@ -56,7 +56,8 @@ public class CalculateController {
 		if(id==2) {//云主机参数转换
 			params.put("os_cpu_ram", params.get("cpu_ram"));
 			params.put("os_cpu_ram_type", params.get("cpu_ram"));
-			params.put("os_storage_type", "SATA");
+			params.put("os_storage", params.get("volumeSize")+"");
+			params.put("os_storage_type", params.get("volumeType")+"");
 		} else if(id==3) {//云硬盘
 			params.put("os_storage", params.get("volumeSize")+"");
 			params.put("os_storage_type", params.get("volumeType")+"");
