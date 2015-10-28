@@ -215,8 +215,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           order_time: $scope.vmBuyPeriod.toString(),
           order_num: $scope.vmCount.toString(),
           os_broadband: $scope.networkBandWidth.toString(),
-          os_storage: $scope.dataDiskVolume.toString(),
-          cpu_ram: $scope.selectedVmCpu + '_' + $scope.selectedVmRam
+          volumeType: $scope.selectedVmDiskType.name,
+          volumeSize:$scope.dataDiskVolume.toString(),
+          cpu_ram: $scope.selectedVmCpu + '_' + $scope.selectedVmRam,
         };
         calculatePriceData=data;
         HttpService.doPost(Config.urls.vm_calculate_price,data).success(function (data, status, headers, config) {
