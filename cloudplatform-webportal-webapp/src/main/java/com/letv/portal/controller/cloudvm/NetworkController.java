@@ -206,13 +206,12 @@ public class NetworkController {
 	@ResponseBody
 	ResultObject createPrivateNetworkAndSubnet(
 			@RequestParam String region, @RequestParam String networkName, @RequestParam String subnetName,
-			@RequestParam String cidr, @RequestParam boolean autoGatewayIp, @RequestParam String gatewayIp,
-			@RequestParam boolean enableDhcp) {
+			@RequestParam String cidr, @RequestParam boolean autoGatewayIp, @RequestParam String gatewayIp) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
-					.createPrivateNetworkAndSubnet(region, networkName, subnetName, cidr, autoGatewayIp, gatewayIp, enableDhcp);
+					.createPrivateNetworkAndSubnet(region, networkName, subnetName, cidr, autoGatewayIp, gatewayIp, false);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
