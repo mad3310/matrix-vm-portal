@@ -170,13 +170,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机快照');
           return;
         }
-        if(checkedSnapshots[0].status!=='available' && checkedSnapshots[0].status!=='error'){
-          WidgetService.notifyWarning('云主机快照当前状态不可删除');
-          return;
-        }
         var data={
           region:checkedSnapshots[0].region,
-          snapshotId: checkedSnapshots[0].id
+          vmSnapshotId: checkedSnapshots[0].id
         };
         var modalInstance = WidgetService.openConfirmModal('删除云主机快照','确定要删除云主机快照（'+checkedSnapshots[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {

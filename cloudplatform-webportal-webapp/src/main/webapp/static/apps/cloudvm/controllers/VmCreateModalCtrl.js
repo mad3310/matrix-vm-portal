@@ -88,7 +88,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         keyPairName:'',
         count:$scope.vmCount,
         privateSubnetId:'',
-        snapshotId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmImage.id:'',
+        snapshotId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmSnapshot.id:'',
         order_time: $scope.vmBuyPeriod.toString(),
       };
       $scope.isOrderSubmiting=true;
@@ -232,7 +232,12 @@ define(['controllers/app.controller'], function (controllerModule) {
         var data=[];
         data.push(['配置',selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存, '+ $scope.dataDiskVolume+'G数据盘'].join('/:'));
         data.push(['带宽',$scope.networkBandWidth+'Mbps'].join('/:'));
-        data.push(['镜像',$scope.selectedVmImage.name].join('/:'));
+        if($scope.imageActiveTab === 'snapshot'){
+          data.push(['快照',$scope.selectedVmSnapshot.name].join('/:'));
+        }
+        else{
+          data.push(['镜像',$scope.selectedVmImage.name].join('/:'));
+        }
         data.push(['地域',CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name].join('/:'));
         data.push(['网络类型',$scope.vmNetworkType == 'primary'?'私有网络':'基础网络'].join('/:'));
         return data.join('/;');
