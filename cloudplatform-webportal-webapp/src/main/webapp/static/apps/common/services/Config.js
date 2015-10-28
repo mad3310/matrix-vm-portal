@@ -98,6 +98,16 @@ define(['./common.service'], function (serviceModule) {
       'AVAILABLE':'可用的',
       'BINDED':'已绑定'
     };
+    config.vmImageStatuses=[
+      {"text": "未识别", "value": "UNRECOGNIZED"},
+      {"text": "活跃", "value": "ACTIVE"},
+      {"text": "上传中", "value": "SAVING"},
+      {"text": "等待上传", "value": "QUEUED"},
+      {"text": "停止", "value": "KILLED"},
+      {"text": "删除等待", "value": "PENDING_DELETE"},
+      {"text": "删除", "value": "DELETED"},
+      {"text": "无", "value": "NIL"},
+    ];
     config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);
