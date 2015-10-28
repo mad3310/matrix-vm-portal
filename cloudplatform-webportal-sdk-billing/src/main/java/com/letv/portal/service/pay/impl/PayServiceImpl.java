@@ -559,7 +559,7 @@ public class PayServiceImpl implements IPayService {
 	  */
 	private void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, Map<String, Object> serviceParams, String productType, StringBuffer ids){
 		if(successCount+failCount==orderSubs.size()){
-			logger.info("云主机创建全部回调完成.");
+			logger.info(productType+"创建全部回调完成.");
 			
 			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())).multiply(new BigDecimal(successCount));
 			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())).multiply(new BigDecimal(failCount));
@@ -596,7 +596,7 @@ public class PayServiceImpl implements IPayService {
 		        	logger.error("保存服务创建成功通知，失败原因:"+msgRet.get("message"));
 		        }
 		        //保存最近操作
-		        this.recentOperateService.saveInfo("创建"+productType, (String)serviceParams.get("name"));;
+		        this.recentOperateService.saveInfo("创建"+productType, (String)serviceParams.get("name"), orderSubs.get(0).getCreateUser(), null);;
 			}
 			if(failPrice.compareTo(new BigDecimal(0))==1) {
 				billUserAmountService.updateUserAmountFromFreezeToAvailable(orderSubs.get(0).getCreateUser(), failPrice, (String)serviceParams.get("name"), productType);
