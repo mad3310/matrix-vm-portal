@@ -136,12 +136,13 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.$watch(function(){
       return [$scope.selectedVmCpu,
         $scope.selectedVmRam,
+        ($scope.selectedVmDiskType &&  $scope.selectedVmDiskType.name) || '',
         $scope.dataDiskVolume,
         $scope.networkBandWidth,
         $scope.vmCount,
         $scope.vmBuyPeriod].join('_');
     }, function (value) {
-      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.dataDiskVolume && $scope.networkBandWidth && $scope.vmCount && $scope.vmBuyPeriod) {
+      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.selectedVmDiskType && $scope.dataDiskVolume && $scope.networkBandWidth && $scope.vmCount && $scope.vmBuyPeriod) {
         setVmPrice();
       }
     });
