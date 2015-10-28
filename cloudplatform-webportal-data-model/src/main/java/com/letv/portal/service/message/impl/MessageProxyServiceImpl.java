@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.CommonUtil;
 import com.letv.common.util.HttpClient;
-import com.letv.portal.constant.Constant;
 import com.letv.portal.model.message.Message;
 import com.letv.portal.service.message.IMessageProxyService;
 
@@ -34,18 +32,14 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	private Map<String, Object> analyzeRestServiceResult(String result, String url) {
 		Map<String, Object> map = transResult(result);
-		Map<String,Object> meta = (Map<String, Object>) map.get("meta");
 		
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")));
-		if(isSucess) {
+		if(map.get("id")!=null && 1==(Integer)map.get("id")) {
 			map.put("result", true);
-			
 		} else {
 			map.put("result", false);
-			map.put("message", meta.get("message"));
+			map.put("message", map.get("error"));
 		}
 		map.put("url", url);
 		return map;
@@ -70,15 +64,19 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 	@Override
 	public Map<String, Object> saveMessage(Long userId, Message msg) {
 		StringBuffer buffer = new StringBuffer();
-		Map<String, String> map = CommonUtil.convertBeanToMap(msg);
-		buffer.append(UC_AUTH_API_HTTP).append("/saveMessage.do?userId=").append(userId);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("msgTitle", msg.getMsgTitle());
+		map.put("msgContent", msg.getMsgContent());
+		map.put("msgStatus", msg.getMsgStatus());
+		map.put("msgType", msg.getMsgType());
+		
+		//buffer.append(UC_AUTH_API_HTTP).append("/pubMessage.do?userid=").append(userId);
+		buffer.append("http://10.150.146.171:8080/uc-http-api/pubMessage.do?userid=").append(userId);
 		logger.info("saveMessage url:{}",buffer.toString());
-		//String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
-		//return analyzeRestServiceResult(result, buffer.toString());
+		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
 		logger.info("保存消息:"+map.toString());
-		Map<String, Object> ret = new HashMap<String, Object>();
-		ret.put("result", true);
-		return ret;
+		return analyzeRestServiceResult(result, buffer.toString());
+		
 	}
 	
 }

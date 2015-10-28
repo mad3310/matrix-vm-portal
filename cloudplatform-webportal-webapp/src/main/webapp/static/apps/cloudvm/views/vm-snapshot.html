@@ -33,7 +33,7 @@
                         <td><span>{{snapshot.name|| '未设置'}}</span></td>
                         <td><span>{{snapshot.vmName|| '未设置'}}</span></td>
                         <td>
-                            <span>{{snapshot.status | vmStatusFilter}}</span>
+                            <span>{{snapshot.status | vmImageStatusFilter}}</span>
                         </td>
                         <td><span>{{snapshot.size}}GB</span></td>
                         <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd'}}</span></td>
