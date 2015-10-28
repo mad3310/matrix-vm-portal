@@ -22,6 +22,24 @@ public class CloudvmImage extends BaseModel {
     private CloudvmImageType imageType;
     private String platform;
     private CloudvmImageShareType type;
+    private String serverId;
+    private String serverName;
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
 
     public String getPlatform() {
         return platform;

@@ -14,12 +14,14 @@ public interface ResourceCreateService {
 
     CheckResult checkVmCreatePara(String reqParaJson);
 
+    @Deprecated
     FlavorResource getFlavor(long userId, String region, String flavorId) throws MatrixException;
 
     void createVolume(long userId, String reqParaJson, VolumeCreateListener listener, Object listenerUserData) throws MatrixException;
 
     CheckResult checkVolumeCreatePara(String reqParaJson);
 
+    @Deprecated
     VolumeTypeResource getVolumeType(long userId, String region, String volumeTypeId) throws MatrixException;
 
     void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException;

@@ -13,4 +13,6 @@ public interface ImageSyncService {
 
     void syncStatus(CloudvmImage cloudvmImage, Checker<ImageDetails>
             checker);
+
+    void cleanServerIdAfterServerDeleted(long tenantId, String region, String serverId);
 }
