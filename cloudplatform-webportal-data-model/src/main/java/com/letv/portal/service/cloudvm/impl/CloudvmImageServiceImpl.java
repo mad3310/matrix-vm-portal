@@ -162,4 +162,20 @@ public class CloudvmImageServiceImpl extends BaseServiceImpl<CloudvmImage>
         cloudvmImage.setImageType(CloudvmImageType.SNAPSHOT);
         super.insert(cloudvmImage);
     }
+
+    @Override
+    public List<CloudvmImage> selectVmSnapshotByServerId(long tenantId, String region, String serverId) {
+        if (StringUtils.isEmpty(region)) {
+            throw new ValidateException("地域不能为空");
+        }
+        if (StringUtils.isEmpty(serverId)) {
+            throw new ValidateException("虚拟机ID不能为空");
+        }
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("region", region);
+        paras.put("serverId", serverId);
+        paras.put("imageType", CloudvmImageType.SNAPSHOT);
+        return cloudvmImageDao.selectByMap(paras);
+    }
 }

@@ -108,6 +108,11 @@ public class LocalImageResource implements ImageResource {
     }
 
     @Override
+    public String getVmName() {
+        return cloudvmImage.getServerName();
+    }
+
+    @Override
     public String getRegion() {
         return cloudvmImage.getRegion();
     }

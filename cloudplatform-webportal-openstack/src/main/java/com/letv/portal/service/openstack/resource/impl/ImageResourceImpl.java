@@ -120,4 +120,9 @@ public class ImageResourceImpl extends AbstractResource implements
 		return null;
 	}
 
+	@Override
+	public String getVmName() {
+		return null;
+	}
+
 }

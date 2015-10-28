@@ -16,4 +16,5 @@ public interface ImageResource extends Resource{
 	String getStatus();
 	String getType();
 	String getPlatform();
+	String getVmName();
 }

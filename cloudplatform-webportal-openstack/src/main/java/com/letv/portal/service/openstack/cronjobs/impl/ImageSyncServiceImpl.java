@@ -4,6 +4,8 @@ import com.google.common.base.Optional;
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmImageStatus;
+import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.cloudvm.ICloudvmImageLinkService;
 import com.letv.portal.service.cloudvm.ICloudvmImagePropertyService;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
@@ -18,6 +20,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.Util;
 import org.jclouds.ContextBuilder;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
@@ -102,7 +105,7 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
                                     CloudvmImage lastedCloudvmImage = cloudvmImageService.selectById(cloudvmImage.getId());
                                     lastedCloudvmImage.setStatus(CloudvmImageStatus.valueOf(image.getStatus().name()));
                                     Optional<Long> sizeOptional = image.getSize();
-                                    if(sizeOptional.isPresent()) {
+                                    if (sizeOptional.isPresent()) {
                                         lastedCloudvmImage.setSize(sizeOptional.get());
                                     }
                                     cloudvmImageService.update(lastedCloudvmImage);
@@ -125,5 +128,15 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
         List<CloudvmImage> cloudvmImages = new LinkedList<CloudvmImage>();
         cloudvmImages.add(cloudvmImage);
         syncStatus(cloudvmImages, checker);
+    }
+
+    @Override
+    public void cleanServerIdAfterServerDeleted(long tenantId, String region, String serverId) {
+        List<CloudvmImage> cloudvmImages = cloudvmImageService.selectVmSnapshotByServerId(tenantId, region, serverId);
+        for (CloudvmImage cloudvmImage : cloudvmImages) {
+            cloudvmImage.setServerName(null);
+            cloudvmImage.setServerId(null);
+            cloudvmImageService.update(cloudvmImage);
+        }
     }
 }

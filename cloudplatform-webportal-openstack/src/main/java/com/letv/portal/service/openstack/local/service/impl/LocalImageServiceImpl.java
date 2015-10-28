@@ -13,6 +13,7 @@ import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRegionService;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,7 +89,7 @@ public class LocalImageServiceImpl implements LocalImageService {
     }
 
     @Override
-    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image) {
+    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image, Server server) {
         CloudvmImage cloudvmImage = new CloudvmImage();
         cloudvmImage.setType(CloudvmImageShareType.PRIVATE);
         cloudvmImage.setCreateUser(userId);
@@ -101,6 +102,8 @@ public class LocalImageServiceImpl implements LocalImageService {
         cloudvmImage.setSize(image.getSize().get());
         cloudvmImage.setStatus(CloudvmImageStatus.valueOf(image.getStatus().name()));
         cloudvmImage.setImageType(CloudvmImageType.SNAPSHOT);
+        cloudvmImage.setServerId(server.getId());
+        cloudvmImage.setServerName(server.getName());
         cloudvmImageService.insert(cloudvmImage);
         return cloudvmImage;
     }

@@ -17,6 +17,8 @@
 		<result column="IMAGE_TYPE" property="imageType"/>
 		<result column="PLATFORM" property="platform"/>
 		<result column="TYPE" property="type"/>
+		<result column="SERVER_ID" property="serverId"/>
+		<result column="SERVER_NAME" property="serverName"/>
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -28,7 +30,7 @@
 	<sql id="Base_Column_List">
 		i.ID,
 		i.REGION,i.IMAGE_ID,i.NAME,i.SIZE,i.MIN_DISK,i.MIN_RAM,
-		i.STATUS,i.TENANT_ID,i.IMAGE_TYPE,i.PLATFORM,i.TYPE,
+		i.STATUS,i.TENANT_ID,i.IMAGE_TYPE,i.PLATFORM,i.TYPE,i.SERVER_ID,i.SERVER_NAME,
 		i.DELETED,i.CREATE_TIME,i.CREATE_USER,i.UPDATE_TIME,i.UPDATE_USER
 	</sql>
 
@@ -54,6 +56,9 @@
 			<if test="imageType != null ">
 				and i.IMAGE_TYPE=#{imageType}
 			</if>
+			<if test="serverId != null ">
+				and i.SERVER_ID=#{serverId}
+			</if>
 			<if test="deleted != null  ">
 				and i.DELETED=#{deleted}
 			</if>
@@ -76,11 +81,11 @@
 	<insert id="insert" parameterType="CloudvmImage" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_CLOUDVM_IMAGE(REGION,IMAGE_ID,`NAME`,SIZE,MIN_DISK,MIN_RAM,
-		STATUS,TENANT_ID,IMAGE_TYPE,PLATFORM,`TYPE`,
+		STATUS,TENANT_ID,IMAGE_TYPE,PLATFORM,`TYPE`,SERVER_ID,SERVER_NAME,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
 		#{region},#{imageId},#{name},#{size},#{minDisk},#{minRam},
-		#{status},#{tenantId},#{imageType},#{platform},#{type},
+		#{status},#{tenantId},#{imageType},#{platform},#{type},#{serverId},#{serverName},
 		#{deleted},now(),#{createUser},null,null)
 	</insert>
 
@@ -100,6 +105,8 @@
 		IMAGE_TYPE=#{imageType},
 		PLATFORM=#{platform},
 		`TYPE`=#{type},
+		SERVER_ID=#{serverId},
+		SERVER_NAME=#{serverName},
 		DELETED=#{deleted},
 		CREATE_TIME=#{createTime},
 		CREATE_USER=#{createUser},

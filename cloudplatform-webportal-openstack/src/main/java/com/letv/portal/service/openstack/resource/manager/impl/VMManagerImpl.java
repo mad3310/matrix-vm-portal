@@ -1048,8 +1048,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 }
 
                 long userVoUserId = openStackUser.getUserVoUserId();
-                OpenStackServiceImpl.getOpenStackServiceGroup().getVolumeSyncService()
+                OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
+                openStackServiceGroup.getVolumeSyncService()
                         .syncStatusAfterServerDeleted(userVoUserId, region, vmId);
+                openStackServiceGroup.getImageSyncService().cleanServerIdAfterServerDeleted(userVoUserId,region,vmId);
 
                 return null;
             }
@@ -1795,7 +1797,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 .getLocalImageService();
         long userVoUserId = openStackUser.getUserVoUserId();
         CloudvmImage cloudvmImage = localImageService
-                .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image);
+                .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image, server);
         openStackServiceGroup.getImageSyncService().syncStatus(cloudvmImage, new Checker<ImageDetails>() {
             @Override
             public boolean check(ImageDetails imageDetails) throws Exception {
