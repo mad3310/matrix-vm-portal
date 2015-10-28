@@ -159,8 +159,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       },
       initVmImageSelector = function () {
         if($scope.isDesignatedVmSnapshot) return;
-        HttpService.doGet(Config.urls.image_list.replace('{region}', region)).success(function (data, status, headers, config) {
-          $scope.vmImageList = data.data;
+        HttpService.doGet(Config.urls.image_list, {region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          $scope.vmImageList = data.data.data;
           $scope.selectedVmImage = $scope.vmImageList[0];
         });
       },

@@ -8,7 +8,7 @@ define(['./common.service'], function (serviceModule) {
       vm_regions: '/ecs/regions/',
       region_list:'/ecs/region/list',
       vm_list: '/ecs/region/{region}',
-      image_list: '/osi/region/{region}',
+      image_list: '/osi/image/list',
       flavor_group_data: '/osf/region/{region}/group',
       vm_create_old: '/ecs/region/{region}/vm-create',
       vm_create: '/ecs/vm/create',
@@ -60,7 +60,6 @@ define(['./common.service'], function (serviceModule) {
       snapshot_vm_list:'/ecs/vm/snapshot/list',
       snapshot_vm_create:'/ecs/vm/snapshot/create',
       snapshot_vm_delete:'/ecs/vm/snapshot/delete',
-      image_list_new:'/osi/image/list'
     };
     config.REGEX= {
       NAME: /^[a-zA-Z\u4e00-\u9fa5][^\s"@\/:=<>{\[\]}]{1,127}$/,
