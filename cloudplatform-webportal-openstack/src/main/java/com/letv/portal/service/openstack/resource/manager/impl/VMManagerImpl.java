@@ -5,6 +5,7 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
+import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmVmCount;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
@@ -13,6 +14,7 @@ import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListe
 import com.letv.portal.service.openstack.billing.listeners.event.VmSnapshotCreateEvent;
 import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
@@ -41,7 +43,8 @@ import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
-import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
+import org.jclouds.openstack.glance.v1_0.domain.*;
+import org.jclouds.openstack.glance.v1_0.domain.Image;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
@@ -1787,11 +1790,22 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
         ImageApi imageApi = glanceApi.getImageApi(region);
         ImageDetails image = imageApi.get(imageId);
-        LocalImageService localImageService = OpenStackServiceImpl.getOpenStackServiceGroup()
+        OpenStackServiceGroup openStackServiceGroup=OpenStackServiceImpl.getOpenStackServiceGroup();
+        LocalImageService localImageService = openStackServiceGroup
                 .getLocalImageService();
         long userVoUserId = openStackUser.getUserVoUserId();
-        localImageService
+        CloudvmImage cloudvmImage = localImageService
                 .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image);
+        openStackServiceGroup.getImageSyncService().syncStatus(cloudvmImage, new Checker<ImageDetails>() {
+            @Override
+            public boolean check(ImageDetails imageDetails) throws Exception {
+                if (imageDetails == null) {
+                    return true;
+                }
+                Image.Status status = imageDetails.getStatus();
+                return status != Image.Status.QUEUED && status != Image.Status.SAVING;
+            }
+        });
 
         if (listener != null) {
             try {

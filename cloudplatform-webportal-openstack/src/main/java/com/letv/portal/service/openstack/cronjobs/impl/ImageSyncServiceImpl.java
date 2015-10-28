@@ -1,16 +1,20 @@
 package com.letv.portal.service.openstack.cronjobs.impl;
 
+import com.google.common.base.Optional;
 import com.letv.common.exception.MatrixException;
+import com.letv.portal.model.cloudvm.CloudvmImage;
+import com.letv.portal.model.cloudvm.CloudvmImageStatus;
 import com.letv.portal.service.cloudvm.ICloudvmImageLinkService;
 import com.letv.portal.service.cloudvm.ICloudvmImagePropertyService;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
-import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.password.PasswordService;
+import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.Util;
 import org.jclouds.ContextBuilder;
@@ -19,6 +23,9 @@ import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by zhouxianguang on 2015/10/8.
@@ -40,6 +47,9 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
 
     @Autowired
     private PasswordService passwordService;
+
+    @Autowired
+    private LocalImageService localImageService;
 
     @Override
     public void sync(int recordsPerPage) throws MatrixException {
@@ -69,5 +79,51 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
         } catch (Exception e) {
             Util.throwMatrixException(e);
         }
+    }
+
+    public void syncStatus(final List<CloudvmImage> cloudvmImages, final Checker<ImageDetails> checker) {
+        Util.concurrentRun(new Runnable() {
+            @Override
+            public void run() {
+                SyncLocalApiCache apiCache = new SyncLocalApiCache();
+                try {
+                    List<CloudvmImage> unFinishedImages = new LinkedList<CloudvmImage>();
+                    unFinishedImages.addAll(cloudvmImages);
+                    while (!unFinishedImages.isEmpty()) {
+                        for (CloudvmImage cloudvmImage : unFinishedImages
+                                .toArray(new CloudvmImage[0])) {
+                            ImageDetails image = apiCache.getApi(cloudvmImage.getTenantId(),
+                                    GlanceApi.class)
+                                    .getImageApi(
+                                            cloudvmImage.getRegion()).get(cloudvmImage.getImageId());
+                            if (checker.check(image)) {
+                                unFinishedImages.remove(cloudvmImage);
+                                if (image != null) {
+                                    CloudvmImage lastedCloudvmImage = cloudvmImageService.selectById(cloudvmImage.getId());
+                                    lastedCloudvmImage.setStatus(CloudvmImageStatus.valueOf(image.getStatus().name()));
+                                    Optional<Long> sizeOptional = image.getSize();
+                                    if(sizeOptional.isPresent()) {
+                                        lastedCloudvmImage.setSize(sizeOptional.get());
+                                    }
+                                    cloudvmImageService.update(lastedCloudvmImage);
+                                }
+                            }
+                        }
+                        Thread.sleep(1000);
+                    }
+                } catch (Exception e) {
+                    Util.logAndEmail(e);
+                } finally {
+                    apiCache.close();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void syncStatus(CloudvmImage cloudvmImage, Checker<ImageDetails> checker) {
+        List<CloudvmImage> cloudvmImages = new LinkedList<CloudvmImage>();
+        cloudvmImages.add(cloudvmImage);
+        syncStatus(cloudvmImages, checker);
     }
 }
