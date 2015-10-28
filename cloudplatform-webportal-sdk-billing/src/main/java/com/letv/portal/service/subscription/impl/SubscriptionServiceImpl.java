@@ -144,6 +144,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		Map<Long, Map<Long, List<Map<String, Object>>>> deletes = new HashMap<Long, Map<Long, List<Map<String, Object>>>>();
 		for (Subscription subscription : subscriptions) {
 			long day = (subscription.getEndTime().getTime()-now.getTime())/(1000*3600*24);
+			logger.info(day+":"+subscription.getProductInfoRecord().getParams());
 			if(ORDER_EXPIRE.contains(","+day+",")) {
 				Map<Long, List<Map<String, Object>>> products = null;
 				if(expires.get(subscription.getUserId())==null) {
@@ -365,7 +366,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	  * @date 2015年10月27日 下午2:43:01
 	  */
 	private void sendEmailsByType(UserVo user, Map<Long, List<Map<String, Object>>> infos, int type) {
-		if("400065".equals(user.getUserId())) {
+		if(400065==user.getUserId()) {
 			Map<String, Object> mailMessageModel = new HashMap<String, Object>();
 			mailMessageModel.put("userName", user.getUsername());
 
@@ -387,14 +388,14 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			}
 			MailMessage mailMessage = null;
 			if(type==1) {//到期提醒
-				mailMessage = new MailMessage(infos.get("productName")+"到期提醒", user.getEmail(),
-						infos.get("productName")+"到期提醒", "product/expireNotice.ftl", mailMessageModel);
+				mailMessage = new MailMessage("云产品到期提醒", user.getEmail(),
+						"云产品到期提醒", "product/expireNotice.ftl", mailMessageModel);
 			} else if(type==2) {//欠费提醒
-				mailMessage = new MailMessage(infos.get("productName")+"欠费延期使用", user.getEmail(),
-						infos.get("productName")+"欠费延期使用", "product/overdueNotice.ftl", mailMessageModel);
+				mailMessage = new MailMessage("云产品欠费延期使用", user.getEmail(),
+						"云产品欠费延期使用", "product/overdueNotice.ftl", mailMessageModel);
 			} else if(type==3) {//资源释放
-				mailMessage = new MailMessage(infos.get("productName")+"欠费资源释放", user.getEmail(),
-						infos.get("productName")+"欠费资源释放", "product/deleteNotice.ftl", mailMessageModel);
+				mailMessage = new MailMessage("云产品欠费资源释放", user.getEmail(),
+						"云产品欠费资源释放", "product/deleteNotice.ftl", mailMessageModel);
 			}
 			if(mailMessage!=null) {
 				mailMessage.setHtml(true);

@@ -8,10 +8,10 @@
                          <span class="iconfont icon-righticon"  ng-class="{checked:isAllImgChecked()}" ng-click="checkAllimg()"></span>
                     </th>
                     <th><span>名称</span></th>
-                    <th><span>大小</span></th>
+                    <th><span>平台</span></th>
+                    <th><span>类型</span></th>
                     <th><span>状态</span></th>
-                    <th><span>硬盘数量</span></th>
-                    <th><span>内存</span></th> 
+                    <th><span>容量</span></th>
                     <th><span>创建时间</span></th>
                 </tr>
                 </thead>
@@ -21,10 +21,10 @@
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:img.checked}" ng-click="checkimg(img)"></span>
                     </td>
                     <td><span>{{img.name|| '未设置'}}</span></td>
-                    <td><span>{{img.size}}</span></td>
-                    <td><span>{{img.status}}</span></td>
-                    <td><span>{{img.minDisk}}</span></td>
-                    <td><span>{{img.minRam}}</span></td>
+                    <td><span>{{img.platform}}</span></td>
+                    <td><span>{{img.type}}</span></td>
+                    <td><span>{{img.status | vmImageStatusFilter}}</span></td>
+                    <td><span>{{img.size | vmImageSizeFilter}}</span></td>
                     <td><span>{{img.createdAt | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
                 <tr ng-if="imageList.length==0">

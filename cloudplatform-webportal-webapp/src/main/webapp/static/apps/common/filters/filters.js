@@ -199,4 +199,38 @@ define(['./common.filter'], function (filterModule) {
       return out;
     }
   }]);
+
+  filterModule.filter('vmImageStatusFilter',['Config',function(Config){
+    var allStatuses = Config.vmImageStatuses;
+    return function (input) {
+      var out = '';
+      for (var i = 0, leng = allStatuses.length; i < leng; i++) {
+        if (allStatuses[i].value == input) {
+          out = allStatuses[i].text;
+          break;
+        }
+      }
+      return out || '未知';
+    }
+  }]);
+
+  filterModule.filter('vmImageSizeFilter',[function(){
+    return function (input) {
+      var out = '';
+      if (input / (1024 * 1024 * 1024) >= 1) {
+        out = (input / (1024 * 1024 * 1024)).toFixed(2) + 'GB';
+      }
+      else if (input / (1024 * 1024) >= 1) {
+        out = (input / (1024 * 1024)).toFixed(2) + 'MB';
+      }
+      else if (input / (1024) >= 1) {
+        out = (input / 1024).toFixed(2) + 'KB';
+      }
+      else {
+        out = input + 'B';
+      }
+      return out;
+    }
+  }]);
+
 });
