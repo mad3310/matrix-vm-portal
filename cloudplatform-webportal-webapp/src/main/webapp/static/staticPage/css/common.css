@@ -120,6 +120,7 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .icon-info:before { content: "\e607"; }
 .icon-user:before { content: "\e637"; }
 .icon-shenfenrenzheng:before { content: "\e62c"; }
+.icon-shield:before { content: "\e63b"; }
 .icon-icon:before { content: "\e608"; }
 .icon-camera:before { content: "\e609"; }
 .icon-game:before { content: "\e60a"; }
