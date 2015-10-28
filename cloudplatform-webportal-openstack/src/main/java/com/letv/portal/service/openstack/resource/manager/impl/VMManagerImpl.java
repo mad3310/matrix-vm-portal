@@ -1174,6 +1174,44 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     @Override
+    public void rebootSync(final VMResource vmResource) throws OpenStackException {
+        runWithApi(new ApiRunnable<NovaApi, Void>() {
+            @Override
+            public Void run(NovaApi novaApi) throws Exception {
+                Server server = ((VMResourceImpl) vmResource).server;
+                if (server.getStatus() != Status.ACTIVE) {
+                    throw new UserOperationException("server.status!=ACTIVE", "虚拟机的状态不能重启");
+                }
+                ServerApi serverApi = novaApi.getServerApi(vmResource.getRegion());
+                serverApi.reboot(vmResource.getId(), RebootType.SOFT);
+                waitingVM(vmResource.getId(), serverApi, new ServerChecker() {
+                    @Override
+                    public boolean check(Server server) throws Exception {
+                        return server.getStatus() != Status.REBOOT;
+                    }
+                });
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public void changeAdminPass(final VMResource vmResource, final String adminPass) throws OpenStackException {
+        runWithApi(new ApiRunnable<NovaApi, Void>() {
+            @Override
+            public Void run(NovaApi novaApi) throws Exception {
+                Server server = ((VMResourceImpl) vmResource).server;
+                if (server.getStatus() != Status.ACTIVE) {
+                    throw new UserOperationException("server.status!=ACTIVE", "虚拟机的状态不能修改密码");
+                }
+                ServerApi serverApi = novaApi.getServerApi(vmResource.getRegion());
+                serverApi.changeAdminPass(vmResource.getId(),adminPass);
+                return null;
+            }
+        });
+    }
+
+    @Override
     public int totalNumber() throws OpenStackException {
         return runWithApi(new ApiRunnable<NovaApi, Integer>() {
 

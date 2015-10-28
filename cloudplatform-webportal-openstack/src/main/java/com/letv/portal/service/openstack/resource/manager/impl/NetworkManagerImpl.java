@@ -770,6 +770,81 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	@Override
+	public void createPrivateNetworkAndSubnet(final String region, final String networkName, final String subnetName
+			, final String cidr, final boolean autoGatewayIp, final String gatewayIp, final boolean enableDhcp)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				if (!isSubnetCidrValid(cidr)) {
+					throw new UserOperationException(
+							"The subnet segment is not correct.", "子网的网段不正确");
+				}
+
+				SubnetInfo subnetInfo = new SubnetUtils(cidr).getInfo();
+				if (!autoGatewayIp && !subnetInfo.isInRange(gatewayIp)) {
+					throw new UserOperationException(
+							"The gateway IP network segment is not in the subnet.",
+							"网关IP不在子网的网段内");
+				}
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+				SubnetApi subnetApi=neutronApi.getSubnetApi(region);
+				Optional<QuotaApi> quotaApiOptional = neutronApi
+						.getQuotaApi(region);
+				if (!quotaApiOptional.isPresent()) {
+					throw new APINotAvailableException(QuotaApi.class);
+				}
+				QuotaApi quotaApi = quotaApiOptional.get();
+
+				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+
+				Set<String> privateNetworkIds = new HashSet<String>();
+				List<Network> networkList = networkApi.list().concat().toList();
+				for (Network network : networkList) {
+					if (isPrivateNetwork(network)) {
+						privateNetworkIds.add(network.getId());
+					}
+				}
+
+				int privateSubnetCount = 0;
+				List<Subnet> existsSubnetList = subnetApi.list().concat()
+						.toList();
+				for (Subnet existsSubnet : existsSubnetList) {
+					if (privateNetworkIds.contains(existsSubnet.getNetworkId())) {
+						privateSubnetCount++;
+					}
+				}
+
+				if (quota.getNetwork() <= privateNetworkIds.size()) {
+					throw new UserOperationException(
+							"Private network count exceeding the quota.",
+							"私有网络数量超过配额。");
+				}
+
+				if (quota.getSubnet() <= privateSubnetCount) {
+					throw new UserOperationException(
+							"Private subnet count exceeding the quota.",
+							"私有子网数量超过配额。");
+				}
+
+				Network privateNetwork = networkApi.create(Network.createBuilder(networkName).build());
+				Subnet.CreateBuilder createBuilder = Subnet
+						.createBuilder(privateNetwork.getId(), cidr).ipVersion(4).name(subnetName)
+						.cidr(cidr).enableDhcp(enableDhcp);
+				if (!autoGatewayIp) {
+					createBuilder.gatewayIp(gatewayIp);
+				}
+				subnetApi.create(createBuilder.build());
+
+				return null;
+			}
+		});
+	}
+
 	private boolean isSubnetCidrValid(String cidr) {
 		try {
 			String[] ipAndNum = cidr.split("/");
