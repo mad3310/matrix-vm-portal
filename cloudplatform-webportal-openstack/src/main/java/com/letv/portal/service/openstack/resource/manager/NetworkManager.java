@@ -38,6 +38,10 @@ public interface NetworkManager extends ResourceManager {
 			String cidr, boolean autoGatewayIp, String gatewayIp,
 			boolean enableDhcp) throws OpenStackException;
 
+	void createPrivateNetworkAndSubnet(String region, String networkName, String subnetName,
+									   String cidr, boolean autoGatewayIp, String gatewayIp,
+									   boolean enableDhcp) throws OpenStackException;
+
 	SubnetResource getPrivateSubnet(String region, String subnetId)
 			throws OpenStackException;
 

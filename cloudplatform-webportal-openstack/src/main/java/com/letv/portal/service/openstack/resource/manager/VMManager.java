@@ -84,6 +84,10 @@ public interface VMManager extends ResourceManager {
 			throws PollingInterruptedException, RegionNotFoundException,
 			TaskNotFinishedException, VMStatusException, OpenStackException;
 
+	void rebootSync(VMResource vmResource) throws OpenStackException;
+
+	void changeAdminPass(VMResource vmResource, String adminPass) throws OpenStackException;
+
 	void batchStopSync(String regionAndVmIds) throws OpenStackException;
 
 	int totalNumber() throws OpenStackException;

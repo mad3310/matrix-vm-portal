@@ -201,6 +201,27 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/network/subnet/private/create", method = RequestMethod.POST)
+	public
+	@ResponseBody
+	ResultObject createPrivateNetworkAndSubnet(
+			@RequestParam String region, @RequestParam String networkName, @RequestParam String subnetName,
+			@RequestParam String cidr, @RequestParam boolean autoGatewayIp, @RequestParam String gatewayIp,
+			@RequestParam boolean enableDhcp) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService)
+					.getNetworkManager()
+					.createPrivateNetworkAndSubnet(region, networkName, subnetName, cidr, autoGatewayIp, gatewayIp, enableDhcp);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/region/{region}/subnet/private/{subnetId}", method = RequestMethod.GET)
 	public @ResponseBody ResultObject getPrivateSubnet(
 			@PathVariable String region, @PathVariable String subnetId) {

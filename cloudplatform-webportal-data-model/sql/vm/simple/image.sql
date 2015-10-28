@@ -3,7 +3,7 @@ CREATE TABLE `WEBPORTAL_CLOUDVM_IMAGE` (
 	`REGION` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`IMAGE_ID` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`NAME` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-	`SIZE` integer unsigned DEFAULT NULL,
+	`SIZE` bigint unsigned DEFAULT NULL,
 	`MIN_DISK` integer unsigned DEFAULT NULL,
 	`MIN_RAM` integer unsigned DEFAULT NULL,
 	`STATUS` tinyint(4) DEFAULT NULL,

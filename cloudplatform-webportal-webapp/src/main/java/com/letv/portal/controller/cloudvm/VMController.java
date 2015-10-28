@@ -526,4 +526,39 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/vm/reboot", method = RequestMethod.POST)
+	public
+	@ResponseBody
+	ResultObject reboot(@RequestParam String region, @RequestParam String vmId) {
+		ResultObject result = new ResultObject();
+		try {
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			VMResource vmResource = vmManager.get(region, vmId);
+			vmManager.rebootSync(vmResource);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/vm/changeAdminPass", method = RequestMethod.POST)
+	public
+	@ResponseBody
+	ResultObject changeAdminPass(@RequestParam String region, @RequestParam String vmId, @RequestParam String adminPass) {
+		ResultObject result = new ResultObject();
+		try {
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			VMResource vmResource = vmManager.get(region, vmId);
+			vmManager.changeAdminPass(vmResource, adminPass);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
