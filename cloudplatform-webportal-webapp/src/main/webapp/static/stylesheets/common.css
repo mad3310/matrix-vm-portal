@@ -817,8 +817,12 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid {
 /*begin letv-checkbox style*/
 
 /*begin buy-period-selector style*/
+buy-period-selector{
+    display: block;
+    width: 320px;
+}
 buy-period-selector .check-buy-period{
-    width: 36px;
+    width: 30px;
 }
 buy-period-selector .check-buy-period.selected{
     padding: 0 4px;
