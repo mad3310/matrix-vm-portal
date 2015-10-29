@@ -144,4 +144,9 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
             cloudvmVolumeService.delete(cloudvmVolume);
         }
     }
+
+    @Override
+    public long count(long tenantId, String region) {
+        return cloudvmVolumeService.countByName(tenantId, region, null);
+    }
 }

@@ -13,20 +13,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
-import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.util.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
-import org.jclouds.openstack.cinder.v1.CinderApi;
-import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
@@ -48,7 +46,6 @@ import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.letv.common.exception.ApiNotFoundException;
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
@@ -1543,6 +1540,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		if(successCreatedRouters != null){
 			successCreatedRouters.add(router);
 		}
+
+		long userVoUserId = openStackUser.getUserVoUserId();
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService()
+				.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.ROUTER);
 	}
 
 	public void createRouter(NeutronApi neutronApi, RouterCreateConf routerCreateConf, RouterCreateListener listener, Object listenerUserData) throws OpenStackException {
@@ -1919,6 +1920,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							"Router \"{0}\" delete failed.", routerId),
 							MessageFormat.format("路由“{0}”删除失败。", routerId));
 				}
+
+				long userVoUserId = openStackUser.getUserVoUserId();
+				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService()
+						.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.ROUTER);
 
 				waitingRouter(routerId, routerApi, new Checker<Router>() {
 
@@ -2354,6 +2359,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							"公网IP删除失败");
 				}
 
+				long userVoUserId = openStackUser.getUserVoUserId();
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
+
 				waitingFloatingIP(floatingIpId, floatingIPApi,
 						new Checker<FloatingIP>() {
 
@@ -2742,12 +2751,15 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					"公网IP带宽超过配额");
 		}
 
+		long userVoUserId = openStackUser.getUserVoUserId();
+		LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 		for (int i = 0; i < count; i++) {
 			FloatingIP floatingIP = floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
 					.name(name).fipQos(createFipQos(bandWidth)).build());
 			if (successCreatedFloatingIps != null) {
 				successCreatedFloatingIps.add(floatingIP);
 			}
+			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
 		}
 	}
 

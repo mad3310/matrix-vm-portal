@@ -14,6 +14,7 @@ import com.letv.portal.service.openstack.internal.UserExists;
 import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -133,6 +134,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private ImageSyncService imageSyncService;
 
+	@Autowired
+	private LocalRcCountService localRcCountService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -181,6 +185,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setCloudvmVolumeService(cloudvmVolumeService);
 		openStackServiceGroup.setLocalImageService(localImageService);
 		openStackServiceGroup.setImageSyncService(imageSyncService);
+		openStackServiceGroup.setLocalRcCountService(localRcCountService);
 	}
 
 	@Override

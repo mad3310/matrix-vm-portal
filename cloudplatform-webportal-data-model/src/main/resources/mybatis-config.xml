@@ -86,6 +86,7 @@
         <typeAlias alias="CloudvmImageProperty" type="com.letv.portal.model.cloudvm.CloudvmImageProperty"/>
         <typeAlias alias="CloudvmImageLink" type="com.letv.portal.model.cloudvm.CloudvmImageLink"/>
         <typeAlias alias="CloudvmVolume" type="com.letv.portal.model.cloudvm.CloudvmVolume"/>
+        <typeAlias alias="CloudvmRcCount" type="com.letv.portal.model.cloudvm.CloudvmRcCount"/>
     </typeAliases>
     <typeHandlers>
         <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmVolumeStatus"/>
@@ -93,5 +94,6 @@
         <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmImageStatus"/>
         <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmImageType"/>
         <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmImageShareType"/>
+        <typeHandler handler="com.letv.portal.dao.adminoplog.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmRcCountType"/>
     </typeHandlers>
 </configuration>

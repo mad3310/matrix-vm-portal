@@ -1,5 +1,8 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
@@ -54,19 +57,23 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
 					"公网IP带宽超过配额。");
 		}
 
+		long userVoUserId = context.getUserId();
+		String region = context.getVmCreateConf().getRegion();
+		LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
 			vmCreateContext
 					.setFloatingIp(context
 							.getApiCache()
 							.getNeutronFloatingIpApi()
 							.create(CreateFloatingIP
-									.createBuilder(
-											context.getFloatingNetwork()
-													.getId())
-									.fipQos(NetworkManagerImpl
-											.createFipQos(context
-													.getVmCreateConf()
-													.getBandWidth())).build()));
+                                    .createBuilder(
+                                            context.getFloatingNetwork()
+                                                    .getId())
+                                    .fipQos(NetworkManagerImpl
+                                            .createFipQos(context
+                                                    .getVmCreateConf()
+                                                    .getBandWidth())).build()));
+			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
 		}
 	}
 
@@ -77,13 +84,19 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
 			return;
 		}
 
+		long userVoUserId = context.getUserId();
+		String region = context.getVmCreateConf().getRegion();
+		LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
 			if (vmCreateContext.getServerCreated() == null
 					&& vmCreateContext.getFloatingIp() != null) {
 				ApiCache apiCache = context.getApiCache();
 				FloatingIPApi floatingIPApi = apiCache
 						.getNeutronFloatingIpApi();
-				floatingIPApi.delete(vmCreateContext.getFloatingIp().getId());
+				boolean isSuccess = floatingIPApi.delete(vmCreateContext.getFloatingIp().getId());
+                if(isSuccess) {
+                    localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
+                }
 			}
 		}
 	}

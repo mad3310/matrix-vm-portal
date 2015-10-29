@@ -6,6 +6,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
 import com.letv.portal.model.cloudvm.CloudvmImage;
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVmCount;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
@@ -19,6 +20,7 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -1586,6 +1588,9 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 //    }
 
     public void recordVmCreated(long userId, String region, Server server) throws OpenStackException {
+        LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+        localRcCountService.incRcCount(userId, userId, region, CloudvmRcCountType.SERVER);
+
 //        ICloudvmFlavorService cloudvmFlavorService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmFlavorService();
 //        if (cloudvmFlavorService.selectByFlavorId(region, server.getFlavor().getId()) == null) {
 //            FlavorResource flavorResource = getFlavorResource(region, server.getFlavor().getId());
@@ -1628,6 +1633,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     private void recordVmDeleted(String region, String vmId) throws OpenStackException {
+        long userVoUserId = openStackUser.getUserVoUserId();
+        LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+        localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.SERVER);
+        
 //        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
 
 
