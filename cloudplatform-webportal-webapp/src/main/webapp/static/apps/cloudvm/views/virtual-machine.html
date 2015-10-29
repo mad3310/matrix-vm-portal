@@ -56,7 +56,7 @@
                         <span>{{vm.status | vmStatusFilter}}</span>
                         <span ng-if="['BUILD','STARTING','STOPING','DELETEING'].indexOf(vm.status)>-1" class="status-loading"></span>
                     </td>
-                    <td><span>{{vm.image.name}}</span></td>
+                    <td><span>{{vm.image.name || '无'}}</span></td>
                     <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>
                     <td><span class="iconfont icon-monitor"></span></td>
                     <td><span>{{vm.created | date:'yyyy-MM-dd'}}</span></td>

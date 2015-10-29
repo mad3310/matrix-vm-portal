@@ -75,6 +75,14 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.isSelectedVmBuyPeriod = function (vmBuyPeriod) {
       return $scope.vmBuyPeriod === vmBuyPeriod;
     };
+    $scope.switchVmNetworkPublicIpType=function(){
+      if($scope.vmNetworkPublicIpType == 'now'){
+        $scope.vmNetworkPublicIpType = 'later';
+      }
+      else{
+        $scope.vmNetworkPublicIpType = 'now';
+      }
+    };
     $scope.createVm = function () {
       var data = {
         region:region,
@@ -84,7 +92,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         volumeTypeId:$scope.selectedVmDiskType.id,
         volumeSize: $scope.dataDiskVolume,
         adminPass: $scope.vmSecurityPassword,
-        bindFloatingIp: $scope.vmNetworkPublicIpModel === 'now',
+        bindFloatingIp: $scope.vmNetworkPublicIpType === 'now',
         sharedNetworkId:$scope.vmNetworkType=='primary'? selectedVmSharedNetwork.id:'',
         bandWidth:$scope.networkBandWidth,
         keyPairName:'',
