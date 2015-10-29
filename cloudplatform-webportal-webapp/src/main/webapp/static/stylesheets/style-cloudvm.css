@@ -1,3 +1,8 @@
+
+.check-disk-type{
+     width: 80px;
+}
+
 /*begin virtual-machine-view style*/
 .vm-create-form  rzslider{width: 70%;top: 3px;}
 .vm-create-form .disk-volume,
@@ -15,8 +20,7 @@
 }
 
 .vm-create-form .check-cpu,
-.vm-create-form .check-ram,
-.vm-create-form .check-disk-type{
+.vm-create-form .check-ram{
     width: 60px;
 }
 .vm-create-form .check-network-type{
@@ -83,9 +87,6 @@
 /*end virtual-machine-view style*/
 
 /*begin view-vm-disk style*/
-.form-vm-disk-create .check-disk-type{
-    width: 60px;
-}
 .modal-vm-disk-attach le-select{
     width: 250px;
 }

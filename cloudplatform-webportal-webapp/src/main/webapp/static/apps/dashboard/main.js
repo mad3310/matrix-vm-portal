@@ -4,6 +4,7 @@ require.config({
     'jquery': '/static/javascripts/jquery-1.11.3',
     'bootstrap': '/static/javascripts/bootstrap',
     'common': '/static/javascripts/common',
+    'browserCheck': '/static/staticPage/js/browserCheck',
     'angular': '/static/javascripts/angular',
     'angular-animate': '/static/javascripts/angular-animate',
     'angular-route': '/static/javascripts/angular-route',
@@ -16,7 +17,12 @@ require.config({
     'app.router': '/static/apps/dashboard/app.route'
   },
   shim: {
+    'browserCheck':{
+      deps: ['jquery'],
+      exports:'browserCheck'
+    },
     'angular': {
+      deps: ['common'],
       exports: 'angular'
     },
     'angular-animate': {
