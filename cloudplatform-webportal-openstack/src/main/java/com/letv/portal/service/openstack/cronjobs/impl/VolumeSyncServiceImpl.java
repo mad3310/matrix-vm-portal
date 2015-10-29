@@ -143,10 +143,10 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
         for (CloudvmVolume cloudvmVolume : cloudvmVolumes) {
             if (cloudvmVolume.getStatus() != CloudvmVolumeStatus.NIL) {
                 needSyncCloudvmVolumes.add(cloudvmVolume);
-            }else{
-                cloudvmVolume.setServerId(null);
-                cloudvmVolumeService.update(cloudvmVolume);
             }
+            cloudvmVolume.setServerId(null);
+            cloudvmVolume.setServerName(null);
+            cloudvmVolumeService.update(cloudvmVolume);
         }
         syncStatus(needSyncCloudvmVolumes, new Checker<Volume>() {
             @Override

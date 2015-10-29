@@ -21,11 +21,15 @@ public class LocalVolumeResource implements VolumeResource {
 
     public LocalVolumeResource(CloudvmVolume cloudvmVolume) {
         this.cloudvmVolume = cloudvmVolume;
-        CloudvmServer server = cloudvmVolume.getServer();
-        String serverId = cloudvmVolume.getServerId();
-        if (serverId != null && server != null && server.getName() != null) {
+//        CloudvmServer server = cloudvmVolume.getServer();
+//        String serverId = cloudvmVolume.getServerId();
+//        if (serverId != null && server != null && server.getName() != null) {
+//            attachments = new HashSet<VolumeAttachmentResource>();
+//            attachments.add(new LocalVolumeAttachmentResource(serverId, server.getName()));
+//        }
+        if (cloudvmVolume.getServerId() != null && cloudvmVolume.getName() != null) {
             attachments = new HashSet<VolumeAttachmentResource>();
-            attachments.add(new LocalVolumeAttachmentResource(serverId, server.getName()));
+            attachments.add(new LocalVolumeAttachmentResource(cloudvmVolume.getServerId(), cloudvmVolume.getServerName()));
         }
     }
 
