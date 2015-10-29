@@ -3,20 +3,15 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.letv.portal.model.cloudvm.CloudvmVolume;
-import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
-import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.util.Util;
-import org.jclouds.openstack.cinder.v1.domain.Volume;
 
 public class VMCreate {
 
@@ -46,7 +41,8 @@ public class VMCreate {
 
     public void run() throws OpenStackException {
         if (vmCreateConf.getCount() > 0) {
-            MultiVmCreateContext multiVmCreateContext = new MultiVmCreateContext();
+            final MultiVmCreateContext multiVmCreateContext = new MultiVmCreateContext();
+            Exception exceptionOfCreating = null;
             try {
                 multiVmCreateContext.setVmCreateConf(vmCreateConf);
                 multiVmCreateContext.setVmManager(vmManager);
@@ -64,30 +60,63 @@ public class VMCreate {
                 tasks.add(new CreateSubnetPortsTask());
                 tasks.add(new CreateVmsTask());
 //                tasks.add(new AddVmsCreateListenerTask());
-                BindFloatingIpTask bindFloatingIpTask = new BindFloatingIpTask();
-                AddVolumeTask addVolumeTask = new AddVolumeTask();
-                boolean emailLast = false;
-                if (addVolumeTask.isEnable(multiVmCreateContext) || bindFloatingIpTask.isEnable(multiVmCreateContext)) {
-                    emailLast = true;
-                }
-                if (!emailLast) {
-                    tasks.add(new EmailVmsCreatedTask());
-                }
-                tasks.add(new WaitingVmsCreatedTask());
-                tasks.add(bindFloatingIpTask);
-                tasks.add(addVolumeTask);
-                if (emailLast) {
-                    tasks.add(new EmailVmsCreatedTask());
-                }
+//                BindFloatingIpTask bindFloatingIpTask = new BindFloatingIpTask();
+//                AddVolumeTask addVolumeTask = new AddVolumeTask();
+//                boolean emailLast = false;
+//                if (addVolumeTask.isEnable(multiVmCreateContext) || bindFloatingIpTask.isEnable(multiVmCreateContext)) {
+//                    emailLast = true;
+//                }
+//                if (!emailLast) {
+//                    tasks.add(new EmailVmsCreatedTask());
+//                }
+//                tasks.add(new WaitingVmsCreatedTask());
+//                tasks.add(bindFloatingIpTask);
+//                tasks.add(addVolumeTask);
+//                if (emailLast) {
+//                    tasks.add(new EmailVmsCreatedTask());
+//                }
 
                 VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
                         tasks, multiVmCreateContext);
                 executor.run();
             } catch (Exception ex) {
-                checkVmCreateFail(multiVmCreateContext, ex);
-                Util.throwException(translateExceptionMessage(ex));
+                exceptionOfCreating = ex;
             }
-            notifyListener(multiVmCreateContext, "后台错误");
+
+            notifyListener(multiVmCreateContext, exceptionOfCreating);
+
+            Util.asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    BindFloatingIpTask bindFloatingIpTask = new BindFloatingIpTask();
+                    AddVolumeTask addVolumeTask = new AddVolumeTask();
+                    boolean needAddVolume = addVolumeTask.isEnable(multiVmCreateContext);
+                    boolean needBindFloatingIp = bindFloatingIpTask.isEnable(multiVmCreateContext);
+                    try {
+                        List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
+                        if (needAddVolume || needBindFloatingIp) {
+                            tasks.add(new WaitingVmsCreatedTask());
+                        }
+                        if (needBindFloatingIp) {
+                            tasks.add(bindFloatingIpTask);
+                        }
+                        if (needAddVolume) {
+                            tasks.add(addVolumeTask);
+                        }
+                        tasks.add(new EmailVmsCreatedTask());
+
+                        VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
+                                tasks, multiVmCreateContext);
+                        executor.run();
+                    } catch (Exception ex) {
+                        Util.logAndEmail(ex);
+                    }
+                }
+            });
+
+            if (exceptionOfCreating != null) {
+                Util.throwException(translateExceptionMessage(exceptionOfCreating));
+            }
         } else {
             throw new UserOperationException(
                     "Virtual machine number cannot be less than or equal to 0.",
@@ -115,31 +144,42 @@ public class VMCreate {
         return userMessage;
     }
 
-    private void checkVmCreateFail(MultiVmCreateContext context, Exception exception) throws OpenStackException {
-        final String reason = "虚拟机创建失败，原因：" + getUserMessageOfException(translateExceptionMessage(exception));
+    private void notifyListener(MultiVmCreateContext context, Exception exception) throws OpenStackException {
+        String reason;
+        if (exception != null) {
+            reason = "虚拟机创建失败，原因：" + getUserMessageOfException(translateExceptionMessage(exception));
+        } else {
+            reason = "后台错误";
+        }
         notifyListener(context, reason);
     }
 
-    private void notifyListener(MultiVmCreateContext context, String reason) {
+    private void notifyListener(final MultiVmCreateContext context, final String reason) {
         if (context.getVmCreateListener() != null) {
-            for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
-                try {
-                    if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > i) {
-                        VmCreateContext vmCreateContext = context.getVmCreateContexts().get(i);
-                        if (vmCreateContext.getServerCreated() == null) {
-                            context.getVmCreateListener().vmCreateFailed(
-                                    new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
-                        } else {
-                            context.getVmCreateListener().vmCreated(new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), i, context.getListenerUserData()));
+            Util.asyncExec(new Runnable() {
+
+                @Override
+                public void run() {
+                    for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
+                        try {
+                            if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > i) {
+                                VmCreateContext vmCreateContext = context.getVmCreateContexts().get(i);
+                                if (vmCreateContext.getServerCreated() == null) {
+                                    context.getVmCreateListener().vmCreateFailed(
+                                            new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
+                                } else {
+                                    context.getVmCreateListener().vmCreated(new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), i, context.getListenerUserData()));
+                                }
+                            } else{
+                                context.getVmCreateListener().vmCreateFailed(
+                                        new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
+                            }
+                        } catch (Exception ex) {
+                            Util.processBillingException(ex);
                         }
-                    } else{
-                        context.getVmCreateListener().vmCreateFailed(
-                                new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
                     }
-                } catch (Exception ex) {
-                    Util.processBillingException(ex);
                 }
-            }
+            });
         }
     }
 

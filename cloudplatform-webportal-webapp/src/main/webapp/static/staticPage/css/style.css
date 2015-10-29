@@ -6,7 +6,9 @@ a:hover{cursor:pointer;}
 .body-connectUs{background-image:none;background-color:#003752;}
 .body-top .top-nav{height:62px;position:relative;z-index:200;line-height:45px;}
 .top-nav .brand-logo{width:150px;height:40px;}
+.top-nav .nav-items{overflow:hidden;}
 .top-nav .nav-item{margin-right:50px;font-size:1.8rem;font-size:18px\9;color:#fff;float:left;}
+.top-nav .nav-item.last{margin-right:0;}
 .top-nav a{color:transparent;}
 .top-nav li a{color:#fff;}
 .top-nav li a:hover{cursor:pointer;color:#088ac2}
