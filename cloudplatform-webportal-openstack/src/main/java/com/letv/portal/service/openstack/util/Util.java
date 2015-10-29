@@ -60,6 +60,10 @@ public class Util {
 
 	private static final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
 
+	public static void asyncExec(Runnable task) {
+		executorService.submit(task);
+	}
+
     public static void concurrentRunAndWait(Runnable currentThreadTask, Runnable... otherTasks) {
         ListenableFuture[] futures = new ListenableFuture[otherTasks.length];
         for (int i = 0; i < otherTasks.length; i++) {
