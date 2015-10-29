@@ -55,7 +55,7 @@ public class LocalImageServiceImpl implements LocalImageService {
         if (page == null) {
             page = new Page();
         }
-        page.setTotalRecords(cloudvmImageService.countImageByName(region, name));
+        page.setTotalRecords(cloudvmImageService.selectCountImageByName(region, name));
         page.setData(imageResources);
         return page;
     }
@@ -83,7 +83,7 @@ public class LocalImageServiceImpl implements LocalImageService {
         if (page == null) {
             page = new Page();
         }
-        page.setTotalRecords(cloudvmImageService.countVmSnapshotByName(tenantId, region, name));
+        page.setTotalRecords(cloudvmImageService.selectCountVmSnapshotByName(tenantId, region, name));
         page.setData(imageResources);
         return page;
     }

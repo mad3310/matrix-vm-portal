@@ -93,7 +93,7 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
     }
 
     @Override
-    public int countByName(long tenantId, String region, String name) {
+    public int selectCountByName(long tenantId, String region, String name) {
         if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }

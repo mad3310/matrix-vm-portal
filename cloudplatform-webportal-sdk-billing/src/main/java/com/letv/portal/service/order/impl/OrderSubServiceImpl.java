@@ -198,6 +198,52 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	public List<OrderSub> selectOrderSubBySubscriptionId(long subscriptionId) {
 		return this.orderSubDao.selectOrderSubBySubscriptionId(subscriptionId);
 	}
+	
+	private List<OrderSub> selectOrderSubByOrderId(String orderId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("orderId", orderId);
+	    params.put("userId", sessionService.getSession().getUserId());
+	    return this.orderSubDao.selectByMap(params);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Map<String, Object>> queryOrderDetailById(String orderId) {
+		List<OrderSub> orderSubs = selectOrderSubByOrderId(orderId);
+		if(orderSubs==null || orderSubs.size()==0) {
+			return null;
+		}
+		
+		List<Map<String, Object>> retList = new ArrayList<Map<String, Object>>();
+		Set<String> judgeParam = new HashSet<String>();
+		
+		for (OrderSub orderSub : orderSubs) {
+			if(judgeParam.contains(orderSub.getProductInfoRecord().getParams())) {
+				continue;
+			}
+			Map<String, Object> params = JSONObject.parseObject(orderSub.getProductInfoRecord().getParams(), Map.class);	
+			Map<String, Object> ret = new HashMap<String, Object>();
+			ret.put("price", getValidProductOrderPrice(orderSub, (Integer)params.get("count")));
+			ret.put("totalPrice", getValidTotalOrderPrice(orderSubs));
+			ret.put("orderStatus", orderSub.getOrder().getStatus());
+			ret.put("payNumber", orderSub.getOrder().getPayNumber());
+			ret.put("orderNumber", orderSub.getOrder().getOrderNumber());
+			ret.put("orderTime", orderSub.getSubscription().getOrderTime());
+			ret.put("orderNum", (Integer)params.get("count"));
+			ret.put("params", orderSub.getOrder().getDescn());
+			ret.put("createTime", orderSub.getOrder().getCreateTime());
+			ret.put("payTime", orderSub.getOrder().getPayTime());
+			ret.put("chargeType", orderSub.getSubscription().getChargeType());
+			ret.put("productName", orderSub.getSubscription().getProductName());
+			ret.put("endTime", orderSub.getEndTime());
+			ret.put("buyType", orderSub.getSubscription().getBuyType());
+			
+			retList.add(ret);
+			judgeParam.add(orderSub.getProductInfoRecord().getParams());
+		}
+		
+		return retList;
+	}
 
 
 }

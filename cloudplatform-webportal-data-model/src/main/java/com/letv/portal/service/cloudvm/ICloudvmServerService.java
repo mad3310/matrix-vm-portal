@@ -22,7 +22,7 @@ public interface ICloudvmServerService extends IBaseService<CloudvmServer> {
 
     List<CloudvmServer> selectByName(Long userId, String region, String name, Page page);
 
-    int countByName(String region, String name);
+    int selectCountByName(String region, String name);
 
-    int countByName(Long userId, String region, String name);
+    int selectCountByName(Long userId, String region, String name);
 }

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.CalendarUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
 import com.letv.portal.constant.Constant;
@@ -159,7 +160,7 @@ public class PayServiceImpl implements IPayService {
 						return ret;
 					}
 					//3代表订单支付金额为0或订单金额全部使用账户余额支付时流水编号自己生成
-					if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), 2)) {
+					if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2)) {
 						//创建应用实例
 						createInstance(orderSubs);
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
@@ -198,7 +199,7 @@ public class PayServiceImpl implements IPayService {
 				String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
 				ret = transResult(str);
 				if(getValidOrderPrice(orderSubs).subtract(order.getAccountPrice()).compareTo(new BigDecimal((String) ret.get("price")))==0) {
-					if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null)) {
+					if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null, null)) {
 						ret.put("alert", "微信方式支付异常");
 					}
 				} else {
@@ -298,7 +299,7 @@ public class PayServiceImpl implements IPayService {
 				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).doubleValue()+"");
 		if (sign != null && sign.equals(map.get("sign"))) {
 			
-			if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), 2)) {
+			if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), CalendarUtil.parseCalendar((String)map.get("paytime")).getTime(), 2)) {
 				
 				//更改用户充值信息
 				//this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
@@ -346,12 +347,13 @@ public class PayServiceImpl implements IPayService {
 		return price;
 	}
 
-	private boolean updateOrderPayInfo(long orderId, String orderNumber, Integer status) {
+	private boolean updateOrderPayInfo(long orderId, String orderNumber, Date payTime, Integer status) {
 		Order o = new Order();
 		o.setId(orderId);
 		o.setStatus(status);
 		o.setUpdateTime(new Timestamp(new Date().getTime()));
 		o.setPayNumber(orderNumber);
+		o.setPayTime(payTime);
 		this.orderService.updateBySelective(o);
 		return true;
 	}

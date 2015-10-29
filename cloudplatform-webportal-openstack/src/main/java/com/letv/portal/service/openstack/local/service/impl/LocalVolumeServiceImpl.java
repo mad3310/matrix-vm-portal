@@ -2,20 +2,15 @@ package com.letv.portal.service.openstack.local.service.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
-import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
-import com.letv.portal.service.openstack.local.resource.LocalVmResource;
 import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalRegionService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
-import com.letv.portal.service.openstack.resource.Region;
-import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +63,7 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         if (page == null) {
             page = new Page();
         }
-        page.setTotalRecords(cloudvmVolumeService.countByName(tenantId, region, name));
+        page.setTotalRecords(cloudvmVolumeService.selectCountByName(tenantId, region, name));
         page.setData(volumeResources);
         return page;
     }
@@ -143,5 +138,10 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         if (cloudvmVolume != null) {
             cloudvmVolumeService.delete(cloudvmVolume);
         }
+    }
+
+    @Override
+    public long count(long tenantId, String region) {
+        return cloudvmVolumeService.selectCountByName(tenantId, region, null);
     }
 }

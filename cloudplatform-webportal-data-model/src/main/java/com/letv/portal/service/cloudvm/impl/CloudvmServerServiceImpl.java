@@ -132,12 +132,12 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServer>
     }
 
     @Override
-    public int countByName(String region, String name) {
-        return countByName(null, region, name);
+    public int selectCountByName(String region, String name) {
+        return selectCountByName(null, region, name);
     }
 
     @Override
-    public int countByName(Long userId, String region, String name) {
+    public int selectCountByName(Long userId, String region, String name) {
         if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }

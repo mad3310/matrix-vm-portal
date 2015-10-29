@@ -8,6 +8,7 @@ import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.springframework.scheduling.SchedulingTaskExecutor;
 
@@ -34,6 +35,7 @@ public class OpenStackServiceGroup {
 	private ICloudvmVolumeService cloudvmVolumeService;
 	private LocalImageService localImageService;
 	private ImageSyncService imageSyncService;
+	private LocalRcCountService localRcCountService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -172,5 +174,13 @@ public class OpenStackServiceGroup {
 
 	public ImageSyncService getImageSyncService() {
 		return imageSyncService;
+	}
+
+	public void setLocalRcCountService(LocalRcCountService localRcCountService) {
+		this.localRcCountService = localRcCountService;
+	}
+
+	public LocalRcCountService getLocalRcCountService() {
+		return localRcCountService;
 	}
 }

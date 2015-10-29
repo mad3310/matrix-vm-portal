@@ -18,7 +18,7 @@ public interface ICloudvmVolumeService extends IBaseService<CloudvmVolume> {
 
     List<CloudvmVolume> selectByName(long tenantId, String region, String name, Page page);
 
-    int countByName(long tenantId, String region, String name);
+    int selectCountByName(long tenantId, String region, String name);
 
     List<CloudvmVolume> selectByServerIdAndStatus(long tenantId, String region, String serverId, CloudvmVolumeStatus status);
 }
