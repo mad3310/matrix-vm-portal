@@ -13,10 +13,10 @@
     },
 	paths: {
 		//vendor
-		'jquery': '../../javascripts/jquery-1.11.3',
-		'bootstrap': '../../javascripts/bootstrap',
+		'jquery': 'empty:',//'../../javascripts/jquery-1.11.3',
+		'bootstrap':'empty:',// '../../javascripts/bootstrap',
 		'common': '../../javascripts/common',
-		'angular': '../../javascripts/angular',
+		'angular':'empty:',// '../../javascripts/angular',
 		'angular-animate': '../../javascripts/angular-animate',
 		'angular-route': '../../javascripts/angular-route',
 		'ui-bootstrap': '../../javascripts/ui-bootstrap-tpls-0.13.3',

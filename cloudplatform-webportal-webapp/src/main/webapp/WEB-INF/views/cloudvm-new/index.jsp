@@ -27,6 +27,9 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+            <!--<script type="text/javascript" src="/static/javascripts/jquery-1.11.3.js"></script>
+            <script type="text/javascript" src="/static/javascripts/bootstrap.js"></script>
+            <script type="text/javascript" src="/static/javascripts/angular.js"></script>-->
             <script type="text/javascript" src="/static/javascripts/require.js" data-main="/static/apps/cloudvm/main.js"></script>
         </body>
     </html>
