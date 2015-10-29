@@ -82,6 +82,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		sub.setProductId(id);
 		sub.setBaseRegionId(Long.parseLong((String)map.get("region")));
 		sub.setChargeType(map.get("chargeType")==null?0:Integer.parseInt((String)map.get("chargeType")));
+		sub.setBuyType(0);//新购
 		sub.setProductInfoRecordId(productInfoRecordId);
 		Integer t = Integer.parseInt(orderTime);
 		sub.setOrderTime(t);

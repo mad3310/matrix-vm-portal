@@ -1,6 +1,7 @@
 package com.letv.portal.model.order;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
@@ -21,8 +22,15 @@ public class Order extends BaseModel{
 	private String descn;//描述
 	private Integer status;//订单状态：0-未付款，1-失效，2-已付款
 	private String payNumber;//支付订单号
+	private Date payTime;//支付时间
 	private BigDecimal accountPrice;//使用账户金额
 	
+	public Date getPayTime() {
+		return payTime;
+	}
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
+	}
 	public BigDecimal getAccountPrice() {
 		return accountPrice;
 	}

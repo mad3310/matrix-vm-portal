@@ -60,6 +60,16 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	void modifyPriceById(Map<String, Object> params);
 	
 	List<Map<String, Object>> queryOrderInfo(String orderNumber);
+	/**
+	  * @Title: queryOrderDetailById
+	  * @Description: 根据订单id获取订单详情
+	  * @param orderId
+	  * @return List<Map<String,Object>>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月29日 上午11:11:06
+	  */
+	List<Map<String, Object>> queryOrderDetailById(String orderId);
 	
 	/**
 	  * @Title: queryOrderPayInfo
