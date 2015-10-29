@@ -1,6 +1,6 @@
 define(['controllers/app.controller'], function (controllerModule) {
-	controllerModule.controller('DashboardCtrl', ['$scope', '$modal', 'Config', 'HttpService','$http','WidgetService',
-	     function ($scope, $modal, Config, HttpService,$http,WidgetService) {
+	controllerModule.controller('DashboardCtrl', ['$scope', '$modal', 'Config', 'HttpService','$http','WidgetService','CurrentContext',
+	     function ($scope, $modal, Config, HttpService,$http,WidgetService,CurrentContext) {
 			$scope.username = "";
 			$scope.userimg='';
 			$scope.message='';
@@ -12,6 +12,9 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.expander='';
 			$scope.ecs='';
 			$scope.ecs_sleep='';
+			$scope.disk='';
+			$scope.floatIp='';
+			$scope.router='';
 			$scope.expander.layout= "normal";
 			$scope.ecsconsume="";
 			$scope.diskconsume="";
@@ -36,7 +39,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				var remainurl="/userAccount/balance/"+userid;
 				var billMesurl="/userAccount/order/un/"+userid;
 				var operationurl="/operate";
-				var serviceurl="/service";
+				var serviceurl="/service?region="+CurrentContext.regionId;
 				var consumeurl="/billing/product/daily/consume";
 				$http.get(usinfourl).success(function(data){
 					if(data.result==0){//error
@@ -90,6 +93,9 @@ define(['controllers/app.controller'], function (controllerModule) {
 					}else{
 						$scope.ecs=data.data.ecs;
 						$scope.ecs_sleep=data.data['ecs-sleep'];
+						$scope.disk=data.data.disk;
+						$scope.floatIp=data.data.floatIp;
+						$scope.router=data.data.router;
 					}
 				});
 				$http.get(consumeurl).success(function(data){

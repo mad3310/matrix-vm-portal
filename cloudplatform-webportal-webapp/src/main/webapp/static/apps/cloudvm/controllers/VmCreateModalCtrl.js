@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,vmSnapshot) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region,vmSnapshot) {
 
     $scope.isDesignatedVmSnapshot = vmSnapshot?true:false;
     $scope.activeFlow = 1;
@@ -23,7 +23,9 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmNetworkType = 'primary';
     $scope.vmNetworkPublicIpModel = 'now';
     $scope.networkBandWidth = 2;
-    $scope.vmNetworkSubnet = 'subnet1';
+    $scope.vmNetworkSubnetList = [];
+    $scope.vmNetworkSubnetSelectorData=[];
+    $scope.selectedVmNetworkSubnet = null;
     $scope.vmSecurityType = 'key';
     $scope.vmSecurityKey = 'key1';
     $scope.vmSecurityPassword = '';
@@ -73,6 +75,14 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.isSelectedVmBuyPeriod = function (vmBuyPeriod) {
       return $scope.vmBuyPeriod === vmBuyPeriod;
     };
+    $scope.switchVmNetworkPublicIpType=function(){
+      if($scope.vmNetworkPublicIpType == 'now'){
+        $scope.vmNetworkPublicIpType = 'later';
+      }
+      else{
+        $scope.vmNetworkPublicIpType = 'now';
+      }
+    };
     $scope.createVm = function () {
       var data = {
         region:region,
@@ -82,12 +92,12 @@ define(['controllers/app.controller'], function (controllerModule) {
         volumeTypeId:$scope.selectedVmDiskType.id,
         volumeSize: $scope.dataDiskVolume,
         adminPass: $scope.vmSecurityPassword,
-        bindFloatingIp: $scope.vmNetworkPublicIpModel === 'now',
-        sharedNetworkId:selectedVmSharedNetwork.id,
+        bindFloatingIp: $scope.vmNetworkPublicIpType === 'now',
+        sharedNetworkId:$scope.vmNetworkType=='primary'? selectedVmSharedNetwork.id:'',
         bandWidth:$scope.networkBandWidth,
         keyPairName:'',
         count:$scope.vmCount,
-        privateSubnetId:'',
+        privateSubnetId:$scope.vmNetworkType=='private'? $scope.selectedVmNetworkSubnet.value:'',//privateSubnetId和sharedNetworkId是否为空来标识选择的基础网络还是私有网络
         snapshotId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmSnapshot.id:'',
         order_time: $scope.vmBuyPeriod.toString(),
       };
@@ -157,6 +167,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         initVmCpuSelector();
         initVmDiskTypeSelector();
         setSelectedVmSharedNetworkId();
+        initVmNetworkSubnetSelector();
       },
       initVmImageSelector = function () {
         if($scope.isDesignatedVmSnapshot) return;
@@ -176,6 +187,15 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.selectedVmSnapshot = $scope.vmSnapshotList[0];
           });
         }
+      },
+      initVmNetworkSubnetSelector = function () {
+          HttpService.doGet(Config.urls.subnet_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+            $scope.vmNetworkSubnetList = data.data.data;
+            $scope.vmNetworkSubnetSelectorData=$scope.vmNetworkSubnetList.map(function(subnet){
+              return new ModelService.SelectModel(subnet.name,subnet.id);
+            });
+            $scope.selectedVmNetworkSubnet=$scope.vmNetworkSubnetSelectorData[0];
+          });
       },
       initVmCpuSelector = function () {
         HttpService.doGet(Config.urls.flavor_group_data.replace('{region}', region)).success(function (data, status, headers, config) {
@@ -241,7 +261,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           data.push(['镜像',$scope.selectedVmImage.name].join('/:'));
         }
         data.push(['地域',CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name].join('/:'));
-        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'私有网络':'基础网络'].join('/:'));
+        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'基础网络':'私有网络'].join('/:'));
         return data.join('/;');
       };
     initComponents();

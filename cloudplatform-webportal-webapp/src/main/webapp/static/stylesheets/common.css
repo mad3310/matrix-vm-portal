@@ -1029,6 +1029,7 @@ le-select .le-select-menu li a{
 .view-common .list-common .icon-computer{
     font-size: 24px;
     color: #08c2b3;
+    cursor: pointer;
 }
 .view-common .list-common .status-loading{
     display: inline-block;
