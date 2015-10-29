@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VirtualMachineCrtl', ['$scope','$interval', '$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
-    function ($scope,$interval, $modal, Config, HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VirtualMachineCrtl', ['$scope','$interval','$window', '$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval,$window, $modal, Config, HttpService,WidgetService,CurrentContext) {
       $scope.searchVmName = '';
 
       $scope.vmList = [];
@@ -314,6 +314,17 @@ define(['controllers/app.controller'], function (controllerModule) {
             //refreshDiskList();
           }
         }, function () {
+        });
+      };
+
+      $scope.navigateToVNC=function(vm){
+        HttpService.doPost(Config.urls.vm_vnc.replace('{region}', CurrentContext.regionId), {vmId:vm.id}).success(function (data, status, headers, config) {
+          if(data.result===1){
+            $window.open(data.data);
+          }
+          else{
+            WidgetService.notifyError(data.msgs[0]||'获取云主机VNC连接失败');
+          }
         });
       };
 

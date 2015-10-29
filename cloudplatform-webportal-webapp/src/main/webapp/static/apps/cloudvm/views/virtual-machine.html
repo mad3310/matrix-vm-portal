@@ -60,7 +60,7 @@
                     <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>
                     <td><span class="iconfont icon-monitor"></span></td>
                     <td><span>{{vm.created | date:'yyyy-MM-dd'}}</span></td>
-                    <td><span class="iconfont icon-computer"></span></td>
+                    <td><span class="iconfont icon-computer" ng-click="navigateToVNC(vm)"></span></td>
                 </tr>
                 <tr ng-if="vmList.length==0">
                     <td ng-if="!isListLoading" colspan=10>暂无云主机，去创建吧。</td>
