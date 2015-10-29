@@ -15,7 +15,7 @@ public interface ICloudvmImageService extends IBaseService<CloudvmImage> {
 
     List<CloudvmImage> selectImageByName(String region, String name, Page page);
 
-    int countImageByName(String region, String name);
+    int selectCountImageByName(String region, String name);
 
     void insertImage(CloudvmImage cloudvmImage);
 
@@ -25,7 +25,7 @@ public interface ICloudvmImageService extends IBaseService<CloudvmImage> {
 
     List<CloudvmImage> selectVmSnapshotByName(long tenantId, String region, String name, Page page);
 
-    int countVmSnapshotByName(long tenantId, String region, String name);
+    int selectCountVmSnapshotByName(long tenantId, String region, String name);
 
     void insertVmSnapshot(CloudvmImage cloudvmImage);
 

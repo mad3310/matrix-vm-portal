@@ -72,7 +72,7 @@ public class CloudvmImageServiceImpl extends BaseServiceImpl<CloudvmImage>
     }
 
     @Override
-    public int countImageByName(String region, String name) {
+    public int selectCountImageByName(String region, String name) {
         if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }
@@ -143,7 +143,7 @@ public class CloudvmImageServiceImpl extends BaseServiceImpl<CloudvmImage>
     }
 
     @Override
-    public int countVmSnapshotByName(long tenantId, String region, String name) {
+    public int selectCountVmSnapshotByName(long tenantId, String region, String name) {
         if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }

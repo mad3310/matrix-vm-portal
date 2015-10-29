@@ -71,7 +71,7 @@ public class LocalVmServiceImpl implements LocalVmService {
         if (page == null) {
             page = new Page();
         }
-        page.setTotalRecords(cloudvmServerService.countByName(getCurrentUserId(), regionCode, name));
+        page.setTotalRecords(cloudvmServerService.selectCountByName(getCurrentUserId(), regionCode, name));
         page.setData(vmResources);
         return page;
     }
