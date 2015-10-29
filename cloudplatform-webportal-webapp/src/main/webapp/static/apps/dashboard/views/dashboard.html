@@ -53,7 +53,7 @@
 						<a class="product" href="/cvm/#/vm">
 							<span class="iconfont icon-yunzhuji"></span>
 							<div class="product-title">云主机</div>
-							<div class="product-num">{{ecs}}个</div>
+							<div class="product-num">{{ecs || '0'}}个</div>
 						</a>
 						<div class="productDesc">
 							<span>每日消费</span>
@@ -62,8 +62,8 @@
 								<span>¥{{ecsconsume || '0'}}</span>
 							</div>
 							<div class="row">
-								<span class="le-col-6">运行{{ecs}}个</span>
-								<span class="le-col-6">停止{{ecs_sleep}}个</span>
+								<span class="le-col-6">运行{{ecs || '0'}}个</span>
+								<span class="le-col-6">停止{{ecs_sleep || '0'}}个</span>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -72,7 +72,7 @@
 						<a class="product harddisk" href="javascript:void(0);">
 							<span class="iconfont icon-cloudstorageicon"></span>
 							<div class="product-title">云硬盘</div>
-							<div class="product-num">0个</div>
+							<div class="product-num">{{disk || '0'}}个</div>
 						</a>
 						<div class="productDesc last">
 							<span>每日消费</span>
@@ -81,7 +81,7 @@
 								<span>¥{{diskconsume || '0'}}</span>
 							</div>
 							<div class="row">
-								<span class="le-col-6">运行0个</span>
+								<span class="le-col-6">运行{{disk || '0'}}个</span>
 								<span class="le-col-6">停止0个</span>
 							</div>
 							<div class="clearfix"></div>
@@ -92,7 +92,7 @@
 						<a class="product harddisk" href="javascript:void(0);">
 							<span class="iconfont icon-ipicon"></span>
 							<div class="product-title">公网IP</div>
-							<div class="product-num">0个</div>
+							<div class="product-num">{{floatIp || '0'}}个</div>
 						</a>
 						<div class="productDesc">
 							<span>每日消费</span>
@@ -101,7 +101,7 @@
 								<span>¥{{floatipconsume || '0'}}</span>
 							</div>
 							<div class="row">
-								<span class="le-col-6">运行0个</span>
+								<span class="le-col-6">运行{{floatIp || '0'}}个</span>
 								<span class="le-col-6">停止0个</span>
 							</div>
 						</div>
@@ -111,7 +111,7 @@
 						<a class="product" href="javascript:void(0);">
 							<span class="iconfont icon-routeicon"></span>
 							<div class="product-title">路由器</div>
-							<div class="product-num">0个</div>
+							<div class="product-num">{{router || '0'}}个</div>
 						</a>
 						<div class="productDesc last">
 							<span>每日消费</span>
@@ -120,7 +120,7 @@
 								<span>¥{{routeconsume || '0'}}</span>
 							</div>
 							<div class="row">
-								<span class="le-col-6">运行0个</span>
+								<span class="le-col-6">运行{{router || '0'}}个</span>
 								<span class="le-col-6">停止0个</span>
 							</div>
 							<div class="clearfix"></div>
@@ -183,7 +183,7 @@
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">{{ecs}}</div>
+								<div class="text-left">{{ecs || '0'}}</div>
 								<div class="quota-line"></div>
 								<div class="text-right">10</div>
 							</div>
