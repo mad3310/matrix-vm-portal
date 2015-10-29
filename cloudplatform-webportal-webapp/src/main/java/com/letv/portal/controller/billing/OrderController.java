@@ -28,6 +28,28 @@ public class OrderController {
 	
 	@Autowired
 	IOrderSubService orderSubService;
+	
+	/**
+	  * @Title: queryOrderDetailById
+	  * @Description: 根据订单id获取订单详情
+	  * @param orderId
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月29日 下午3:37:24
+	  */
+	@RequestMapping(value="/detail/{orderId}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject queryOrderDetailById(@PathVariable String orderId, ResultObject obj) {
+		List<Map<String, Object>> ret = this.orderSubService.queryOrderDetailById(orderId);
+		if(ret==null) {
+			obj.setResult(0);
+			obj.addMsg("未获取到订单信息，请联系管理员！订单ID："+orderId);
+		} else {
+			obj.setData(ret);
+		}
+		return obj;
+	}
 
 	/**
 	  * @Title: queryOrderInfo

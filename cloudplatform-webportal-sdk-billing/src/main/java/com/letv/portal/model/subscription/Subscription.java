@@ -24,6 +24,7 @@ public class Subscription extends BaseModel{
 	private Long productId;//产品表主键
 	private Long baseRegionId;//地域表主键
 	private Long userId;//用户ID
+	private Integer buyType;//购买类型：0-新购，1-续费
 	private Integer chargeType;//计费类型：0-包年包月，1-按量
 	private Integer orderTime;//购买时长
 	private Date startTime;//开始时间
@@ -38,6 +39,12 @@ public class Subscription extends BaseModel{
 	
 	private ProductInfoRecord productInfoRecord;//商品记录表
 	
+	public Integer getBuyType() {
+		return buyType;
+	}
+	public void setBuyType(Integer buyType) {
+		this.buyType = buyType;
+	}
 	public ProductInfoRecord getProductInfoRecord() {
 		return productInfoRecord;
 	}

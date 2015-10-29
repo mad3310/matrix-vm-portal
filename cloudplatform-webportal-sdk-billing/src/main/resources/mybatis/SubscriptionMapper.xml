@@ -9,6 +9,7 @@
 	    <result column="SUBSCRIPTION_NUMBER" property="subscriptionNumber" />
 	    <result column="PRODUCT_ID" property="productId" />
 	    <result column="BASE_REGION_ID" property="baseRegionId" />
+	    <result column="BUY_TYPE" property="buyType" />
 	    <result column="CHARGE_TYPE" property="chargeType" />
 	    <result column="ORDER_TIME" property="orderTime" />
 	    <result column="VALID" property="valid" />
@@ -38,7 +39,7 @@
 	
 	<sql id="Base_Column_List">
 	    subscription.ID,subscription.PRODUCT_ID,subscription.BASE_REGION_ID,subscription.SUBSCRIPTION_NUMBER,
-	    subscription.CHARGE_TYPE,subscription.ORDER_TIME,subscription.VALID,
+	    subscription.BUY_TYPE,subscription.CHARGE_TYPE,subscription.ORDER_TIME,subscription.VALID,
 	    subscription.START_TIME,subscription.END_TIME,subscription.USER_ID,subscription.DELETED,
 	    subscription.CREATE_TIME,subscription.UPDATE_TIME,subscription.CREATE_USER,subscription.UPDATE_USER,
 	    subscription.DESCN,subscription.PRODUCT_INFO_RECORD_ID
@@ -46,9 +47,9 @@
 	
 	<insert id="insert" parameterType="Subscription" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_BILLING_SUBSCRIPTION 
-	        (SUBSCRIPTION_NUMBER,PRODUCT_ID,BASE_REGION_ID,CHARGE_TYPE,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PRODUCT_INFO_RECORD_ID) 
+	        (SUBSCRIPTION_NUMBER,PRODUCT_ID,BASE_REGION_ID,BUY_TYPE,CHARGE_TYPE,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PRODUCT_INFO_RECORD_ID) 
 	    values
-	        (#{subscriptionNumber},#{productId},#{baseRegionId},#{chargeType},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn},#{productInfoRecordId})
+	        (#{subscriptionNumber},#{productId},#{baseRegionId},#{buyType},#{chargeType},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn},#{productInfoRecordId})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -65,6 +66,9 @@
 	        </if>
 	        <if test="baseRegionId != null ">
 	            and subscription.BASE_REGION_ID=#{baseRegionId}
+	        </if>
+	        <if test="buyType != null ">
+	            and subscription.BUY_TYPE=#{buyType}
 	        </if>
 	        <if test="chargeType != null ">
 	            and subscription.CHARGE_TYPE=#{chargeType}
@@ -120,6 +124,9 @@
 	        </if>
 	        <if test="baseRegionId != null ">
 	            BASE_REGION_ID=#{baseRegionId},
+	        </if>
+	        <if test="buyType != null ">
+	            BUY_TYPE=#{buyType},
 	        </if>
 	        <if test="chargeType != null ">
 	            CHARGE_TYPE=#{chargeType},
