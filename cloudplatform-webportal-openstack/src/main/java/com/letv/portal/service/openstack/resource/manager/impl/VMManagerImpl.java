@@ -82,7 +82,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
     // private NovaApi novaApi;
 
-    private ImageManager imageManager;
+    private ImageManagerImpl imageManager;
 
     private NetworkManagerImpl networkManager;
 
@@ -935,7 +935,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         });
     }
 
-    public void setImageManager(ImageManager imageManager) {
+    public void setImageManager(ImageManagerImpl imageManager) {
         this.imageManager = imageManager;
     }
 
@@ -1636,7 +1636,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         long userVoUserId = openStackUser.getUserVoUserId();
         LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
         localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.SERVER);
-        
+
 //        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
 
 

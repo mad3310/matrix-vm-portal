@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl.task;
 
+import com.letv.portal.service.openstack.resource.manager.impl.ImageManagerImpl;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.slf4j.Logger;
@@ -16,12 +17,12 @@ public class BindFloatingIP implements Runnable {
 			.getLogger(BindFloatingIP.class);
 
 	private VMManagerImpl vmManager;
-	private ImageManager imageManager;
+	private ImageManagerImpl imageManager;
 	private String region;
 	private Server server;
 	private FloatingIP floatingIP;
 
-	public BindFloatingIP(VMManagerImpl vmManager, ImageManager imageManager,
+	public BindFloatingIP(VMManagerImpl vmManager, ImageManagerImpl imageManager,
 			String region, Server server, FloatingIP floatingIP) {
 		this.vmManager = vmManager;
 		this.imageManager = imageManager;

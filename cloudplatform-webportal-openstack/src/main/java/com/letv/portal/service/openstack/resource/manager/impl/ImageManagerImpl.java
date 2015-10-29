@@ -93,6 +93,22 @@ public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> impleme
 		});
 	}
 
+	public ImageResource getImageResourceForInternal(final String region, final String id) throws OpenStackException {
+		return runWithApi(new ApiRunnable<GlanceApi, ImageResource>() {
+
+			@Override
+			public ImageResource run(GlanceApi glanceApi) throws Exception {
+				ImageApi imageApi = glanceApi.getImageApi(region);
+				ImageDetails imageDetails = imageApi.get(id);
+				if (imageDetails != null) {
+					return new ImageResourceImpl(region, imageDetails);
+				} else {
+					return null;
+				}
+			}
+		});
+	}
+
 	@Override
 	public ImageResource get(final String region,final String id)
 			throws OpenStackException {

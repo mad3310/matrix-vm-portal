@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.impl;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.letv.portal.service.openstack.resource.manager.impl.ImageManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -124,9 +125,9 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	}
 
 	public VMResourceImpl(String region, String regionDisplayName,
-			Server server, VMManagerImpl vmManager, ImageManager imageManager,
+			Server server, VMManagerImpl vmManager, ImageManagerImpl imageManager,
 			OpenStackUser openStackUser) throws OpenStackException {
-		this(region, regionDisplayName, server, imageManager.get(region, server
+		this(region, regionDisplayName, server, imageManager.getImageResourceForInternal(region, server
 				.getImage().getId()), vmManager.getFlavorResource(region,
 				server.getFlavor().getId()), vmManager.listFloatingIPs(region),
 				openStackUser);

@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.manager;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
