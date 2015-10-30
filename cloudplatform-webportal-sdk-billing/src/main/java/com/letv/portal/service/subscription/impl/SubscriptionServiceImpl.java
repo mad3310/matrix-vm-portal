@@ -33,6 +33,7 @@ import com.letv.portal.service.message.IMessageProxyService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;
+import com.letv.portal.util.MessageFormatServiceUtil;
 import com.letv.portal.util.SerialNumberUtil;
 import com.mysql.jdbc.StringUtils;
 
@@ -68,6 +69,8 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	private String ORDER_OVERDUE;
 	@Value("${order.delete.day}")
 	private String ORDER_DELETE;
+	@Autowired
+	private MessageFormatServiceUtil messageFormatServiceUtil;
 
 	@Override
 	public IBaseDao<Subscription> getDao() {
@@ -206,155 +209,80 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		}
 		//保存通知和发送邮件
 		for(Long userId : expires.keySet()) {
-			saveExpiresMessage(userId, expires.get(userId));
+			saveMessage(userId, expires.get(userId), 1);
 			sendEmailsByType(this.userService.getUcUserById(userId), expires.get(userId), 1);
 		}
 		for(Long userId : overdues.keySet()) {
-			saveOverduesMessage(userId, overdues.get(userId));
+			saveMessage(userId, overdues.get(userId), 2);
 			sendEmailsByType(this.userService.getUcUserById(userId), overdues.get(userId), 2);
 		}
 		for(Long userId : deletes.keySet()) {
-			saveDeletesMessage(userId, deletes.get(userId));
+			saveMessage(userId, deletes.get(userId), 3);
 			sendEmailsByType(this.userService.getUcUserById(userId), deletes.get(userId), 3);
 		}
         
 	}
 	
 	/**
-	  * @Title: saveExpiresMessage
-	  * @Description: 保存到期提醒消息
+	  * @Title: saveMessage
+	  * @Description: 保存提醒消息
 	  * @param userId
 	  * @param infos void   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年10月27日 下午2:41:55
 	  */
-	private void saveExpiresMessage(Long userId, Map<Long, List<Map<String, Object>>> infos) {
+	private void saveMessage(Long userId, Map<Long, List<Map<String, Object>>> infos, int type) {
 		if(infos.size()!=0) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("您的");
-			buffer.append("[");
+			
+			Map<String, Object> messageModel = new HashMap<String, Object>();
+
+			List<Map<String, Object>> resModelList = new LinkedList<Map<String, Object>>();
+			messageModel.put("resList", resModelList);
+			
 			for (Long day : infos.keySet()) {
-				List<Map<String, Object>> params = infos.get(day);
-				Map<String, List<String>> products = getProductNames(params);
-				for(String productName : products.keySet()) {
-					buffer.append(productName);
-					buffer.append(products.get(productName).toString());
+				List<Map<String, Object>> info = infos.get(day);
+				for (Map<String, Object> map : info) {
+					Map<String, Object> resModel = new HashMap<String, Object>();
+					resModel.put("region", map.get("regionName"));
+					resModel.put("type", map.get("productName"));
+					resModel.put("id", ((String)map.get("instanceId")).split("_")[1]);
+					resModel.put("name", map.get("name"));
+					resModel.put("day", Math.abs(day));
+					resModel.put("deleteTime", map.get("deleteTime"));
+					resModelList.add(resModel);
 				}
-		        buffer.append("]");
-		        buffer.append(Math.abs(day));
-		        buffer.append("天之后到期,");
 			}
-			buffer.append("请及时续费；");
-	        buffer.append("注意：如不及时续费，到期后资源将被暂停使用。");
+
 	        Message msg = new Message();
-	        msg.setMsgTitle("云产品到期提醒");
-	        msg.setMsgContent(buffer.toString());
+	        String str = null;
+	        
+	        if(type==1) {
+				messageModel.put("warn", "注意：如不及时续费，到期后资源将被暂停使用。");
+		        messageModel.put("introduce", "尊敬的用户，云产品到期提醒，详细信息如下:");
+		        str = messageFormatServiceUtil.format("message/messageExpireNotice.ftl", messageModel);
+		        msg.setMsgTitle("云产品到期提醒");
+			} else if(type==2) {
+				messageModel.put("warn", "注意：如不及时续费，到期后资源将被释放，无法恢复；如果您不再使用这些资源, 可以主动销毁, 避免再次收到提醒。");
+		        messageModel.put("introduce", "尊敬的用户，您的以下资源因欠费已延期使用，请尽快充值：");
+		        str = messageFormatServiceUtil.format("message/messageOverdueNotice.ftl", messageModel);
+		        msg.setMsgTitle("云主机欠费延期使用");
+			} else if(type==3) {
+		        messageModel.put("introduce", "尊敬的用户，您的以下资源因欠费被释放：");
+		        str = messageFormatServiceUtil.format("message/messageDeleteNotice.ftl", messageModel);
+		        msg.setMsgTitle("云主机欠费资源释放");
+			}
+	       
+	        msg.setMsgContent(str);
 	        msg.setMsgStatus("0");//未读
 	        msg.setMsgType("2");//个人消息
-	        msg.setCreatedTime(new Date());
 	        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
 	        if(!(Boolean) msgRet.get("result")) {
-	        	logger.error("保存云产品到期提醒通知失败，失败原因:"+msgRet.get("message"));
+	        	logger.error("保存云产品消息通知失败，失败原因:"+msgRet.get("message"));
 	        }
 		}
 	}
 	
-	private Map<String, List<String>> getProductNames(List<Map<String, Object>> params) {
-		Map<String, List<String>> products = new HashMap<String, List<String>>();
-		for (Map<String, Object> map : params) {
-			List<String> names = null;
-			if(products.get(map.get("productName"))==null) {
-				names = new ArrayList<String>();
-				products.put((String)map.get("productName"), names);
-			} else {
-				names = products.get(map.get("productName"));
-			}
-			names.add((String)map.get("name"));
-		}
-		return products;
-	}
-	
-	/**
-	  * @Title: saveOverduesMessage
-	  * @Description: 保存欠费提醒信息
-	  * @param userId
-	  * @param infos void   
-	  * @throws 
-	  * @author lisuxiao
-	  * @date 2015年10月27日 下午2:42:19
-	  */
-	private void saveOverduesMessage(Long userId, Map<Long, List<Map<String, Object>>> infos) {
-		if(infos.size()!=0) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("您的");
-			buffer.append("[");
-			for (Long day : infos.keySet()) {
-				List<Map<String, Object>> params = infos.get(day);
-				Map<String, List<String>> products = getProductNames(params);
-				for(String productName : products.keySet()) {
-					buffer.append(productName);
-					buffer.append(products.get(productName).toString());
-				}
-		        buffer.append("]");
-		        buffer.append("因欠费已延期使用");
-		        buffer.append(Math.abs(day));
-		        buffer.append("天，");
-			}
-			buffer.append("请尽快充值。");
-	        buffer.append("注意：如不及时续费，到期后资源将被释放，无法恢复；如果您不再使用这些资源, 可以主动销毁, 避免再次收到提醒。");
-	        Message msg = new Message();
-	        msg.setMsgTitle("云产品欠费延期使用");
-	        msg.setMsgContent(buffer.toString());
-	        msg.setMsgStatus("0");//未读
-	        msg.setMsgType("2");//个人消息
-	        msg.setCreatedTime(new Date());
-	        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-	        if(!(Boolean) msgRet.get("result")) {
-	        	logger.error("保存云产品欠费暂停使用通知失败，失败原因:"+msgRet.get("message"));
-	        }
-		}
-	}
-	
-	/**
-	  * @Title: saveDeletesMessage
-	  * @Description: 保存释放资源信息
-	  * @param userId
-	  * @param infos void   
-	  * @throws 
-	  * @author lisuxiao
-	  * @date 2015年10月27日 下午2:42:41
-	  */
-	private void saveDeletesMessage(Long userId, Map<Long, List<Map<String, Object>>> infos) {
-		if(infos.size()!=0) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("您的");
-			buffer.append("[");
-			for (Long day : infos.keySet()) {
-				List<Map<String, Object>> params = infos.get(day);
-				Map<String, List<String>> products = getProductNames(params);
-				for(String productName : products.keySet()) {
-					buffer.append(productName);
-					buffer.append(products.get(productName).toString());
-				}
-				buffer.append("]");
-				buffer.append("因欠费");
-				buffer.append(Math.abs(day));
-				buffer.append("天被释放，");
-			}
-			buffer.append("释放后将无法恢复。");
-			Message msg = new Message();
-			msg.setMsgTitle("云产品欠费资源释放");
-			msg.setMsgContent(buffer.toString());
-			msg.setMsgStatus("0");//未读
-			msg.setMsgType("2");//个人消息
-			msg.setCreatedTime(new Date());
-			Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-			if(!(Boolean) msgRet.get("result")) {
-				logger.error("保存云产品欠费资源释放通知失败，失败原因:"+msgRet.get("message"));
-			}
-		}
-	}
 	
 	/**
 	  * @Title: sendEmailsByType

@@ -69,6 +69,38 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
+    directiveModule.directive('passwordConfirm', function(Config) {
+        return {
+            require: 'ngModel',
+            scope: {
+                passwordModel: '=passwordModel'
+            },
+            link: function(scope, elm, attrs, ctrl) {
+                var isInit=true
+                scope.$watch(function() {
+                    var combined;
+
+                    if (scope.passwordModel || ctrl.$viewValue) {
+                        combined = scope.passwordModel + '_' + ctrl.$viewValue;
+                    }
+                    return combined;
+                }, function(value) {
+                    if(isInit){
+                        isInit=false;
+                        ctrl.$setValidity("passwordConfirm", true);
+                    }
+                    if (value) {
+                        if (scope.passwordModel !== ctrl.$viewValue) {
+                            ctrl.$setValidity("passwordConfirm", false);
+                        } else {
+                            ctrl.$setValidity("passwordConfirm", true);
+                        }
+                    }
+                });
+            }
+        };
+    });
+
     directiveModule.directive('numericInput', function () {
         return {
             restrict: 'AE',

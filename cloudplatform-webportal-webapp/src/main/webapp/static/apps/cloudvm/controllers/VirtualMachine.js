@@ -345,6 +345,37 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+      $scope.openVmPasswordChangeModal=function(size){
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'VmPasswordChangeModalTpl',
+          controller: 'VmPasswordChangeModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            vm: function () {
+              return checkedVms[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            //refreshDiskList();
+          }
+        }, function () {
+        });
+      };
+
       $scope.navigateToVNC=function(vm){
         HttpService.doPost(Config.urls.vm_vnc.replace('{region}', CurrentContext.regionId), {vmId:vm.id}).success(function (data, status, headers, config) {
           if(data.result===1){
@@ -556,6 +587,36 @@ define(['controllers/app.controller'], function (controllerModule) {
         else{
           WidgetService.notifyError(data.msgs[0]||'云主机快照创建失败');
           $scope.isOrderSubmiting=false;
+        }
+      });
+    };
+
+  });
+
+  controllerModule.controller('VmPasswordChangeModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+
+    $scope.newPassword='';
+    $scope.confirmPassword='';
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.changeVmPassword = function () {
+      var data = {
+        region:region,
+        vmId:vm.id,
+        adminPass:$scope.confirmPassword
+      };
+      $scope.isFormSubmiting=true;
+      HttpService.doPost(Config.urls.vm_password_change, data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('修改云主机密码成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'修改云主机密码失败');
+          $scope.isFormSubmiting=false;
         }
       });
     };

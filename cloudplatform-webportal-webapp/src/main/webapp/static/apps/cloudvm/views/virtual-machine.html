@@ -15,6 +15,7 @@
                     <li><a href="javascript:void(0);" ng-click="openDiskAttachModal('500')">挂载云硬盘</a></li>
                     <li><a href="javascript:void(0);" ng-click="openDiskDetachModal('500')">解挂云硬盘</a></li>
                     <li><a href="javascript:void(0);" ng-click="openFloatingIpBindModal('500')">绑定公网ip</a></li>
+                    <li><a href="javascript:void(0);" ng-click="openVmPasswordChangeModal('500')">修改密码</a></li>
                 </ul>
             </div>
         </div>
@@ -181,6 +182,50 @@
                             <button class="btn btn-le-blue" ng-click="vm_snapshot_create_form.$valid && !isOrderSubmiting && createVmSnapshot()" ng-disabled="isOrderSubmiting">
                                 <span ng-if="!isOrderSubmiting">提交订单</span>
                                 <span ng-if="isOrderSubmiting">订单提交中...</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="VmPasswordChangeModalTpl">
+        <div class="modal-vm-password-change">
+            <div class="le-modal-header">
+                <span class="header-title">修改云主机密码</span>
+                <a class="close" ng-click="closeModal()">
+                    <i class="iconfont icon-add"></i>
+                </a>
+            </div>
+            <div class="le-modal-body">
+                <form novalidate class="form-vm-password-change" name="vm_password_change_form">
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">新密码：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control" ng-model="newPassword" name="vm_new_password" password-restrict />
+                            <span ng-show="(vm_password_change_form.$submitted || vm_password_change_form.vm_new_password.$touched) && vm_password_change_form.vm_new_password.$error.passwordRestrict" class="le-input-validation" title='8-30个字符，同时包含大小写字母和数字，不支持特殊符号'>
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">确认密码：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control" ng-model="confirmPassword" name="vm_confirm_password" password-confirm password-model="newPassword" />
+                            <span ng-show="(vm_password_change_form.$submitted || vm_password_change_form.vm_confirm_password.$touched) && vm_password_change_form.vm_confirm_password.$error.passwordConfirm" class="le-input-validation" title='两次输入的密码不一致'>
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-blue" ng-click="vm_password_change_form.$valid && !isFormSubmiting && changeVmPassword()" ng-disabled="isFormSubmiting">
+                                <span ng-if="!isFormSubmiting">修改</span>
+                                <span ng-if="isFormSubmiting">修改执行中...</span>
                             </button>
                         </div>
                     </div>
