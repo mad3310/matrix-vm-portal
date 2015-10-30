@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.internal;
 
 import java.io.StringWriter;
 
+import com.letv.portal.service.openstack.util.HttpUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -14,7 +15,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.Params;
-import com.letv.portal.service.openstack.util.Util;
 
 @SuppressWarnings("deprecation")
 public class UserRegister {
@@ -68,7 +68,7 @@ public class UserRegister {
             HttpResponse resp = client.execute(req);
             int statusCode = resp.getStatusLine().getStatusCode();
             if (statusCode != 200) {
-                Util.throwExceptionOfResponse(resp);
+                HttpUtil.throwExceptionOfResponse(resp);
             }
         } catch (OpenStackException ose) {
             throw ose;

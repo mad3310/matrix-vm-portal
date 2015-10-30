@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.internal;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import com.letv.portal.service.openstack.util.HttpUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -19,7 +20,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.Params;
-import com.letv.portal.service.openstack.util.Util;
 
 /**
  * Created by zhouxianguang on 2015/6/11.
@@ -108,7 +108,7 @@ public class UserExists {
 			} else if (statusCode == 401) {
 				status = false;
 			} else {
-				Util.throwExceptionOfResponse(resp);
+				HttpUtil.throwExceptionOfResponse(resp);
 			}
 		} catch (OpenStackException ose) {
 			throw ose;

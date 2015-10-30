@@ -17,8 +17,9 @@ import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeAttachmentResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeSnapshotResourceImpl;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.Ref;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ThreadUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.*;
@@ -37,7 +38,6 @@ import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.v2_0.domain.Resource;
 
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
@@ -174,58 +174,58 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
                 final Map<String, Resource> idToServer = new HashMap<String, Resource>();
                 final Ref<Integer> volumeCountRef = new Ref<Integer>();
 
-                Util.concurrentRunAndWait(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            List<Resource> servers = vmManager.listServer(region);
-                            for (Resource server : servers) {
-                                idToServer.put(server.getId(), server);
-                            }
-                        } catch (OpenStackException e) {
-                            throw e.matrixException();
-                        }
-                    }
-                },new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Integer currentPage = null;
-                            if (currentPagePara != null) {
-                                currentPage = currentPagePara - 1;
-                                currentPageRef.set(currentPage);
-                            }
+                ThreadUtil.concurrentRunAndWait(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							List<Resource> servers = vmManager.listServer(region);
+							for (Resource server : servers) {
+								idToServer.put(server.getId(), server);
+							}
+						} catch (OpenStackException e) {
+							throw e.matrixException();
+						}
+					}
+				}, new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Integer currentPage = null;
+							if (currentPagePara != null) {
+								currentPage = currentPagePara - 1;
+								currentPageRef.set(currentPage);
+							}
 
-                            String regionDisplayName = getRegionDisplayName(region);
+							String regionDisplayName = getRegionDisplayName(region);
 
-                            List<? extends Volume> volumes = cinderApi.getVolumeApi(region).listInDetail().toList();
-                            int volumeCount = 0;
-                            for (Volume volume : volumes) {
-                                if (name == null
-                                        || (volume.getName() != null && volume
-                                        .getName().contains(name))) {
-                                    if (currentPage == null
-                                            || recordsPerPage == null) {
-                                        volumeResources.add(new VolumeResourceImpl(
-                                                region, regionDisplayName, volume));
-                                    } else if (volumeCount < (currentPage + 1)
-                                            * recordsPerPage && volumeCount >= currentPage
-                                            * recordsPerPage) {
-                                        volumeResources
-                                                .add(new VolumeResourceImpl(
-                                                        region,
-                                                        regionDisplayName,
-                                                        volume));
-                                    }
-                                    volumeCount++;
-                                }
-                            }
-                            volumeCountRef.set(volumeCount);
-                        } catch (OpenStackException e) {
-                            throw e.matrixException();
-                        }
-                    }
-                });
+							List<? extends Volume> volumes = cinderApi.getVolumeApi(region).listInDetail().toList();
+							int volumeCount = 0;
+							for (Volume volume : volumes) {
+								if (name == null
+										|| (volume.getName() != null && volume
+										.getName().contains(name))) {
+									if (currentPage == null
+											|| recordsPerPage == null) {
+										volumeResources.add(new VolumeResourceImpl(
+												region, regionDisplayName, volume));
+									} else if (volumeCount < (currentPage + 1)
+											* recordsPerPage && volumeCount >= currentPage
+											* recordsPerPage) {
+										volumeResources
+												.add(new VolumeResourceImpl(
+														region,
+														regionDisplayName,
+														volume));
+									}
+									volumeCount++;
+								}
+							}
+							volumeCountRef.set(volumeCount);
+						} catch (OpenStackException e) {
+							throw e.matrixException();
+						}
+					}
+				});
 
                 for (VolumeResource volumeResource : volumeResources) {
                     for (VolumeAttachmentResource volumeAttachmentResource : volumeResource.getAttachments()) {
@@ -285,7 +285,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 				final List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
 
-				Util.concurrentRunAndWait(new Runnable() {
+				ThreadUtil.concurrentRunAndWait(new Runnable() {
 					@Override
 					public void run() {
 						Integer currentPage = null;
@@ -321,9 +321,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 														* recordsPerPage) {
 													volumeResources
 															.add(new VolumeResourceImpl(
-                                                                    region,
-                                                                    regionDisplayName,
-                                                                    volume));
+																	region,
+																	regionDisplayName,
+																	volume));
 												}
 											}
 										}
@@ -659,7 +659,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			create(cinderApi, volumeCreateConf, listener, listenerUserData, successCreatedVolumes);
 		} catch (Exception ex){
 			notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,ex,listener,listenerUserData);
-			Util.throwException(ex);
+			ExceptionUtil.throwException(ex);
 		}
 		notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,null,listener,listenerUserData);
 	}
@@ -674,16 +674,16 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				try {
 					listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), successCreatedVolumes.get(volumeIndex).getId(), volumeIndex, listenerUserData));
 				} catch (Exception e) {
-					Util.processBillingException(e);
+					ExceptionUtil.processBillingException(e);
 				}
 			}
 
-			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
 			for (; volumeIndex < volumesCount; volumeIndex++) {
 				try {
 					listener.volumeCreateFailed(new VolumeCreateFailEvent(volumeCreateConf.getRegion(), volumeIndex, reason, listenerUserData));
 				} catch (Exception e) {
-					Util.processBillingException(e);
+					ExceptionUtil.processBillingException(e);
 				}
 			}
 		}
@@ -872,7 +872,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					page = new Page(currentPage, recordsPerPage);
 				}
 
-				Util.concurrentRunAndWait(new Runnable() {
+				ThreadUtil.concurrentRunAndWait(new Runnable() {
 					@Override
 					public void run() {
 						List<? extends Snapshot> allVolumeSnapshots = cinderApi.getSnapshotApi(region).list().toList();
@@ -885,7 +885,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							toIndex = toIndex < allVolumeSnapshots.size() ? toIndex : allVolumeSnapshots.size();
 							try {
 								volumeSnapshotsRef.set(allVolumeSnapshots.subList(fromIndex, toIndex));
-							}catch (IndexOutOfBoundsException e){
+							} catch (IndexOutOfBoundsException e) {
 								volumeSnapshotsRef.set(new ArrayList<Snapshot>());
 							}
 						}

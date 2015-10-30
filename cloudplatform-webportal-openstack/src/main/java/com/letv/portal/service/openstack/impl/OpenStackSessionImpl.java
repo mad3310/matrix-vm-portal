@@ -5,10 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 
 import com.letv.common.exception.MatrixException;
-import com.letv.portal.model.UserVo;
-import com.letv.portal.service.openstack.jclouds.service.ApiService;
-import com.letv.portal.service.openstack.util.Ref;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ThreadUtil;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
@@ -117,16 +114,16 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			initUserWithOutOpenStack();
 			initUser();
 			if (session!=null) {
-				Util.concurrentRunAndWait(new Runnable() {
-											  @Override
-											  public void run() {
-												  final long userId = session.getUserId();
-												  final String openStackUserId = openStackUser.getUserId();
-												  final String openStackUserPassword = openStackUser.getPassword();
-												  final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-												  OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId,sessionId,openStackUserId,openStackUserPassword);
-											  }
-										  },
+				ThreadUtil.concurrentRunAndWait(new Runnable() {
+													@Override
+													public void run() {
+														final long userId = session.getUserId();
+														final String openStackUserId = openStackUser.getUserId();
+														final String openStackUserPassword = openStackUser.getPassword();
+														final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+														OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId, sessionId, openStackUserId, openStackUserPassword);
+													}
+												},
 						new Runnable() {
 							@Override
 							public void run() {
@@ -194,7 +191,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 				for (final String region : neutronApi.getConfiguredRegions()) {
 					final NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
-					Util.concurrentRunAndWait(new Runnable() {
+					ThreadUtil.concurrentRunAndWait(new Runnable() {
 						@Override
 						public void run() {
 							Network publicNetwork = networkManager.getPublicNetwork(neutronApi, region);
@@ -235,7 +232,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 												.createBuilder().name("default").build());
 							}
 
-							Rule pingRule=null , sshRule=null;
+							Rule pingRule = null, sshRule = null;
 							for (Rule rule : defaultSecurityGroup.getRules()) {
 								if (pingRule != null && sshRule != null) {
 									break;
@@ -262,7 +259,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 							if (pingRule == null && sshRule == null) {
 								final SecurityGroup defaultSecurityGroupRef = defaultSecurityGroup;
-								Util.concurrentRunAndWait(new Runnable() {
+								ThreadUtil.concurrentRunAndWait(new Runnable() {
 									@Override
 									public void run() {
 										securityGroupApi.create(Rule.CreateRule

@@ -6,7 +6,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImp
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.*;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class VMCreateCheck {
                         tasks, multiVmCreateCheckContext);
                 executor.run();
             } catch (Exception ex) {
-                Util.throwException(ex);
+                ExceptionUtil.throwException(ex);
             }
         } else {
             throw new UserOperationException(

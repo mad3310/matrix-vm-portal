@@ -11,7 +11,8 @@ import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.ThreadUtil;
 
 public class VMCreate {
 
@@ -85,7 +86,7 @@ public class VMCreate {
 
             notifyListener(multiVmCreateContext, exceptionOfCreating);
 
-            Util.asyncExec(new Runnable() {
+            ThreadUtil.asyncExec(new Runnable() {
                 @Override
                 public void run() {
                     BindFloatingIpTask bindFloatingIpTask = new BindFloatingIpTask();
@@ -109,13 +110,13 @@ public class VMCreate {
                                 tasks, multiVmCreateContext);
                         executor.run();
                     } catch (Exception ex) {
-                        Util.logAndEmail(ex);
+                        ExceptionUtil.logAndEmail(ex);
                     }
                 }
             });
 
             if (exceptionOfCreating != null) {
-                Util.throwException(translateExceptionMessage(exceptionOfCreating));
+                ExceptionUtil.throwException(translateExceptionMessage(exceptionOfCreating));
             }
         } else {
             throw new UserOperationException(
@@ -156,7 +157,7 @@ public class VMCreate {
 
     private void notifyListener(final MultiVmCreateContext context, final String reason) {
         if (context.getVmCreateListener() != null) {
-            Util.asyncExec(new Runnable() {
+            ThreadUtil.asyncExec(new Runnable() {
 
                 @Override
                 public void run() {
@@ -170,12 +171,12 @@ public class VMCreate {
                                 } else {
                                     context.getVmCreateListener().vmCreated(new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), i, context.getListenerUserData()));
                                 }
-                            } else{
+                            } else {
                                 context.getVmCreateListener().vmCreateFailed(
                                         new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
                             }
                         } catch (Exception ex) {
-                            Util.processBillingException(ex);
+                            ExceptionUtil.processBillingException(ex);
                         }
                     }
                 }

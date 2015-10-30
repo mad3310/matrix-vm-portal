@@ -4,8 +4,6 @@ import com.google.common.base.Optional;
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmImageStatus;
-import com.letv.portal.model.cloudvm.CloudvmVolume;
-import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.cloudvm.ICloudvmImageLinkService;
 import com.letv.portal.service.cloudvm.ICloudvmImagePropertyService;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
@@ -18,9 +16,9 @@ import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.password.PasswordService;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.Contants;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.ThreadUtil;
 import org.jclouds.ContextBuilder;
-import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
@@ -80,12 +78,12 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
                 glanceApi.close();
             }
         } catch (Exception e) {
-            Util.throwMatrixException(e);
+            ExceptionUtil.throwMatrixException(e);
         }
     }
 
     public void syncStatus(final List<CloudvmImage> cloudvmImages, final Checker<ImageDetails> checker) {
-        Util.asyncExec(new Runnable() {
+        ThreadUtil.asyncExec(new Runnable() {
             @Override
             public void run() {
                 SyncLocalApiCache apiCache = new SyncLocalApiCache();
@@ -115,7 +113,7 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
                         Thread.sleep(1000);
                     }
                 } catch (Exception e) {
-                    Util.logAndEmail(e);
+                    ExceptionUtil.logAndEmail(e);
                 } finally {
                     apiCache.close();
                 }

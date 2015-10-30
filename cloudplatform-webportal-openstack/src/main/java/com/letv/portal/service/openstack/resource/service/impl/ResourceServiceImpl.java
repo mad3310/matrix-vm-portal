@@ -3,9 +3,13 @@ package com.letv.portal.service.openstack.resource.service.impl;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.exception.*;
+import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
-import com.letv.portal.service.openstack.util.Function;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function1;
 import org.apache.commons.lang.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -20,9 +24,11 @@ import org.jclouds.openstack.nova.v2_0.domain.InterfaceAttachment;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
+import org.jclouds.openstack.v2_0.domain.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.Closeable;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,6 +36,17 @@ import java.util.List;
  */
 @Service
 public class ResourceServiceImpl implements ResourceService {
+
+    private void waitingUtil(Function<Boolean> checker)
+            throws OpenStackException {
+        try {
+            while (!checker.apply()) {
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            ExceptionUtil.throwException(e);
+        }
+    }
 
     private void checkRegion(NovaApi novaApi, String region) throws RegionNotFoundException {
         if (!novaApi.getConfiguredRegions().contains(region)) {
@@ -192,14 +209,58 @@ public class ResourceServiceImpl implements ResourceService {
         });
     }
 
-    private void waitingUtil(Function<Boolean> checker)
-            throws OpenStackException {
-        try {
-            while (!checker.apply()) {
-                Thread.sleep(1000);
+    @Override
+    public List<VMResource> listVmNotInAnyNetwork(NovaApi novaApi, NeutronApi neutronApi, String region) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
+        ServerApi serverApi = novaApi.getServerApi(region);
+        final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
+
+        List<Server> servers = ThreadUtil.concurrentFilter(serverApi.listInDetail().concat().toList(), new Function1<Server, Server>() {
+            @Override
+            public Server apply(Server server) throws Exception {
+                for (InterfaceAttachment interfaceAttachment : attachInterfaceApi.list(server.getId())) {
+                    if (interfaceAttachment.getNetworkId() != null) {
+                        return null;
+                    }
+                }
+                return server;
             }
-        } catch (Exception e) {
-            Util.throwException(e);
+        });
+
+        List<VMResource> vmResources = new LinkedList<VMResource>();
+        for (Server server : servers) {
+            vmResources.add(new VMResourceImpl(region, server));
         }
+        return vmResources;
     }
+
+    @Override
+    public List<VMResource> listVmAttachedSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, final String subnetId) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
+        ServerApi serverApi = novaApi.getServerApi(region);
+        final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
+
+        List<Server> servers = ThreadUtil.concurrentFilter(serverApi.listInDetail().concat().toList(), new Function1<Server, Server>() {
+            @Override
+            public Server apply(Server server) throws Exception {
+                for (InterfaceAttachment interfaceAttachment : attachInterfaceApi.list(server.getId())) {
+                    if (interfaceAttachment.getNetworkId() != null && interfaceAttachment.getFixedIps() != null && !interfaceAttachment.getFixedIps().isEmpty()) {
+                        for (FixedIP fixedIP : interfaceAttachment.getFixedIps()) {
+                            if (StringUtils.equals(fixedIP.getSubnetId(), subnetId)) {
+                                return server;
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+        });
+
+        List<VMResource> vmResources = new LinkedList<VMResource>();
+        for (Server server : servers) {
+            vmResources.add(new VMResourceImpl(region, server));
+        }
+        return vmResources;
+    }
+
 }

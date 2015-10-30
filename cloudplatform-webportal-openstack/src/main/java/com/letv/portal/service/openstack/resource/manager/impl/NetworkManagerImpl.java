@@ -21,7 +21,7 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -1556,7 +1556,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			createRouter(neutronApi, routerCreateConf, successCreatedRouters);
 		} catch (Exception e) {
 			notifyRouterCreateListener(routerCreateConf, successCreatedRouters, e, listener, listenerUserData);
-			Util.throwException(e);
+			ExceptionUtil.throwException(e);
 		}
 		notifyRouterCreateListener(routerCreateConf, successCreatedRouters, null, listener, listenerUserData);
 	}
@@ -1571,16 +1571,16 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				try {
 					listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), successCreatedRouters.get(routerIndex).getId(), routerIndex, listenerUserData));
 				} catch (Exception e) {
-					Util.processBillingException(e);
+					ExceptionUtil.processBillingException(e);
 				}
 			}
 
-			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
 			for (; routerIndex < routersCount; routerIndex++) {
 				try {
 					listener.routerCreateFailed(new RouterCreateFailEvent(routerCreateConf.getRegion(), routerIndex, reason, listenerUserData));
 				} catch (Exception e) {
-					Util.processBillingException(e);
+					ExceptionUtil.processBillingException(e);
 				}
 			}
 		}
@@ -2773,7 +2773,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			createFloatingIp(neutronApi,createConf,successCreatedFloatingIps);
 		} catch (Exception e){
 			notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,e,listener,listenerUserData);
-			Util.throwException(e);
+			ExceptionUtil.throwException(e);
 		}
 		notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,null,listener,listenerUserData);
 	}
@@ -2788,16 +2788,16 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				try {
 					listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), successCreatedFloatingIps.get(floatingIpIndex).getId(), floatingIpIndex, listenerUserData));
 				} catch (Exception e) {
-					Util.processBillingException(e);
+					ExceptionUtil.processBillingException(e);
 				}
 			}
 
-			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
 			for (; floatingIpIndex < floatingIpCount; floatingIpIndex++) {
 				try {
 					listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndex, reason, listenerUserData));
 				} catch (Exception e) {
-					Util.processBillingException(e);
+					ExceptionUtil.processBillingException(e);
 				}
 			}
 		}

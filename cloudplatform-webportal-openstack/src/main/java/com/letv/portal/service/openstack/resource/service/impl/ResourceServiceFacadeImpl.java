@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.resource.service.impl;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import org.jclouds.openstack.cinder.v1.CinderApi;
@@ -10,6 +11,8 @@ import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by zhouxianguang on 2015/10/30.
@@ -52,4 +55,19 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         NeutronApi neutronApi = getNeutronApi();
         resourceService.detachVmFromSubnet(novaApi, neutronApi, region, vmId, subnetId);
     }
+
+    @Override
+    public List<VMResource> listVmNotInAnyNetwork(String region) throws OpenStackException {
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+        return resourceService.listVmNotInAnyNetwork(novaApi, neutronApi, region);
+    }
+
+    @Override
+    public List<VMResource> listVmAttachedSubnet(String region, String subnetId) throws OpenStackException {
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+        return resourceService.listVmAttachedSubnet(novaApi, neutronApi, region, subnetId);
+    }
+
 }

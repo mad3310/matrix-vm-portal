@@ -583,4 +583,30 @@ public class VMController {
         }
         return result;
     }
+
+	@RequestMapping(value = "/vm/notInAnyNetwork/list", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject listVmNotInAnyNetwork(@RequestParam String region) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(resourceServiceFacade.listVmNotInAnyNetwork(region));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/vm/attached/subnet/list", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject listVmAttachedSubnet(@RequestParam String region, @RequestParam String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(resourceServiceFacade.listVmAttachedSubnet(region, subnetId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

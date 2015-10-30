@@ -4,11 +4,9 @@ import com.google.common.base.Optional;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
-import com.letv.portal.model.cloudvm.CloudvmFlavor;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVmCount;
-import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListener;
@@ -18,7 +16,6 @@ import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
-import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
@@ -35,7 +32,8 @@ import com.letv.portal.service.openstack.resource.manager.impl.create.vm.check.V
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.ThreadUtil;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -1824,7 +1822,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                         .vmSnapshotCreated(new VmSnapshotCreateEvent(region, imageId
                                 , listenerUserData));
             } catch (Exception e) {
-                Util.processBillingException(e);
+                ExceptionUtil.processBillingException(e);
             }
         }
     }
@@ -1846,13 +1844,13 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
     @Override
     public void createForBilling(final long userId, final VMCreateConf2 conf, final VmCreateListener listener, final Object listenerUserData) throws OpenStackException {
-        Util.asyncExec(new Runnable() {
+        ThreadUtil.asyncExec(new Runnable() {
             @Override
             public void run() {
                 try {
                     new VMCreate(userId, conf, VMManagerImpl.this, VMManagerImpl.this.networkManager, VMManagerImpl.this.volumeManager, listener, listenerUserData).run();
                 } catch (Exception e) {
-                    Util.logAndEmail(e);
+                    ExceptionUtil.logAndEmail(e);
                 }
             }
         });

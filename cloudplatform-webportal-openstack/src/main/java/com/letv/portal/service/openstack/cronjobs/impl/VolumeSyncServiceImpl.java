@@ -10,21 +10,16 @@ import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.erroremail.impl.ErrorMailMessageModel;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
-import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
-import com.letv.portal.service.openstack.util.Params;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.ThreadUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
-import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,7 +66,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     @Override
     public void syncStatus(final List<CloudvmVolume> cloudvmVolumes, final Checker<Volume>
             checker) {
-        Util.asyncExec(new Runnable() {
+        ThreadUtil.asyncExec(new Runnable() {
             @Override
             public void run() {
                 SyncLocalApiCache apiCache = new SyncLocalApiCache();
@@ -85,9 +80,9 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
                                     CinderApi.class)
                                     .getVolumeApi(
                                             cloudvmVolume.getRegion()).get(cloudvmVolume.getVolumeId());
-                            if(volume == null) {
+                            if (volume == null) {
                                 unFinishedVolumes.remove(cloudvmVolume);
-                            }else if (checker.check(volume)) {
+                            } else if (checker.check(volume)) {
                                 unFinishedVolumes.remove(cloudvmVolume);
                                 localVolumeService.update(cloudvmVolume.getTenantId(), cloudvmVolume
                                         .getTenantId(), cloudvmVolume.getRegion(), volume);
@@ -96,7 +91,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
                         Thread.sleep(1000);
                     }
                 } catch (Exception e) {
-                    Util.logAndEmail(e);
+                    ExceptionUtil.logAndEmail(e);
                 } finally {
                     apiCache.close();
                 }

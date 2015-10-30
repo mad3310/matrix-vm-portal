@@ -14,7 +14,7 @@ import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.password.PasswordService;
 import com.letv.portal.service.openstack.util.Contants;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ThreadUtil;
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -216,7 +216,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     public void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword) {
         final OpenStackUserInfo userInfo = new OpenStackUserInfo(userId, sessionId, openStackUserId, openStackUserPassword);
 
-        Util.concurrentRun(new Runnable() {
+        ThreadUtil.concurrentRun(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -225,7 +225,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
                     throw new MatrixException("后台错误", e);
                 }
             }
-        },new Runnable() {
+        }, new Runnable() {
             @Override
             public void run() {
                 try {
@@ -234,7 +234,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
                     throw new MatrixException("后台错误", e);
                 }
             }
-        },new Runnable() {
+        }, new Runnable() {
             @Override
             public void run() {
                 try {
@@ -243,7 +243,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
                     throw new MatrixException("后台错误", e);
                 }
             }
-        },new Runnable() {
+        }, new Runnable() {
             @Override
             public void run() {
                 try {

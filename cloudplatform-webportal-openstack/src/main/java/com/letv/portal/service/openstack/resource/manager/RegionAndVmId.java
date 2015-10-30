@@ -2,10 +2,10 @@ package com.letv.portal.service.openstack.resource.manager;
 
 import java.util.List;
 
+import com.letv.portal.service.openstack.util.JsonUtil;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.Util;
 
 public class RegionAndVmId {
 	private String region;
@@ -68,7 +68,7 @@ public class RegionAndVmId {
 
 	public static List<RegionAndVmId> listFromJson(String vmIdListJson)
 			throws OpenStackException {
-		return Util.fromJson(vmIdListJson, new TypeReference<List<RegionAndVmId>>() {
+		return JsonUtil.fromJson(vmIdListJson, new TypeReference<List<RegionAndVmId>>() {
 		});
 	}
 }

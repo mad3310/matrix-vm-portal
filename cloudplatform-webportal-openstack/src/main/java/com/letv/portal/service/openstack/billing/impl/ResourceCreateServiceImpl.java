@@ -24,7 +24,9 @@ import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImp
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
-import com.letv.portal.service.openstack.util.Util;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.JsonUtil;
+import com.letv.portal.service.openstack.util.RandomUtil;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -101,7 +103,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //            Session session = sessionService.getSession();
 //            logger.info("ResourceCreateServiceImpl.createVm session = ", session);
 
-            VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
+            VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             }, true);
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
@@ -121,13 +123,13 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkVmCreatePara(String reqParaJson) {
         try {
-            VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
+            VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             }, true);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVMManager().checkCreate2(vmCreateConf);
             return new CheckResult();
         } catch (Exception e) {
-            return new CheckResult(Util.getUserMessage(e));
+            return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
 
@@ -145,9 +147,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public void createVolume(long userId, String reqParaJson, VolumeCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
-            VolumeCreateConf volumeCreateConf = Util.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
+            VolumeCreateConf volumeCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
             }, true);
-            final String sessionId = Util.generateRandomSessionId();
+            final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
                 CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
@@ -163,13 +165,13 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkVolumeCreatePara(String reqParaJson) {
         try {
-            VolumeCreateConf volumeCreateConf = Util.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
+            VolumeCreateConf volumeCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
             }, true);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVolumeManager().checkCreate(volumeCreateConf);
             return new CheckResult();
         } catch (Exception e) {
-            return new CheckResult(Util.getUserMessage(e));
+            return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
 
@@ -187,9 +189,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
-            FloatingIpCreateConf floatingIpCreateConf = Util.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
+            FloatingIpCreateConf floatingIpCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
             }, true);
-            final String sessionId = Util.generateRandomSessionId();
+            final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
                 NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
@@ -205,13 +207,13 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkFloatingIpCreatePara(String reqParaJson) {
         try {
-            FloatingIpCreateConf floatingIpCreateConf = Util.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
+            FloatingIpCreateConf floatingIpCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
             }, true);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getNetworkManager().checkCreateFloatingIp(floatingIpCreateConf);
             return new CheckResult();
         } catch (Exception e) {
-            return new CheckResult(Util.getUserMessage(e));
+            return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
 
@@ -219,9 +221,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public void createRouter(long userId, String reqParaJson, RouterCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
-            RouterCreateConf routerCreateConf = Util.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
+            RouterCreateConf routerCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
             }, true);
-            final String sessionId = Util.generateRandomSessionId();
+            final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
                 NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
@@ -237,13 +239,13 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkRouterCreatePara(String reqParaJson) {
         try {
-            RouterCreateConf routerCreateConf = Util.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
+            RouterCreateConf routerCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
             }, true);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getNetworkManager().checkCreateRouter(routerCreateConf);
             return new CheckResult();
         } catch (Exception e) {
-            return new CheckResult(Util.getUserMessage(e));
+            return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
 
@@ -251,9 +253,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public void createVmSnapshot(long userId, String reqParaJson, VmSnapshotCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
-            VmSnapshotCreateConf vmSnapshotCreateConf = Util.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
+            VmSnapshotCreateConf vmSnapshotCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
             }, true);
-            final String sessionId = Util.generateRandomSessionId();
+            final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
                 NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
@@ -270,13 +272,13 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkVmSnapshotCreatePara(String reqParaJson) {
         try {
-            VmSnapshotCreateConf vmSnapshotCreateConf = Util.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
+            VmSnapshotCreateConf vmSnapshotCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
             }, true);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVMManager().checkCreateImageFromVm(vmSnapshotCreateConf);
             return new CheckResult();
         } catch (Exception e) {
-            return new CheckResult(Util.getUserMessage(e));
+            return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
 }
