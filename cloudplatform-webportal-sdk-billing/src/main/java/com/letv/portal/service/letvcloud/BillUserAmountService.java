@@ -47,4 +47,6 @@ public interface BillUserAmountService {
     boolean reduceFreezeAmount(long userId, BigDecimal price, String productName, String productType);
     //把用户冻结金额转为可用余额
     boolean updateUserAmountFromFreezeToAvailable(long userId, BigDecimal price, String productName, String productType);
+    //处理冻结金额
+    boolean dealFreezeAmount(long userId, BigDecimal succPrice, BigDecimal failPrice, String productName, String productType);
 }
