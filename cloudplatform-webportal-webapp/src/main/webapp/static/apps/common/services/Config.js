@@ -18,6 +18,7 @@ define(['./common.service'], function (serviceModule) {
       router_buy: '/billing/buy/5',
       vm_start: '/ecs/region/{region}/vm-start',
       vm_stop: '/ecs/region/{region}/vm-stop',
+      vm_reboot: '/ecs/vm/reboot',
       vm_delete: '/ecs/region/{region}/vm-delete',
       vm_disk_type:'/osv/volume/type/list',
       vm_network_shared_list:'/osn/network/shared/list',
