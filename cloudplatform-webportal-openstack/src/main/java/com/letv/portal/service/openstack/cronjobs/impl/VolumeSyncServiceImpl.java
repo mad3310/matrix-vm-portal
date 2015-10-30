@@ -85,7 +85,9 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
                                     CinderApi.class)
                                     .getVolumeApi(
                                             cloudvmVolume.getRegion()).get(cloudvmVolume.getVolumeId());
-                            if (checker.check(volume)) {
+                            if(volume == null) {
+                                unFinishedVolumes.remove(cloudvmVolume);
+                            }else if (checker.check(volume)) {
                                 unFinishedVolumes.remove(cloudvmVolume);
                                 localVolumeService.update(cloudvmVolume.getTenantId(), cloudvmVolume
                                         .getTenantId(), cloudvmVolume.getRegion(), volume);
@@ -126,7 +128,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
         } else {
             final String latestStatus = volume.getStatus().name();
             if (!StringUtils.equals(cloudvmVolume.getStatus().name(), latestStatus)) {
-                if(cloudvmVolume.getStatus()!=CloudvmVolumeStatus.WAITING_ATTACHING) {
+                if (cloudvmVolume.getStatus() != CloudvmVolumeStatus.WAITING_ATTACHING) {
                     cloudvmVolume.setStatus(CloudvmVolumeStatus.valueOf(latestStatus));
                     cloudvmVolumeService.update(cloudvmVolume);
                 }
@@ -136,8 +138,17 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
 
     @Override
     public void syncStatusAfterServerDeleted(long tenantId, String region, String serverId) {
-        List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByServerIdAndStatus(tenantId, region, serverId, CloudvmVolumeStatus.NIL);
-        syncStatus(cloudvmVolumes, new Checker<Volume>() {
+        List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByServerIdAndStatus(tenantId, region, serverId, null);
+        List<CloudvmVolume> needSyncCloudvmVolumes = new LinkedList<CloudvmVolume>();
+        for (CloudvmVolume cloudvmVolume : cloudvmVolumes) {
+            if (cloudvmVolume.getStatus() != CloudvmVolumeStatus.NIL) {
+                needSyncCloudvmVolumes.add(cloudvmVolume);
+            }
+            cloudvmVolume.setServerId(null);
+            cloudvmVolume.setServerName(null);
+            cloudvmVolumeService.update(cloudvmVolume);
+        }
+        syncStatus(needSyncCloudvmVolumes, new Checker<Volume>() {
             @Override
             public boolean check(Volume volume) throws Exception {
                 return true;

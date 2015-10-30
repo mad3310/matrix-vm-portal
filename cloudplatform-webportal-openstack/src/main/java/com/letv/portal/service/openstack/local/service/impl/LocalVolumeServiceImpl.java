@@ -6,13 +6,17 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
+import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalRegionService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import org.apache.commons.lang.StringUtils;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,25 +72,35 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         return page;
     }
 
-    private void copyProperties(Volume volume, CloudvmVolume cloudvmVolume) {
+    private void copyProperties(Volume volume, CloudvmVolume cloudvmVolume) throws OpenStackException {
         if (volume.getAttachments() != null && volume.getAttachments().size() > 0) {
-            cloudvmVolume.setServerId(volume.getAttachments().iterator().next().getServerId());
+            String newServerId = volume.getAttachments().iterator().next().getServerId();
+            if (!StringUtils.equals(newServerId, cloudvmVolume.getServerId())) {
+                cloudvmVolume.setServerId(newServerId);
+                SyncLocalApiCache syncLocalApiCache = new SyncLocalApiCache();
+                try {
+                    Server server = syncLocalApiCache.getApi(cloudvmVolume.getTenantId(), NovaApi.class).getServerApi(cloudvmVolume.getRegion()).get(newServerId);
+                    cloudvmVolume.setServerName(server.getName());
+                } finally {
+                    syncLocalApiCache.close();
+                }
+            }
         } else {
             cloudvmVolume.setServerId(null);
+            cloudvmVolume.setServerName(null);
         }
         cloudvmVolume.setSize(volume.getSize());
         cloudvmVolume.setStatus(CloudvmVolumeStatus.valueOf(volume.getStatus().name()));
     }
 
     @Override
-    public CloudvmVolume create(long userId, long tenantId, String region, Volume volume) {
+    public CloudvmVolume create(long userId, long tenantId, String region, Volume volume) throws OpenStackException {
         return create(userId, tenantId, region, volume, null);
     }
 
     @Override
-    public CloudvmVolume create(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) {
+    public CloudvmVolume create(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException {
         CloudvmVolume cloudvmVolume = new CloudvmVolume();
-        copyProperties(volume, cloudvmVolume);
         cloudvmVolume.setCreateUser(userId);
         cloudvmVolume.setTenantId(tenantId);
         cloudvmVolume.setRegion(region);
@@ -95,6 +109,7 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         cloudvmVolume.setVolumeId(volume.getId());
         cloudvmVolume.setName(volume.getName());
         cloudvmVolume.setDescription(volume.getDescription());
+        copyProperties(volume, cloudvmVolume);
         if (initStatus != null) {
             cloudvmVolume.setStatus(initStatus);
         }
@@ -103,7 +118,7 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
     }
 
     @Override
-    public CloudvmVolume createIfNotExists(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) {
+    public CloudvmVolume createIfNotExists(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException {
         CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volume.getId());
         if (cloudvmVolume == null) {
             cloudvmVolume = create(userId, tenantId, region, volume, initStatus);
@@ -112,7 +127,7 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
     }
 
     @Override
-    public void update(long userId, long tenantId, String region, Volume volume) {
+    public void update(long userId, long tenantId, String region, Volume volume) throws OpenStackException {
         CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volume.getId());
         if (cloudvmVolume != null) {
             copyProperties(volume, cloudvmVolume);

@@ -3,10 +3,12 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VpcCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
+  controllerModule.controller('VpcCreateModalCtrl', function (Config, HttpService,WidgetService,Utility, ModelService,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
 
     $scope.vpcCreate = {
-      name:''
+      name:'',
+      isCreateSubnet:'false',
+      subnet:{}
     };
 
     $scope.closeModal=function(){
@@ -30,6 +32,27 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
+    var initComponents = function () {
+          initSelector();
+        },
+        initSelector = function () {
+          $scope.vpcCreate.subnet.cidrs = [
+            {
+              cidr: '192.168.1.0/24',
+              gatewayIp: '192.168.1.1'
+            },
+            {
+              cidr: '192.168.0.0/24',
+              gatewayIp: '192.168.0.1'
+            }
+          ];
+          $scope.vpcCreate.subnet.cidrListSelectorData = $scope.vpcCreate.subnet.cidrs.map(function (cidr) {
+            return new ModelService.SelectModel(cidr.cidr, cidr.cidr,{gatewayIp: cidr.gatewayIp});
+          });
+          $scope.vpcCreate.subnet.selectedCidr = $scope.vpcCreate.subnet.cidrListSelectorData[0];
+        };
+
+    initComponents();
   });
 
 });
