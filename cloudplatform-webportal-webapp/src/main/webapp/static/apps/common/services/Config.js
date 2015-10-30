@@ -40,6 +40,7 @@ define(['./common.service'], function (serviceModule) {
       vpc_list:'/osn/network/private/list',
       vpc_delete:'/osn/network/private/delete',
       vpc_create:'/osn/network/private/create',
+      vpc_subnet_create:'/osn/network/subnet/private/create',
       vpc_edit:'/osn/network/private/edit',
       router_list:'/osn/router/list',
       network_public_list:'/osn/network/public/list',
