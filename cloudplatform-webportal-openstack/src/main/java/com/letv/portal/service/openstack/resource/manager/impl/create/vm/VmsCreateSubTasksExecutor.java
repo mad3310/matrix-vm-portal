@@ -12,30 +12,32 @@ public class VmsCreateSubTasksExecutor {
 		this.context = context;
 	}
 
-    private void runTasksFromIndex(final int taskBeginIndex) throws Exception {
-        int taskIndex = taskBeginIndex;
-        try {
-            for (; taskIndex < tasks.size(); taskIndex++) {
-                tasks.get(taskIndex).run(context);
-            }
-        } catch (Exception ex) {
-            boolean needContinueAfterException = tasks.get(taskIndex).needContinueAfterException();
-            for (; taskIndex >= taskBeginIndex; taskIndex--) {
-                tasks.get(taskIndex).rollback(context);
-            }
-            if (needContinueAfterException) {
-                runTasksFromIndex(taskIndex + 1);
-            }
-            throw ex;
-        }
-    }
+	private void runTasksFromIndex(final int taskBeginIndex) throws Exception {
+		int taskIndex = taskBeginIndex;
+		try {
+			for (; taskIndex < tasks.size(); taskIndex++) {
+				tasks.get(taskIndex).run(context);
+			}
+		} catch (Exception ex) {
+			final int exceptionTaskIndex = taskIndex;
+			boolean needContinueAfterException = tasks.get(exceptionTaskIndex)
+					.needContinueAfterException();
+			for (; taskIndex >= taskBeginIndex; taskIndex--) {
+				tasks.get(taskIndex).rollback(context);
+			}
+			if (needContinueAfterException) {
+				runTasksFromIndex(exceptionTaskIndex + 1);
+			}
+			throw ex;
+		}
+	}
 
 	public void run() throws Exception {
 		ApiSession apiSession = new ApiSession(context.getVmManager()
 				.getOpenStackConf(), context.getVmManager().getOpenStackUser());
 		try {
 			tasks.add(0, new CreateApiCacheTask(apiSession));
-            runTasksFromIndex(0);
+			runTasksFromIndex(0);
 		} finally {
 			apiSession.close();
 		}
