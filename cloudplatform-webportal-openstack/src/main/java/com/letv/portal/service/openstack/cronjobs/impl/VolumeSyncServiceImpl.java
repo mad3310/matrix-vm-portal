@@ -71,7 +71,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     @Override
     public void syncStatus(final List<CloudvmVolume> cloudvmVolumes, final Checker<Volume>
             checker) {
-        Util.concurrentRun(new Runnable() {
+        Util.asyncExec(new Runnable() {
             @Override
             public void run() {
                 SyncLocalApiCache apiCache = new SyncLocalApiCache();

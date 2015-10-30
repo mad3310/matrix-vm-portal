@@ -85,7 +85,7 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
     }
 
     public void syncStatus(final List<CloudvmImage> cloudvmImages, final Checker<ImageDetails> checker) {
-        Util.concurrentRun(new Runnable() {
+        Util.asyncExec(new Runnable() {
             @Override
             public void run() {
                 SyncLocalApiCache apiCache = new SyncLocalApiCache();
