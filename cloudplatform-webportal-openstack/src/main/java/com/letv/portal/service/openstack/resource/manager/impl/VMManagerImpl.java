@@ -1053,7 +1053,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
                 openStackServiceGroup.getVolumeSyncService()
                         .syncStatusAfterServerDeleted(userVoUserId, region, vmId);
-                openStackServiceGroup.getImageSyncService().cleanServerIdAfterServerDeleted(userVoUserId,region,vmId);
+                openStackServiceGroup.getImageSyncService().cleanServerIdAfterServerDeleted(userVoUserId, region, vmId);
 
                 return null;
             }
@@ -1212,7 +1212,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     throw new UserOperationException("server.status!=ACTIVE", "虚拟机的状态不能修改密码");
                 }
                 ServerApi serverApi = novaApi.getServerApi(vmResource.getRegion());
-                serverApi.changeAdminPass(vmResource.getId(),adminPass);
+                serverApi.changeAdminPass(vmResource.getId(), adminPass);
                 return null;
             }
         });
@@ -1801,7 +1801,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
         ImageApi imageApi = glanceApi.getImageApi(region);
         ImageDetails image = imageApi.get(imageId);
-        OpenStackServiceGroup openStackServiceGroup=OpenStackServiceImpl.getOpenStackServiceGroup();
+        OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         LocalImageService localImageService = openStackServiceGroup
                 .getLocalImageService();
         long userVoUserId = openStackUser.getUserVoUserId();
@@ -1845,7 +1845,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     @Override
-    public void createForBilling(final long userId,final VMCreateConf2 conf, final VmCreateListener listener, final Object listenerUserData) throws OpenStackException {
+    public void createForBilling(final long userId, final VMCreateConf2 conf, final VmCreateListener listener, final Object listenerUserData) throws OpenStackException {
         Util.asyncExec(new Runnable() {
             @Override
             public void run() {

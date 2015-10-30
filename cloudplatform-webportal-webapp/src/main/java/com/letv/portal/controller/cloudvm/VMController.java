@@ -1,36 +1,23 @@
 package com.letv.portal.controller.cloudvm;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.letv.common.paging.impl.Page;
+import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
-import com.letv.portal.service.openstack.resource.manager.*;
-import com.letv.portal.service.openstack.util.Params;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.letv.common.result.ResultObject;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.ImageResource;
-import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
+import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VolumeManager;
+import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.operate.IRecentOperateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/ecs")
@@ -38,7 +25,7 @@ public class VMController {
 
 	@Autowired
 	private SessionServiceImpl sessionService;
-	
+
 	@Autowired
 	private IRecentOperateService recentOperateService;
 
@@ -47,6 +34,9 @@ public class VMController {
 
 	@Autowired
 	private LocalImageService localImageService;
+
+	@Autowired
+	private ResourceServiceFacade resourceServiceFacade;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -561,4 +551,36 @@ public class VMController {
 		}
 		return result;
 	}
+
+    @RequestMapping(value = "/vm/attach/subnet", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResultObject attachVmToSubnet(@RequestParam String region, @RequestParam String vmId, @RequestParam String subnetId) {
+        ResultObject result = new ResultObject();
+        try {
+            resourceServiceFacade.attachVmToSubnet(region, vmId, subnetId);
+        } catch (UserOperationException e) {
+            result.addMsg(e.getUserMessage());
+            result.setResult(0);
+        } catch (OpenStackException e) {
+            throw e.matrixException();
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/vm/detach/subnet", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResultObject detachVmToSubnet(@RequestParam String region, @RequestParam String vmId, @RequestParam String subnetId) {
+        ResultObject result = new ResultObject();
+        try {
+            resourceServiceFacade.detachVmFromSubnet(region, vmId, subnetId);
+        } catch (UserOperationException e) {
+            result.addMsg(e.getUserMessage());
+            result.setResult(0);
+        } catch (OpenStackException e) {
+            throw e.matrixException();
+        }
+        return result;
+    }
 }

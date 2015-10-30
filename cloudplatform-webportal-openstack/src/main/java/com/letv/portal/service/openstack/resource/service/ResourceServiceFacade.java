@@ -1,0 +1,12 @@
+package com.letv.portal.service.openstack.resource.service;
+
+import com.letv.portal.service.openstack.exception.OpenStackException;
+
+/**
+ * Created by zhouxianguang on 2015/10/30.
+ */
+public interface ResourceServiceFacade {
+    void attachVmToSubnet(String region, String vmId, String subnetId) throws OpenStackException;
+
+    void detachVmFromSubnet(String region, String vmId, String subnetId) throws OpenStackException;
+}
