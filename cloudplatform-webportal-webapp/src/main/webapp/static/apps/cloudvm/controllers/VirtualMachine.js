@@ -118,6 +118,34 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+      $scope.rebootVm=function(size){
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+        var data={
+          vmId: checkedVms[0].id,
+          region:checkedVms[0].region
+        };
+        var modalInstance = WidgetService.openConfirmModal('重启云主机','确定要重启云主机（'+checkedVms[0].name+'）吗？');
+        modalInstance.result.then(function (resultData) {
+          if(!resultData) return resultData;
+          WidgetService.notifyInfo('云主机重启执行中...');
+          HttpService.doPost(Config.urls.vm_reboot,data).success(function (data, status, headers, config) {
+            if(data.result===1){
+              modalInstance.close(data);
+              WidgetService.notifySuccess('重启云主机成功');
+              refreshVmList();
+            }
+            else{
+              WidgetService.notifyError(data.msgs[0]||'重启云主机失败');
+            }
+          });
+        }, function () {
+        });
+      };
+
 
       $scope.isAllVmChecked=function(){
         var unCheckedVms=$scope.vmList.filter(function(vm){
