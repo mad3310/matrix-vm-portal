@@ -42,7 +42,11 @@ public class AddVolumeTask extends VmsCreateSubTask {
                             openStackServiceGroup.getVolumeSyncService().syncStatus(cloudvmVolume, new Checker<Volume>() {
                                 @Override
                                 public boolean check(Volume volume) throws Exception {
-                                    return volume.getStatus() != Volume.Status.ATTACHING;
+                                    Volume.Status status = volume.getStatus();
+                                    return (status == Volume.Status.IN_USE
+                                            && volume.getAttachments().size() > 0)
+                                            || status == Volume.Status.AVAILABLE
+                                            || status == Volume.Status.ERROR;
                                 }
                             });
                             volumeUpdated = true;

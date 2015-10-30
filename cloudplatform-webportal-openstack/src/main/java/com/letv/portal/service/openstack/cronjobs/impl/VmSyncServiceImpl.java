@@ -1,10 +1,17 @@
 package com.letv.portal.service.openstack.cronjobs.impl;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Multimap;
+import java.util.List;
+import java.util.Map;
+
+import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Address;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.v2_0.domain.Link;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.model.UserVo;
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.model.cloudvm.CloudvmServerAddress;
 import com.letv.portal.model.cloudvm.CloudvmServerLink;
@@ -15,27 +22,9 @@ import com.letv.portal.service.cloudvm.ICloudvmServerLinkService;
 import com.letv.portal.service.cloudvm.ICloudvmServerMetadataService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.OpenStackService;
-import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
-import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
-import com.letv.portal.service.openstack.model.util.CloudvmServerAddressUtil;
-import com.letv.portal.service.openstack.model.util.CloudvmServerLinkUtil;
-import com.letv.portal.service.openstack.model.util.CloudvmServerMetadataUtil;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.Address;
-import org.jclouds.openstack.nova.v2_0.domain.Server;
-import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedAttributes;
-import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
-import org.jclouds.openstack.v2_0.domain.Link;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 
 /**
  * Created by zhouxianguang on 2015/9/28.

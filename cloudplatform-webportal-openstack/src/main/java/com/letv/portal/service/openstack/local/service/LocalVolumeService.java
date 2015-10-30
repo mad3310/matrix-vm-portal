@@ -16,13 +16,13 @@ public interface LocalVolumeService {
 
     Page list(long tenantId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 
-    CloudvmVolume create(long userId,long tenantId, String region, Volume volume);
+    CloudvmVolume create(long userId,long tenantId, String region, Volume volume) throws OpenStackException;
 
-    CloudvmVolume create(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus);
+    CloudvmVolume create(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException;
 
-    CloudvmVolume createIfNotExists(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus);
+    CloudvmVolume createIfNotExists(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException;
 
-    void update(long userId, long tenantId, String region, Volume volume);
+    void update(long userId, long tenantId, String region, Volume volume) throws OpenStackException;
 
     void updateNameAndDesc(long userId, long tenantId, String region, String volumeId, String name, String description);
 

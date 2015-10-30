@@ -15,6 +15,7 @@
 		<result column="NAME" property="name"/>
 		<result column="DESCRIPTION" property="description"/>
 		<result column="SERVER_ID" property="serverId"/>
+		<result column="SERVER_NAME" property="serverName"/>
 		<result column="TENANT_ID" property="tenantId"/>
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -22,15 +23,16 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 
-		<association property="server" javaType="CloudvmServer">
-			<result column="SERVER_NAME" property="name" />
-		</association>
+		<!--<association property="server" javaType="CloudvmServer">-->
+			<!--<result column="SERVER_NAME" property="name" />-->
+		<!--</association>-->
 	</resultMap>
 
 	<!-- WEBPORTAL_CLOUDVM_VOLUME table all fields -->
+	<!-- server.NAME as SERVER_NAME, -->
 	<sql id="Base_Column_List">
 		v.ID,v.REGION,v.VOLUME_ID,v.STATUS,v.SIZE,v.VOLUME_TYPE,
-		v.SNAPSHOT_ID,v.NAME,v.DESCRIPTION,v.SERVER_ID,v.TENANT_ID,server.NAME as SERVER_NAME,
+		v.SNAPSHOT_ID,v.NAME,v.DESCRIPTION,v.SERVER_ID,v.SERVER_NAME,v.TENANT_ID,
 		v.DELETED,v.CREATE_TIME,v.CREATE_USER,v.UPDATE_TIME,v.UPDATE_USER
 	</sql>
 
@@ -81,11 +83,11 @@
 	<insert id="insert" parameterType="CloudvmVolume" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_CLOUDVM_VOLUME(REGION,VOLUME_ID,STATUS,`SIZE`,VOLUME_TYPE,
-		SNAPSHOT_ID,`NAME`,DESCRIPTION,SERVER_ID,TENANT_ID,
+		SNAPSHOT_ID,`NAME`,DESCRIPTION,SERVER_ID,SERVER_NAME,TENANT_ID,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
 		#{region},#{volumeId},#{status},#{size},#{volumeType},
-		#{snapshotId},#{name},#{description},#{serverId},#{tenantId},
+		#{snapshotId},#{name},#{description},#{serverId},#{serverName},#{tenantId},
 		#{deleted},now(),#{createUser},null,null)
 	</insert>
 
@@ -103,6 +105,7 @@
 		`NAME`=#{name},
 		DESCRIPTION=#{description},
 		SERVER_ID=#{serverId},
+		SERVER_NAME=#{serverName},
 		TENANT_ID=#{tenantId},
 		DELETED=#{deleted},
 		CREATE_TIME=#{createTime},

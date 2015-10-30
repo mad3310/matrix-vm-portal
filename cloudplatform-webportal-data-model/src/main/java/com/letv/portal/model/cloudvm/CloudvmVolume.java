@@ -18,10 +18,19 @@ public class CloudvmVolume extends BaseModel{
     private String name;
     private String description;
     private String serverId;
+    private String serverName;
     private Long tenantId;
     private CloudvmServer server;
 
     public CloudvmVolume() {
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
     public CloudvmServer getServer() {
