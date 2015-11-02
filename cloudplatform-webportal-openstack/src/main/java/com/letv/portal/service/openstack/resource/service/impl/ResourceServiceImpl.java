@@ -346,6 +346,14 @@ public class ResourceServiceImpl implements ResourceService {
         }
     }
 
+    private KeyPair getKeyPair(KeyPairApi keyPairApi, String name) throws ResourceNotFoundException {
+        KeyPair keyPair = keyPairApi.get(name);
+        if (keyPair == null) {
+            throw new ResourceNotFoundException("KeyPair", "密钥", name);
+        }
+        return keyPair;
+    }
+
     @Override
     public void deleteKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, final String name) throws OpenStackException {
         checkRegion(region, novaApi);
@@ -354,10 +362,7 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         final KeyPairApi keyPairApi = getKeyPairApi(novaApi, region);
-        KeyPair keyPair = keyPairApi.get(name);
-        if (keyPair == null) {
-            throw new ResourceNotFoundException("KeyPair", "密钥", name);
-        }
+        getKeyPair(keyPairApi, name);
 
         boolean isSuccess = keyPairApi.delete(name);
         if (!isSuccess) {

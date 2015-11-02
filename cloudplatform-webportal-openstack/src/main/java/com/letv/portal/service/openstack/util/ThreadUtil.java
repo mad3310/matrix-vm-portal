@@ -44,41 +44,41 @@ public class ThreadUtil {
         }
     }
 
-    public static <T> List<T> concurrentFilter(List<T> list, final Function1<T, T> filter) throws OpenStackException {
+    public static <PT,RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter) throws OpenStackException {
         try {
             if (list.isEmpty()) {
-                return list;
+                return new LinkedList<RT>();
             }
             if (list.size() == 1) {
-                List<T> newList = new LinkedList<T>();
-                T element = filter.apply(list.get(0));
+                List<RT> newList = new LinkedList<RT>();
+                RT element = filter.apply(list.get(0));
                 if (element != null) {
                     newList.add(element);
                 }
                 return newList;
             }
 
-            List<ListenableFuture<Ref<T>>> futures = new LinkedList<ListenableFuture<Ref<T>>>();
+            List<ListenableFuture<Ref<RT>>> futures = new LinkedList<ListenableFuture<Ref<RT>>>();
             for (int i = 1; i < list.size(); i++) {
-                final T oldElement = list.get(i);
-                futures.add(executorService.submit(new Callable<Ref<T>>() {
+                final PT oldElement = list.get(i);
+                futures.add(executorService.submit(new Callable<Ref<RT>>() {
                     @Override
-                    public Ref<T> call() throws Exception {
-                        return new Ref<T>(filter.apply(oldElement));
+                    public Ref<RT> call() throws Exception {
+                        return new Ref<RT>(filter.apply(oldElement));
                     }
                 }));
             }
 
-            T firstNewElement = filter.apply(list.get(0));
+            RT firstNewElement = filter.apply(list.get(0));
 
-            List<Ref<T>> otherNewElementRefs = Futures.successfulAsList(futures).get();
+            List<Ref<RT>> otherNewElementRefs = Futures.successfulAsList(futures).get();
 
-            List<T> newList = new LinkedList<T>();
+            List<RT> newList = new LinkedList<RT>();
             if (firstNewElement != null) {
                 newList.add(firstNewElement);
             }
-            for (Ref<T> newElementRef : otherNewElementRefs) {
-                T newElement = newElementRef.get();
+            for (Ref<RT> newElementRef : otherNewElementRefs) {
+                RT newElement = newElementRef.get();
                 if (newElement != null) {
                     newList.add(newElement);
                 }
@@ -87,6 +87,6 @@ public class ThreadUtil {
         } catch (Exception ex){
             ExceptionUtil.throwException(ex);
         }
-        return new LinkedList<T>();
+        return new LinkedList<RT>();
     }
 }
