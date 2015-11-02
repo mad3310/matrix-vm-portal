@@ -675,14 +675,14 @@ public class VMController {
 	@RequestMapping(value = "/keypair/delete", method = RequestMethod.POST)
 	public @ResponseBody ResultObject deleteKeyPair(@RequestParam String region, @RequestParam String name){
 		ResultObject result = new ResultObject();
-//		try {
-//
-//		} catch (UserOperationException e) {
-//			result.addMsg(e.getUserMessage());
-//			result.setResult(0);
-//		} catch (OpenStackException e) {
-//			throw e.matrixException();
-//		}
+		try {
+			resourceServiceFacade.deleteKeyPair(region, name);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 }

@@ -346,4 +346,33 @@ public class ResourceServiceImpl implements ResourceService {
         }
     }
 
+    @Override
+    public void deleteKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, final String name) throws OpenStackException {
+        checkRegion(region, novaApi);
+        if (StringUtils.isEmpty(name)) {
+            throw new UserOperationException("Name can not be empty or null", "名称不能为空");
+        }
+
+        final KeyPairApi keyPairApi = getKeyPairApi(novaApi, region);
+        KeyPair keyPair = keyPairApi.get(name);
+        if (keyPair == null) {
+            throw new ResourceNotFoundException("KeyPair", "密钥", name);
+        }
+
+        boolean isSuccess = keyPairApi.delete(name);
+        if (!isSuccess) {
+            throw new OpenStackException("KeyPair delete failed.",
+                    "密钥删除失败。");
+        }
+
+        localKeyPairService.delete(userVoUserId, region, name);
+
+        waitingUtil(new Function<Boolean>() {
+            @Override
+            public Boolean apply() throws Exception {
+                return keyPairApi.get(name) == null;
+            }
+        });
+    }
+
 }

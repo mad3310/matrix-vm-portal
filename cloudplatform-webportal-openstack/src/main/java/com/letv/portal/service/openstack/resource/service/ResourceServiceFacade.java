@@ -20,4 +20,6 @@ public interface ResourceServiceFacade {
     String createKeyPair(String region, String name) throws OpenStackException;
 
     void checkCreateKeyPair(String region, String name) throws OpenStackException;
+
+    void deleteKeyPair(String region, String name) throws OpenStackException;
 }

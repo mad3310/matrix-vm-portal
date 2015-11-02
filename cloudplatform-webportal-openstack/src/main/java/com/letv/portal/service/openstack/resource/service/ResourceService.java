@@ -23,4 +23,6 @@ public interface ResourceService {
     String createKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name) throws OpenStackException;
 
     void checkCreateKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name)throws OpenStackException;
+
+    void deleteKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name) throws OpenStackException;
 }

@@ -104,4 +104,14 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         resourceService.checkCreateKeyPair(novaApi, userVoUserId, tenantId, region, name);
     }
 
+    @Override
+    public void deleteKeyPair(String region, String name) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+        String tenantId = openStackUser.getTenantId();
+
+        NovaApi novaApi = getNovaApi();
+        resourceService.deleteKeyPair(novaApi, userVoUserId, tenantId, region, name);
+    }
+
 }
