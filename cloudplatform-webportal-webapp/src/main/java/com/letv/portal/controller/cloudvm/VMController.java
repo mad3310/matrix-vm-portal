@@ -1,11 +1,13 @@
 package com.letv.portal.controller.cloudvm;
 
+import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.local.resource.LocalKeyPairResource;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -18,6 +20,8 @@ import com.letv.portal.service.operate.IRecentOperateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/ecs")
@@ -607,6 +611,49 @@ public class VMController {
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
+		return result;
+	}
+
+	@RequestMapping(value = "/keypair/list", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject listKeyPair(@RequestParam String region, @RequestParam(required = false) String name,
+					  @RequestParam(required = false) Integer currentPage,
+					  @RequestParam(required = false) Integer recordsPerPage) {
+		ResultObject result = new ResultObject();
+		Page page = new Page(currentPage, recordsPerPage);
+		page.setData(Arrays.asList(new LocalKeyPairResource()));
+		page.setTotalRecords(1);
+		result.setData(page);
+		return result;
+	}
+
+	@RequestMapping(value = "/keypair/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject createKeyPair(@RequestParam String region, @RequestParam String name){
+		ResultObject result = new ResultObject();
+		result.setData("fake private key");
+//		try {
+//
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
+		return result;
+	}
+
+	@RequestMapping(value = "/keypair/delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject deleteKeyPair(@RequestParam String region, @RequestParam String name){
+		ResultObject result = new ResultObject();
+//		try {
+//
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
 		return result;
 	}
 }
