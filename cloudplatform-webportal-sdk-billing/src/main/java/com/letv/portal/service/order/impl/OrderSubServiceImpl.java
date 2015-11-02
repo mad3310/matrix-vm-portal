@@ -199,17 +199,17 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		return this.orderSubDao.selectOrderSubBySubscriptionId(subscriptionId);
 	}
 	
-	private List<OrderSub> selectOrderSubByOrderId(String orderId) {
+	private List<OrderSub> selectOrderSubByOrderId(Long orderId, Long userId) {
 		Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("orderId", orderId);
-	    params.put("userId", sessionService.getSession().getUserId());
+	    params.put("userId", userId);
 	    return this.orderSubDao.selectByMap(params);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Map<String, Object>> queryOrderDetailById(String orderId) {
-		List<OrderSub> orderSubs = selectOrderSubByOrderId(orderId);
+	public List<Map<String, Object>> queryOrderDetailById(Long orderId, Long userId) {
+		List<OrderSub> orderSubs = selectOrderSubByOrderId(orderId, userId);
 		if(orderSubs==null || orderSubs.size()==0) {
 			return null;
 		}
