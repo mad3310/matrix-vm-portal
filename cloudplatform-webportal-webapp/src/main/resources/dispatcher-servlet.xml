@@ -75,6 +75,13 @@
 	          <!-- 监控api -->
 	          <value>/jettyMonitor</value>
 	          <value>/dbMonitor</value>
+	          
+	          <!-- 订单详情 -->
+	          <value>/order/detail</value>
+	          
+	          <!-- 订阅相关 -->
+	          <value>/subscription/uc</value>
+	          
 	        </list>
 	      </property>
 	    </bean>

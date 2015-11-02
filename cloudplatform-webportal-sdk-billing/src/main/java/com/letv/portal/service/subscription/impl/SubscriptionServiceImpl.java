@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.subscription.ISubscriptionDao;
 import com.letv.portal.dao.subscription.ISubscriptionDetailDao;
 import com.letv.portal.model.UserVo;
@@ -30,6 +32,12 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.message.IMessageProxyService;
+import com.letv.portal.service.openstack.billing.ResourceLocator;
+import com.letv.portal.service.openstack.billing.ResourceQueryService;
+import com.letv.portal.service.openstack.resource.FloatingIpResource;
+import com.letv.portal.service.openstack.resource.RouterResource;
+import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;
@@ -42,6 +50,8 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	
 	@Autowired
 	private IProductService productService;
+	@Autowired
+	private ResourceQueryService resourceQueryService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
 	
@@ -295,41 +305,39 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	  * @date 2015年10月27日 下午2:43:01
 	  */
 	private void sendEmailsByType(UserVo user, Map<Long, List<Map<String, Object>>> infos, int type) {
-		if(400065==user.getUserId()) {
-			Map<String, Object> mailMessageModel = new HashMap<String, Object>();
-			mailMessageModel.put("userName", user.getUsername());
+		Map<String, Object> mailMessageModel = new HashMap<String, Object>();
+		mailMessageModel.put("userName", user.getUsername());
 
-			List<Map<String, Object>> resModelList = new LinkedList<Map<String, Object>>();
-			mailMessageModel.put("resList", resModelList);
+		List<Map<String, Object>> resModelList = new LinkedList<Map<String, Object>>();
+		mailMessageModel.put("resList", resModelList);
 
-			for (Long day : infos.keySet()) {
-				List<Map<String, Object>> info = infos.get(day);
-				for (Map<String, Object> map : info) {
-					Map<String, Object> resModel = new HashMap<String, Object>();
-					resModel.put("region", map.get("regionName"));
-					resModel.put("type", map.get("productName"));
-					resModel.put("id", ((String)map.get("instanceId")).split("_")[1]);
-					resModel.put("name", map.get("name"));
-					resModel.put("day", Math.abs(day));
-					resModel.put("deleteTime", map.get("deleteTime"));
-					resModelList.add(resModel);
-				}
+		for (Long day : infos.keySet()) {
+			List<Map<String, Object>> info = infos.get(day);
+			for (Map<String, Object> map : info) {
+				Map<String, Object> resModel = new HashMap<String, Object>();
+				resModel.put("region", map.get("regionName"));
+				resModel.put("type", map.get("productName"));
+				resModel.put("id", ((String)map.get("instanceId")).split("_")[1]);
+				resModel.put("name", map.get("name"));
+				resModel.put("day", Math.abs(day));
+				resModel.put("deleteTime", map.get("deleteTime"));
+				resModelList.add(resModel);
 			}
-			MailMessage mailMessage = null;
-			if(type==1) {//到期提醒
-				mailMessage = new MailMessage("云产品到期提醒", user.getEmail(),
-						"云产品到期提醒", "product/expireNotice.ftl", mailMessageModel);
-			} else if(type==2) {//欠费提醒
-				mailMessage = new MailMessage("云产品欠费延期使用", user.getEmail(),
-						"云产品欠费延期使用", "product/overdueNotice.ftl", mailMessageModel);
-			} else if(type==3) {//资源释放
-				mailMessage = new MailMessage("云产品欠费资源释放", user.getEmail(),
-						"云产品欠费资源释放", "product/deleteNotice.ftl", mailMessageModel);
-			}
-			if(mailMessage!=null) {
-				mailMessage.setHtml(true);
-				this.defaultEmailSender.sendMessage(mailMessage); 
-			}
+		}
+		MailMessage mailMessage = null;
+		if(type==1) {//到期提醒
+			mailMessage = new MailMessage("云产品到期提醒", user.getEmail(),
+					"云产品到期提醒", "product/expireNotice.ftl", mailMessageModel);
+		} else if(type==2) {//欠费提醒
+			mailMessage = new MailMessage("云产品欠费延期使用", user.getEmail(),
+					"云产品欠费延期使用", "product/overdueNotice.ftl", mailMessageModel);
+		} else if(type==3) {//资源释放
+			mailMessage = new MailMessage("云产品欠费资源释放", user.getEmail(),
+					"云产品欠费资源释放", "product/deleteNotice.ftl", mailMessageModel);
+		}
+		if(mailMessage!=null) {
+			mailMessage.setHtml(true);
+			this.defaultEmailSender.sendMessage(mailMessage); 
 		}
 	}
 	
@@ -348,5 +356,65 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		return jsonResult;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <K, V> Page queryPaginationByMap(Page page, Map<K, V> params) {
+		super.queryPaginationByMap(page, params);
+		List<Subscription> lists = (List<Subscription>) page.getData();
+		
+		//调用服务查询服务名称
+		Map<Long, List<ResourceLocator>> products = new HashMap<Long, List<ResourceLocator>>();
+		Map<String, String>  rets = new HashMap<String, String>();
+		List<ResourceLocator> ress = null;
+		for (Subscription subscription : lists) {
+			if(products.containsKey(subscription.getProductId())) {
+				ress = products.get(subscription.getProductId());
+			} else {
+				ress = new ArrayList<ResourceLocator>();
+				products.put(subscription.getProductId(), ress);
+			}
+			String[] str = subscription.getProductInfoRecord().getInstanceId().split("_");
+			ResourceLocator resource = new ResourceLocator();
+			resource.setId(str[1]);
+			resource.setRegion(str[0]);
+			ress.add(resource);
+		}
+		for (Long id : products.keySet()) {
+			if(id==Constants.PRODUCT_VM) {
+				Map<ResourceLocator, VMResource> re = this.resourceQueryService.getVMResources(products.get(id));
+				if(re!=null) {
+					for (ResourceLocator resourceLocator : re.keySet()) {
+						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
+					}
+				}
+			} else if(id==Constants.PRODUCT_VOLUME) {
+				Map<ResourceLocator, VolumeResource> re = this.resourceQueryService.getVolumeResources(products.get(id));
+				if(re!=null) {
+					for (ResourceLocator resourceLocator : re.keySet()) {
+						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
+					}
+				}
+			} else if(id==Constants.PRODUCT_FLOATINGIP) {
+				Map<ResourceLocator, FloatingIpResource> re = this.resourceQueryService.getFloatingIpResources(products.get(id));
+				if(re!=null) {
+					for (ResourceLocator resourceLocator : re.keySet()) {
+						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
+					}
+				}
+			} else if(id==Constants.PRODUCT_ROUTER) {
+				Map<ResourceLocator, RouterResource> re = this.resourceQueryService.getRouterResources(products.get(id));
+				if(re!=null) {
+					for (ResourceLocator resourceLocator : re.keySet()) {
+						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
+					}
+				}
+			}
+		}
+		for (Subscription subscription : lists) {
+			subscription.setName(rets.get(subscription.getProductInfoRecord().getInstanceId()));
+		}
+		return page; 
+	}
+	
 
 }

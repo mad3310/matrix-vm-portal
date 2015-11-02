@@ -245,5 +245,14 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		return retList;
 	}
 
+	@Override
+	public OrderSub selectDetailBySubscriptionId(long subscriptionId,
+			long userId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("subscriptionId", subscriptionId);
+	    params.put("userId", userId);
+	    return this.orderSubDao.selectDetailBySubscriptionId(params);
+	}
+
 
 }

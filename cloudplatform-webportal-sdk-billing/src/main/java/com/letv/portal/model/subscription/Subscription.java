@@ -36,9 +36,23 @@ public class Subscription extends BaseModel{
 	private String productName;//产品名称
 	private String productDescn;//产品描述
 	private String baseRegionName;//地域名称
+	private String dateNum;//倒计时
+	private String name;//名称（用户页面填入名称）
 	
 	private ProductInfoRecord productInfoRecord;//商品记录表
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDateNum() {
+		return dateNum;
+	}
+	public void setDateNum(String dateNum) {
+		this.dateNum = dateNum;
+	}
 	public Integer getBuyType() {
 		return buyType;
 	}

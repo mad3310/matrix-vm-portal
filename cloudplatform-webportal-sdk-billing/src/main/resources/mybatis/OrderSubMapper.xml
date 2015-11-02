@@ -29,6 +29,9 @@
 		    <result column="PRODUCT_NAME" property="productName" />
 		    <result column="PRODUCT_DESCN" property="productDescn" />
 		    <result column="BASE_REGION_NAME" property="baseRegionName" />
+		    <result column="DATE_NUM" property="dateNum" />
+		    <result column="SUB_START_TIME" property="startTime" />
+	   	 	<result column="SUB_END_TIME" property="endTime" />
 		</association>
 		
 		<association property="order" javaType="Order">
@@ -232,6 +235,28 @@
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
 	    	</if>
+	</select>
+	
+	<select id="selectDetailBySubscriptionId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+			od.DESCN ORDER_DESCN,
+			sub.START_TIME SUB_START_TIME,sub.END_TIME SUB_END_TIME,DATEDIFF(sub.END_TIME, NOW()) AS DATE_NUM,
+			product.NAME PRODUCT_NAME,
+			region.NAME BASE_REGION_NAME
+		from 
+			MATRIX_BILLING_ORDER_SUB orderSub
+		left join
+	        MATRIX_BILLING_ORDER od on orderSub.ORDER_ID=od.ID
+		left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
+		left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+		left join
+	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
+	    	<include refid="Common_Where_Clause" />
+	    	<if test="userId != null  and userId != ''">
+				and sub.USER_ID = #{userId}
+			</if>
 	</select>
 
 </mapper>   
