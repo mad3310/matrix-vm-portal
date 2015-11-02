@@ -69,7 +69,7 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  * @author lisuxiao
 	  * @date 2015年10月29日 上午11:11:06
 	  */
-	List<Map<String, Object>> queryOrderDetailById(String orderId);
+	List<Map<String, Object>> queryOrderDetailById(Long orderId, Long userId);
 	
 	/**
 	  * @Title: queryOrderPayInfo

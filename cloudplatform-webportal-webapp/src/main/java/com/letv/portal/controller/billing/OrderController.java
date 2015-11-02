@@ -39,9 +39,9 @@ public class OrderController {
 	  * @author lisuxiao
 	  * @date 2015年10月29日 下午3:37:24
 	  */
-	@RequestMapping(value="/detail/{orderId}",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject queryOrderDetailById(@PathVariable String orderId, ResultObject obj) {
-		List<Map<String, Object>> ret = this.orderSubService.queryOrderDetailById(orderId);
+	@RequestMapping(value="/detail/{orderId}/{userId}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject queryOrderDetailById(@PathVariable Long orderId, @PathVariable Long userId, ResultObject obj) {
+		List<Map<String, Object>> ret = this.orderSubService.queryOrderDetailById(orderId, userId);
 		if(ret==null) {
 			obj.setResult(0);
 			obj.addMsg("未获取到订单信息，请联系管理员！订单ID："+orderId);
