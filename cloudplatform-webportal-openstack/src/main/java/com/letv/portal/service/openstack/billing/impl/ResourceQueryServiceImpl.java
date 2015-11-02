@@ -4,14 +4,16 @@ import com.letv.common.exception.MatrixException;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.ResourceQueryService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
-import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.VolumeTypeResource;
+import com.letv.portal.service.openstack.resource.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * Created by zhouxianguang on 2015/10/28.
@@ -60,4 +62,25 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
             throw e.matrixException();
         }
     }
+
+    @Override
+    public Map<ResourceLocator, VMResource> getVMResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+        return null;
+    }
+
+    @Override
+    public Map<ResourceLocator, VolumeResource> getVolumeResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+        return null;
+    }
+
+    @Override
+    public Map<ResourceLocator, RouterResource> getRouterResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+        return null;
+    }
+
+    @Override
+    public Map<ResourceLocator, FloatingIpResource> getFloatingIpResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+        return null;
+    }
+
 }
