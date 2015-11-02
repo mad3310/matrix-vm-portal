@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.service.impl;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.exception.*;
+import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
@@ -14,17 +15,20 @@ import org.apache.commons.lang.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.*;
+import org.jclouds.openstack.neutron.v2.domain.IP;
+import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.Port;
+import org.jclouds.openstack.neutron.v2.domain.Subnet;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.FixedIP;
-import org.jclouds.openstack.nova.v2_0.domain.InterfaceAttachment;
-import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.*;
 import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
+import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
+import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
-import org.jclouds.openstack.v2_0.domain.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Closeable;
@@ -36,6 +40,9 @@ import java.util.List;
  */
 @Service
 public class ResourceServiceImpl implements ResourceService {
+
+    @Autowired
+    private LocalKeyPairService localKeyPairService;
 
     private void waitingUtil(Function<Boolean> checker)
             throws OpenStackException {
@@ -109,6 +116,22 @@ public class ResourceServiceImpl implements ResourceService {
             throw new APINotAvailableException(AttachInterfaceApi.class);
         }
         return attachInterfaceApiOptional.get();
+    }
+
+    private KeyPairApi getKeyPairApi(NovaApi novaApi, String region) throws APINotAvailableException {
+        Optional<KeyPairApi> keyPairApiOptional = novaApi.getKeyPairApi(region);
+        if (!keyPairApiOptional.isPresent()) {
+            throw new APINotAvailableException(KeyPairApi.class);
+        }
+        return keyPairApiOptional.get();
+    }
+
+    private QuotaApi getNovaQuotaApi(NovaApi novaApi, String region) throws APINotAvailableException {
+        Optional<QuotaApi> quotaApiOptional = novaApi.getQuotaApi(region);
+        if (!quotaApiOptional.isPresent()) {
+            throw new APINotAvailableException(QuotaApi.class);
+        }
+        return quotaApiOptional.get();
     }
 
     private Network getPrivateNetwork(NetworkApi networkApi, String networkId) throws ResourceNotFoundException {
@@ -261,6 +284,66 @@ public class ResourceServiceImpl implements ResourceService {
             vmResources.add(new VMResourceImpl(region, server));
         }
         return vmResources;
+    }
+
+    @Override
+    public String createKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name) throws OpenStackException {
+        checkRegion(region, novaApi);
+        if (StringUtils.isEmpty(name)) {
+            throw new UserOperationException("Name can not be empty or null", "名称不能为空");
+        }
+
+        KeyPairApi keyPairApi = getKeyPairApi(novaApi, region);
+        List<KeyPair> keyPairs = keyPairApi.list().toList();
+        for (KeyPair keyPair : keyPairs) {
+            if (StringUtils.equals(keyPair.getName(), name)) {
+                throw new UserOperationException("Name cannot be repeated.", "名称不能重复");
+            }
+        }
+
+        QuotaApi quotaApi = getNovaQuotaApi(novaApi, region);
+        Quota quota = quotaApi.getByTenant(tenantId);
+        if (quota == null) {
+            throw new OpenStackException("KeyPair quota is not available.", "密钥配额不可用。");
+        }
+        if (keyPairs.size() + 1 > quota.getKeyPairs()) {
+            throw new UserOperationException(
+                    "KeyPair count exceeding the quota.",
+                    "密钥数量超过配额。");
+        }
+
+        KeyPair keyPair = keyPairApi.create(name);
+
+        localKeyPairService.create(userVoUserId, userVoUserId, region, keyPair);
+
+        return keyPair.getPrivateKey();
+    }
+
+    @Override
+    public void checkCreateKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name) throws OpenStackException {
+        checkRegion(region, novaApi);
+        if (StringUtils.isEmpty(name)) {
+            throw new UserOperationException("Name can not be empty or null", "名称不能为空");
+        }
+
+        KeyPairApi keyPairApi = getKeyPairApi(novaApi, region);
+        List<KeyPair> keyPairs = keyPairApi.list().toList();
+        for (KeyPair keyPair : keyPairs) {
+            if (StringUtils.equals(keyPair.getName(), name)) {
+                throw new UserOperationException("Name cannot be repeated.", "名称不能重复");
+            }
+        }
+
+        QuotaApi quotaApi = getNovaQuotaApi(novaApi, region);
+        Quota quota = quotaApi.getByTenant(tenantId);
+        if (quota == null) {
+            throw new OpenStackException("KeyPair quota is not available.", "密钥配额不可用。");
+        }
+        if (keyPairs.size() + 1 > quota.getKeyPairs()) {
+            throw new UserOperationException(
+                    "KeyPair count exceeding the quota.",
+                    "密钥数量超过配额。");
+        }
     }
 
 }

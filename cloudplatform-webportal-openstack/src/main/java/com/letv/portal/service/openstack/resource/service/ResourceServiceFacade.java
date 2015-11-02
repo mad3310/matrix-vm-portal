@@ -16,4 +16,8 @@ public interface ResourceServiceFacade {
     List<VMResource> listVmNotInAnyNetwork(String region) throws OpenStackException;
 
     List<VMResource> listVmAttachedSubnet(String region, String subnetId) throws OpenStackException;
+
+    String createKeyPair(String region, String name) throws OpenStackException;
+
+    void checkCreateKeyPair(String region, String name) throws OpenStackException;
 }

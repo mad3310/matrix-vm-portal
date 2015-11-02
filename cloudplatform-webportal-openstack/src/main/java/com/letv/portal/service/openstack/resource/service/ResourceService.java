@@ -20,4 +20,7 @@ public interface ResourceService {
 
     List<VMResource> listVmAttachedSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String subnetId) throws OpenStackException;
 
+    String createKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name) throws OpenStackException;
+
+    void checkCreateKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name)throws OpenStackException;
 }

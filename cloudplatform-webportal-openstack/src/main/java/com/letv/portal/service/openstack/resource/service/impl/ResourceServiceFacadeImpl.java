@@ -1,10 +1,15 @@
 package com.letv.portal.service.openstack.resource.service.impl;
 
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
+import com.letv.portal.service.openstack.util.Util;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -26,6 +31,9 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private SessionServiceImpl sessionService;
+
     private NovaApi getNovaApi() {
         return apiService.getNovaApi();
     }
@@ -40,6 +48,12 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
     private GlanceApi getGlanceApi() {
         return apiService.getGlanceApi();
+    }
+
+    private OpenStackUser getOpenStackUser() {
+        OpenStackSessionImpl openStackSession = Util.session(sessionService);
+        OpenStackUser openStackUser = openStackSession.getOpenStackUser();
+        return openStackUser;
     }
 
     @Override
@@ -68,6 +82,26 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
         return resourceService.listVmAttachedSubnet(novaApi, neutronApi, region, subnetId);
+    }
+
+    @Override
+    public String createKeyPair(String region, String name) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+        String tenantId = openStackUser.getTenantId();
+
+        NovaApi novaApi = getNovaApi();
+        return resourceService.createKeyPair(novaApi, userVoUserId, tenantId, region, name);
+    }
+
+    @Override
+    public void checkCreateKeyPair(String region, String name) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+        String tenantId = openStackUser.getTenantId();
+
+        NovaApi novaApi = getNovaApi();
+        resourceService.checkCreateKeyPair(novaApi, userVoUserId, tenantId, region, name);
     }
 
 }
