@@ -643,7 +643,7 @@ public class VMController {
 		return result;
 	}
 
-	@RequestMapping(value = "/keypair/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/keypair/create", method = RequestMethod.GET)
 	public ResponseEntity<String> createKeyPair(@RequestParam String region, @RequestParam String name){
         try {
             String privateKey = resourceServiceFacade.createKeyPair(region, name);
@@ -656,7 +656,7 @@ public class VMController {
         }
     }
 
-    @RequestMapping(value = "/keypair/create/check", method = RequestMethod.POST)
+    @RequestMapping(value = "/keypair/create/check", method = RequestMethod.GET)
     public
     @ResponseBody
     ResultObject checkCreateKeyPair(@RequestParam String region, @RequestParam String name) {
