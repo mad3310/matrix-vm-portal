@@ -15,5 +15,13 @@ public class Constants {
 	public static final String ALI_PAY_PATTERN = "1";//支付宝支付方式
 	
 	public static final String WX_PAY_PATTERN = "2";//微信支付方式
+	
+	public static final long PRODUCT_VM = 2;//云主机
+	
+	public static final long PRODUCT_VOLUME = 3;//云硬盘
+	
+	public static final long PRODUCT_ROUTER = 4;//路由器
+	
+	public static final long PRODUCT_FLOATINGIP = 5;//公网IP
 
 }

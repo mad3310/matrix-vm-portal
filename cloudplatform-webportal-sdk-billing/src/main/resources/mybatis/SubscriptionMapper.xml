@@ -26,6 +26,7 @@
 	    
 	    <result column="PRODUCT_NAME" property="productName" />
 	    <result column="BASE_REGION_NAME" property="baseRegionName" />
+	    <result column="DATE_NUM" property="dateNum" />
 	    
 	    <association property="productInfoRecord" javaType="ProductInfoRecord">
 			<result column="RECORD_ID" property="id" />
@@ -232,7 +233,15 @@
 	    	MATRIX_BILLING_PRODUCT product on subscription.PRODUCT_ID=product.ID
 		left join
 	    	MATRIX_BILLING_BASE_REGION region on subscription.BASE_REGION_ID=region.ID
+	    left join
+	    	MATRIX_PRODUCT_INFO_RECORD record on subscription.PRODUCT_INFO_RECORD_ID=record.ID
+		INNER JOIN (
+		    SELECT PRODUCT_INFO_RECORD_ID, MAX(END_TIME) AS MaxDate
+		    FROM MATRIX_BILLING_SUBSCRIPTION
+		    GROUP BY PRODUCT_INFO_RECORD_ID
+		) tm ON subscription.PRODUCT_INFO_RECORD_ID = tm.PRODUCT_INFO_RECORD_ID AND subscription.END_TIME = tm.MaxDate
 			<include refid="Common_Where_Clause" />
+			and record.INSTANCE_ID is not null
 			<if test="productName != null and productName != '' ">
 	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>
@@ -244,7 +253,8 @@
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-			<include refid="Base_Column_List" />,product.NAME PRODUCT_NAME,
+			<include refid="Base_Column_List" />,
+	        record.ID RECORD_ID,record.INSTANCE_ID,product.NAME PRODUCT_NAME,DATEDIFF(subscription.END_TIME, NOW()) AS DATE_NUM,
 			region.NAME BASE_REGION_NAME
 		from 
 			MATRIX_BILLING_SUBSCRIPTION subscription
@@ -252,17 +262,25 @@
 	    	MATRIX_BILLING_PRODUCT product on subscription.PRODUCT_ID=product.ID
 		left join
 	    	MATRIX_BILLING_BASE_REGION region on subscription.BASE_REGION_ID=region.ID
+	    left join
+	    	MATRIX_PRODUCT_INFO_RECORD record on subscription.PRODUCT_INFO_RECORD_ID=record.ID
+	    INNER JOIN (
+		    SELECT PRODUCT_INFO_RECORD_ID, MAX(END_TIME) AS MaxDate
+		    FROM MATRIX_BILLING_SUBSCRIPTION
+		    GROUP BY PRODUCT_INFO_RECORD_ID
+		) tm ON subscription.PRODUCT_INFO_RECORD_ID = tm.PRODUCT_INFO_RECORD_ID AND subscription.END_TIME = tm.MaxDate
 			<include refid="Common_Where_Clause" />
+			and record.INSTANCE_ID is not null
 			<if test="productName != null and productName != '' ">
 	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>
 	        <if test="baseRegionName != null and baseRegionName != '' ">
 	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
 	        </if>
-		ORDER BY subscription.CREATE_TIME DESC
+		ORDER BY subscription.END_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
 	    	</if>
 	</select>
-
+	
 </mapper>   

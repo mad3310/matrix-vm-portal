@@ -49,6 +49,19 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  */
 	List<OrderSub> selectOrderSubBySubscriptionId(long subscriptionId);
 	
+	
+	/**
+	  * @Title: selectDetailBySubscriptionId
+	  * @Description: 获取订单配置、订阅等关联信息
+	  * @param subscriptionId
+	  * @param userId
+	  * @return OrderSub   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月2日 下午3:58:19
+	  */
+	OrderSub selectDetailBySubscriptionId(long subscriptionId, long userId);
+	
 	/**
 	  * @Title: modifyPriceById
 	  * @Description: 修改订单价格
