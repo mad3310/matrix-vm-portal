@@ -75,14 +75,6 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.isSelectedVmBuyPeriod = function (vmBuyPeriod) {
       return $scope.vmBuyPeriod === vmBuyPeriod;
     };
-    $scope.switchVmNetworkPublicIpType=function(){
-      if($scope.vmNetworkPublicIpType == 'now'){
-        $scope.vmNetworkPublicIpType = 'later';
-      }
-      else{
-        $scope.vmNetworkPublicIpType = 'now';
-      }
-    };
     $scope.createVm = function () {
       var data = {
         region:region,
@@ -92,7 +84,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         volumeTypeId:$scope.selectedVmDiskType.id,
         volumeSize: $scope.dataDiskVolume,
         adminPass: $scope.vmSecurityPassword,
-        bindFloatingIp: $scope.vmNetworkPublicIpType === 'now',
+        bindFloatingIp: $scope.vmNetworkPublicIpModel === 'now',
         sharedNetworkId:$scope.vmNetworkType=='primary'? selectedVmSharedNetwork.id:'',
         bandWidth:$scope.networkBandWidth,
         keyPairName:'',
@@ -144,6 +136,17 @@ define(['controllers/app.controller'], function (controllerModule) {
     });
 
     $scope.$watch(function(){
+      return [$scope.vmNetworkType,$scope.vmNetworkPublicIpModel].join('_');
+    }, function () {
+        if($scope.vmNetworkType == 'primary' && $scope.vmNetworkPublicIpModel == 'now'){
+          $scope.networkBandWidth = 2;
+        }
+        else{
+          $scope.networkBandWidth = 0;
+        }
+    });
+
+    $scope.$watch(function(){
       return [$scope.selectedVmCpu,
         $scope.selectedVmRam,
         ($scope.selectedVmDiskType &&  $scope.selectedVmDiskType.name) || '',
@@ -152,7 +155,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         $scope.vmCount,
         $scope.vmBuyPeriod].join('_');
     }, function (value) {
-      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.selectedVmDiskType && $scope.dataDiskVolume && $scope.networkBandWidth && $scope.vmCount && $scope.vmBuyPeriod) {
+      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.selectedVmDiskType && $scope.dataDiskVolume) {
         setVmPrice();
       }
     });

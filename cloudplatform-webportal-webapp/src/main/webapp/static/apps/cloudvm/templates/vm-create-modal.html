@@ -156,20 +156,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="inputs-item nomargin row clearfix" ng-if="vmNetworkType=='primary'">
+                        <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkType=='primary'">
                             <div class="col-sm-2"><span class="letv-control-label">网络：</span></div>
                             <div class="col-sm-10">
-                                <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpType=='now'}" ng-click="switchVmNetworkPublicIpType()">
+                                <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='now'}" ng-click="vmNetworkPublicIpModel='now';">
                                     <span>绑定公网IP</span>
                                     <i class="iconfont icon-checkroundfillicon"></i>
                                 </div>
-                                <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpType=='later'}" ng-click="switchVmNetworkPublicIpType()">
+                                <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='later'}" ng-click="vmNetworkPublicIpModel='later';">
                                     <span>稍后设置</span>
                                     <i class="iconfont icon-checkroundfillicon"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="inputs-item nomargin row clearfix" ng-if="vmNetworkPublicIpType==='now' && vmNetworkType==='primary'">
+                        <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkPublicIpModel==='now' && vmNetworkType==='primary'">
                             <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
                             <div class="col-sm-10">
                                 <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="1" rz-slider-ceil="50" rz-slider-step="1" rz-slider-always-show-bar="true">
@@ -178,7 +178,7 @@
                                 <span class="network-bandwidth-unit">Mbps</span>
                             </div>
                         </div>
-                        <div class="inputs-item nomargin row clearfix" ng-if="vmNetworkType=='private'">
+                        <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkType=='private'">
                             <div class="col-sm-2"><span class="letv-control-label">子网：</span></div>
                             <div class="col-sm-10">
                                 <le-select select-model="selectedVmNetworkSubnet" select-options="vmNetworkSubnetSelectorData"></le-select>
@@ -248,8 +248,8 @@
                 <div class="right-top">
                     <div class="top-title"><span>配置详情</span><i class="iconfont icon-rounddown"></i></div>
                     <ul class="top-items">
-                        <li ng-if="imageActiveTab === 'snapshot'"><span class="title">快照：</span><span class="value">{{selectedVmSnapshot.name}}</span></li>
-                        <li ng-if="imageActiveTab === 'image'"><span class="title">镜像：</span><span class="value">{{selectedVmImage.name}}</span></li>
+                        <li ng-show="imageActiveTab === 'snapshot'"><span class="title">快照：</span><span class="value">{{selectedVmSnapshot.name}}</span></li>
+                        <li ng-show="imageActiveTab === 'image'"><span class="title">镜像：</span><span class="value">{{selectedVmImage.name}}</span></li>
                         <li><span class="title">CPU：</span><span class="value">{{selectedVmCpu}}核</span></li>
                         <li><span class="title">内存：</span><span class="value">{{selectedVmRam/1024 | number:0}}GB</span></li>
                         <li><span class="title">硬盘：</span><span class="value">{{dataDiskVolume}}GB</span></li>
