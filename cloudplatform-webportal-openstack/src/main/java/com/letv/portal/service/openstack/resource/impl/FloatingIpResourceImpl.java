@@ -35,6 +35,10 @@ public class FloatingIpResourceImpl extends AbstractResource implements
 		this.networkResource = networkResource;
 	}
 
+    public FloatingIpResourceImpl(FloatingIP floatingIP) {
+        this.floatingIp = floatingIP;
+    }
+
 	@Override
 	public String getRegion() {
 		return region;

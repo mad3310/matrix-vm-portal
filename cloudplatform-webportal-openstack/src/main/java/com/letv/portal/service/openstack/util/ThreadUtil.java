@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zhouxianguang on 2015/10/30.
@@ -44,7 +45,11 @@ public class ThreadUtil {
         }
     }
 
-    public static <PT,RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter) throws OpenStackException {
+    public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter) throws OpenStackException {
+        return concurrentFilter(list, filter, null);
+    }
+
+    public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter, Timeout timeout) throws OpenStackException {
         try {
             if (list.isEmpty()) {
                 return new LinkedList<RT>();
@@ -71,7 +76,13 @@ public class ThreadUtil {
 
             RT firstNewElement = filter.apply(list.get(0));
 
-            List<Ref<RT>> otherNewElementRefs = Futures.successfulAsList(futures).get();
+            ListenableFuture<List<Ref<RT>>> listFuture = Futures.successfulAsList(futures);
+            List<Ref<RT>> otherNewElementRefs;
+            if (timeout != null) {
+                otherNewElementRefs = listFuture.get(timeout.time(), timeout.unit());
+            } else {
+                otherNewElementRefs = listFuture.get();
+            }
 
             List<RT> newList = new LinkedList<RT>();
             if (firstNewElement != null) {
@@ -84,9 +95,10 @@ public class ThreadUtil {
                 }
             }
             return newList;
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ExceptionUtil.throwException(ex);
         }
         return new LinkedList<RT>();
     }
+
 }

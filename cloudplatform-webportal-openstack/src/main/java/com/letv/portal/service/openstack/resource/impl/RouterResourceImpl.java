@@ -22,6 +22,10 @@ public class RouterResourceImpl extends AbstractResource implements
 	private NetworkResource networkResource;
 	private String gatewayIp;
 
+	public RouterResourceImpl(Router router) {
+		this.router = router;
+	}
+
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router) {
 		this(region, regionDisplayName, router, null, null, null);
