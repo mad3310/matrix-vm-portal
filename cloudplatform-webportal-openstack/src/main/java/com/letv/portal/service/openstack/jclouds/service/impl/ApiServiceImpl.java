@@ -255,6 +255,11 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
         });
     }
 
+    @Override
+    public void loadAllApiForRandomSession(long userId, String randomSessionId) {
+
+    }
+
     private static class OpenStackUserInfo {
         private Long userId;
         private String sessionId;

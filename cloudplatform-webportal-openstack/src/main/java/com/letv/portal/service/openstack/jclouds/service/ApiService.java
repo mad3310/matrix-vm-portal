@@ -30,4 +30,6 @@ public interface ApiService {
     void clearCache(Long userId, String sessionId);
 
     void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword);
+
+    void loadAllApiForRandomSession(long userId, String randomSessionId);
 }

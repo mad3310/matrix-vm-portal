@@ -13,6 +13,7 @@ import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
 import com.letv.portal.service.openstack.resource.*;
 import com.letv.portal.service.openstack.util.CollectionUtil;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.RandomUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function1;
 import com.mchange.v2.lang.ThreadUtils;
@@ -75,36 +76,45 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
     }
 
     @Override
-    public Map<ResourceLocator, VMResource> getVMResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
-        try {
-            List<VMResource> vmResources = ThreadUtil.concurrentFilter(CollectionUtil.toList(resourceLocators), new Function1<VMResource, ResourceLocator>() {
-                @Override
-                public VMResource apply(ResourceLocator resourceLocator) throws Exception {
-
-                    return null;
-                }
-            });
-            Map<ResourceLocator, VMResource> map = new HashMap<ResourceLocator, VMResource>();
-            
-        } catch (OpenStackException e) {
-            ExceptionUtil.processBillingException(e);
-        }
+    public Map<Class<? extends Resource>, Map<ResourceLocator, Resource>> getResources(long userId, Map<Class<? extends Resource>, Iterable<ResourceLocator>> resourceLocators) throws MatrixException {
         return null;
     }
 
-    @Override
-    public Map<ResourceLocator, VolumeResource> getVolumeResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
-        return null;
-    }
+//    @Override
+//    public Map<ResourceLocator, VMResource> getVMResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+//        try {
+//            String sessionId = RandomUtil.generateRandomSessionId();
+//            apiService.loadAllApiForRandomSession(userId, sessionId);
+//            List<VMResource> vmResources = ThreadUtil.concurrentFilter(CollectionUtil.toList(resourceLocators), new Function1<VMResource, ResourceLocator>() {
+//                @Override
+//                public VMResource apply(ResourceLocator resourceLocator) throws Exception {
+//
+//                    return null;
+//                }
+//            });
+//            Map<ResourceLocator, VMResource> map = new HashMap<ResourceLocator, VMResource>();
+//            apiService.clearCache(userId,sessionId);
+//        } catch (OpenStackException e) {
+//            ExceptionUtil.processBillingException(e);
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public Map<ResourceLocator, VolumeResource> getVolumeResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+//        return null;
+//    }
+//
+//    @Override
+//    public Map<ResourceLocator, RouterResource> getRouterResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+//        return null;
+//    }
+//
+//    @Override
+//    public Map<ResourceLocator, FloatingIpResource> getFloatingIpResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+//        return null;
+//    }
 
-    @Override
-    public Map<ResourceLocator, RouterResource> getRouterResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
-        return null;
-    }
 
-    @Override
-    public Map<ResourceLocator, FloatingIpResource> getFloatingIpResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
-        return null;
-    }
 
 }

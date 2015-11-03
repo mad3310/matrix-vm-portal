@@ -381,28 +381,28 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		}
 		for (Long id : products.keySet()) {
 			if(id==Constants.PRODUCT_VM) {
-				Map<ResourceLocator, VMResource> re = this.resourceQueryService.getVMResources(products.get(id));
+				Map<ResourceLocator, VMResource> re = null; // this.resourceQueryService.getVMResources(products.get(id));
 				if(re!=null) {
 					for (ResourceLocator resourceLocator : re.keySet()) {
 						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
 					}
 				}
 			} else if(id==Constants.PRODUCT_VOLUME) {
-				Map<ResourceLocator, VolumeResource> re = this.resourceQueryService.getVolumeResources(products.get(id));
+				Map<ResourceLocator, VolumeResource> re = null; // this.resourceQueryService.getVolumeResources(products.get(id));
 				if(re!=null) {
 					for (ResourceLocator resourceLocator : re.keySet()) {
 						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
 					}
 				}
 			} else if(id==Constants.PRODUCT_FLOATINGIP) {
-				Map<ResourceLocator, FloatingIpResource> re = this.resourceQueryService.getFloatingIpResources(products.get(id));
+				Map<ResourceLocator, FloatingIpResource> re = null; // this.resourceQueryService.getFloatingIpResources(products.get(id));
 				if(re!=null) {
 					for (ResourceLocator resourceLocator : re.keySet()) {
 						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
 					}
 				}
 			} else if(id==Constants.PRODUCT_ROUTER) {
-				Map<ResourceLocator, RouterResource> re = this.resourceQueryService.getRouterResources(products.get(id));
+				Map<ResourceLocator, RouterResource> re = null; // this.resourceQueryService.getRouterResources(products.get(id));
 				if(re!=null) {
 					for (ResourceLocator resourceLocator : re.keySet()) {
 						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
