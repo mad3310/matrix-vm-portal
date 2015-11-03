@@ -1,7 +1,5 @@
 package com.letv.portal.service.subscription.impl;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +32,8 @@ public class SubscriptionDetailServiceImpl extends BaseServiceImpl<SubscriptionD
 	}
 
 	@Override
-	public List<SubscriptionDetail> selectByMapAndTime(Long subscriptionId) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("subscriptionId", subscriptionId);
-		params.put("valid", 1);
-		params.put("date", new Date());
-		return this.subscriptionDetailDao.selectByMapAndTime(params);
+	public List<SubscriptionDetail> selectBySubscriptionId(Long subscriptionId) {
+		return this.subscriptionDetailDao.selectBySubscriptionId(subscriptionId);
 	}
 
 	@Override

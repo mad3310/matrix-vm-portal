@@ -12,7 +12,7 @@ import com.letv.portal.service.IBaseService;
  *
  */
 public interface ISubscriptionDetailService extends IBaseService<SubscriptionDetail> {
-	List<SubscriptionDetail> selectByMapAndTime(Long subscriptionId);
+	List<SubscriptionDetail> selectBySubscriptionId(Long subscriptionId);
 	/**
 	  * @Title: updateBuyTime
 	  * @Description: 创建完服务后，根据当前时间变更用户购买起止时间

@@ -161,6 +161,11 @@ public class PayServiceImpl implements IPayService {
 				if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2)) {
 					//创建应用实例
 					createInstance(orderSubs);
+					try {
+						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
+					} catch (IOException e) {
+						logger.error("pay inteface sendRedirect had error, ", e);
+					}
 					return ret;
 				} else {
 					throw new ValidateException("更新订单状态异常");
