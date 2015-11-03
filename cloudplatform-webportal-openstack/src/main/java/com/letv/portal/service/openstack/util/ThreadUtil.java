@@ -6,13 +6,15 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
+import org.apache.commons.collections.ListUtils;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zhouxianguang on 2015/10/30.
@@ -37,6 +39,55 @@ public class ThreadUtil {
         } catch (Exception e) {
             throw new MatrixException("后台错误", e);
         }
+    }
+
+    public static <T> List<Ref<T>> concurrentRunAndWait(Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
+        return concurrentRunAndWait(null, currentThreadTask, otherTasks);
+    }
+
+    public static <T> List<Ref<T>> concurrentRunAndWait(Timeout timeout, Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
+        try {
+            ListenableFuture[] futures = new ListenableFuture[otherTasks.length];
+            for (int i = 0; i < otherTasks.length; i++) {
+                final Function<T> task = otherTasks[i];
+                futures[i] = executorService.submit(new Callable<Ref<T>>() {
+                    @Override
+                    public Ref<T> call() throws Exception {
+                        return new Ref<T>(task.apply());
+                    }
+                });
+            }
+
+            T firstResult = currentThreadTask.apply();
+
+            List<Ref<T>> otherResultRefs;
+            ListenableFuture<List<Ref<T>>> listFuture = Futures.successfulAsList(futures);
+            if (timeout != null) {
+                otherResultRefs = listFuture.get(timeout.time(), timeout.unit());
+            } else {
+                otherResultRefs = listFuture.get();
+            }
+
+            List<Ref<T>> resultList = new LinkedList<Ref<T>>();
+            resultList.add(new Ref<T>(firstResult));
+            if (otherResultRefs != null) {
+                for (Ref<T> resultRef : otherResultRefs) {
+                    resultList.add(resultRef);
+                }
+            } else {
+                for (int i = 0; i < otherTasks.length; i++) {
+                    resultList.add(new Ref<T>());
+                }
+            }
+            return resultList;
+        } catch (Exception ex) {
+            ExceptionUtil.throwException(ex);
+        }
+        List<Ref<T>> resultList = new LinkedList<Ref<T>>();
+        for (int i = 0; i <= otherTasks.length; i++) {
+            resultList.add(new Ref<T>());
+        }
+        return resultList;
     }
 
     public static void concurrentRun(Runnable... tasks) {
@@ -88,10 +139,12 @@ public class ThreadUtil {
             if (firstNewElement != null) {
                 newList.add(firstNewElement);
             }
-            for (Ref<RT> newElementRef : otherNewElementRefs) {
-                RT newElement = newElementRef.get();
-                if (newElement != null) {
-                    newList.add(newElement);
+            if (otherNewElementRefs != null) {
+                for (Ref<RT> newElementRef : otherNewElementRefs) {
+                    RT newElement = newElementRef.get();
+                    if (newElement != null) {
+                        newList.add(newElement);
+                    }
                 }
             }
             return newList;

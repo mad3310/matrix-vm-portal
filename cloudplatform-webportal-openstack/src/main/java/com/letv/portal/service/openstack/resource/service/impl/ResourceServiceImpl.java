@@ -8,10 +8,13 @@ import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.JsonUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
+import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -32,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Closeable;
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -143,93 +147,124 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void attachVmToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmId, String subnetId) throws OpenStackException {
+    public void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId) throws OpenStackException {
         checkRegion(region, novaApi, neutronApi);
 
-        ServerApi serverApi = novaApi.getServerApi(region);
-        getVm(serverApi, vmId);
+        final ServerApi serverApi = novaApi.getServerApi(region);
 
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
-        Subnet privateSubnet = getSubnet(subnetApi, subnetId);
-        NetworkApi networkApi = neutronApi.getNetworkApi(region);
-        getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
-
-        AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
-        List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
-        for (InterfaceAttachment interfaceAttachment : interfaceAttachments) {
-            String attachedNetworkId = interfaceAttachment.getNetworkId();
-            if (attachedNetworkId != null) {
-                Network attachedNetwork = networkApi.get(attachedNetworkId);
-                if (attachedNetwork.getShared()) {
-                    throw new UserOperationException("VM is attached to shared network:" + attachedNetworkId, "虚拟机已加入基础网络：" + attachedNetworkId + "，不能关联私有子网");
-                } else {
-                    if (interfaceAttachment.getFixedIps() != null && !interfaceAttachment.getFixedIps().isEmpty()) {
-                        String attachedSubnetId = interfaceAttachment.getFixedIps().iterator().next().getSubnetId();
-                        throw new UserOperationException("VM is attached to subnet:" + attachedSubnetId, "虚拟机已关联私有子网：" + attachedSubnetId + "，需要先解除关联才能关联私有子网");
-                    }
-                }
-            }
-        }
-
-        PortApi portApi = neutronApi.getPortApi(region);
-        Port subnetPort = portApi
-                .create(Port
-                        .createBuilder(privateSubnet.getNetworkId())
-                        .fixedIps(
-                                ImmutableSet.<IP>of(IP
-                                        .builder()
-                                        .subnetId(
-                                                subnetId).build()))
-                        .build());
-        attachInterfaceApi.create(vmId, subnetPort.getId());
-    }
-
-    @Override
-    public void detachVmFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, final String vmId, String subnetId) throws OpenStackException {
-        checkRegion(region, novaApi, neutronApi);
-
-        ServerApi serverApi = novaApi.getServerApi(region);
-        getVm(serverApi, vmId);
-
-        SubnetApi subnetApi = neutronApi.getSubnetApi(region);
-        Subnet privateSubnet = getSubnet(subnetApi, subnetId);
-        NetworkApi networkApi = neutronApi.getNetworkApi(region);
+        final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
+        final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
 
         final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
-        List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
-        InterfaceAttachment findedInterfaceAttachment = null;
-        FindedInterfaceAttachment:
-        for (InterfaceAttachment interfaceAttachment : interfaceAttachments) {
-            String attachedNetworkId = interfaceAttachment.getNetworkId();
-            if (StringUtils.equals(attachedNetworkId, privateSubnet.getNetworkId())) {
-                if (interfaceAttachment.getFixedIps() != null && !interfaceAttachment.getFixedIps().isEmpty()) {
-                    for (FixedIP fixedIP : interfaceAttachment.getFixedIps()) {
-                        if (StringUtils.equals(fixedIP.getSubnetId(), privateSubnet.getId())) {
-                            findedInterfaceAttachment = interfaceAttachment;
-                            break FindedInterfaceAttachment;
+        final PortApi portApi = neutronApi.getPortApi(region);
+
+        List<String> vmIdList = JsonUtil.fromJson(vmIds, new TypeReference<List<String>>() {
+        });
+        List<Exception> exceptions = ThreadUtil.concurrentFilter(vmIdList, new Function1<Exception, String>() {
+            @Override
+            public Exception apply(String vmId) throws Exception {
+                try {
+                    getVm(serverApi, vmId);
+                    List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
+                    for (InterfaceAttachment interfaceAttachment : interfaceAttachments) {
+                        String attachedNetworkId = interfaceAttachment.getNetworkId();
+                        if (attachedNetworkId != null) {
+                            Network attachedNetwork = networkApi.get(attachedNetworkId);
+                            if (attachedNetwork.getShared()) {
+                                throw new UserOperationException("VM is attached to shared network:" + attachedNetworkId, MessageFormat.format("虚拟机“{0}”已加入基础网络：“{1}”，不能关联私有子网", vmId, attachedNetworkId));
+                            } else {
+                                if (interfaceAttachment.getFixedIps() != null && !interfaceAttachment.getFixedIps().isEmpty()) {
+                                    String attachedSubnetId = interfaceAttachment.getFixedIps().iterator().next().getSubnetId();
+                                    throw new UserOperationException("VM is attached to subnet:" + attachedSubnetId, MessageFormat.format("虚拟机“{0}”已关联私有子网：“{1}”，需要先解除关联才能关联私有子网", vmId, attachedSubnetId));
+                                }
+                            }
                         }
                     }
+                    Port subnetPort = portApi
+                            .create(Port
+                                    .createBuilder(privateSubnet.getNetworkId())
+                                    .fixedIps(
+                                            ImmutableSet.<IP>of(IP
+                                                    .builder()
+                                                    .subnetId(
+                                                            subnetId).build()))
+                                    .build());
+                    attachInterfaceApi.create(vmId, subnetPort.getId());
+                } catch (Exception ex) {
+                    return ex;
                 }
-            }
-        }
-        if (findedInterfaceAttachment == null) {
-            throw new UserOperationException("VM is not attached to subnet:" + subnetId, "虚拟机未关联到私有子网：" + subnetId + "，不能解除与这个私有子网的关联");
-        }
-
-        boolean isSuccess = attachInterfaceApi.delete(vmId, findedInterfaceAttachment.getPortId());
-        if (!isSuccess) {
-            throw new OpenStackException("InterfaceAttachment delete failed.",
-                    "虚拟机和子网解除关联失败。");
-        }
-
-        final String attachmentId = findedInterfaceAttachment.getPortId();
-        waitingUtil(new Function<Boolean>() {
-            @Override
-            public Boolean apply() throws Exception {
-                return attachInterfaceApi.get(vmId, attachmentId) == null;
+                return null;
             }
         });
+        if (!exceptions.isEmpty()) {
+            throw new OpenStackCompositeException(exceptions);
+        }
+    }
+
+    @Override
+    public void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
+
+        final ServerApi serverApi = novaApi.getServerApi(region);
+
+        SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+        final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
+        final NetworkApi networkApi = neutronApi.getNetworkApi(region);
+        getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
+
+        final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
+
+        List<String> vmIdList = JsonUtil.fromJson(vmIds, new TypeReference<List<String>>() {
+        });
+        List<Exception> exceptions = ThreadUtil.concurrentFilter(vmIdList, new Function1<Exception, String>() {
+            @Override
+            public Exception apply(final String vmId) throws Exception {
+                try {
+                    getVm(serverApi, vmId);
+                    List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
+                    InterfaceAttachment findedInterfaceAttachment = null;
+                    FindedInterfaceAttachment:
+                    for (InterfaceAttachment interfaceAttachment : interfaceAttachments) {
+                        String attachedNetworkId = interfaceAttachment.getNetworkId();
+                        if (StringUtils.equals(attachedNetworkId, privateSubnet.getNetworkId())) {
+                            if (interfaceAttachment.getFixedIps() != null && !interfaceAttachment.getFixedIps().isEmpty()) {
+                                for (FixedIP fixedIP : interfaceAttachment.getFixedIps()) {
+                                    if (StringUtils.equals(fixedIP.getSubnetId(), privateSubnet.getId())) {
+                                        findedInterfaceAttachment = interfaceAttachment;
+                                        break FindedInterfaceAttachment;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (findedInterfaceAttachment == null) {
+                        throw new UserOperationException("VM is not attached to subnet:" + subnetId, MessageFormat.format("虚拟机“{0}”未关联到私有子网“{1}”，不能解除与这个私有子网的关联。", vmId, subnetId));
+                    }
+
+                    boolean isSuccess = attachInterfaceApi.delete(vmId, findedInterfaceAttachment.getPortId());
+                    if (!isSuccess) {
+                        throw new OpenStackException("InterfaceAttachment delete failed.",
+                                MessageFormat.format("虚拟机“{0}”和子网“{1}”解除关联失败。", vmId, subnetId));
+                    }
+
+                    final String attachmentId = findedInterfaceAttachment.getPortId();
+                    waitingUtil(new Function<Boolean>() {
+                        @Override
+                        public Boolean apply() throws Exception {
+                            return attachInterfaceApi.get(vmId, attachmentId) == null;
+                        }
+                    });
+                } catch (Exception ex) {
+                    return ex;
+                }
+                return null;
+            }
+        });
+        if (!exceptions.isEmpty()) {
+            throw new OpenStackCompositeException(exceptions);
+        }
     }
 
     @Override

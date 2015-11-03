@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.resource.service.impl;
 
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
@@ -57,17 +56,17 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
     }
 
     @Override
-    public void attachVmToSubnet(String region, String vmId, String subnetId) throws OpenStackException {
+    public void attachVmsToSubnet(String region, String vmIds, String subnetId) throws OpenStackException {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
-        resourceService.attachVmToSubnet(novaApi, neutronApi, region, vmId, subnetId);
+        resourceService.attachVmsToSubnet(novaApi, neutronApi, region, vmIds, subnetId);
     }
 
     @Override
-    public void detachVmFromSubnet(String region, String vmId, String subnetId) throws OpenStackException {
+    public void detachVmsFromSubnet(String region, String vmIds, String subnetId) throws OpenStackException {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
-        resourceService.detachVmFromSubnet(novaApi, neutronApi, region, vmId, subnetId);
+        resourceService.detachVmsFromSubnet(novaApi, neutronApi, region, vmIds, subnetId);
     }
 
     @Override
