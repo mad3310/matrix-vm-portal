@@ -5,6 +5,8 @@ import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by zhouxianguang on 2015/10/8.
  */
@@ -31,5 +33,5 @@ public interface ApiService {
 
     void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword);
 
-    void loadAllApiForRandomSession(long userId, String randomSessionId);
+    void loadAllApiForRandomSession(long userId, String randomSessionId) throws NoSuchAlgorithmException;
 }

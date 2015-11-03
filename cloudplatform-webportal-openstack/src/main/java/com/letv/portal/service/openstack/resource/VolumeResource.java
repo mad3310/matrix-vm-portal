@@ -1,8 +1,10 @@
 package com.letv.portal.service.openstack.resource;
 
+import com.letv.portal.service.openstack.billing.BillingResource;
+
 import java.util.Set;
 
-public interface VolumeResource extends Resource {
+public interface VolumeResource extends Resource, BillingResource {
 	String getName();
 	String getStatus();
 	int getSize();

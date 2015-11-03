@@ -12,6 +12,7 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.jclouds.service.OpenStackUserInfo;
 import com.letv.portal.service.openstack.password.PasswordService;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.ThreadUtil;
@@ -256,38 +257,12 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     }
 
     @Override
-    public void loadAllApiForRandomSession(long userId, String randomSessionId) {
-
-    }
-
-    private static class OpenStackUserInfo {
-        private Long userId;
-        private String sessionId;
-        private String email;
-        private String password;
-
-        public OpenStackUserInfo(Long userId, String sessionId, String email, String password) {
-            this.userId = userId;
-            this.sessionId = sessionId;
-            this.email = email;
-            this.password = password;
-        }
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public String getSessionId() {
-            return sessionId;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
+    public void loadAllApiForRandomSession(long userId, String randomSessionId) throws NoSuchAlgorithmException {
+        UserVo userVo = userService.getUcUserById(userId);
+        final String email = userVo.getEmail();
+        String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
+        String openStackUserPassword = passwordService.userIdToPassword(openStackUserId);
+        loadAllApiForCurrentSession(userId, randomSessionId, openStackUserId, openStackUserPassword);
     }
 
 }

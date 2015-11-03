@@ -1,6 +1,8 @@
 package com.letv.portal.service.openstack.resource;
 
-public interface FloatingIpResource extends Resource{
+import com.letv.portal.service.openstack.billing.BillingResource;
+
+public interface FloatingIpResource extends Resource,BillingResource{
 	String getRegionDisplayName();
 	Integer getBandWidth();
 	String getIpAddress();

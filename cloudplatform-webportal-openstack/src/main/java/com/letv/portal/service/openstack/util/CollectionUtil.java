@@ -9,6 +9,10 @@ import java.util.List;
  */
 public class CollectionUtil {
     public static <T> List<T> toList(Iterable<T> iterable) {
+        if (iterable instanceof List) {
+            return (List<T>) iterable;
+        }
+
         List<T> list = new LinkedList<T>();
         for (Iterator<T> it = iterable.iterator(); it.hasNext(); ) {
             list.add(it.next());

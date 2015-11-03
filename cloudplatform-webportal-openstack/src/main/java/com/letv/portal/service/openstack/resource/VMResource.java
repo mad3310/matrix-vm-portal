@@ -1,8 +1,10 @@
 package com.letv.portal.service.openstack.resource;
 
+import com.letv.portal.service.openstack.billing.BillingResource;
+
 import java.util.List;
 
-public interface VMResource extends Resource{
+public interface VMResource extends Resource,BillingResource{
 	public String getName();
 	public String getAccessIPv4();
 	public String getAccessIPv6();

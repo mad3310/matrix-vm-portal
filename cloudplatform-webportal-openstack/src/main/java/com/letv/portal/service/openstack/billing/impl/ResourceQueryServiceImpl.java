@@ -4,6 +4,7 @@ import com.letv.common.exception.MatrixException;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.billing.BillingResource;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.ResourceQueryService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -11,18 +12,22 @@ import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
 import com.letv.portal.service.openstack.resource.*;
-import com.letv.portal.service.openstack.util.CollectionUtil;
-import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.RandomUtil;
-import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.resource.impl.FloatingIpResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
+import com.letv.portal.service.openstack.util.*;
 import com.letv.portal.service.openstack.util.function.Function1;
-import com.mchange.v2.lang.ThreadUtils;
-import org.apache.commons.collections.ListUtils;
-import org.jclouds.openstack.nova.v2_0.NovaApi;
+import com.letv.portal.service.openstack.util.tuple.Tuple2;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
+import org.jclouds.openstack.neutron.v2.domain.Router;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zhouxianguang on 2015/10/28.
@@ -76,8 +81,53 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
     }
 
     @Override
-    public Map<Class<? extends Resource>, Map<ResourceLocator, Resource>> getResources(long userId, Map<Class<? extends Resource>, Iterable<ResourceLocator>> resourceLocators) throws MatrixException {
-        return null;
+    public Map<ResourceLocator, BillingResource> getResources(final long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
+        Map<ResourceLocator, BillingResource> map = new HashMap<ResourceLocator, BillingResource>();
+        final String randomSessionId = RandomUtil.generateRandomSessionId();
+        try {
+            apiService.loadAllApiForRandomSession(userId, randomSessionId);
+            try {
+                List<Tuple2<ResourceLocator, BillingResource>> entries = ThreadUtil.concurrentFilter(
+                        CollectionUtil.toList(resourceLocators),
+                        new Function1<Tuple2<ResourceLocator, BillingResource>, ResourceLocator>() {
+                            @Override
+                            public Tuple2<ResourceLocator, BillingResource> apply(ResourceLocator locator)
+                                    throws Exception {
+                                BillingResource billingResource = null;
+                                if (locator.getType() == VMResource.class) {
+                                    Server server = apiService.getNovaApi(userId, randomSessionId)
+                                            .getServerApi(locator.region()).get(locator.getId());
+                                    billingResource = new VMResourceImpl(server);
+                                } else if (locator.getType() == VolumeResource.class) {
+                                    Volume volume = apiService.getCinderApi(userId, randomSessionId)
+                                            .getVolumeApi(locator.region()).get(locator.getId());
+                                    billingResource = new VolumeResourceImpl(volume);
+                                } else if (locator.getType() == RouterResource.class) {
+                                    Router router = apiService.getNeutronApi(userId, randomSessionId)
+                                            .getRouterApi(locator.region()).get().get(locator.getId());
+                                    billingResource = new RouterResourceImpl(router);
+                                } else if (locator.getType() == FloatingIpResource.class) {
+                                    FloatingIP floatingIP = apiService.getNeutronApi(userId, randomSessionId)
+                                            .getFloatingIPApi(locator.region()).get().get(locator.getId());
+                                    billingResource = new FloatingIpResourceImpl(floatingIP);
+                                }
+                                if (billingResource != null) {
+                                    return new Tuple2<ResourceLocator, BillingResource>(locator, billingResource);
+                                }
+                                return null;
+                            }
+                        }, new Timeout().time(30L).unit(TimeUnit.MINUTES));
+
+                for (Tuple2<ResourceLocator, BillingResource> entry : entries) {
+                    map.put(entry._1, entry._2);
+                }
+            } finally {
+                apiService.clearCache(userId, randomSessionId);
+            }
+        } catch (Exception ex) {
+            ExceptionUtil.throwMatrixException(ex);
+        }
+        return map;
     }
 
 //    @Override
@@ -87,7 +137,7 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
 //            apiService.loadAllApiForRandomSession(userId, sessionId);
 //            List<VMResource> vmResources = ThreadUtil.concurrentFilter(CollectionUtil.toList(resourceLocators), new Function1<VMResource, ResourceLocator>() {
 //                @Override
-//                public VMResource apply(ResourceLocator resourceLocator) throws Exception {
+//                public VMResource apply(ResourceLocator locator) throws Exception {
 //
 //                    return null;
 //                }
@@ -99,22 +149,4 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
 //        }
 //        return null;
 //    }
-//
-//    @Override
-//    public Map<ResourceLocator, VolumeResource> getVolumeResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
-//        return null;
-//    }
-//
-//    @Override
-//    public Map<ResourceLocator, RouterResource> getRouterResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
-//        return null;
-//    }
-//
-//    @Override
-//    public Map<ResourceLocator, FloatingIpResource> getFloatingIpResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
-//        return null;
-//    }
-
-
-
 }

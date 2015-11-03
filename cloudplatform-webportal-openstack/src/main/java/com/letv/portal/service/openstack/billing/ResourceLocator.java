@@ -8,6 +8,7 @@ import com.google.common.base.Objects;
 public class ResourceLocator {
     private String region;
     private String id;
+    private Class<? extends BillingResource> type;
 
     public ResourceLocator() {
     }
@@ -15,6 +16,12 @@ public class ResourceLocator {
     public ResourceLocator(String region, String id) {
         this.region = region;
         this.id = id;
+    }
+
+    public ResourceLocator(String region, String id, Class<? extends BillingResource> type) {
+        this.region = region;
+        this.id = id;
+        this.type = type;
     }
 
     public String getRegion() {
@@ -31,6 +38,41 @@ public class ResourceLocator {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Class<? extends BillingResource> getType() {
+        return type;
+    }
+
+    public void setType(Class<? extends BillingResource> type) {
+        this.type = type;
+    }
+
+    public String region() {
+        return this.region;
+    }
+
+    public String id() {
+        return this.id;
+    }
+
+    public ResourceLocator region(final String region) {
+        this.region = region;
+        return this;
+    }
+
+    public ResourceLocator id(final String id) {
+        this.id = id;
+        return this;
+    }
+
+    public Class<? extends BillingResource> type() {
+        return this.type;
+    }
+
+    public ResourceLocator type(final Class<? extends BillingResource> type) {
+        this.type = type;
+        return this;
     }
 
     @Override
@@ -52,6 +94,7 @@ public class ResourceLocator {
         return Objects.toStringHelper(this)
                 .add("region", region)
                 .add("id", id)
+                .add("type", type)
                 .toString();
     }
 }

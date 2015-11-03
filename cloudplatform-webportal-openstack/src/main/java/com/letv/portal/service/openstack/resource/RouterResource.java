@@ -1,8 +1,10 @@
 package com.letv.portal.service.openstack.resource;
 
+import com.letv.portal.service.openstack.billing.BillingResource;
+
 import java.util.List;
 
-public interface RouterResource extends Resource{
+public interface RouterResource extends Resource,BillingResource{
 	String getName();
 	String getStatus();
 	String getRegionDisplayName();
