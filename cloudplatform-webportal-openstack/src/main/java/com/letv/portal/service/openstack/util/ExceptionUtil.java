@@ -70,7 +70,7 @@ public class ExceptionUtil {
         OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(e, "", null, "");
     }
 
-    public static ResponseEntity getResponseEntityFromException(Exception ex) {
+    public static ResponseEntity<String> getResponseEntityFromException(Exception ex) {
         ResultObject result = new ResultObject();
         result.setResult(0);
         if (ex instanceof OpenStackException) {

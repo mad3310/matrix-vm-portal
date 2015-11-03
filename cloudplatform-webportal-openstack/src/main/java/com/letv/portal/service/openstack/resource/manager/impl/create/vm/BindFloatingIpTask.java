@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
@@ -38,6 +39,7 @@ public class BindFloatingIpTask extends VmsCreateSubTask {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void emailBindFloatingIp(MultiVmCreateContext context,
 									 Map<String,Date> floatingIpIdToBindDate) throws OpenStackException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -19,7 +19,6 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.NetworkSegmentResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
-import com.sun.jna.platform.win32.OaIdl.DATE;
 
 public class NetworkResourceImpl extends AbstractResource implements
 		NetworkResource {

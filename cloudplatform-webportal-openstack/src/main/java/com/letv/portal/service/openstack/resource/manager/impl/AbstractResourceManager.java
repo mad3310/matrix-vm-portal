@@ -5,10 +5,7 @@ import java.util.*;
 
 import com.letv.portal.service.openstack.util.Contants;
 import org.jclouds.ContextBuilder;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.inject.Module;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
@@ -17,7 +14,6 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.Region;
 import com.letv.portal.service.openstack.resource.manager.ResourceManager;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
 
 public abstract class AbstractResourceManager<ApiType extends Closeable>
 		implements ResourceManager, Closeable {

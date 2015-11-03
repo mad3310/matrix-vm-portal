@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
-import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
 public class BindFloatingIP implements Runnable {

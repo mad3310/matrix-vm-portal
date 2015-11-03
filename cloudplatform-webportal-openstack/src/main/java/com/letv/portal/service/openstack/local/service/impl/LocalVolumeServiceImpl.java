@@ -37,11 +37,11 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
     @Override
     public VolumeResource get(long tenantId, String region, String volumeId) throws OpenStackException {
         localRegionService.get(region);
-        VolumeResource volumeResource = new LocalVolumeResource(cloudvmVolumeService.selectByVolumeId(tenantId, region, volumeId));
-        if (volumeResource == null) {
+        CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volumeId);
+        if (cloudvmVolume == null) {
             throw new ResourceNotFoundException("Volume", "云硬盘", volumeId);
         }
-        return volumeResource;
+        return new LocalVolumeResource(cloudvmVolume);
     }
 
     @Override

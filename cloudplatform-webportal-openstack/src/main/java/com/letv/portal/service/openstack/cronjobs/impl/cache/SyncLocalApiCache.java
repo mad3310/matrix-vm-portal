@@ -7,6 +7,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
 import com.letv.portal.service.openstack.util.Contants;
+
 import org.jclouds.ContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,8 @@ public class SyncLocalApiCache implements Closeable {
         userIdToInfo.invalidateAll();
     }
 
-    public <T extends Closeable> T getApi(final long userId, final Class<T> apiType) throws OpenStackException {
+    @SuppressWarnings("unchecked")
+	public <T extends Closeable> T getApi(final long userId, final Class<T> apiType) throws OpenStackException {
         try {
             return (T) apiCache.get(new SyncLocalApiCacheKey(userId, apiType), new Callable<Closeable>() {
                 @Override

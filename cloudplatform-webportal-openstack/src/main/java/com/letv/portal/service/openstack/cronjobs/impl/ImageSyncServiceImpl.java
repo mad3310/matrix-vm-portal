@@ -18,6 +18,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
@@ -70,7 +71,7 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
             try {
                 for (String region : glanceApi.getConfiguredRegions()) {
                     ImageApi imageApi = glanceApi.getImageApi(region);
-                    for (ImageDetails imageDetails : imageApi.listInDetail().concat().toList()) {
+                    for (@SuppressWarnings("unused") ImageDetails imageDetails : imageApi.listInDetail().concat().toList()) {
 
                     }
                 }

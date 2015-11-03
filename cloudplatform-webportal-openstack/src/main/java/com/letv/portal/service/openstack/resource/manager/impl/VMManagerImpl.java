@@ -6,8 +6,6 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
-import com.letv.portal.model.cloudvm.CloudvmVmCount;
-import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VmSnapshotCreateEvent;
@@ -34,6 +32,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloating
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -1616,18 +1615,19 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 //        incVmCount();
     }
 
-    @Deprecated
+    @SuppressWarnings("unused")
+	@Deprecated
     private void incVmCount() throws OpenStackException {
-        ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
-                .getOpenStackServiceGroup().getCloudvmVmCountService();
-        CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
-                .getVmCountOfCurrentUser();
-        if (cloudvmVmCount == null) {
-            cloudvmVmCountService.createVmCountOfCurrentUser(1);
-        } else {
-            cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
-                    .getVmCount() + 1);
-        }
+//        ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
+//                .getOpenStackServiceGroup().getCloudvmVmCountService();
+//        CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
+//                .getVmCountOfCurrentUser();
+//        if (cloudvmVmCount == null) {
+//            cloudvmVmCountService.createVmCountOfCurrentUser(1);
+//        } else {
+//            cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
+//                    .getVmCount() + 1);
+//        }
     }
 
     private void recordVmDeleted(String region, String vmId) throws OpenStackException {
@@ -1646,19 +1646,20 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 //        }
     }
 
-    @Deprecated
+    @SuppressWarnings("unused")
+	@Deprecated
     private void decVmCount() throws OpenStackException {
-        ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
-                .getOpenStackServiceGroup().getCloudvmVmCountService();
-        CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
-                .getVmCountOfCurrentUser();
-        if (cloudvmVmCount == null) {
-            throw new OpenStackException(
-                    "Vm count of user is not synchronized.", "用户数据错误");
-        } else {
-            cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
-                    .getVmCount() - 1);
-        }
+//        ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
+//                .getOpenStackServiceGroup().getCloudvmVmCountService();
+//        CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
+//                .getVmCountOfCurrentUser();
+//        if (cloudvmVmCount == null) {
+//            throw new OpenStackException(
+//                    "Vm count of user is not synchronized.", "用户数据错误");
+//        } else {
+//            cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
+//                    .getVmCount() - 1);
+//        }
     }
 
     @Override

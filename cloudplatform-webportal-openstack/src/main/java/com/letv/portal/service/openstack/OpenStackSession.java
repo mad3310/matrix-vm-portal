@@ -1,15 +1,14 @@
 package com.letv.portal.service.openstack;
 
+import java.io.Closeable;
+import java.io.Serializable;
+
 import com.letv.common.session.Session;
-import com.letv.portal.model.UserVo;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
-
-import java.io.Closeable;
-import java.io.Serializable;
 
 /**
  * Created by zhouxianguang on 2015/6/8.

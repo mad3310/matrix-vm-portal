@@ -1,8 +1,6 @@
 package com.letv.portal.service.openstack.cronjobs;
 
 import com.letv.common.exception.MatrixException;
-import com.letv.portal.model.cloudvm.CloudvmServer;
-import com.letv.portal.service.openstack.exception.OpenStackException;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
 /**

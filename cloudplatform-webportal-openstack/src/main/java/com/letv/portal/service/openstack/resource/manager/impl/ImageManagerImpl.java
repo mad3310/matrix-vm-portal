@@ -12,8 +12,6 @@ import com.letv.portal.model.cloudvm.CloudvmImageStatus;
 import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
-import org.jclouds.openstack.cinder.v1.domain.Snapshot;
-import org.jclouds.openstack.cinder.v1.features.SnapshotApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.Image;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
@@ -24,7 +22,6 @@ import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.impl.ImageResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
 
 public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> implements
 		ImageManager {

@@ -18,6 +18,7 @@ import com.letv.portal.service.openstack.jclouds.service.OpenStackUserInfo;
 import com.letv.portal.service.openstack.password.PasswordService;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -32,6 +33,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -128,7 +130,8 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
         return new OpenStackUserInfo(userId, sessionId, email, password);
     }
 
-    private <T extends Closeable> T getApi(final Class<T> apiType, final OpenStackUserInfo userInfo) throws ExecutionException {
+    @SuppressWarnings("unchecked")
+	private <T extends Closeable> T getApi(final Class<T> apiType, final OpenStackUserInfo userInfo) throws ExecutionException {
         return (T) apiCache.get(new ApiCacheKey(userInfo.getUserId(), userInfo.getSessionId(), apiType), new Callable<Closeable>() {
             @Override
             public Closeable call() throws Exception {

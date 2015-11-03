@@ -115,7 +115,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
                 errorEmailService.sendErrorEmail(
                         new ErrorMailMessageModel()
                                 .requestUrl("功能：同步云硬盘")
-                                .exceptionParams("volume.id=" + volume.getId())
+                                .exceptionParams("volume.id=" + cloudvmVolume.getVolumeId())
                                 .exceptionId("tenantId:" + cloudvmVolume.getTenantId())
                                 .exceptionMessage("云硬盘状态为NIL")
                                 .toMap());

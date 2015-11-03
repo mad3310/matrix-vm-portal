@@ -6,10 +6,10 @@ import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
-import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
+
 import org.springframework.scheduling.SchedulingTaskExecutor;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -22,7 +22,7 @@ public class OpenStackServiceGroup {
 	private ITemplateMessageSender defaultEmailSender;
 	private PasswordService passwordService;
 	private SessionServiceImpl sessionService;
-	private ICloudvmVmCountService cloudvmVmCountService;
+//	private ICloudvmVmCountService cloudvmVmCountService;
 	private SchedulingTaskExecutor threadPoolTaskExecutor;
 	private ErrorEmailService errorEmailService;
 	private ICloudvmFlavorService cloudvmFlavorService;
@@ -86,14 +86,14 @@ public class OpenStackServiceGroup {
 		this.sessionService = sessionService;
 	}
 
-	public ICloudvmVmCountService getCloudvmVmCountService() {
-		return cloudvmVmCountService;
-	}
-
-	public void setCloudvmVmCountService(
-			ICloudvmVmCountService cloudvmVmCountService) {
-		this.cloudvmVmCountService = cloudvmVmCountService;
-	}
+//	public ICloudvmVmCountService getCloudvmVmCountService() {
+//		return cloudvmVmCountService;
+//	}
+//
+//	public void setCloudvmVmCountService(
+//			ICloudvmVmCountService cloudvmVmCountService) {
+//		this.cloudvmVmCountService = cloudvmVmCountService;
+//	}
 
 	public void setThreadPoolTaskExecutor(
 			SchedulingTaskExecutor threadPoolTaskExecutor) {

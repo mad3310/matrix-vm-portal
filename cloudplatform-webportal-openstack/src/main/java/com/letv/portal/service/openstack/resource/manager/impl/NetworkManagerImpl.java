@@ -1436,7 +1436,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	private void checkCreateRouter(NeutronApi neutronApi, RouterCreateConf routerCreateConf) throws OpenStackException {
 		final String region = routerCreateConf.getRegion();
-		final String name = routerCreateConf.getName();
+//		final String name = routerCreateConf.getName();
 		final boolean enablePublicNetworkGateway = routerCreateConf.getEnablePublicNetworkGateway();
 		final String publicNetworkId = routerCreateConf.getPublicNetworkId();
 
@@ -2600,7 +2600,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	
 	public void checkCreateFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf) throws OpenStackException {
 		final String region = createConf.getRegion();
-		final String name = createConf.getName();
+//		final String name = createConf.getName();
 		final String publicNetworkId = createConf.getPublicNetworkId();
 		final Integer bandWidth = createConf.getBandWidth();
 		final Integer count = createConf.getCount();

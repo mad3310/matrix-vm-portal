@@ -3,11 +3,9 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm.check;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VmCreateContext;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
-import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 
 import java.util.List;
 

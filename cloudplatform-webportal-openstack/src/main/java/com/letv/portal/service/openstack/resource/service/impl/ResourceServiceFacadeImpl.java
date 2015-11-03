@@ -9,6 +9,7 @@ import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.openstack.util.Util;
+
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -41,11 +42,13 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         return apiService.getNeutronApi();
     }
 
-    private CinderApi getCinderApi() {
+    @SuppressWarnings("unused")
+	private CinderApi getCinderApi() {
         return apiService.getCinderApi();
     }
 
-    private GlanceApi getGlanceApi() {
+    @SuppressWarnings("unused")
+	private GlanceApi getGlanceApi() {
         return apiService.getGlanceApi();
     }
 

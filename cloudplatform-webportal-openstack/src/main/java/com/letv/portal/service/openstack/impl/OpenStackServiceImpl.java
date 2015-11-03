@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 import javax.annotation.PostConstruct;
 
 import com.google.common.base.Optional;
-import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
@@ -107,8 +106,8 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private SessionServiceImpl sessionService;
 
-	@Autowired
-	private ICloudvmVmCountService cloudvmVmCountService;
+//	@Autowired
+//	private ICloudvmVmCountService cloudvmVmCountService;
 
 	@Autowired
 	private ICloudvmFlavorService cloudvmFlavorService;
@@ -184,7 +183,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setDefaultEmailSender(defaultEmailSender);
 		openStackServiceGroup.setPasswordService(passwordService);
 		openStackServiceGroup.setSessionService(sessionService);
-		openStackServiceGroup.setCloudvmVmCountService(cloudvmVmCountService);
+//		openStackServiceGroup.setCloudvmVmCountService(cloudvmVmCountService);
 		openStackServiceGroup.setCloudvmFlavorService(cloudvmFlavorService);
 		openStackServiceGroup.setCloudvmServerService(cloudvmServerService);
 		openStackServiceGroup.setThreadPoolTaskExecutor(threadPoolTaskExecutor);

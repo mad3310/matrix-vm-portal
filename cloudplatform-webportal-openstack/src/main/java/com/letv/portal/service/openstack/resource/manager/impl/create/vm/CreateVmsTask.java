@@ -1,9 +1,5 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
-import com.letv.common.exception.MatrixException;
-import com.letv.common.exception.ValidateException;
-import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
-import com.letv.portal.service.openstack.util.Util;
 import org.jclouds.openstack.nova.v2_0.domain.Network;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;

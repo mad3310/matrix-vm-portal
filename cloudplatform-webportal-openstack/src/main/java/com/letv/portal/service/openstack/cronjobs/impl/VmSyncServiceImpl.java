@@ -311,7 +311,8 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
         }
     }
 
-    private void createLink(long userId, String region, Server server) {
+    @SuppressWarnings("unused")
+	private void createLink(long userId, String region, Server server) {
         for (Link remoteLink : server.getLinks()) {
             CloudvmServerLink localServerLink = new CloudvmServerLink();
             localServerLink.setRegion(region);
@@ -326,7 +327,8 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
         }
     }
 
-    private void createMetadata(long userId, String region, Server server) {
+    @SuppressWarnings("unused")
+	private void createMetadata(long userId, String region, Server server) {
         for (Map.Entry<String, String> remoteMetadata : server.getMetadata().entrySet()) {
             CloudvmServerMetadata localServerMetadata = new CloudvmServerMetadata();
             localServerMetadata.setRegion(region);
@@ -338,7 +340,8 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
         }
     }
 
-    private void createAddress(long userId, String region, Server server) {
+    @SuppressWarnings("unused")
+	private void createAddress(long userId, String region, Server server) {
         for (Map.Entry<String, Address> mapEntry : server.getAddresses().entries()) {
             CloudvmServerAddress localServerAddress = new CloudvmServerAddress();
             localServerAddress.setRegion(region);

@@ -1,5 +1,11 @@
 package com.letv.portal.service.openstack.util;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -8,14 +14,6 @@ import com.letv.common.exception.MatrixException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
-import org.apache.commons.collections.ListUtils;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 
 /**
  * Created by zhouxianguang on 2015/10/30.
@@ -28,7 +26,7 @@ public class ThreadUtil {
     }
 
     public static void concurrentRunAndWait(Runnable currentThreadTask, Runnable... otherTasks) {
-        ListenableFuture[] futures = new ListenableFuture[otherTasks.length];
+        ListenableFuture<?>[] futures = new ListenableFuture[otherTasks.length];
         for (int i = 0; i < otherTasks.length; i++) {
             futures[i] = executorService.submit(otherTasks[i]);
         }
@@ -48,15 +46,15 @@ public class ThreadUtil {
 
     public static <T> List<Ref<T>> concurrentRunAndWait(Timeout timeout, Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
         try {
-            ListenableFuture[] futures = new ListenableFuture[otherTasks.length];
+            List<ListenableFuture<Ref<T>>> futures = new LinkedList<ListenableFuture<Ref<T>>>();
             for (int i = 0; i < otherTasks.length; i++) {
                 final Function<T> task = otherTasks[i];
-                futures[i] = executorService.submit(new Callable<Ref<T>>() {
+                futures.add(executorService.submit(new Callable<Ref<T>>() {
                     @Override
                     public Ref<T> call() throws Exception {
                         return new Ref<T>(task.apply());
                     }
-                });
+                }));
             }
 
             T firstResult = currentThreadTask.apply();

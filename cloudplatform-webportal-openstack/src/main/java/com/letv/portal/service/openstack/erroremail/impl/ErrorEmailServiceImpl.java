@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 
 import com.letv.common.util.ExceptionUtils;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,9 @@
 package com.letv.portal.service.openstack.local.resource;
 
-import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
-import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
-import org.jclouds.openstack.nova.v2_0.domain.Server;
 
 import java.util.HashSet;
 import java.util.Set;

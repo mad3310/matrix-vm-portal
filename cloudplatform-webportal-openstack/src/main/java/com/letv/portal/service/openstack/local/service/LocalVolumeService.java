@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.local.service;
 
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.exception.OpenStackException;

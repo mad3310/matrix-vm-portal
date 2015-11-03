@@ -12,7 +12,6 @@ import com.letv.portal.service.openstack.util.JsonUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
-import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;

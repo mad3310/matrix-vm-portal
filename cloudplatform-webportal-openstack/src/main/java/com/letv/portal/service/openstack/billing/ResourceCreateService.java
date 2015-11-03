@@ -4,7 +4,6 @@ import com.letv.common.exception.MatrixException;
 import com.letv.portal.service.openstack.billing.listeners.*;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VolumeTypeResource;
-import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
 
 /**
  * Created by zhouxianguang on 2015/9/21.

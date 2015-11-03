@@ -1,6 +1,5 @@
 package com.letv.portal.service.openstack.local.resource;
 
-import com.google.common.base.Objects;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 
 /**

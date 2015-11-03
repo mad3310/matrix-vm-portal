@@ -6,7 +6,6 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
-import com.letv.portal.service.impl.UserServiceImpl;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.BillingResource;
@@ -26,6 +25,7 @@ import com.letv.portal.service.openstack.util.*;
 import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
+
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -111,7 +111,8 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
         return null;
     }
 
-    private BillingResource getVolume(Long userId, String sessionId, ResourceLocator locator) {
+    @SuppressWarnings("unused")
+	private BillingResource getVolume(Long userId, String sessionId, ResourceLocator locator) {
         CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
         if (cinderApi.getConfiguredRegions().contains(locator.region())) {
             Volume volume = cinderApi
@@ -154,7 +155,8 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
             final String randomSessionId = RandomUtil.generateRandomSessionId();
             apiService.loadAllApiForRandomSessionFromBackend(userId, randomSessionId);
             try {
-                List<Ref<List<Tuple2<ResourceLocator, BillingResource>>>> resultRefList = ThreadUtil.concurrentRunAndWait(new Timeout().time(40L).unit(TimeUnit.MINUTES), new Function<List<Tuple2<ResourceLocator, BillingResource>>>() {
+                @SuppressWarnings("unchecked")
+				List<Ref<List<Tuple2<ResourceLocator, BillingResource>>>> resultRefList = ThreadUtil.concurrentRunAndWait(new Timeout().time(40L).unit(TimeUnit.MINUTES), new Function<List<Tuple2<ResourceLocator, BillingResource>>>() {
                     @Override
                     public List<Tuple2<ResourceLocator, BillingResource>> apply() throws Exception {
                         List<Tuple2<ResourceLocator, BillingResource>> entries = ThreadUtil.concurrentFilter(

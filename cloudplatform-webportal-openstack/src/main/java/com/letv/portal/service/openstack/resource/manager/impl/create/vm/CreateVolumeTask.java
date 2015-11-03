@@ -86,11 +86,11 @@ public class CreateVolumeTask extends VmsCreateSubTask {
 						volumeChecker);
 				boolean isSuccess = context.getApiCache().getVolumeApi().delete(volumeId);
 				if (isSuccess) {
-					OpenStackServiceImpl.getOpenStackServiceGroup()
+					openStackServiceGroup
 							.getLocalVolumeService()
 							.delete(context.getUserId(), context.getVmCreateConf().getRegion(), volumeId);
 				} else {
-					OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService()
+					openStackServiceGroup.getErrorEmailService()
 							.sendErrorEmail(
 									new ErrorMailMessageModel()
 											.exceptionMessage("创建云主机的云硬盘回滚时删除失败")
