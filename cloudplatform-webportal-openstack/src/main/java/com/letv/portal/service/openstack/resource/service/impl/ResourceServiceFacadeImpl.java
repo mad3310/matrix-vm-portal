@@ -1,10 +1,14 @@
 package com.letv.portal.service.openstack.resource.service.impl;
 
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
+import com.letv.portal.service.openstack.util.Util;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -26,6 +30,9 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private SessionServiceImpl sessionService;
+
     private NovaApi getNovaApi() {
         return apiService.getNovaApi();
     }
@@ -42,18 +49,24 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         return apiService.getGlanceApi();
     }
 
-    @Override
-    public void attachVmToSubnet(String region, String vmId, String subnetId) throws OpenStackException {
-        NovaApi novaApi = getNovaApi();
-        NeutronApi neutronApi = getNeutronApi();
-        resourceService.attachVmToSubnet(novaApi, neutronApi, region, vmId, subnetId);
+    private OpenStackUser getOpenStackUser() {
+        OpenStackSessionImpl openStackSession = Util.session(sessionService);
+        OpenStackUser openStackUser = openStackSession.getOpenStackUser();
+        return openStackUser;
     }
 
     @Override
-    public void detachVmFromSubnet(String region, String vmId, String subnetId) throws OpenStackException {
+    public void attachVmsToSubnet(String region, String vmIds, String subnetId) throws OpenStackException {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
-        resourceService.detachVmFromSubnet(novaApi, neutronApi, region, vmId, subnetId);
+        resourceService.attachVmsToSubnet(novaApi, neutronApi, region, vmIds, subnetId);
+    }
+
+    @Override
+    public void detachVmsFromSubnet(String region, String vmIds, String subnetId) throws OpenStackException {
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+        resourceService.detachVmsFromSubnet(novaApi, neutronApi, region, vmIds, subnetId);
     }
 
     @Override
@@ -68,6 +81,36 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
         return resourceService.listVmAttachedSubnet(novaApi, neutronApi, region, subnetId);
+    }
+
+    @Override
+    public String createKeyPair(String region, String name) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+        String tenantId = openStackUser.getTenantId();
+
+        NovaApi novaApi = getNovaApi();
+        return resourceService.createKeyPair(novaApi, userVoUserId, tenantId, region, name);
+    }
+
+    @Override
+    public void checkCreateKeyPair(String region, String name) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+        String tenantId = openStackUser.getTenantId();
+
+        NovaApi novaApi = getNovaApi();
+        resourceService.checkCreateKeyPair(novaApi, userVoUserId, tenantId, region, name);
+    }
+
+    @Override
+    public void deleteKeyPair(String region, String name) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+        String tenantId = openStackUser.getTenantId();
+
+        NovaApi novaApi = getNovaApi();
+        resourceService.deleteKeyPair(novaApi, userVoUserId, tenantId, region, name);
     }
 
 }

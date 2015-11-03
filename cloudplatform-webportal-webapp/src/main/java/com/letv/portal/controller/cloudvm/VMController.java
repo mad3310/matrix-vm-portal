@@ -1,14 +1,14 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackCompositeException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.local.resource.LocalKeyPairResource;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
+import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
@@ -16,12 +16,15 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.operate.IRecentOperateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("/ecs")
@@ -41,6 +44,9 @@ public class VMController {
 
 	@Autowired
 	private ResourceServiceFacade resourceServiceFacade;
+
+	@Autowired
+	private LocalKeyPairService localKeyPairService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -89,7 +95,7 @@ public class VMController {
 					.session(sessionService)
 					.getVMManager()
 					.listByRegionGroup(region, Util.optPara(name), currentPage,
-							recordsPerPage));
+                            recordsPerPage));
 //			result.setData(vmQueryService.list(region,name,currentPage,recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
@@ -559,10 +565,14 @@ public class VMController {
     @RequestMapping(value = "/vm/attach/subnet", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResultObject attachVmToSubnet(@RequestParam String region, @RequestParam String vmId, @RequestParam String subnetId) {
+    ResultObject attachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
         try {
-            resourceServiceFacade.attachVmToSubnet(region, vmId, subnetId);
+            resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId);
+        } catch (OpenStackCompositeException e) {
+            result.getMsgs().addAll(e.toMsgs());
+            result.setResult(0);
+            e.throwMatrixExceptionIfNecessary();
         } catch (UserOperationException e) {
             result.addMsg(e.getUserMessage());
             result.setResult(0);
@@ -575,10 +585,14 @@ public class VMController {
     @RequestMapping(value = "/vm/detach/subnet", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResultObject detachVmToSubnet(@RequestParam String region, @RequestParam String vmId, @RequestParam String subnetId) {
+    ResultObject detachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
         try {
-            resourceServiceFacade.detachVmFromSubnet(region, vmId, subnetId);
+            resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId);
+        } catch (OpenStackCompositeException e) {
+            result.getMsgs().addAll(e.toMsgs());
+            result.setResult(0);
+            e.throwMatrixExceptionIfNecessary();
         } catch (UserOperationException e) {
             result.addMsg(e.getUserMessage());
             result.setResult(0);
@@ -621,39 +635,55 @@ public class VMController {
 					  @RequestParam(required = false) Integer currentPage,
 					  @RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
-		Page page = new Page(currentPage, recordsPerPage);
-		page.setData(Arrays.asList(new LocalKeyPairResource()));
-		page.setTotalRecords(1);
-		result.setData(page);
+		try {
+			long userId = Util.userId(sessionService);
+			result.setData(localKeyPairService.list(userId, region, name, currentPage, recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 
-	@RequestMapping(value = "/keypair/create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject createKeyPair(@RequestParam String region, @RequestParam String name){
-		ResultObject result = new ResultObject();
-		result.setData("fake private key");
-//		try {
-//
-//		} catch (UserOperationException e) {
-//			result.addMsg(e.getUserMessage());
-//			result.setResult(0);
-//		} catch (OpenStackException e) {
-//			throw e.matrixException();
-//		}
-		return result;
+	@RequestMapping(value = "/keypair/create", method = RequestMethod.GET)
+	public ResponseEntity<String> createKeyPair(@RequestParam String region, @RequestParam String name){
+        try {
+            String privateKey = resourceServiceFacade.createKeyPair(region, name);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", name + ".pem");
+            return new ResponseEntity<String>(privateKey, headers, HttpStatus.CREATED);
+        } catch (Exception ex){
+            return ExceptionUtil.getResponseEntityFromException(ex);
+        }
+    }
+
+    @RequestMapping(value = "/keypair/create/check", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResultObject checkCreateKeyPair(@RequestParam String region, @RequestParam String name) {
+        ResultObject result = new ResultObject();
+        try {
+            resourceServiceFacade.checkCreateKeyPair(region, name);
+        } catch (UserOperationException e) {
+            result.addMsg(e.getUserMessage());
+            result.setResult(0);
+        } catch (OpenStackException e) {
+            throw e.matrixException();
+        }
+        return result;
 	}
 
 	@RequestMapping(value = "/keypair/delete", method = RequestMethod.POST)
 	public @ResponseBody ResultObject deleteKeyPair(@RequestParam String region, @RequestParam String name){
 		ResultObject result = new ResultObject();
-//		try {
-//
-//		} catch (UserOperationException e) {
-//			result.addMsg(e.getUserMessage());
-//			result.setResult(0);
-//		} catch (OpenStackException e) {
-//			throw e.matrixException();
-//		}
+		try {
+			resourceServiceFacade.deleteKeyPair(region, name);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 }

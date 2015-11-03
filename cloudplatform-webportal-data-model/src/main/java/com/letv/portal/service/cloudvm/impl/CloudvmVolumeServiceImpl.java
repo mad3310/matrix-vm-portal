@@ -124,4 +124,13 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
         return cloudvmVolumeDao.selectByMap(paras);
     }
 
+    @Override
+    public List<CloudvmVolume> selectByRegionsAndVolumeIds(long tenantId, List<String> regions, List<String> volumeIds) {
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("regions", regions);
+        paras.put("volumeIds", volumeIds);
+        return cloudvmVolumeDao.selectByMap(paras);
+    }
+
 }

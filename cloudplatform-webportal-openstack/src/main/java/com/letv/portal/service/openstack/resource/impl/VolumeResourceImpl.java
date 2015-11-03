@@ -19,6 +19,10 @@ public class VolumeResourceImpl extends AbstractResource implements
 	public Volume volume;
 	private Set<VolumeAttachmentResource> attachments;
 
+	public VolumeResourceImpl(Volume volume) {
+		this.volume = volume;
+	}
+
 	public VolumeResourceImpl(String region, String regionDisplayName,
 			Volume volume) {
 		this.region = region;

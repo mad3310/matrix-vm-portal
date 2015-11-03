@@ -14,11 +14,5 @@ public interface ResourceQueryService {
 
     VolumeTypeResource getVolumeType(long userId, String region, String volumeTypeId) throws MatrixException;
 
-    Map<ResourceLocator, VMResource> getVMResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException;
-
-    Map<ResourceLocator, VolumeResource> getVolumeResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException;
-
-    Map<ResourceLocator, RouterResource> getRouterResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException;
-
-    Map<ResourceLocator, FloatingIpResource> getFloatingIpResources(Iterable<ResourceLocator> resourceLocators) throws MatrixException;
+    Map<ResourceLocator, BillingResource> getResources(long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException;
 }

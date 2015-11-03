@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmKeyPairDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmKeyPair">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="NAME" property="name"/>
+		<result column="FINGERPRINT" property="fingerprint"/>
+		<result column="TENANT_ID" property="tenantId"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_KEY_PAIR table all fields -->
+	<sql id="Base_Column_List">
+		k.ID,k.REGION,k.NAME,k.FINGERPRINT,k.TENANT_ID,
+		k.DELETED,k.CREATE_TIME,k.CREATE_USER,k.UPDATE_TIME,k.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and k.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and k.REGION=#{region}
+			</if>
+			<if test="name != null ">
+				and k.NAME=#{name}
+			</if>
+			<if test="likeName != null  and likeName != ''  and likeName != 'null'">
+				and k.NAME like CONCAT('%',#{likeName},'%') escape '^'
+			</if>
+			<if test="fingerprint != null ">
+				and k.FINGERPRINT=#{fingerprint}
+			</if>
+			<if test="tenantId != null ">
+				and k.TENANT_ID=#{tenantId}
+			</if>
+			<if test="deleted != null  ">
+				and k.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and k.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and k.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and k.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and k.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmKeyPair" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_KEY_PAIR(REGION,`NAME`,FINGERPRINT,TENANT_ID,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{name},#{fingerprint},#{tenantId},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmKeyPair">
+		update WEBPORTAL_CLOUDVM_KEY_PAIR
+		set
+		ID=#{id},
+		REGION=#{region},
+		`NAME`=#{name},
+		FINGERPRINT=#{fingerprint},
+		TENANT_ID=#{tenantId},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_KEY_PAIR k
+		<include refid="Example_Where_Clause" />
+		ORDER BY k.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmKeyPair">
+		delete from WEBPORTAL_CLOUDVM_KEY_PAIR where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_KEY_PAIR k
+		where  k.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_CLOUDVM_KEY_PAIR k
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

@@ -7,11 +7,14 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.jclouds.service.OpenStackUserInfo;
 import com.letv.portal.service.openstack.password.PasswordService;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.ThreadUtil;
@@ -56,6 +59,9 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
 
     @Autowired
     private ErrorEmailService errorEmailService;
+
+    @Autowired
+    private OpenStackService openStackService;
 
     private Cache<ApiCacheKey, Closeable> apiCache;
 
@@ -255,34 +261,16 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
         });
     }
 
-    private static class OpenStackUserInfo {
-        private Long userId;
-        private String sessionId;
-        private String email;
-        private String password;
+    @Override
+    public void loadAllApiForRandomSessionFromBackend(long userId, String randomSessionId) throws NoSuchAlgorithmException, OpenStackException {
+        UserVo userVo = userService.getUcUserById(userId);
+        final String email = userVo.getEmail();
+        String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
+        String openStackUserPassword = passwordService.userIdToPassword(openStackUserId);
 
-        public OpenStackUserInfo(Long userId, String sessionId, String email, String password) {
-            this.userId = userId;
-            this.sessionId = sessionId;
-            this.email = email;
-            this.password = password;
-        }
+//        openStackService.registerAndInitUserIfNotExists(userId, userVo.getUsername(), email, openStackUserPassword);
 
-        public Long getUserId() {
-            return userId;
-        }
-
-        public String getSessionId() {
-            return sessionId;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
+        loadAllApiForCurrentSession(userId, randomSessionId, openStackUserId, openStackUserPassword);
     }
 
 }
