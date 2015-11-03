@@ -570,6 +570,8 @@ public class VMController {
         try {
             resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId);
         } catch (OpenStackCompositeException e) {
+            result.getMsgs().addAll(e.toMsgs());
+            result.setResult(0);
             e.throwMatrixExceptionIfNecessary();
         } catch (UserOperationException e) {
             result.addMsg(e.getUserMessage());
@@ -588,6 +590,8 @@ public class VMController {
         try {
             resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId);
         } catch (OpenStackCompositeException e) {
+            result.getMsgs().addAll(e.toMsgs());
+            result.setResult(0);
             e.throwMatrixExceptionIfNecessary();
         } catch (UserOperationException e) {
             result.addMsg(e.getUserMessage());
