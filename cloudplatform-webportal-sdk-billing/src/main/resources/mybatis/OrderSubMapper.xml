@@ -20,6 +20,7 @@
 	    <result column="DESCN" property="descn" />
 	    
 	    <association property="subscription" javaType="Subscription">
+	    	<result column="INNER_SUBSCRIPTION_ID" property="id" />
 			<result column="PRODUCT_ID" property="productId" />
 		    <result column="BASE_REGION_ID" property="baseRegionId" />
 		    <result column="CHARGE_TYPE" property="chargeType" />
@@ -194,9 +195,11 @@
 	</select>
 	<select id="selectOrderSubBySubscriptionId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	    select
-	        <include refid="Base_Column_List" />
+	        <include refid="Base_Column_List" />,od.DESCN ORDER_DESCN,od.STATUS
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
+	    left join
+	    	MATRIX_BILLING_ORDER od on orderSub.ORDER_ID=od.ID
 	   	where
 	   		orderSub.SUBSCRIPTION_ID=#{subscriptionId}
 	</select>
@@ -240,7 +243,7 @@
 	<select id="selectDetailBySubscriptionId" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
 			od.DESCN ORDER_DESCN,
-			sub.START_TIME SUB_START_TIME,sub.END_TIME SUB_END_TIME,DATEDIFF(sub.END_TIME, NOW()) AS DATE_NUM,
+			sub.ID INNER_SUBSCRIPTION_ID,sub.PRODUCT_ID,sub.START_TIME SUB_START_TIME,sub.END_TIME SUB_END_TIME,DATEDIFF(sub.END_TIME, NOW()) AS DATE_NUM,
 			product.NAME PRODUCT_NAME,
 			region.NAME BASE_REGION_NAME
 		from 

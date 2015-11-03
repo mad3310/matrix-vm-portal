@@ -90,12 +90,17 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 
 	@Override
 	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime) {
+		return createSubscription(id, map, productInfoRecordId, date, orderTime, sessionService.getSession().getUserId(), 0);
+	}
+	
+	@Override
+	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime, Long userId, Integer buyType) {
 		Subscription sub = new Subscription();
 		sub.setSubscriptionNumber(SerialNumberUtil.getNumber(1));
 		sub.setProductId(id);
 		sub.setBaseRegionId(Long.parseLong((String)map.get("region")));
 		sub.setChargeType(map.get("chargeType")==null?0:Integer.parseInt((String)map.get("chargeType")));
-		sub.setBuyType(0);//新购
+		sub.setBuyType(buyType);//0-新购,1-续费
 		sub.setProductInfoRecordId(productInfoRecordId);
 		Integer t = Integer.parseInt(orderTime);
 		sub.setOrderTime(t);
@@ -105,8 +110,8 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		cal.add(Calendar.MONTH, t);
 		sub.setEndTime(cal.getTime());
 		sub.setValid(1);
-		sub.setUserId(sessionService.getSession().getUserId());
-		sub.setCreateUser(sessionService.getSession().getUserId());
+		sub.setUserId(userId);
+		sub.setCreateUser(userId);
 		sub.setDeleted(false);
 		sub.setCreateTime(new Timestamp(date.getTime()));
 		this.subscriptionDao.insert(sub);
@@ -117,13 +122,14 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			}
 			SubscriptionDetail detail = new SubscriptionDetail();
 			detail.setSubscriptionId(sub.getId());
-			detail.setStandardName(key);
+			detail.setElementName(key);
+			detail.setStandardType((String)map.get(key+"_type"));
 			detail.setStandardValue((String)map.get(key));
 			detail.setOrderTime(t);
 			detail.setStartTime(date);
 			detail.setEndTime(cal.getTime());
-			detail.setUserId(sessionService.getSession().getUserId());
-			detail.setCreateUser(sessionService.getSession().getUserId());
+			detail.setUserId(userId);
+			detail.setCreateUser(userId);
 			detail.setDeleted(false);
 			detail.setValid(true);
 			this.subscriptionDetailDao.insert(detail);

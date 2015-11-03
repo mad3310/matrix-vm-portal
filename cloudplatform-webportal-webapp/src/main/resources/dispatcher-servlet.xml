@@ -80,7 +80,8 @@
 	          <value>/order/detail</value>
 	          
 	          <!-- 订阅相关 -->
-	          <value>/subscription/uc</value>
+	          <value>/subscription/renew</value>
+	          <value>/billing/renew</value>
 	          
 	        </list>
 	      </property>

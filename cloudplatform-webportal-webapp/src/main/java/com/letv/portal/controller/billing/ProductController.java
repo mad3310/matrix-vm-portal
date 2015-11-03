@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.constant.Constants;
 import com.letv.portal.model.order.Order;
 import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
@@ -88,21 +89,23 @@ public class ProductController {
 		return obj;
 	}
 	
-	private boolean validateData(Long id, Map<String, Object> map) {
-		if(id==2) {//云主机走自己的验证和计算
-			return hostProductService.validateData(id, map);
+	private boolean validateData(Long productId, Map<String, Object> map) {
+		if(productId==Constants.PRODUCT_VM || productId==Constants.PRODUCT_VOLUME || 
+				productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP) {//云主机走自己的验证和计算
+			return hostProductService.validateData(productId, map);
 		} else {//规划的通用逻辑
-			return productService.validateData(id, map);
+			return productService.validateData(productId, map);
 		}
 	}
 	private BigDecimal getOrderTotalPrice(Long id, Subscription sub, List<SubscriptionDetail> subDetails, String orderTime, Map<String, Object> billingParams) {
 		for (SubscriptionDetail subscriptionDetail : subDetails) {
-			if(id==2 || id==3 || id==4 || id==5) {
-				subscriptionDetail.setPrice(this.hostCalculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getStandardName(), subscriptionDetail.getStandardValue(),
-						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getStandardName()+"_type")));
+			if(id==Constants.PRODUCT_VM || id==Constants.PRODUCT_VOLUME || 
+					id==Constants.PRODUCT_ROUTER || id==Constants.PRODUCT_FLOATINGIP) {
+				subscriptionDetail.setPrice(this.hostCalculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getElementName(), subscriptionDetail.getStandardValue(),
+						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getElementName()+"_type")));
 			} else {
-				subscriptionDetail.setPrice(this.calculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getStandardName(), subscriptionDetail.getStandardValue(),
-						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getStandardName()+"_type")));
+				subscriptionDetail.setPrice(this.calculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getElementName(), subscriptionDetail.getStandardValue(),
+						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getElementName()+"_type")));
 			}
 		}
 		BigDecimal totalPrice = new BigDecimal(0);
@@ -113,7 +116,7 @@ public class ProductController {
 	}
 	
 	private void transferParamsDateToCalculate(Map<String, Object> params, Long id, Map<String, Object> billingParams) {
-		if(id==2) {//云主机参数转换
+		if(id==Constants.PRODUCT_VM) {//云主机参数转换
 			FlavorResource flavor = resourceQueryService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
 			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
 			billingParams.put("os_cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
@@ -123,17 +126,17 @@ public class ProductController {
 			billingParams.put("os_broadband", params.get("bandWidth")+"");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
-		} else if(id==3) {//云硬盘
+		} else if(id==Constants.PRODUCT_VOLUME) {//云硬盘
 			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
 			billingParams.put("os_storage", params.get("size")+"");
 			billingParams.put("os_storage_type", volume.getName()+"");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
-		} else if(id==4) {//公网IP
+		} else if(id==Constants.PRODUCT_ROUTER) {//公网IP
 			billingParams.put("os_broadband", params.get("bandWidth")+"");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
-		} else if(id==5) {//路由器
+		} else if(id==Constants.PRODUCT_FLOATINGIP) {//路由器
 			billingParams.put("os_router", "router");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
@@ -151,13 +154,13 @@ public class ProductController {
 	  */
 	private CheckResult validateParamsDataByServiceProvider(Long id, String params) {
 		CheckResult ret = null;
-		if(id==2) {//云主机参数转换
+		if(id==Constants.PRODUCT_VM) {//云主机参数转换
 			ret = this.resourceCreateService.checkVmCreatePara(params);
-		} else if(id==3) {//云硬盘
+		} else if(id==Constants.PRODUCT_VOLUME) {//云硬盘
 			ret = this.resourceCreateService.checkVolumeCreatePara(params);
-		} else if(id==4) {//公网IP
+		} else if(id==Constants.PRODUCT_ROUTER) {//公网IP
 			ret = this.resourceCreateService.checkFloatingIpCreatePara(params);
-		} else if(id==5) {//路由器
+		} else if(id==Constants.PRODUCT_FLOATINGIP) {//路由器
 			ret = this.resourceCreateService.checkRouterCreatePara(params);
 		}
 		return ret;
@@ -213,7 +216,7 @@ public class ProductController {
 						obj.setData(o.getOrderNumber());
 					}
 					
-					List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectByMapAndTime(sub.getId());
+					List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectBySubscriptionId(sub.getId());
 					BigDecimal totalPrice = getOrderTotalPrice(id, sub, subDetails, (String)billingParams.get("order_time"), billingParams);
 					
 					//生成子订单

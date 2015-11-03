@@ -26,7 +26,7 @@ import com.letv.portal.service.subscription.ISubscriptionService;
  *
  */
 @Controller
-@RequestMapping("/subscription")
+@RequestMapping("/subscription/renew")
 public class SubscriptionController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(SubscriptionController.class);
@@ -36,7 +36,7 @@ public class SubscriptionController {
 	@Autowired
 	IOrderSubService orderSubService;
 	
-	@RequestMapping(value="/uc/list/{userId}",method=RequestMethod.GET)   
+	@RequestMapping(value="/list/{userId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable Long userId, Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("userId", userId);
@@ -46,7 +46,7 @@ public class SubscriptionController {
 		return obj;
 	}
 	
-	@RequestMapping(value="/uc/detail/{id}/{userId}", method=RequestMethod.GET)   
+	@RequestMapping(value="/detail/{id}/{userId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject detailById(@PathVariable Long id, @PathVariable Long userId,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		OrderSub orderSub = this.orderSubService.selectDetailBySubscriptionId(id, userId);

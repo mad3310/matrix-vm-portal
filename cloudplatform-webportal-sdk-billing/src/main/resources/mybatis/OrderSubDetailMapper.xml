@@ -20,7 +20,7 @@
 	    <result column="DESCN" property="descn" />
 	    
 	    <association property="subscriptionDetail" javaType="SubscriptionDetail">
-			<result column="STANDARD_NAME" property="standardName" />
+			<result column="ELEMENT_NAME" property="elementName" />
 	    	<result column="STANDARD_VALUE" property="standardValue" />
 		</association>
 	</resultMap>
@@ -103,7 +103,7 @@
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-			<include refid="Base_Column_List" />,subDetail.STANDARD_NAME,subDetail.STANDARD_VALUE
+			<include refid="Base_Column_List" />,subDetail.ELEMENT_NAME,subDetail.STANDARD_VALUE
 		from 
 			MATRIX_BILLING_ORDER_SUB_DETAIL orderDetail
 		left join

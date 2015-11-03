@@ -7,7 +7,8 @@
 	<resultMap id="BaseResultMap" type="SubscriptionDetail">
 	    <result column="ID" property="id" />
 	    <result column="SUBSCRIPTION_ID" property="subscriptionId" />
-	    <result column="STANDARD_NAME" property="standardName" />
+	    <result column="ELEMENT_NAME" property="elementName" />
+	    <result column="STANDARD_TYPE" property="standardType" />
 	    <result column="STANDARD_VALUE" property="standardValue" />
 	    <result column="ORDER_TIME" property="orderTime" />
 	    <result column="VALID" property="valid" />
@@ -20,10 +21,18 @@
 	    <result column="CREATE_USER" property="createUser" />
 	    <result column="UPDATE_USER" property="updateUser" />
 	    <result column="DESCN" property="descn" />
+	    
+	    <association property="subscription" javaType="Subscription">
+			 <result column="SUBSCRIPTION_NUMBER" property="subscriptionNumber" />
+	    	 <result column="PRODUCT_ID" property="productId" />
+	    	 <result column="BASE_REGION_ID" property="baseRegionId" />
+	    	 <result column="SUBSCRIPTION_END_TIME" property="endTime" />
+	    	 <result column="PRODUCT_INFO_RECORD_ID" property="productInfoRecordId" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    subDetail.ID,subDetail.SUBSCRIPTION_ID,subDetail.STANDARD_NAME,subDetail.STANDARD_VALUE,
+	    subDetail.ID,subDetail.SUBSCRIPTION_ID,subDetail.ELEMENT_NAME,subDetail.STANDARD_TYPE,subDetail.STANDARD_VALUE,
 	    subDetail.ORDER_TIME,subDetail.VALID,subDetail.START_TIME,subDetail.END_TIME,subDetail.USER_ID,
 	    subDetail.DELETED,subDetail.CREATE_TIME,subDetail.UPDATE_TIME,subDetail.CREATE_USER,subDetail.UPDATE_USER,
 	    subDetail.DESCN
@@ -31,9 +40,9 @@
 	
 	<insert id="insert" parameterType="SubscriptionDetail" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_BILLING_SUBSCRIPTION_DETAIL 
-	        (SUBSCRIPTION_ID,STANDARD_NAME,STANDARD_VALUE,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	        (SUBSCRIPTION_ID,ELEMENT_NAME,STANDARD_TYPE,STANDARD_VALUE,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
 	    values
-	        (#{subscriptionId},#{standardName},#{standardValue},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	        (#{subscriptionId},#{elementName},#{standardType},#{standardValue},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -45,8 +54,11 @@
 	        <if test="subscriptionId != null ">
 	            and subDetail.SUBSCRIPTION_ID=#{subscriptionId}
 	        </if>
-	        <if test="standardName != null ">
-	            and subDetail.STANDARD_NAME=#{standardName}
+	        <if test="elementName != null ">
+	            and subDetail.ELEMENT_NAME=#{elementName}
+	        </if>
+	        <if test="standardType != null ">
+	            and subDetail.STANDARD_TYPE=#{standardType}
 	        </if>
 	        <if test="standardValue != null ">
 	            and subDetail.STANDARD_VALUE=#{standardValue}
@@ -89,19 +101,22 @@
 	
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
-	        <include refid="Base_Column_List" />
+	        <include refid="Base_Column_List" />,subscription.SUBSCRIPTION_NUMBER,subscription.PRODUCT_ID,
+	        subscription.BASE_REGION_ID,subscription.END_TIME SUBSCRIPTION_END_TIME,subscription.PRODUCT_INFO_RECORD_ID
 	    from
 	        MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
+	    left join
+	    	MATRIX_BILLING_SUBSCRIPTION subscription on subscription.ID=subDetail.SUBSCRIPTION_ID 
 	        <include refid="Common_Where_Clause" />
 	</select>
 	
-	<select id="selectByMapAndTime" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectBySubscriptionId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	    select
 	        <include refid="Base_Column_List" />
 	    from
 	        MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
-	        <include refid="Common_Where_Clause" />
-	        and #{date} between subDetail.START_TIME and subDetail.END_TIME
+	    where 
+	    	subDetail.SUBSCRIPTION_ID=#{subscriptionId}
 	</select>
 	
 	<!-- 列表总数 -->

@@ -26,6 +26,7 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  * @date 2015年9月7日 下午3:08:06
 	 */
 	Long createOrder(Subscription subscription, Long orderId, List<SubscriptionDetail> subDetails, BigDecimal totalPrice);
+	Long createOrder(Subscription subscription, Long orderId, List<SubscriptionDetail> subDetails, BigDecimal totalPrice, Long userId);
 	List<OrderSub> selectOrderSubByOrderId(Long orderId);
 	/**
 	  * @Title: selectOrderByOrderNumber

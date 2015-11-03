@@ -21,7 +21,8 @@ public class SubscriptionDetail extends BaseModel{
 
 	private Long subscriptionId;//订阅主表ID
 	private Long userId;//用户ID
-	private String standardName;//规格名称
+	private String elementName;//元素名称
+	private String standardType;//规格类型
 	private String standardValue;//规格值
 	private Integer orderTime;//购买时长
 	private Date startTime;//开始时间
@@ -30,7 +31,26 @@ public class SubscriptionDetail extends BaseModel{
 	private String descn;//描述
 	private BigDecimal price;//价格-用于记录各规格价格
 	
+	private Subscription subscription;//订阅
 	
+	public Subscription getSubscription() {
+		return subscription;
+	}
+	public void setSubscription(Subscription subscription) {
+		this.subscription = subscription;
+	}
+	public String getElementName() {
+		return elementName;
+	}
+	public void setElementName(String elementName) {
+		this.elementName = elementName;
+	}
+	public String getStandardType() {
+		return standardType;
+	}
+	public void setStandardType(String standardType) {
+		this.standardType = standardType;
+	}
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -54,12 +74,6 @@ public class SubscriptionDetail extends BaseModel{
 	}
 	public void setSubscriptionId(Long subscriptionId) {
 		this.subscriptionId = subscriptionId;
-	}
-	public String getStandardName() {
-		return standardName;
-	}
-	public void setStandardName(String standardName) {
-		this.standardName = standardName;
 	}
 	public String getStandardValue() {
 		return standardValue;

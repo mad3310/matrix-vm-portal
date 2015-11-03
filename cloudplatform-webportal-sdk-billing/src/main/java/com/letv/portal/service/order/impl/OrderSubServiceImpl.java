@@ -48,12 +48,17 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 
 	@Override
 	public Long createOrder(Subscription sub, Long orderId, List<SubscriptionDetail> subDetails, BigDecimal totalPrice) {
+		return this.createOrder(sub, orderId, subDetails, totalPrice, sessionService.getSession().getUserId());
+	}
+	
+	@Override
+	public Long createOrder(Subscription sub, Long orderId, List<SubscriptionDetail> subDetails, BigDecimal totalPrice, Long userId) {
 		OrderSub orderSub = new OrderSub();
 		orderSub.setSubscriptionId(sub.getId());
 		orderSub.setOrderId(orderId);
 		orderSub.setStartTime(sub.getStartTime());
 		orderSub.setEndTime(sub.getEndTime());
-		orderSub.setCreateUser(sessionService.getSession().getUserId());
+		orderSub.setCreateUser(userId);
 		orderSub.setPrice(totalPrice);
 		this.orderSubDao.insert(orderSub);
 		for (SubscriptionDetail subscriptionDetail : subDetails) {
@@ -63,7 +68,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			od.setStartTime(subscriptionDetail.getStartTime());
 			od.setEndTime(subscriptionDetail.getEndTime());
 			od.setPrice(subscriptionDetail.getPrice());
-			od.setCreateUser(sessionService.getSession().getUserId());
+			od.setCreateUser(userId);
 			this.orderDetailDao.insert(od);
 		}
 		return orderSub.getId();
