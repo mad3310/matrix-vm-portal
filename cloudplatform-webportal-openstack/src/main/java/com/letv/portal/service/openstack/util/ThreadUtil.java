@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 /**
@@ -80,6 +81,8 @@ public class ThreadUtil {
                 }
             }
             return resultList;
+        } catch (ExecutionException ex){
+            ExceptionUtil.throwException(ExceptionUtil.getCause(ex));
         } catch (Exception ex) {
             ExceptionUtil.throwException(ex);
         }
@@ -148,6 +151,8 @@ public class ThreadUtil {
                 }
             }
             return newList;
+        } catch (ExecutionException ex){
+            ExceptionUtil.throwException(ExceptionUtil.getCause(ex));
         } catch (Exception ex) {
             ExceptionUtil.throwException(ex);
         }

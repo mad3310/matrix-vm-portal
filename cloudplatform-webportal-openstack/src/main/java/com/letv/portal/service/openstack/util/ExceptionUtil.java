@@ -22,7 +22,16 @@ public class ExceptionUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(ExceptionUtil.class);
 
-    public static void throwException(Exception ex) throws OpenStackException {
+    public static Throwable getCause(Throwable ex) {
+        Throwable cause = ex.getCause();
+        if (cause != null) {
+            return cause;
+        } else {
+            return ex;
+        }
+    }
+
+    public static void throwException(Throwable ex) throws OpenStackException {
         if (ex instanceof ValidateException) {
             throw (ValidateException) ex;
         } else if (ex instanceof MatrixException) {

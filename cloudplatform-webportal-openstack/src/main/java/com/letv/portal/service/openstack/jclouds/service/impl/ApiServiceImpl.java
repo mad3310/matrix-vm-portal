@@ -268,7 +268,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
         String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
         String openStackUserPassword = passwordService.userIdToPassword(openStackUserId);
 
-        openStackService.registerAndInitUserIfNotExists(userId, email, openStackUserPassword);
+//        openStackService.registerAndInitUserIfNotExists(userId, userVo.getUsername(), email, openStackUserPassword);
 
         loadAllApiForCurrentSession(userId, randomSessionId, openStackUserId, openStackUserPassword);
     }

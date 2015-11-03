@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 
 /**
  * Created by zhouxianguang on 2015/6/8.
@@ -16,7 +17,7 @@ public interface OpenStackService {
 
     void registerUserIfNotExists(String email, String password) throws OpenStackException;
 
-    void registerAndInitUserIfNotExists(long userVoUserId, String email, String password) throws OpenStackException;
+    OpenStackUser registerAndInitUserIfNotExists(long userVoUserId, String userName, String email, String password) throws OpenStackException;
 
 //    OpenStackSession createSessionForSync(long userVoUserId) throws OpenStackException;
 }
