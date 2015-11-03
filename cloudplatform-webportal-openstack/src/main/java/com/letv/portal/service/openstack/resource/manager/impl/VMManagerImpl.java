@@ -1633,7 +1633,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     private void recordVmDeleted(String region, String vmId) throws OpenStackException {
         long userVoUserId = openStackUser.getUserVoUserId();
         LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-        localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.SERVER);
+        localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.SERVER);
 
 //        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
 
