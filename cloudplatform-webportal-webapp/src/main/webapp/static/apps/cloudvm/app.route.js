@@ -62,7 +62,13 @@ define(['app'],function (app) {
             config: {
               templateUrl: '/static/apps/cloudvm/views/vm-image.html'
             }
-          }];
+          },{
+          url: '/vm-keypair',
+          title: '密钥',
+          config: {
+            templateUrl: '/static/apps/cloudvm/views/vm-keypair.html'
+          }
+        }];
     };
 
   app.constant('routes', getRoutes());

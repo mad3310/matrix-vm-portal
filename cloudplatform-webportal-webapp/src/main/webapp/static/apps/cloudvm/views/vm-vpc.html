@@ -65,8 +65,8 @@
                         更多操作
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                        <li><a href="javascript:void(0);" ng-click="functionDisable()">添加云主机</a></li>
-                        <li><a href="javascript:void(0);" ng-click="functionDisable()">移除云主机</a></li>
+                        <li><a href="javascript:void(0);" ng-click="openSubnetAssociateVmModal('500')">添加云主机</a></li>
+                        <li><a href="javascript:void(0);" ng-click="openSubnetDetachVmModal('500')">移除云主机</a></li>
                         <li><a href="javascript:void(0);" ng-click="associateRouter()">绑定路由</a></li>
                         <li><a href="javascript:void(0);" ng-click="unbundRouter()">解绑路由</a></li>
                         <li><a href="javascript:void(0);" ng-click="editSubnet()">属性修改</a></li>
@@ -411,9 +411,9 @@
         </form>
     </script>
     <script type="text/ng-template" id="SubnetAssociateVmModalTpl">
-        <form novalidate class="form-vm-router-create" name="associate_router_form">
+        <form novalidate class="form-vm-router-create" name="associate_vm_form">
             <div class="letv-modal-header">
-                <span class="header-title">绑定路由</span>
+                <span class="header-title">添加云主机</span>
                 <a class="close" ng-click="closeModal()">
                     <i class="iconfont icon-add"></i>
                 </a>
@@ -421,22 +421,88 @@
             <div class="le-modal-body">
                 <div class="le-row">
                     <div class="le-col-3 col-label">
+                        <span class="letv-control-label">子网名称：</span>
+                    </div>
+                    <div class="le-col-9 col-control">
+                        <span class="letv-control-label">{{subnetAssociateVm.subnetName}}</span>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
                         <span class="letv-control-label">云主机：</span>
                     </div>
                     <div class="le-col-8 col-control">
-                        <ul class="mutiple-selection-area">
-                            <li ng-repeat="vm in associatedVmList">
-                                <div class="letv-radioCheck" ng-class="{'selected':isSelectedAssociatedVmImage(vm)}" ng-click="selectAssociatedVmImage(vm)">
-                                    <i class="iconfont icon-checkblockicon"></i>
-                                    <span class="letv-radio-content" title="{{vm.name}}">{{vm.name}}</span>
-                                </div>
+                        <ul class="nav nav-tabs letv-nav-tab">
+                            <li class="active">
+                                <a href="javascript:void(0);">可添加</a>
                             </li>
                         </ul>
+                        <div class="tab-content letv-tab-content">
+                            <div class="tab-pane active">
+                                <ul class="system-content mutiple-selection-area">
+                                    <li ng-repeat="vm in associatedVmList">
+                                        <div class="letv-radioCheck" ng-class="{'selected':isSelectedAssociatedVmImage(vm)}" ng-click="selectAssociatedVmImage(vm)">
+                                            <i class="iconfont icon-checkblockicon"></i>
+                                            <span class="letv-radio-content" title="{{vm.name}}">{{vm.name}}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="associateVm()"><span>关联云主机</span></button>
+                        <button class="btn btn-le-blue" ng-click="associateVm()"><span>添加云主机</span></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </script>
+    <script type="text/ng-template" id="SubnetDetachVmModalTpl">
+        <form novalidate class="form-vm-router-create" name="detach_vm_form">
+            <div class="letv-modal-header">
+                <span class="header-title">移除云主机</span>
+                <a class="close" ng-click="closeModal()">
+                    <i class="iconfont icon-add"></i>
+                </a>
+            </div>
+            <div class="le-modal-body">
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
+                        <span class="letv-control-label">子网名称：</span>
+                    </div>
+                    <div class="le-col-9 col-control">
+                        <span class="letv-control-label">{{subnetDetachVm.subnetName}}</span>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
+                        <span class="letv-control-label">云主机：</span>
+                    </div>
+                    <div class="le-col-8 col-control">
+                        <ul class="nav nav-tabs letv-nav-tab">
+                            <li class="active">
+                                <a href="javascript:void(0);">可移除</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content letv-tab-content">
+                            <div class="tab-pane active">
+                                <ul class="system-content mutiple-selection-area">
+                                    <li ng-repeat="vm in detachVmList">
+                                        <div class="letv-radioCheck" ng-class="{'selected':isSelectedDetachVmImage(vm)}" ng-click="selectDetachVm(vm)">
+                                            <i class="iconfont icon-checkblockicon"></i>
+                                            <span class="letv-radio-content" title="{{vm.name}}">{{vm.name}}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-12 col-submit-order">
+                        <button class="btn btn-le-blue" ng-click="detachVm()"><span>移除云主机</span></button>
                     </div>
                 </div>
             </div>

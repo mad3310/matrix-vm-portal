@@ -39,6 +39,7 @@ body {
 .icon-info:before { content: "\e607"; }
 .icon-user:before { content: "\e637"; }
 .icon-shenfenrenzheng:before { content: "\e62c"; }
+.icon-yaoshi:before { content: "\e63d"; }
 .icon-shield:before { content: "\e63b"; }
 .icon-icon:before { content: "\e608"; }
 .icon-camera:before { content: "\e609"; }
