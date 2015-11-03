@@ -64,6 +64,10 @@ define(['./common.service'], function (serviceModule) {
       snapshot_vm_create:'/ecs/vm/snapshot/create',
       snapshot_vm_delete:'/ecs/vm/snapshot/delete',
       vm_vnc:'/ecs/region/{region}/vm-open-console',
+      keypair_list:'/ecs/keypair/list',
+      keypair_create:'/ecs/keypair/create',
+      keypair_delete:'/ecs/keypair/delete',
+      keypair_check:'/ecs/keypair/create/check',
     };
     config.REGEX= {
       NAME: /^[a-zA-Z\u4e00-\u9fa5][^\s"@\/:=<>{\[\]}]{1,127}$/,
