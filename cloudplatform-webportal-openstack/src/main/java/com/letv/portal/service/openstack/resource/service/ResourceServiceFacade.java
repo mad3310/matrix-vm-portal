@@ -9,9 +9,9 @@ import java.util.List;
  * Created by zhouxianguang on 2015/10/30.
  */
 public interface ResourceServiceFacade {
-    void attachVmToSubnet(String region, String vmId, String subnetId) throws OpenStackException;
+    void attachVmsToSubnet(String region, String vmIds, String subnetId) throws OpenStackException;
 
-    void detachVmFromSubnet(String region, String vmId, String subnetId) throws OpenStackException;
+    void detachVmsFromSubnet(String region, String vmIds, String subnetId) throws OpenStackException;
 
     List<VMResource> listVmNotInAnyNetwork(String region) throws OpenStackException;
 

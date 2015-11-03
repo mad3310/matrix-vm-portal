@@ -224,6 +224,12 @@ public class OpenStackServiceImpl implements OpenStackService {
 		}
 	}
 
+	@Override
+	public void registerAndInitUserIfNotExists(long userVoUserId, String email, String password) throws OpenStackException {
+		// TODO
+	}
+
+
 //	@Override
 //	public OpenStackSession createSessionForSync(long userVoUserId) throws OpenStackException {
 //		UserVo userVo = userService.getUcUserById(userVoUserId);

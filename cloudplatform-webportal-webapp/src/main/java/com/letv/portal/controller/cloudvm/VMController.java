@@ -1,16 +1,12 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.JsonUtils;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackCompositeException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.local.resource.LocalKeyPairResource;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
@@ -21,7 +17,6 @@ import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.JsonUtil;
 import com.letv.portal.service.operate.IRecentOperateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,8 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("/ecs")
@@ -102,7 +95,7 @@ public class VMController {
 					.session(sessionService)
 					.getVMManager()
 					.listByRegionGroup(region, Util.optPara(name), currentPage,
-							recordsPerPage));
+                            recordsPerPage));
 //			result.setData(vmQueryService.list(region,name,currentPage,recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
@@ -572,10 +565,14 @@ public class VMController {
     @RequestMapping(value = "/vm/attach/subnet", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResultObject attachVmToSubnet(@RequestParam String region, @RequestParam String vmId, @RequestParam String subnetId) {
+    ResultObject attachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
         try {
-            resourceServiceFacade.attachVmToSubnet(region, vmId, subnetId);
+            resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId);
+        } catch (OpenStackCompositeException e) {
+            result.getMsgs().addAll(e.toMsgs());
+            result.setResult(0);
+            e.throwMatrixExceptionIfNecessary();
         } catch (UserOperationException e) {
             result.addMsg(e.getUserMessage());
             result.setResult(0);
@@ -588,10 +585,14 @@ public class VMController {
     @RequestMapping(value = "/vm/detach/subnet", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResultObject detachVmToSubnet(@RequestParam String region, @RequestParam String vmId, @RequestParam String subnetId) {
+    ResultObject detachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
         try {
-            resourceServiceFacade.detachVmFromSubnet(region, vmId, subnetId);
+            resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId);
+        } catch (OpenStackCompositeException e) {
+            result.getMsgs().addAll(e.toMsgs());
+            result.setResult(0);
+            e.throwMatrixExceptionIfNecessary();
         } catch (UserOperationException e) {
             result.addMsg(e.getUserMessage());
             result.setResult(0);

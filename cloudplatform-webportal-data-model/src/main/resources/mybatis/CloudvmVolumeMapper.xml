@@ -46,8 +46,20 @@
 			<if test="region != null ">
 				and v.REGION=#{region}
 			</if>
+			<if test="regions != null ">
+				and v.REGION in <foreach item="item" index="index" collection="regions"
+											open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			</if>
 			<if test="volumeId != null ">
 				and v.VOLUME_ID=#{volumeId}
+			</if>
+			<if test="volumeIds != null ">
+				and v.VOLUME_ID in <foreach item="item" index="index" collection="volumeIds"
+									 open="(" separator="," close=")">
+				#{item}
+			</foreach>
 			</if>
 			<if test="name != null  and name != ''  and name != 'null'">
 				and v.NAME like CONCAT('%',#{name},'%') escape '^'

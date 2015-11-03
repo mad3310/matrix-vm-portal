@@ -296,6 +296,35 @@ define(['controllers/app.controller'], function (controllerModule) {
                 }, function () {
                 });
             };
+            $scope.openSubnetDetachVmModal = function (size) {
+                var checkedSubnets=getCheckedSubnet();
+                if(checkedSubnets.length !==1){
+                    WidgetService.notifyWarning('请选中一个子网');
+                    return;
+                }
+                var modalInstance = $modal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: 'SubnetDetachVmModalTpl',
+                    controller: 'SubnetDetachVmModalCtrl',
+                    size: size,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        subnetInfo: function () {
+                            return checkedSubnets[0];
+                        },
+                        region:function(){
+                            return CurrentContext.regionId;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (resultData) {
+                    if (resultData && resultData.result === 1) {
+                        refreshSubnetList();
+                    }
+                }, function () {
+                });
+            };
 
             var refreshVpcList = function () {
                     var queryParams = {
@@ -426,34 +455,49 @@ define(['controllers/app.controller'], function (controllerModule) {
     ]);
 
     controllerModule.controller('SubnetAssociateVmModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window,region, subnetInfo) {
-
         $scope.associatedVmList = [];
-        $scope.selectedAssociatedVm = null;
+        $scope.selectedAssociatedVm = [];
+
+        $scope.subnetAssociateVm = {
+            subnetName:subnetInfo.name,
+            subnetId:subnetInfo.id,
+        }
 
         $scope.closeModal=function(){
             $modalInstance.dismiss('cancel');
         };
         $scope.selectAssociatedVmImage = function (vm) {
-            $scope.selectedAssociatedVm.push(vm);
+            if($scope.selectedAssociatedVm.indexOf(vm) === -1){
+                $scope.selectedAssociatedVm.push(vm);
+            }else{
+                $scope.selectedAssociatedVm.splice($scope.selectedAssociatedVm.indexOf(vm));
+            }
         };
         $scope.isSelectedAssociatedVmImage = function (vm) {
-            return $scope.associatedVmList.indexOf(vm)>-1;
+            return $scope.selectedAssociatedVm.indexOf(vm)!==-1;
         };
         $scope.associateVm = function () {
-            if (!$scope.vpc_create_form.$valid) return;
-            var data = {
-                region:region,
-                name: $scope.vpcCreate.name,
-            };
+            if ($scope.selectedAssociatedVm.length === 0) {
+                WidgetService.notifyError('至少选择一个要添加的云主机');
+                return;
+            }
+            var data = [];
+            for(var i= 0,len=$scope.selectedAssociatedVm.length;i<len;i++){
+                data.push({
+                    region:region,
+                    vmId:$scope.selectedAssociatedVm[i].id,
+                    subnetId:subnetInfo.id
+                })
+            }
             $scope.isOrderSubmiting=true;
-            HttpService.doPost(Config.urls.vpc_create, data).success(function (data, status, headers, config) {
+            HttpService.doPost(Config.urls.subnet_attach_vm, data).success(function (data, status, headers, config) {
                 if(data.result===1){
                     $modalInstance.close({result:1});
-                    WidgetService.notifySuccess(data.msgs[0]||'创建VPC完成');
+                    WidgetService.notifySuccess(data.msgs[0]||'关联云主机完成');
                 }
                 else{
                     $scope.isOrderSubmiting=false;
-                    WidgetService.notifyError(data.msgs[0]||'创建VPC失败');
+                    WidgetService.notifyError(data.msgs[0]||'关联云主机失败');
                 }
             });
         };
@@ -462,10 +506,74 @@ define(['controllers/app.controller'], function (controllerModule) {
               initAssociatedVmList();
           },
           initAssociatedVmList = function () {
+              /*HttpService.doGet(Config.urls.not_in_any_network_vm_list, {region:region}).success(function (data, status, headers, config) {
+                  $scope.associatedVmList = data.data.data;
+              });*/
               HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
                   $scope.associatedVmList = data.data.data;
               });
           };
         initComponents();
     });
+    controllerModule.controller('SubnetDetachVmModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window,region, subnetInfo) {
+        $scope.detachVmList = [];
+        $scope.selectedDetachVm = [];
+        $scope.subnetDetachVm = {
+            subnetName:subnetInfo.name,
+            subnetId:subnetInfo.id,
+        }
+
+        $scope.closeModal=function(){
+            $modalInstance.dismiss('cancel');
+        };
+        $scope.selectDetachVm = function (vm) {
+            if($scope.selectedDetachVm.indexOf(vm) === -1){
+                $scope.selectedDetachVm.push(vm);
+            }else{
+                $scope.selectedDetachVm.splice($scope.selectedDetachVm.indexOf(vm));
+            }
+        };
+        $scope.isSelectedDetachVmImage = function (vm) {
+            return $scope.selectedDetachVm.indexOf(vm)!==-1;
+        };
+        $scope.detachVm = function () {
+            if ($scope.selectedDetachVm.length === 0) {
+                WidgetService.notifyError('至少选择一个要移除的云主机');
+                return;
+            }
+            var data = [];
+            for(var i= 0,len=$scope.selectedDetachVm.length;i<len;i++){
+                data.push({
+                    region:region,
+                    vmId:$scope.selectedDetachVm[i].id,
+                    subnetId:subnetInfo.id
+                })
+            }
+            $scope.isOrderSubmiting=true;
+            HttpService.doPost(Config.urls.subnet_detach_vm, data).success(function (data, status, headers, config) {
+                if(data.result===1){
+                    $modalInstance.close({result:1});
+                    WidgetService.notifySuccess(data.msgs[0]||'移除云主机完成');
+                }
+                else{
+                    $scope.isOrderSubmiting=false;
+                    WidgetService.notifyError(data.msgs[0]||'移除云主机失败');
+                }
+            });
+        };
+
+        var initComponents = function () {
+                initDetachVmList();
+            },
+            initDetachVmList = function () {
+                /*HttpService.doGet(Config.urls.not_in_any_network_vm_list, {region:region}).success(function (data, status, headers, config) {
+                 $scope.detachVmList = data.data.data;
+                 });*/
+                HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+                    $scope.detachVmList = data.data.data;
+                });
+            };
+        initComponents();
+    });
 });
+

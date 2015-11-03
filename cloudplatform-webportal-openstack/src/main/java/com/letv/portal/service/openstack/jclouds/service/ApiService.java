@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.jclouds.service;
 
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -33,5 +34,5 @@ public interface ApiService {
 
     void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword);
 
-    void loadAllApiForRandomSession(long userId, String randomSessionId) throws NoSuchAlgorithmException;
+    void loadAllApiForRandomSessionFromBackend(long userId, String randomSessionId) throws NoSuchAlgorithmException, OpenStackException;
 }

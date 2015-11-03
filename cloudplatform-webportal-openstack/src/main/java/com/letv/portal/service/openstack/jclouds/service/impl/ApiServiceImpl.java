@@ -7,7 +7,9 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
@@ -57,6 +59,9 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
 
     @Autowired
     private ErrorEmailService errorEmailService;
+
+    @Autowired
+    private OpenStackService openStackService;
 
     private Cache<ApiCacheKey, Closeable> apiCache;
 
@@ -257,11 +262,14 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     }
 
     @Override
-    public void loadAllApiForRandomSession(long userId, String randomSessionId) throws NoSuchAlgorithmException {
+    public void loadAllApiForRandomSessionFromBackend(long userId, String randomSessionId) throws NoSuchAlgorithmException, OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
         final String email = userVo.getEmail();
         String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
         String openStackUserPassword = passwordService.userIdToPassword(openStackUserId);
+
+        openStackService.registerAndInitUserIfNotExists(userId, email, openStackUserPassword);
+
         loadAllApiForCurrentSession(userId, randomSessionId, openStackUserId, openStackUserPassword);
     }
 
