@@ -47,7 +47,9 @@ public class LocalRcCountServiceImpl implements LocalRcCountService {
     public void decRcCount(long userId, long tenantId, String region, CloudvmRcCountType type) {
         CloudvmRcCount rcCount = cloudvmRcCountService.selectByType(tenantId, region, type);
         if (rcCount != null) {
-            rcCount.setCount(rcCount.getCount() - 1);
+            if(rcCount.getCount() > 0){
+                rcCount.setCount(rcCount.getCount() - 1);
+            }
             rcCount.setUpdateUser(userId);
             cloudvmRcCountService.update(rcCount);
         }

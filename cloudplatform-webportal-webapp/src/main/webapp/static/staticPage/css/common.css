@@ -120,6 +120,7 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .icon-info:before { content: "\e607"; }
 .icon-user:before { content: "\e637"; }
 .icon-shenfenrenzheng:before { content: "\e62c"; }
+.icon-yaoshi:before { content: "\e63d"; }
 .icon-shield:before { content: "\e63b"; }
 .icon-icon:before { content: "\e608"; }
 .icon-camera:before { content: "\e609"; }
@@ -129,7 +130,9 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .icon-shopping:before { content: "\e60d"; }
 .icon-weixin:before { content: "\e60e"; }
 .icon-xinfeng:before { content: "\e60f"; }
+.icon-money:before { content: "\e63c"; }
 .icon-mark:before { content: "\e610"; }
+.icon-money1:before { content: "\e63e"; }
 .icon-attentionfill:before { content: "\e611"; }
 .icon-attention:before { content: "\e612"; }
 .icon-computer:before { content: "\e62f"; }

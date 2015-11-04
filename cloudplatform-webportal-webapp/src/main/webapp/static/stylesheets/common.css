@@ -49,7 +49,9 @@ body {
 .icon-shopping:before { content: "\e60d"; }
 .icon-weixin:before { content: "\e60e"; }
 .icon-xinfeng:before { content: "\e60f"; }
+.icon-money:before { content: "\e63c"; }
 .icon-mark:before { content: "\e610"; }
+.icon-money1:before { content: "\e63e"; }
 .icon-attentionfill:before { content: "\e611"; }
 .icon-attention:before { content: "\e612"; }
 .icon-computer:before { content: "\e62f"; }

@@ -338,6 +338,10 @@ ul.menu-sub li{padding:10px 10px 10px 40px;}
 .helpcenter-center .productIntro-title{margin-bottom:30px;font-size:3.6rem;font-size:36px\9;color:#088ac2}
 .helpcenter-center .productIntro-desc{font-size:1.4rem;font-size:14px\9;color:#333;line-height:2.8rem;line-height:28px\9;}
 .top-product-tab.helpcenter-tab{margin-top:30px;}
+.helpcenter-tab .tab-item{border-top:1px solid #e7e8e8;border-bottom:1px solid #e7e8e8;}
+.helpcenter-tab .tab-item.active-item:hover{border-color:#088ac2;}
+.helpcenter-tab .tab-item.first{border-left:1px solid #e7e8e8;}
+.helpcenter-tab .tab-item.last{border-right:1px solid #e7e8e8;}
 .helpcenter-center .product-intro{padding-top:50px;padding-bottom:40px;border-bottom:1px solid #e7e8e8;font-size:2.4rem;font-size:24px\9;color:#333;}
 .product-intro .intro-desc{margin-top:30px;font-size:1.4rem;font-size:14px\9;line-height:2.4rem;line-height:24px\9;}
 .product-intro .intro-sub{margin-top:25px;}

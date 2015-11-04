@@ -27,7 +27,7 @@
             <img src="/static/images/nav-account.png" class="account-icon" />
             <span>${sessionScope.userSession.userName}</span>
         </a>
-        <a href="/" class="header-help pull-right">
+        <a href="/home/helpcenter.html" class="header-help pull-right">
             <img src="/static/images/nav-help.png" class="help-icon" />
             <span>帮助中心</span>
         </a>
