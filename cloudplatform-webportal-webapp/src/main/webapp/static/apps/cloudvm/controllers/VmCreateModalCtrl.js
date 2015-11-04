@@ -179,7 +179,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       diskVolumeOfCalculatePrice= 0,
       delaySliderModelHandlerOfDiskVolume=Utility.delaySliderModel(),
       networkBandWidthOfCalculatePrice= 0,
-      delaySliderModelHandlerOfNetworkBandWidth=Utility.delaySliderModel();;
+      delaySliderModelHandlerOfNetworkBandWidth=Utility.delaySliderModel();
     var initComponents = function () {
         initVmImageSelector();
         initVmSnapshotSelector();

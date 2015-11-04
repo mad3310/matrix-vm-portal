@@ -47,16 +47,25 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
+    $scope.$watch('networkBandWidth', function (value) {
+      if (value != null) {
+        delaySliderModelHandlerOfNetworkBandWidth(value,updateNetworkBandWidthOfCalculatePrice);
+      }
+    });
+
     $scope.$watch(function(){
       return [
         $scope.ipCount,
-        $scope.networkBandWidth,
+        networkBandWidthOfCalculatePrice,
         $scope.floatipBuyPeriod].join('_');
     }, function (value) {
       if ($scope.ipCount && $scope.networkBandWidth && $scope.floatipBuyPeriod) {
         setFloatipPrice();
       }
     });
+
+    var networkBandWidthOfCalculatePrice= 0,
+      delaySliderModelHandlerOfNetworkBandWidth=Utility.delaySliderModel();
 
     var setFloatipPrice=function(){
       var data={
@@ -78,6 +87,9 @@ define(['controllers/app.controller'], function (controllerModule) {
         var data=[];
         data.push(['带宽',$scope.networkBandWidth+'Mbps'].join('/:'));
         return data.join('/;');
+      },
+      updateNetworkBandWidthOfCalculatePrice=function(value) {
+        networkBandWidthOfCalculatePrice = value;
       };
 
 
