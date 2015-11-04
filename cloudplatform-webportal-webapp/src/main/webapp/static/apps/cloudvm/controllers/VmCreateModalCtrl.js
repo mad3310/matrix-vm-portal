@@ -135,6 +135,18 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     });
 
+    $scope.$watch('dataDiskVolume', function (value) {
+      if (value != null) {
+        delaySliderModelHandlerOfDiskVolume(value,updateDiskVolumeOfCalculatePrice);
+      }
+    });
+
+    $scope.$watch('networkBandWidth', function (value) {
+      if (value != null) {
+        delaySliderModelHandlerOfNetworkBandWidth(value,updateNetworkBandWidthOfCalculatePrice);
+      }
+    });
+
     $scope.$watch(function(){
       return [$scope.vmNetworkType,$scope.vmNetworkPublicIpModel].join('_');
     }, function () {
@@ -150,12 +162,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       return [$scope.selectedVmCpu,
         $scope.selectedVmRam,
         ($scope.selectedVmDiskType &&  $scope.selectedVmDiskType.name) || '',
-        $scope.dataDiskVolume,
-        $scope.networkBandWidth,
+        diskVolumeOfCalculatePrice,
+        networkBandWidthOfCalculatePrice,
         $scope.vmCount,
         $scope.vmBuyPeriod].join('_');
     }, function (value) {
-      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.selectedVmDiskType && $scope.dataDiskVolume) {
+      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.selectedVmDiskType) {
         setVmPrice();
       }
     });
@@ -163,7 +175,11 @@ define(['controllers/app.controller'], function (controllerModule) {
     var flavorGroupData = null,
       selectedVmFlavor = null,
       selectedVmSharedNetwork=null,
-      calculatePriceData= null;
+      calculatePriceData= null,
+      diskVolumeOfCalculatePrice= 0,
+      delaySliderModelHandlerOfDiskVolume=Utility.delaySliderModel(),
+      networkBandWidthOfCalculatePrice= 0,
+      delaySliderModelHandlerOfNetworkBandWidth=Utility.delaySliderModel();;
     var initComponents = function () {
         initVmImageSelector();
         initVmSnapshotSelector();
@@ -266,6 +282,12 @@ define(['controllers/app.controller'], function (controllerModule) {
         data.push(['地域',CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name].join('/:'));
         data.push(['网络类型',$scope.vmNetworkType == 'primary'?'基础网络':'私有网络'].join('/:'));
         return data.join('/;');
+      },
+      updateDiskVolumeOfCalculatePrice=function(value) {
+        diskVolumeOfCalculatePrice = value;
+      },
+      updateNetworkBandWidthOfCalculatePrice=function(value) {
+        networkBandWidthOfCalculatePrice = value;
       };
     initComponents();
   });
