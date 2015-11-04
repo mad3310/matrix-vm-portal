@@ -26,8 +26,10 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmNetworkSubnetList = [];
     $scope.vmNetworkSubnetSelectorData=[];
     $scope.selectedVmNetworkSubnet = null;
-    $scope.vmSecurityType = 'key';
-    $scope.vmSecurityKey = 'key1';
+    $scope.vmSecurityType = 'keypair';
+    $scope.vmSecurityKeypairList = [];
+    $scope.vmSecurityKeypairSelectorData=[];
+    $scope.selectedVmSecurityKeypair = null;
     $scope.vmSecurityPassword = '';
     //$scope.vmSecurityPasswordConfirm = '';
     $scope.allVmBuyPeriods = Config.allBuyPeriods;
@@ -83,11 +85,11 @@ define(['controllers/app.controller'], function (controllerModule) {
         flavorId: selectedVmFlavor.id,
         volumeTypeId:$scope.selectedVmDiskType.id,
         volumeSize: $scope.dataDiskVolume,
-        adminPass: $scope.vmSecurityPassword,
         bindFloatingIp: $scope.vmNetworkPublicIpModel === 'now',
         sharedNetworkId:$scope.vmNetworkType=='primary'? selectedVmSharedNetwork.id:'',
         bandWidth:$scope.networkBandWidth,
-        keyPairName:'',
+        adminPass: $scope.vmSecurityType=='password'? $scope.vmSecurityPassword:'',
+        keyPairName:$scope.vmSecurityType=='keypair'? $scope.selectedVmSecurityKeypair.value:'',
         count:$scope.vmCount,
         privateSubnetId:$scope.vmNetworkType=='private'? $scope.selectedVmNetworkSubnet.value:'',//privateSubnetId和sharedNetworkId是否为空来标识选择的基础网络还是私有网络
         snapshotId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmSnapshot.id:'',
@@ -187,6 +189,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         initVmDiskTypeSelector();
         setSelectedVmSharedNetworkId();
         initVmNetworkSubnetSelector();
+        initVmSecurityKeypairSelector();
       },
       initVmImageSelector = function () {
         if($scope.isDesignatedVmSnapshot) return;
@@ -211,10 +214,19 @@ define(['controllers/app.controller'], function (controllerModule) {
           HttpService.doGet(Config.urls.subnet_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
             $scope.vmNetworkSubnetList = data.data.data;
             $scope.vmNetworkSubnetSelectorData=$scope.vmNetworkSubnetList.map(function(subnet){
-              return new ModelService.SelectModel(subnet.name,subnet.id);
+              return new ModelService.SelectModel(subnet.name,subnet.name);
             });
             $scope.selectedVmNetworkSubnet=$scope.vmNetworkSubnetSelectorData[0];
           });
+      },
+      initVmSecurityKeypairSelector = function () {
+        HttpService.doGet(Config.urls.keypair_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          $scope.vmSecurityKeypairList = data.data.data;
+          $scope.vmSecurityKeypairSelectorData=$scope.vmSecurityKeypairList.map(function(subnet){
+            return new ModelService.SelectModel(subnet.name,subnet.name);
+          });
+          $scope.selectedVmSecurityKeypair=$scope.vmSecurityKeypairSelectorData[0];
+        });
       },
       initVmCpuSelector = function () {
         HttpService.doGet(Config.urls.flavor_group_data.replace('{region}', region)).success(function (data, status, headers, config) {
