@@ -1,6 +1,10 @@
 package com.letv.portal.service.openstack.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.letv.common.result.ResultObject;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.Header;
@@ -8,6 +12,10 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +26,13 @@ import java.util.Map;
  * Created by zhouxianguang on 2015/10/30.
  */
 public class HttpUtil {
+    public static ResponseEntity<String> createResponseEntity(ResultObject result){
+        String resultJson = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
+    }
+
     public static String httpEntityToString(HttpEntity httpEntity)
             throws IllegalStateException, IOException {
         String contentEncoding = "UTF-8";

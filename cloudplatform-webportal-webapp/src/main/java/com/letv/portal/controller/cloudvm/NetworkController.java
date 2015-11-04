@@ -1,23 +1,25 @@
 package com.letv.portal.controller.cloudvm;
 
-import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
-import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import com.letv.portal.service.operate.IRecentOperateService;
+import com.letv.portal.vo.cloudvm.form.floatingip.EditFloatingIpForm;
+import com.letv.portal.vo.cloudvm.form.network.CreatePrivateNetworkAndSubnetForm;
+import com.letv.portal.vo.cloudvm.form.network.CreatePrivateNetworkForm;
+import com.letv.portal.vo.cloudvm.form.network.EditPrivateNetworkForm;
+import com.letv.portal.vo.cloudvm.form.router.EditRouterForm;
+import com.letv.portal.vo.cloudvm.form.subnet.CreatePrivateSubnetForm;
+import com.letv.portal.vo.cloudvm.form.subnet.EditPrivateSubnetForm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/osn")
@@ -108,13 +110,16 @@ public class NetworkController {
 
 	@RequestMapping(value = "/network/private/create", method = RequestMethod.POST)
 	public @ResponseBody ResultObject createPrivate(
-			@RequestParam String region, @RequestParam String name) {
+			@Valid CreatePrivateNetworkForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getNetworkManager()
-					.createPrivate(region, name);
+					.createPrivate(form.getRegion(), form.getName());
 			//保存创建私网操作
-			this.recentOperateService.saveInfo(Constant.CREATE_PRIVATE_NET, name);
+			this.recentOperateService.saveInfo(Constant.CREATE_PRIVATE_NET, form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -125,15 +130,17 @@ public class NetworkController {
 	}
 
 	@RequestMapping(value = "/network/private/edit", method = RequestMethod.POST)
-	public @ResponseBody ResultObject editPrivate(@RequestParam String region,
-			@RequestParam String networkId, @RequestParam String name) {
+	public @ResponseBody ResultObject editPrivate(@Valid EditPrivateNetworkForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
-			String oldName = neworkManager.getPrivate(region, networkId).getName();
-			neworkManager.editPrivate(region, networkId, name);
+			String oldName = neworkManager.getPrivate(form.getRegion(), form.getNetworkId()).getName();
+			neworkManager.editPrivate(form.getRegion(), form.getNetworkId(), form.getName());
 			//保存编辑私网操作
-			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName+"=-"+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName+"=-"+form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -183,17 +190,18 @@ public class NetworkController {
 
 	@RequestMapping(value = "/subnet/private/create", method = RequestMethod.POST)
 	public @ResponseBody ResultObject createPrivateSubnet(
-			@RequestParam String region, @RequestParam String networkId,
-			@RequestParam String name, @RequestParam String cidr,
-			@RequestParam boolean autoGatewayIp, @RequestParam String gatewayIp) {
+			@Valid CreatePrivateSubnetForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
-					.createPrivateSubnet(region, networkId, name, cidr,
-							autoGatewayIp, gatewayIp, false);
+					.createPrivateSubnet(form.getRegion(), form.getNetworkId(), form.getName(), form.getCidr(),
+							form.getAutoGatewayIp(), form.getGatewayIp(), false);
 			//保存创建私网操作
-			this.recentOperateService.saveInfo(Constant.CREATE_SUBNET, name);
+			this.recentOperateService.saveInfo(Constant.CREATE_SUBNET, form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -207,13 +215,15 @@ public class NetworkController {
 	public
 	@ResponseBody
 	ResultObject createPrivateNetworkAndSubnet(
-			@RequestParam String region, @RequestParam String networkName, @RequestParam String subnetName,
-			@RequestParam String cidr, @RequestParam boolean autoGatewayIp, @RequestParam String gatewayIp) {
+			@Valid CreatePrivateNetworkAndSubnetForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
-					.createPrivateNetworkAndSubnet(region, networkName, subnetName, cidr, autoGatewayIp, gatewayIp, false);
+					.createPrivateNetworkAndSubnet(form.getRegion(), form.getNetworkName(), form.getSubnetName(), form.getCidr(), form.getAutoGatewayIp(), form.getGatewayIp(), false);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -238,15 +248,17 @@ public class NetworkController {
 
 	@RequestMapping(value = "/subnet/private/edit", method = RequestMethod.POST)
 	public @ResponseBody ResultObject editPrivateSubnet(
-			@RequestParam String region, @RequestParam String subnetId,
-			@RequestParam String name, @RequestParam String gatewayIp) {
+			@Valid EditPrivateSubnetForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
-			String oldName = neworkManager.getPrivateSubnet(region, subnetId).getName();
-			neworkManager.editPrivateSubnet(region, subnetId, name, gatewayIp, false);
+			String oldName = neworkManager.getPrivateSubnet(form.getRegion(),form.getSubnetId()).getName();
+			neworkManager.editPrivateSubnet(form.getRegion(), form.getSubnetId(), form.getName(), form.getGatewayIp(), false);
 			//保存编辑私网操作
-			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, oldName+"=-"+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, oldName+"=-"+form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -350,18 +362,18 @@ public class NetworkController {
 	}
 
 	@RequestMapping(value = "/router/edit", method = RequestMethod.POST)
-	public @ResponseBody ResultObject editRouter(@RequestParam String region,
-			@RequestParam String routerId, @RequestParam String name,
-			@RequestParam boolean enablePublicNetworkGateway,
-			@RequestParam String publicNetworkId) {
+	public @ResponseBody ResultObject editRouter(@Valid EditRouterForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
-			String oldName= neworkManager.getRouter(region, routerId).getName();
-			neworkManager.editRouter(region, routerId, name,
-							enablePublicNetworkGateway, publicNetworkId);
+			String oldName= neworkManager.getRouter(form.getRegion(), form.getRouterId()).getName();
+			neworkManager.editRouter(form.getRegion(), form.getRouterId(), form.getName(),
+							form.getEnablePublicNetworkGateway(), form.getPublicNetworkId());
 			//保存编辑路由操作
-			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, oldName+"=-"+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, oldName+"=-"+form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -524,16 +536,17 @@ public class NetworkController {
 	
 	@RequestMapping(value = "/floatingip/edit", method = RequestMethod.POST)
 	public @ResponseBody ResultObject editFloatingIp(
-			@RequestParam String region, @RequestParam String floatingIpId,
-			@RequestParam String name,
-			@RequestParam Integer bandWidth) {
+			@Valid EditFloatingIpForm form, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
-			String oldName = neworkManager.getFloatingIp(region, floatingIpId).getName();
-			neworkManager.editFloatingIp(region, floatingIpId, name, bandWidth);
+			String oldName = neworkManager.getFloatingIp(form.getRegion(), form.getFloatingIpId()).getName();
+			neworkManager.editFloatingIp(form.getRegion(), form.getFloatingIpId(), form.getName(), form.getBandWidth());
 			//保存编辑公网IP操作
-			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName+"=-"+name);
+			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName+"=-"+form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

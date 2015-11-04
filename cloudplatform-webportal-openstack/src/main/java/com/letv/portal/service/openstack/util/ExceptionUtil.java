@@ -71,6 +71,9 @@ public class ExceptionUtil {
     }
 
     public static ResponseEntity<String> getResponseEntityFromException(Exception ex) {
+        if (!(ex instanceof UserOperationException)) {
+            ExceptionUtil.logAndEmail(ex);
+        }
         ResultObject result = new ResultObject();
         result.setResult(0);
         if (ex instanceof OpenStackException) {
@@ -78,12 +81,6 @@ public class ExceptionUtil {
         } else {
             result.addMsg("后台错误");
         }
-        String resultJson = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        if (!(ex instanceof UserOperationException)) {
-            ExceptionUtil.logAndEmail(ex);
-        }
-        return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
+        return HttpUtil.createResponseEntity(result);
     }
 }

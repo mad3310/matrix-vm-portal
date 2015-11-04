@@ -1,7 +1,10 @@
 package com.letv.portal.controller.cloudvm;
 
+import com.letv.portal.vo.cloudvm.form.volume.VolumeEditForm;
+import com.letv.portal.vo.cloudvm.form.volume_snapshot.VolumeSnapshotCreateForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,9 +20,10 @@ import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
 import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.operate.IRecentOperateService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/osv")
@@ -155,13 +159,13 @@ public class VolumeController {
 	@RequestMapping(value = "/volume/edit", method = RequestMethod.POST)
 	public
 	@ResponseBody
-	ResultObject edit(@RequestParam String region,
-						@RequestParam String volumeId,
-						@RequestParam String name,
-						@RequestParam String description) {
+	ResultObject edit(@Valid VolumeEditForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		long userId = Util.userId(sessionService);
-		localVolumeService.updateNameAndDesc(userId, userId, region, volumeId, name, description);
+		localVolumeService.updateNameAndDesc(userId, userId, form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
 		return result;
 	}
 
@@ -199,16 +203,16 @@ public class VolumeController {
 	@RequestMapping(value = "/volume/snapshot/create", method = RequestMethod.POST)
 	public
 	@ResponseBody
-	ResultObject createVolumeSnapshot(@RequestParam String region,
-						@RequestParam String volumeId,
-						@RequestParam(required = false) String name,
-						@RequestParam(required = false) String description) {
+	ResultObject createVolumeSnapshot(@Valid VolumeSnapshotCreateForm form, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVolumeManager()
-					.createVolumeSnapshot(region, volumeId, name, description);
+					.createVolumeSnapshot(form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
 			//保存启动操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, name+"=="+Util.session(sessionService).getVolumeManager().get(region, volumeId).getName());
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, form.getName()+"=="+Util.session(sessionService).getVolumeManager().get(form.getRegion(), form.getVolumeId()).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

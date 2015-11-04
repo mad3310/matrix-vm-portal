@@ -17,14 +17,20 @@ import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.HttpUtil;
 import com.letv.portal.service.operate.IRecentOperateService;
+import com.letv.portal.vo.cloudvm.form.keypair.CreateKeyPairForm;
+import com.letv.portal.vo.cloudvm.form.vm.ChangeAdminPassForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/ecs")
@@ -547,12 +553,15 @@ public class VMController {
 	@RequestMapping(value = "/vm/changeAdminPass", method = RequestMethod.POST)
 	public
 	@ResponseBody
-	ResultObject changeAdminPass(@RequestParam String region, @RequestParam String vmId, @RequestParam String adminPass) {
+	ResultObject changeAdminPass(@Valid ChangeAdminPassForm form, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
-			VMResource vmResource = vmManager.get(region, vmId);
-			vmManager.changeAdminPass(vmResource, adminPass);
+			VMResource vmResource = vmManager.get(form.getRegion(), form.getVmId());
+			vmManager.changeAdminPass(vmResource, form.getAdminPass());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -645,12 +654,15 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/keypair/create", method = RequestMethod.GET)
-	public ResponseEntity<String> createKeyPair(@RequestParam String region, @RequestParam String name){
+	public ResponseEntity<String> createKeyPair(@Valid CreateKeyPairForm form, BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			return HttpUtil.createResponseEntity(new ResultObject(bindingResult.getAllErrors()));
+		}
         try {
-            String privateKey = resourceServiceFacade.createKeyPair(region, name);
+            String privateKey = resourceServiceFacade.createKeyPair(form.getRegion(), form.getName());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDispositionFormData("attachment", name + ".pem");
+            headers.setContentDispositionFormData("attachment", form.getName() + ".pem");
             return new ResponseEntity<String>(privateKey, headers, HttpStatus.CREATED);
         } catch (Exception ex){
             return ExceptionUtil.getResponseEntityFromException(ex);
@@ -660,10 +672,13 @@ public class VMController {
     @RequestMapping(value = "/keypair/create/check", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResultObject checkCreateKeyPair(@RequestParam String region, @RequestParam String name) {
+    ResultObject checkCreateKeyPair(@Valid CreateKeyPairForm form, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return new ResultObject(bindingResult.getAllErrors());
+		}
         ResultObject result = new ResultObject();
         try {
-            resourceServiceFacade.checkCreateKeyPair(region, name);
+            resourceServiceFacade.checkCreateKeyPair(form.getRegion(), form.getName());
         } catch (UserOperationException e) {
             result.addMsg(e.getUserMessage());
             result.setResult(0);
