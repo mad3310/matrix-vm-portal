@@ -25,6 +25,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.subscription.ISubscriptionDao;
 import com.letv.portal.dao.subscription.ISubscriptionDetailDao;
+import com.letv.portal.enumeration.ProductType;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.model.message.Message;
 import com.letv.portal.model.subscription.Subscription;
@@ -32,9 +33,11 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.message.IMessageProxyService;
+import com.letv.portal.service.openstack.billing.BillingResource;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.ResourceQueryService;
 import com.letv.portal.service.openstack.resource.FloatingIpResource;
+import com.letv.portal.service.openstack.resource.Resource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
@@ -369,52 +372,27 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		List<Subscription> lists = (List<Subscription>) page.getData();
 		
 		//调用服务查询服务名称
-		Map<Long, List<ResourceLocator>> products = new HashMap<Long, List<ResourceLocator>>();
+		Map<Class<? extends BillingResource>, List<ResourceLocator>> products = new HashMap<Class<? extends BillingResource>, List<ResourceLocator>>();
 		Map<String, String>  rets = new HashMap<String, String>();
 		List<ResourceLocator> ress = null;
 		for (Subscription subscription : lists) {
-			if(products.containsKey(subscription.getProductId())) {
-				ress = products.get(subscription.getProductId());
+			Class<?> cls = ProductType.idToType("openstack", subscription.getProductId());
+			if(cls==null) {
+				continue;
+			}
+			if(products.containsKey(cls)) {
+				ress = products.get(cls);
 			} else {
 				ress = new ArrayList<ResourceLocator>();
-				products.put(subscription.getProductId(), ress);
+				products.put((Class<? extends BillingResource>) cls, ress);
 			}
 			String[] str = subscription.getProductInfoRecord().getInstanceId().split("_");
-			ResourceLocator resource = new ResourceLocator();
-			resource.setId(str[1]);
-			resource.setRegion(str[0]);
-			ress.add(resource);
+			ress.add(new ResourceLocator().id(str[1]).region(str[0]).type((Class<? extends BillingResource>) cls));
 		}
-		for (Long id : products.keySet()) {
-			if(id==Constants.PRODUCT_VM) {
-				Map<ResourceLocator, VMResource> re = null; // this.resourceQueryService.getVMResources(products.get(id));
-				if(re!=null) {
-					for (ResourceLocator resourceLocator : re.keySet()) {
-						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
-					}
-				}
-			} else if(id==Constants.PRODUCT_VOLUME) {
-				Map<ResourceLocator, VolumeResource> re = null; // this.resourceQueryService.getVolumeResources(products.get(id));
-				if(re!=null) {
-					for (ResourceLocator resourceLocator : re.keySet()) {
-						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
-					}
-				}
-			} else if(id==Constants.PRODUCT_FLOATINGIP) {
-				Map<ResourceLocator, FloatingIpResource> re = null; // this.resourceQueryService.getFloatingIpResources(products.get(id));
-				if(re!=null) {
-					for (ResourceLocator resourceLocator : re.keySet()) {
-						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
-					}
-				}
-			} else if(id==Constants.PRODUCT_ROUTER) {
-				Map<ResourceLocator, RouterResource> re = null; // this.resourceQueryService.getRouterResources(products.get(id));
-				if(re!=null) {
-					for (ResourceLocator resourceLocator : re.keySet()) {
-						rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
-					}
-				}
-			}
+		//调用openstack接口
+		Map<ResourceLocator, BillingResource> re = resourceQueryService.getResources((Long)params.get("userId"), ress);
+		for (ResourceLocator resourceLocator : re.keySet()) {
+			rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
 		}
 		for (Subscription subscription : lists) {
 			subscription.setName(rets.get(subscription.getProductInfoRecord().getInstanceId()));

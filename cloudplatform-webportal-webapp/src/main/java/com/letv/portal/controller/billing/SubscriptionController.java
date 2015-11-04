@@ -21,7 +21,7 @@ import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 
 /**
- * 订阅接口
+ * 订阅接口(续费使用)
  * @author lisuxiao
  *
  */
