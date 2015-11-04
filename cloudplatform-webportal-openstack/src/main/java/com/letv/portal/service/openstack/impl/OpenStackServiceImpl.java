@@ -22,6 +22,7 @@ import com.letv.portal.service.openstack.util.CollectionUtil;
 import com.letv.portal.service.openstack.util.Contants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -328,25 +329,27 @@ public class OpenStackServiceImpl implements OpenStackService {
 
                         if (pingRule == null && sshRule == null) {
                             final SecurityGroup defaultSecurityGroupRef = defaultSecurityGroup;
-                            ThreadUtil.concurrentRunAndWait(new Runnable() {
+                            ThreadUtil.concurrentRunAndWait(new Function<Void>() {
                                 @Override
-                                public void run() {
+                                public Void apply() {
                                     securityGroupApi.create(Rule.CreateRule
                                             .createBuilder(RuleDirection.INGRESS,
                                                     defaultSecurityGroupRef.getId())
                                             .ethertype(RuleEthertype.IPV4)
                                             .protocol(RuleProtocol.ICMP)
                                             .remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
+									return null;
                                 }
-                            }, new Runnable() {
+                            }, new Function<Void>() {
                                 @Override
-                                public void run() {
+                                public Void apply() {
                                     securityGroupApi.create(Rule.CreateRule
                                             .createBuilder(RuleDirection.INGRESS,
                                                     defaultSecurityGroupRef.getId())
                                             .ethertype(RuleEthertype.IPV4)
                                             .protocol(RuleProtocol.TCP).portRangeMin(22)
                                             .portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
+									return null;
                                 }
                             });
                         } else {

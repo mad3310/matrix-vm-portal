@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -24,21 +26,32 @@ public class ThreadUtil {
     public static void asyncExec(Runnable task) {
         executorService.submit(task);
     }
+    
+	private static <T> List<T> getResultsOfFutures(
+			List<ListenableFuture<T>> futures) throws InterruptedException,
+			ExecutionException, TimeoutException {
+		List<T> results = new LinkedList<T>();
+		for (ListenableFuture<T> future : futures) {
+			results.add(future.get(0L, TimeUnit.SECONDS));
+		}
+		return results;
+	}
 
-    public static void concurrentRunAndWait(Runnable currentThreadTask, Runnable... otherTasks) {
-        ListenableFuture<?>[] futures = new ListenableFuture[otherTasks.length];
-        for (int i = 0; i < otherTasks.length; i++) {
-            futures[i] = executorService.submit(otherTasks[i]);
-        }
-
-        currentThreadTask.run();
-
-        try {
-            Futures.successfulAsList(futures).get();
-        } catch (Exception e) {
-            throw new MatrixException("后台错误", e);
-        }
-    }
+//    @Deprecated
+//    public static void concurrentRunAndWait(Runnable currentThreadTask, Runnable... otherTasks) {
+//        ListenableFuture<?>[] futures = new ListenableFuture[otherTasks.length];
+//        for (int i = 0; i < otherTasks.length; i++) {
+//            futures[i] = executorService.submit(otherTasks[i]);
+//        }
+//
+//        currentThreadTask.run();
+//
+//        try {
+//            Futures.successfulAsList(futures).get();
+//        } catch (Exception e) {
+//            throw new MatrixException("后台错误", e);
+//        }
+//    }
 
     public static <T> List<Ref<T>> concurrentRunAndWait(Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
         return concurrentRunAndWait(null, currentThreadTask, otherTasks);
@@ -59,13 +72,13 @@ public class ThreadUtil {
 
             T firstResult = currentThreadTask.apply();
 
-            List<Ref<T>> otherResultRefs;
             ListenableFuture<List<Ref<T>>> listFuture = Futures.successfulAsList(futures);
             if (timeout != null) {
-                otherResultRefs = listFuture.get(timeout.time(), timeout.unit());
+                listFuture.get(timeout.time(), timeout.unit());
             } else {
-                otherResultRefs = listFuture.get();
+                listFuture.get();
             }
+			List<Ref<T>> otherResultRefs = getResultsOfFutures(futures);
 
             List<Ref<T>> resultList = new LinkedList<Ref<T>>();
             resultList.add(new Ref<T>(firstResult));
@@ -133,12 +146,12 @@ public class ThreadUtil {
             RT firstNewElement = filter.apply(list.get(0));
 
             ListenableFuture<List<Ref<RT>>> listFuture = Futures.successfulAsList(futures);
-            List<Ref<RT>> otherNewElementRefs;
             if (timeout != null) {
-                otherNewElementRefs = listFuture.get(timeout.time(), timeout.unit());
+                listFuture.get(timeout.time(), timeout.unit());
             } else {
-                otherNewElementRefs = listFuture.get();
+                listFuture.get();
             }
+			List<Ref<RT>> otherNewElementRefs = getResultsOfFutures(futures);
 
             List<RT> newList = new LinkedList<RT>();
             if (firstNewElement != null) {
