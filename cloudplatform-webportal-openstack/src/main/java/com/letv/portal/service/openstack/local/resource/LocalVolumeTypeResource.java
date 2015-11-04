@@ -30,4 +30,12 @@ public class LocalVolumeTypeResource implements VolumeTypeResource {
     public String getId() {
         return cloudvmVolumeType.getVolumeTypeId();
     }
+
+    public Long getThroughput() {
+        return cloudvmVolumeType.getThroughput();
+    }
+
+    public Long getIops() {
+        return cloudvmVolumeType.getIops();
+    }
 }

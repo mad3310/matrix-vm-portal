@@ -31,4 +31,14 @@ public class VolumeTypeResourceImpl extends AbstractResource implements
 		return volumeType.getName();
 	}
 
+	@Override
+	public Long getThroughput() {
+		return null;
+	}
+
+	@Override
+	public Long getIops() {
+		return null;
+	}
+
 }
