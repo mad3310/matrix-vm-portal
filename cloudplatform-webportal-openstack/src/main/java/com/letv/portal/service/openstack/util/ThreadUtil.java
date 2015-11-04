@@ -71,7 +71,11 @@ public class ThreadUtil {
             resultList.add(new Ref<T>(firstResult));
             if (otherResultRefs != null) {
                 for (Ref<T> resultRef : otherResultRefs) {
-                    resultList.add(resultRef);
+                    if (resultRef != null) {
+                    	resultList.add(resultRef);
+                    }else{
+                    	resultList.add(new Ref<T>());
+                    }
                 }
             } else {
                 for (int i = 0; i < otherTasks.length; i++) {
