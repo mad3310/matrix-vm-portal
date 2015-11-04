@@ -6,6 +6,7 @@ import java.text.MessageFormat;
 
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.function.Function;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
@@ -114,20 +115,22 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			initUserWithOutOpenStack();
 			initUser();
 			if (session!=null) {
-				ThreadUtil.concurrentRunAndWait(new Runnable() {
+				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
 													@Override
-													public void run() {
+													public Void apply() {
 														final long userId = session.getUserId();
 														final String openStackUserId = openStackUser.getUserId();
 														final String openStackUserPassword = openStackUser.getPassword();
 														final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
 														OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId, sessionId, openStackUserId, openStackUserPassword);
+														return null;
 													}
 												},
-						new Runnable() {
+						new Function<Void>() {
 							@Override
-							public void run() {
+							public Void apply() {
 								OpenStackSessionImpl.this.initResources();
+								return null;
 							}
 						}
 				);
@@ -191,9 +194,9 @@ public class OpenStackSessionImpl implements OpenStackSession {
 				for (final String region : neutronApi.getConfiguredRegions()) {
 					final NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
-					ThreadUtil.concurrentRunAndWait(new Runnable() {
+					ThreadUtil.concurrentRunAndWait(new Function<Void>() {
 						@Override
-						public void run() {
+						public Void apply() {
 							Network publicNetwork = networkManager.getPublicNetwork(neutronApi, region);
 							// for (Network network : networkApi.list().concat().toList()) {
 							// if ("__public_network".equals(network.getName())) {
@@ -207,10 +210,11 @@ public class OpenStackSessionImpl implements OpenStackSession {
 										"后台服务异常").matrixException();
 							}
 							openStackUser.setPublicNetworkName(publicNetwork.getName());
+							return null;
 						}
-					}, new Runnable() {
+					}, new Function<Void>() {
 						@Override
-						public void run() {
+						public Void apply() throws Exception{
 							Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
 									.getSecurityGroupApi(region);
 							if (!securityGroupApiOptional.isPresent()) {
@@ -259,25 +263,27 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 							if (pingRule == null && sshRule == null) {
 								final SecurityGroup defaultSecurityGroupRef = defaultSecurityGroup;
-								ThreadUtil.concurrentRunAndWait(new Runnable() {
+								ThreadUtil.concurrentRunAndWait(new Function<Void>() {
 									@Override
-									public void run() {
+									public Void apply() {
 										securityGroupApi.create(Rule.CreateRule
 												.createBuilder(RuleDirection.INGRESS,
 														defaultSecurityGroupRef.getId())
 												.ethertype(RuleEthertype.IPV4)
 												.protocol(RuleProtocol.ICMP)
 												.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
+										return null;
 									}
-								}, new Runnable() {
+								}, new Function<Void>() {
 									@Override
-									public void run() {
+									public Void apply() {
 										securityGroupApi.create(Rule.CreateRule
 												.createBuilder(RuleDirection.INGRESS,
 														defaultSecurityGroupRef.getId())
 												.ethertype(RuleEthertype.IPV4)
 												.protocol(RuleProtocol.TCP).portRangeMin(22)
 												.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
+										return null;
 									}
 								});
 							} else {
@@ -298,14 +304,16 @@ public class OpenStackSessionImpl implements OpenStackSession {
 											.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
 								}
 							}
+							return null;
 						}
-					}, new Runnable() {
+					}, new Function<Void>() {
 						@Override
-						public void run() {
+						public Void apply() {
 							if (openStackUser.getInternalUser() && !openStackConf.getGlobalSharedNetworkId().isEmpty()) {
 								openStackUser.setSharedNetworkName(networkApi.get(
 										openStackConf.getGlobalSharedNetworkId()).getName());
 							}
+							return null;
 						}
 					});
 				}

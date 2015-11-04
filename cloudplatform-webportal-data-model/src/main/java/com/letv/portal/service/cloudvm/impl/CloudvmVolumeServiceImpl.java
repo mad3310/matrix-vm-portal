@@ -1,28 +1,25 @@
 package com.letv.portal.service.cloudvm.impl;
 
-import com.letv.common.dao.IBaseDao;
-import com.letv.common.exception.ValidateException;
-import com.letv.common.paging.impl.Page;
-import com.letv.common.session.Session;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.dao.cloudvm.ICloudvmServerDao;
-import com.letv.portal.dao.cloudvm.ICloudvmVolumeDao;
-import com.letv.portal.model.cloudvm.CloudvmServer;
-import com.letv.portal.model.cloudvm.CloudvmVolume;
-import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
-import com.letv.portal.service.cloudvm.ICloudvmServerService;
-import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.letv.common.dao.IBaseDao;
+import com.letv.common.exception.ValidateException;
+import com.letv.common.paging.impl.Page;
+import com.letv.portal.dao.cloudvm.ICloudvmVolumeDao;
+import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
+import com.letv.portal.service.impl.BaseServiceImpl;
 
 @Service("cloudvmVolumeService")
 public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
@@ -126,6 +123,9 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
 
     @Override
     public List<CloudvmVolume> selectByRegionsAndVolumeIds(long tenantId, List<String> regions, List<String> volumeIds) {
+		if (regions.isEmpty() || volumeIds.isEmpty()) {
+			return new LinkedList<CloudvmVolume>();
+		}
         Map<String, Object> paras = new HashMap<String, Object>();
         paras.put("tenantId", tenantId);
         paras.put("regions", regions);

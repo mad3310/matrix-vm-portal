@@ -20,6 +20,7 @@ import com.letv.portal.service.openstack.resource.impl.VolumeSnapshotResourceImp
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.*;
@@ -174,9 +175,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
                 final Map<String, Resource> idToServer = new HashMap<String, Resource>();
                 final Ref<Integer> volumeCountRef = new Ref<Integer>();
 
-                ThreadUtil.concurrentRunAndWait(new Runnable() {
+                ThreadUtil.concurrentRunAndWait(new Function<Void>() {
 					@Override
-					public void run() {
+					public Void apply() {
 						try {
 							List<Resource> servers = vmManager.listServer(region);
 							for (Resource server : servers) {
@@ -185,10 +186,11 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						} catch (OpenStackException e) {
 							throw e.matrixException();
 						}
+						return null;
 					}
-				}, new Runnable() {
+				}, new Function<Void>() {
 					@Override
-					public void run() {
+					public Void apply() {
 						try {
 							Integer currentPage = null;
 							if (currentPagePara != null) {
@@ -224,6 +226,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						} catch (OpenStackException e) {
 							throw e.matrixException();
 						}
+						return null;
 					}
 				});
 
@@ -285,9 +288,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 				final List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
 
-				ThreadUtil.concurrentRunAndWait(new Runnable() {
+				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
 					@Override
-					public void run() {
+					public Void apply() {
 						Integer currentPage = null;
 						if (currentPagePara != null) {
 							currentPage = currentPagePara - 1;
@@ -342,11 +345,12 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						}
 
 						volumeCountRef.set(volumeCount);
+						return null;
 					}
-				}, new Runnable() {
+				}, new Function<Void>() {
 					@Override
-					public void run() {
-
+					public Void apply() {
+						return null;
 					}
 				});
 
@@ -872,9 +876,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					page = new Page(currentPage, recordsPerPage);
 				}
 
-				ThreadUtil.concurrentRunAndWait(new Runnable() {
+				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
 					@Override
-					public void run() {
+					public Void apply() {
 						List<? extends Snapshot> allVolumeSnapshots = cinderApi.getSnapshotApi(region).list().toList();
 						page.setTotalRecords(allVolumeSnapshots.size());
 						if (currentPage == null || recordsPerPage == null) {
@@ -889,14 +893,16 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 								volumeSnapshotsRef.set(new ArrayList<Snapshot>());
 							}
 						}
+						return null;
 					}
-				}, new Runnable() {
+				}, new Function<Void>() {
 					@Override
-					public void run() {
+					public Void apply() {
 						List<? extends Volume> volumes = cinderApi.getVolumeApi(region).list().toList();
 						for (Volume volume : volumes) {
 							idToVolume.put(volume.getId(), volume);
 						}
+						return null;
 					}
 				});
 
