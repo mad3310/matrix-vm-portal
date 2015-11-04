@@ -102,19 +102,22 @@ define(['./common.directive'],function (directiveModule) {
     });
 
     directiveModule.directive('numericInput', function () {
+        var MAX=10,
+          MIN=1;
         return {
             restrict: 'AE',
             scope: {
-                model: '=numericModel',
+                externalModel: '=numericModel',
                 max: '=numericMax',
                 min: '=numericMin',
             },
             link: function (scope, element, attrs) {
+                scope.model=scope.externalModel;
                 if(scope.max===undefined){
-                    scope.max=10;
+                    scope.max=MAX;
                 }
                 if(scope.min===undefined){
-                    scope.min=1;
+                    scope.min=MIN;
                 }
                 scope.up=function(){
                     if(++scope.model>scope.max){
@@ -126,6 +129,24 @@ define(['./common.directive'],function (directiveModule) {
                         ++scope.model;
                     }
                 };
+                scope.$watch('model',function(value) {
+                    if (!isNaN(value)) {
+                        var validatedValue = Number(value);
+                        if (validatedValue > scope.max) {
+                            scope.model = scope.max;
+                        }
+                        else if (validatedValue < scope.min) {
+                            scope.model = scope.min;
+                        }
+                        else{
+                            scope.model = validatedValue;
+                        }
+                    }
+                    else {
+                        scope.model = scope.min;
+                    }
+                    scope.externalModel = scope.model;
+                });
             },
             templateUrl: '/static/apps/common/directives/numeric-input/template.html'
         };
