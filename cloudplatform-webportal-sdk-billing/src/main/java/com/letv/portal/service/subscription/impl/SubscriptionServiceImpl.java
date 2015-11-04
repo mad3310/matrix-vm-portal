@@ -376,18 +376,18 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		Map<String, String>  rets = new HashMap<String, String>();
 		List<ResourceLocator> ress = null;
 		for (Subscription subscription : lists) {
-			Class<?> cls = ProductType.idToType("openstack", subscription.getProductId());
-			if(cls==null) {
+			Object obj = ProductType.idToType("openstack", subscription.getProductId());
+			if(obj==null) {
 				continue;
 			}
-			if(products.containsKey(cls)) {
-				ress = products.get(cls);
+			if(products.containsKey(obj)) {
+				ress = products.get(obj);
 			} else {
 				ress = new ArrayList<ResourceLocator>();
-				products.put((Class<? extends BillingResource>) cls, ress);
+				products.put((Class<? extends BillingResource>) obj, ress);
 			}
 			String[] str = subscription.getProductInfoRecord().getInstanceId().split("_");
-			ress.add(new ResourceLocator().id(str[1]).region(str[0]).type((Class<? extends BillingResource>) cls));
+			ress.add(new ResourceLocator().id(str[1]).region(str[0]).type((Class<? extends BillingResource>) obj));
 		}
 		//调用openstack接口
 		Map<ResourceLocator, BillingResource> re = resourceQueryService.getResources((Long)params.get("userId"), ress);
