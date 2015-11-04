@@ -27,6 +27,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreat
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.JsonUtil;
 import com.letv.portal.service.openstack.util.RandomUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -105,6 +106,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
             VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             }, true);
+            if(StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())){
+                vmCreateConf.setBindFloatingIp(false);
+            }
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
 
@@ -125,6 +129,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             }, true);
+            if(StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())){
+                vmCreateConf.setBindFloatingIp(false);
+            }
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVMManager().checkCreate2(vmCreateConf);
             return new CheckResult();
