@@ -277,7 +277,7 @@
 	        <if test="baseRegionName != null and baseRegionName != '' ">
 	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
 	        </if>
-		ORDER BY subscription.END_TIME DESC
+		ORDER BY subscription.END_TIME
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
 	    	</if>

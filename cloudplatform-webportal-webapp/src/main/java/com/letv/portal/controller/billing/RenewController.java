@@ -84,7 +84,11 @@ public class RenewController {
 		subDetailParams.put("userId", map.get("userId"));
 		
 		List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectByMap(subDetailParams);
-		
+		if(subDetails==null||subDetails.size()==0) {
+			obj.setResult(0);
+			obj.addMsg("查询原有订阅详细异常,订阅ID:" + map.get("subscriptionId"));
+			return obj;
+		}
 		map.put("region", subDetails.get(0).getSubscription().getBaseRegionId()+"");
 		map.put("order_num", "1");
 		
@@ -125,7 +129,11 @@ public class RenewController {
 		subDetailParams.put("userId", userId);
 		
 		List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectByMap(subDetailParams);
-		
+		if(subDetails==null||subDetails.size()==0) {
+			obj.setResult(0);
+			obj.addMsg("查询原有订阅详细异常,订阅ID:" + subscriptionId);
+			return obj;
+		}
 		map.put("region", subDetails.get(0).getSubscription().getBaseRegionId()+"");
 		map.put("order_num", "1");
 		
