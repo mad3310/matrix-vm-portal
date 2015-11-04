@@ -201,10 +201,9 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
                         return entries;
                     }
                 });
-                for (int i = 0; i < 2; i++) {
-                    List<Tuple2<ResourceLocator, BillingResource>> entries = resultRefList.get(i).get();
-                    if (entries != null) {
-                        for (Tuple2<ResourceLocator, BillingResource> entry : entries) {
+                for (Ref<List<Tuple2<ResourceLocator, BillingResource>>> entriesRef : resultRefList) {
+                    if (entriesRef.get() != null) {
+                        for (Tuple2<ResourceLocator, BillingResource> entry : entriesRef.get()) {
                             map.put(entry._1, entry._2);
                         }
                     }
