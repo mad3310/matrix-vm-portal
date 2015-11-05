@@ -78,6 +78,11 @@ public class RenewController {
 	public @ResponseBody ResultObject queryProductPrice( @PathVariable Long productId, HttpServletRequest request, ResultObject obj) {
 		Map<String,Object> map = HttpUtil.requestParam2Map(request);
 		BigDecimal ret = null;
+		if(map.get("subscriptionId")==null || map.get("userId")==null) {
+			obj.setResult(0);
+			obj.addMsg("输入参数不合法");
+			return obj;
+		}
 		
 		Map<String, Object> subDetailParams = new HashMap<String, Object>();
 		subDetailParams.put("subscriptionId", map.get("subscriptionId"));
@@ -117,6 +122,11 @@ public class RenewController {
 	@RequestMapping(value="/buy/{productId}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject buy(@PathVariable Long productId, HttpServletRequest request, ResultObject obj) {
 		Map<String,Object> map = HttpUtil.requestParam2Map(request);
+		if(map.get("subscriptionId")==null || map.get("userId")==null) {
+			obj.setResult(0);
+			obj.addMsg("输入参数不合法");
+			return obj;
+		}
 		
 		Long subscriptionId = Long.parseLong((String)map.get("subscriptionId"));
 		Long userId = Long.parseLong((String)map.get("userId"));

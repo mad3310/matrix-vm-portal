@@ -34,13 +34,9 @@ import com.letv.portal.service.IUserService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.message.IMessageProxyService;
 import com.letv.portal.service.openstack.billing.BillingResource;
+import com.letv.portal.service.openstack.billing.ResourceDeleteService;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.ResourceQueryService;
-import com.letv.portal.service.openstack.resource.FloatingIpResource;
-import com.letv.portal.service.openstack.resource.Resource;
-import com.letv.portal.service.openstack.resource.RouterResource;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;
@@ -55,6 +51,8 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	private IProductService productService;
 	@Autowired
 	private ResourceQueryService resourceQueryService;
+	@Autowired
+	private ResourceDeleteService resourceDeleteService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
 	
@@ -168,6 +166,12 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		for (Subscription subscription : subscriptions) {
 			long day = (subscription.getEndTime().getTime()-now.getTime())/(1000*3600*24);
 			logger.info(day+":"+subscription.getProductInfoRecord().getParams());
+			//day<=ORDER_DELETE天数后删除服务并置订阅状态为无效
+			String delete = ORDER_DELETE;
+			int deleteDay = Integer.parseInt(delete.substring(ORDER_DELETE.indexOf(",")+1, ORDER_DELETE.lastIndexOf(",")));
+			if(day<=deleteDay) {
+				deleteService(subscription.getUserId(), subscription);
+			}
 			if(ORDER_EXPIRE.contains(","+day+",")) {
 				Map<Long, List<Map<String, Object>>> products = null;
 				if(expires.get(subscription.getUserId())==null) {
@@ -240,6 +244,21 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			sendEmailsByType(this.userService.getUcUserById(userId), deletes.get(userId), 3);
 		}
         
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void deleteService(Long userId, Subscription subscription) {
+		String[] id = subscription.getProductInfoRecord().getInstanceId().split("_");
+		List<ResourceLocator> rls = new ArrayList<ResourceLocator>();
+		rls.add(new ResourceLocator().id(id[1]).region(id[0]).
+				type((Class<? extends BillingResource>) ProductType.idToType(Constants.SERVICE_PROVIDER_OPENSTACK, subscription.getProductId())));
+		//删除服务
+		resourceDeleteService.deleteResource(userId, rls);
+		//修改订阅为无效
+		Subscription sub = new Subscription();
+		sub.setId(subscription.getId());
+		sub.setValid(0);
+		this.subscriptionDao.updateBySelective(sub);
 	}
 	
 	/**
@@ -376,7 +395,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		Map<String, String>  rets = new HashMap<String, String>();
 		List<ResourceLocator> ress = null;
 		for (Subscription subscription : lists) {
-			Object obj = ProductType.idToType("openstack", subscription.getProductId());
+			Object obj = ProductType.idToType(Constants.SERVICE_PROVIDER_OPENSTACK, subscription.getProductId());
 			if(obj==null) {
 				continue;
 			}
