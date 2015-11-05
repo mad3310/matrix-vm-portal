@@ -5,7 +5,7 @@ CREATE TABLE `WEBPORTAL_CLOUDVM_FLAVOR` (
 	`VCPUS` tinyint unsigned NOT NULL,
 	`RAM` mediumint unsigned NOT NULL,
 	`DISK` smallint unsigned NOT NULL,
-	`NAME` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+	`NAME` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
 	`DELETED` tinyint(4) DEFAULT NULL,
 	`CREATE_TIME` datetime DEFAULT NULL,
 	`UPDATE_TIME` datetime DEFAULT NULL,
