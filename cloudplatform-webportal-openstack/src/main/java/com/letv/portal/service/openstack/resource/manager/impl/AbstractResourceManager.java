@@ -3,7 +3,7 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 import java.io.Closeable;
 import java.util.*;
 
-import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.constants.Constants;
 import org.jclouds.ContextBuilder;
 
 import com.letv.portal.model.cloudvm.CloudvmRegion;
@@ -56,7 +56,7 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 				.credentials(
 						openStackUser.getUserId() + ":"
 								+ openStackUser.getUserId(),
-						openStackUser.getPassword()).modules(Contants.jcloudsContextBuilderModules)
+						openStackUser.getPassword()).modules(Constants.jcloudsContextBuilderModules)
 				.buildApi(getApiClass());
 		return api;
 	}

@@ -1,12 +1,20 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
+import com.letv.portal.service.openstack.validation.validator.Divisible;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+
 public class VMCreateConf2 {
 	private String region;
 
 	private String name;
 
 	private String flavorId;
-	
+
 	private String imageId;
 	private String snapshotId;
 
@@ -15,7 +23,7 @@ public class VMCreateConf2 {
 
 	private String privateSubnetId;
 	private String sharedNetworkId;
-	
+
 	private boolean bindFloatingIp;
 	private int bandWidth;
 	private String floatingNetworkId;
@@ -28,6 +36,7 @@ public class VMCreateConf2 {
 	public VMCreateConf2() {
 	}
 
+	@NotBlank
 	public String getRegion() {
 		return region;
 	}
@@ -36,6 +45,8 @@ public class VMCreateConf2 {
 		this.region = region;
 	}
 
+	@NotBlank
+	@Pattern(regexp = ValidationRegex.name, message = ValidationRegex.nameMessage)
 	public String getName() {
 		return name;
 	}
@@ -60,6 +71,7 @@ public class VMCreateConf2 {
 		this.snapshotId = snapshotId;
 	}
 
+    @NotBlank
 	public String getFlavorId() {
 		return flavorId;
 	}
@@ -68,6 +80,9 @@ public class VMCreateConf2 {
 		this.flavorId = flavorId;
 	}
 
+    @Divisible(10)
+    @Min(0)
+    @Max(2048)
 	public int getVolumeSize() {
 		return volumeSize;
 	}
@@ -87,11 +102,13 @@ public class VMCreateConf2 {
 	public boolean getBindFloatingIp() {
 		return bindFloatingIp;
 	}
-	
+
 	public void setBindFloatingIp(boolean bindFloatingIp) {
 		this.bindFloatingIp = bindFloatingIp;
 	}
 
+    @Min(0)
+    @Max(50)
 	public int getBandWidth() {
 		return bandWidth;
 	}
@@ -103,7 +120,7 @@ public class VMCreateConf2 {
 	public String getPrivateSubnetId() {
 		return privateSubnetId;
 	}
-	
+
 	public void setPrivateSubnetId(String privateSubnetId) {
 		this.privateSubnetId = privateSubnetId;
 	}
@@ -132,6 +149,8 @@ public class VMCreateConf2 {
 		this.adminPass = adminPass;
 	}
 
+    @Min(1)
+    @Max(20)
 	public int getCount() {
 		return count;
 	}

@@ -1,5 +1,6 @@
 package com.letv.portal.vo.cloudvm.form.vm_snapshot;
 
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class VmSnapshotCreateForm {
         this.vmId = vmId;
     }
 
-    @Pattern(regexp = "^[a-zA-Zu4e00-u9fa5][^@/:=\\\\\"<>\\{\\[\\]\\}\\s]{2,128}$", message = "名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:=\\\"<>{[]}和空格")
+    @Pattern(regexp = ValidationRegex.name, message = ValidationRegex.nameMessage)
     @NotBlank
     public String getName() {
         return name;

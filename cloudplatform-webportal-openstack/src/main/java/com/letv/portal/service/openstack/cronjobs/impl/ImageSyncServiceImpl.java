@@ -15,7 +15,7 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.password.PasswordService;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
-import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 
@@ -66,7 +66,7 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
                     .endpoint(openStackConf.getPublicEndpoint())
                     .credentials(
                             OpenStackServiceImpl.createCredentialsIdentity(basicUserName),
-                            basicUserPassword).modules(Contants.jcloudsContextBuilderModules)
+                            basicUserPassword).modules(Constants.jcloudsContextBuilderModules)
                     .buildApi(GlanceApi.class);
             try {
                 for (String region : glanceApi.getConfiguredRegions()) {

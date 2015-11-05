@@ -18,7 +18,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.Params;
 
 /**
@@ -57,7 +57,7 @@ public class UserExists {
 		try {
 			HttpPost req = new HttpPost(this.endpoint + "tokens");
 
-			req.addHeader("User-Agent", Contants.OPEN_STACK_USER_AGENT);
+			req.addHeader("User-Agent", Constants.OPEN_STACK_USER_AGENT);
 			req.addHeader("Content-Type", "application/json");
 			req.addHeader("Accept", "application/json");
 

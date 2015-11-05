@@ -19,7 +19,7 @@ import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.util.CollectionUtil;
-import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
@@ -159,7 +159,6 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@PostConstruct
 	public void open() {
-//		ConfigUtil.class.getName();
 		publicEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol,
 				keystoneHost, publicPort, keystoneVersion);
 		adminEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol,
@@ -275,7 +274,7 @@ public class OpenStackServiceImpl implements OpenStackService {
                     .credentials(
                             openStackUser.getUserId() + ":"
                                     + openStackUser.getUserId(),
-                            openStackUser.getPassword()).modules(Contants.jcloudsContextBuilderModules)
+                            openStackUser.getPassword()).modules(Constants.jcloudsContextBuilderModules)
                     .buildApi(NeutronApi.class);
             try {
                 ThreadUtil.concurrentFilter(CollectionUtil.toList(neutronApi.getConfiguredRegions()), new Function1<Void, String>() {

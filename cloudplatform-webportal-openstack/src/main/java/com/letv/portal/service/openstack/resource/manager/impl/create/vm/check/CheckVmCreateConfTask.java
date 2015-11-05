@@ -5,6 +5,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -180,13 +181,7 @@ public class CheckVmCreateConfTask implements VmsCreateCheckSubTask{
             }
             context.setKeyPair(keyPair);
         } else {
-            for (char ch : vmCreateConf.getAdminPass().toCharArray()) {
-                if (!CharUtils.isAsciiAlphanumeric(ch) && ch != '_') {
-                    throw new UserOperationException(
-                            "User password contains illegal characters.",
-                            "用户密码包含不合法的字符");
-                }
-            }
+            OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().validateUserAdminPass(vmCreateConf.getAdminPass());
         }
 
         if (vmCreateConf.getCount() <= 0) {

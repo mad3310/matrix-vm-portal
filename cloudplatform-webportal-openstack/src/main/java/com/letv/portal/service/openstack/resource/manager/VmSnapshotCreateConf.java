@@ -1,5 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager;
 
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by zhouxianguang on 2015/10/19.
  */
@@ -11,6 +16,7 @@ public class VmSnapshotCreateConf {
     public VmSnapshotCreateConf() {
     }
 
+    @NotBlank
     public String getRegion() {
         return region;
     }
@@ -19,6 +25,7 @@ public class VmSnapshotCreateConf {
         this.region = region;
     }
 
+    @NotBlank
     public String getVmId() {
         return vmId;
     }
@@ -27,6 +34,8 @@ public class VmSnapshotCreateConf {
         this.vmId = vmId;
     }
 
+    @Pattern(regexp = ValidationRegex.name, message = ValidationRegex.nameMessage)
+    @NotBlank
     public String getName() {
         return name;
     }

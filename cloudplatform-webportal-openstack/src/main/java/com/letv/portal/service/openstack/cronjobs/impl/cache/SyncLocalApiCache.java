@@ -6,7 +6,7 @@ import com.letv.portal.model.UserVo;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
-import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.constants.Constants;
 
 import org.jclouds.ContextBuilder;
 import org.slf4j.Logger;
@@ -70,7 +70,7 @@ public class SyncLocalApiCache implements Closeable {
                             .endpoint(OpenStackServiceImpl.getOpenStackConf().getPublicEndpoint())
                             .credentials(
                                     OpenStackServiceImpl.createCredentialsIdentity(userInfo.getUserId()),
-                                    userInfo.getPassword()).modules(Contants.jcloudsContextBuilderModules)
+                                    userInfo.getPassword()).modules(Constants.jcloudsContextBuilderModules)
                             .buildApi(apiType);
                 }
             });

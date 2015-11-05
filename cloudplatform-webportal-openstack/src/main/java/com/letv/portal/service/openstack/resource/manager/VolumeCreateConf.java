@@ -1,5 +1,14 @@
 package com.letv.portal.service.openstack.resource.manager;
 
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
+import com.letv.portal.service.openstack.validation.validator.Divisible;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by zhouxianguang on 2015/10/19.
  */
@@ -15,6 +24,7 @@ public class VolumeCreateConf {
     public VolumeCreateConf() {
     }
 
+    @NotBlank
     public String getRegion() {
         return region;
     }
@@ -23,6 +33,10 @@ public class VolumeCreateConf {
         this.region = region;
     }
 
+    @NotNull
+    @Min(10)
+    @Max(2048)
+    @Divisible(10)
     public Integer getSize() {
         return size;
     }
@@ -31,6 +45,7 @@ public class VolumeCreateConf {
         this.size = size;
     }
 
+    @NotBlank
     public String getVolumeTypeId() {
         return volumeTypeId;
     }
@@ -47,6 +62,8 @@ public class VolumeCreateConf {
         this.volumeSnapshotId = volumeSnapshotId;
     }
 
+    @NotBlank
+    @Pattern(regexp = ValidationRegex.name, message = ValidationRegex.nameMessage)
     public String getName() {
         return name;
     }
@@ -63,6 +80,9 @@ public class VolumeCreateConf {
         this.description = description;
     }
 
+    @NotNull
+    @Min(1)
+    @Max(20)
     public Integer getCount() {
         return count;
     }

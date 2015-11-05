@@ -1,7 +1,10 @@
 package com.letv.portal.vo.cloudvm.form.floatingip;
 
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -33,7 +36,7 @@ public class EditFloatingIpForm {
     }
 
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Zu4e00-u9fa5][^@/:=\\\\\"<>\\{\\[\\]\\}\\s]{2,128}$", message = "名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:=\\\"<>{[]}和空格")
+    @Pattern(regexp = ValidationRegex.name, message = ValidationRegex.nameMessage)
     public String getName() {
         return name;
     }
@@ -42,6 +45,8 @@ public class EditFloatingIpForm {
         this.name = name;
     }
 
+    @Min(1)
+    @Max(50)
     @NotNull
     public Integer getBandWidth() {
         return bandWidth;

@@ -16,7 +16,7 @@ import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.jclouds.service.OpenStackUserInfo;
 import com.letv.portal.service.openstack.password.PasswordService;
-import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 
 import org.jclouds.ContextBuilder;
@@ -140,7 +140,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
                         .endpoint(OpenStackServiceImpl.getOpenStackConf().getPublicEndpoint())
                         .credentials(
                                 OpenStackServiceImpl.createCredentialsIdentity(userInfo.getEmail()),
-                                userInfo.getPassword()).modules(Contants.jcloudsContextBuilderModules)
+                                userInfo.getPassword()).modules(Constants.jcloudsContextBuilderModules)
                         .buildApi(apiType);
             }
         });

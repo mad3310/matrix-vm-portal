@@ -13,7 +13,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.Params;
 
 @SuppressWarnings("deprecation")
@@ -43,7 +43,7 @@ public class UserRegister {
             HttpPost req = new HttpPost(this.endpoint
                     + "OS-KSREG/register/project/user");
 
-            req.addHeader("User-Agent", Contants.OPEN_STACK_USER_AGENT);
+            req.addHeader("User-Agent", Constants.OPEN_STACK_USER_AGENT);
             req.addHeader("Content-Type", "application/json");
             req.addHeader("Accept", "application/json");
             req.addHeader("X-Auth-Token", this.registerToken);

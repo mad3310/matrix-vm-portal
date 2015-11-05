@@ -1,5 +1,6 @@
 package com.letv.portal.vo.cloudvm.form.vm;
 
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class ChangeAdminPassForm {
         this.vmId = vmId;
     }
 
-    @Pattern(regexp = "^[a-zA-Z0-9]{8,30}$",message = "8-30个字符，同时包含大小写字母和数字，不支持特殊符号")
+    @Pattern(regexp = ValidationRegex.password, message = ValidationRegex.passwordMessage)
     @NotBlank
     public String getAdminPass() {
         return adminPass;

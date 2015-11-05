@@ -1,7 +1,10 @@
 package com.letv.portal.service.openstack.password.impl;
 
-import com.letv.common.util.ConfigUtil;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.password.PasswordService;
+import com.letv.portal.service.openstack.util.constants.Constants;
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,15 +19,20 @@ public class PasswordServiceImpl implements PasswordService {
 	@Value("${openstack.keystone.user.password.salt}")
 	private String userPasswordSalt;
 
-	PasswordServiceImpl() {
-		ConfigUtil.class.getName();
-	}
-
 	@SuppressWarnings("deprecation")
 	public String userIdToPassword(String userId)
 			throws NoSuchAlgorithmException {
 		return DigestUtils.sha512Hex((userId + userPasswordSalt)
 				.getBytes(Charsets.UTF_8));
+	}
+
+	@Override
+	public void validateUserAdminPass(String adminPass) throws OpenStackException {
+		if(!Constants.userAdminPasswordPattern.matcher(adminPass).find()){
+			throw new UserOperationException(
+					"User admin password is not valid.",
+					"管理员密码必须为" + ValidationRegex.passwordMessage);
+		}
 	}
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {

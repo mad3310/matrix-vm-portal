@@ -1,7 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import java.lang.invoke.ConstantCallSite;
 import java.text.MessageFormat;
 
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.util.constants.Constants;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
@@ -173,13 +176,7 @@ public class CheckVmCreateConfTask extends VmsCreateSubTask {
 			}
 			multiVmCreateContext.setKeyPair(keyPair);
 		} else {
-			for (char ch : vmCreateConf.getAdminPass().toCharArray()) {
-				if (!CharUtils.isAsciiAlphanumeric(ch) && ch != '_') {
-					throw new UserOperationException(
-							"User password contains illegal characters.",
-							"用户密码包含不合法的字符");
-				}
-			}
+			OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().validateUserAdminPass(vmCreateConf.getAdminPass());
 		}
 
 		if (vmCreateConf.getCount() <= 0) {

@@ -21,6 +21,7 @@ import com.letv.portal.service.openstack.util.HttpUtil;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.vo.cloudvm.form.keypair.CreateKeyPairForm;
 import com.letv.portal.vo.cloudvm.form.vm.ChangeAdminPassForm;
+import com.letv.portal.vo.cloudvm.form.vm_snapshot.VmSnapshotCreateForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -496,17 +497,20 @@ public class VMController {
 	@RequestMapping(value = "/vm/snapshot/create", method = RequestMethod.POST)
 	public
 	@ResponseBody
-	ResultObject createVmSnapshot(@RequestParam String region, @RequestParam String vmId, @RequestParam String name) {
+	ResultObject createVmSnapshot(@Valid VmSnapshotCreateForm form,BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return new ResultObject(bindingResult.getAllErrors());
+		}
 		ResultObject result = new ResultObject();
 		try {
 			VmSnapshotCreateConf createConf = new VmSnapshotCreateConf();
-			createConf.setRegion(region);
-			createConf.setVmId(vmId);
-			createConf.setName(name);
+			createConf.setRegion(form.getRegion());
+			createConf.setVmId(form.getVmId());
+			createConf.setName(form.getName());
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			vmManager.createImageFromVm(createConf);
 			//保存创建快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK, name+"=="+vmManager.get(region, vmId).getName());
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK, form.getName()+"=="+vmManager.get(form.getRegion(), form.getVmId()).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

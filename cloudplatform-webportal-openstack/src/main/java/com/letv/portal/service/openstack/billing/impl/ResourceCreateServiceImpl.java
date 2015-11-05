@@ -27,6 +27,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreat
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.JsonUtil;
 import com.letv.portal.service.openstack.util.RandomUtil;
+import com.letv.portal.service.openstack.validation.service.ValidationService;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
@@ -38,6 +39,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Set;
 
 /**
  * Created by zhouxianguang on 2015/9/21.
@@ -64,6 +71,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
     @Autowired
     private SessionServiceImpl sessionService;
+
+    @Autowired
+    private ValidationService validationService;
 
     private OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
@@ -109,6 +119,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             if(StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())){
                 vmCreateConf.setBindFloatingIp(false);
             }
+            validationService.validate(vmCreateConf);
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
 
@@ -132,6 +143,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             if(StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())){
                 vmCreateConf.setBindFloatingIp(false);
             }
+            validationService.validate(vmCreateConf);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVMManager().checkCreate2(vmCreateConf);
             return new CheckResult();
@@ -156,6 +168,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             VolumeCreateConf volumeCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
             }, true);
+            validationService.validate(volumeCreateConf);
             final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
@@ -174,6 +187,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             VolumeCreateConf volumeCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
             }, true);
+            validationService.validate(volumeCreateConf);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVolumeManager().checkCreate(volumeCreateConf);
             return new CheckResult();
@@ -198,6 +212,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             FloatingIpCreateConf floatingIpCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
             }, true);
+            validationService.validate(floatingIpCreateConf);
             final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
@@ -216,6 +231,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             FloatingIpCreateConf floatingIpCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
             }, true);
+            validationService.validate(floatingIpCreateConf);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getNetworkManager().checkCreateFloatingIp(floatingIpCreateConf);
             return new CheckResult();
@@ -230,6 +246,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             RouterCreateConf routerCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
             }, true);
+            validationService.validate(routerCreateConf);
             final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
@@ -248,6 +265,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             RouterCreateConf routerCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
             }, true);
+            validationService.validate(routerCreateConf);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getNetworkManager().checkCreateRouter(routerCreateConf);
             return new CheckResult();
@@ -262,6 +280,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             VmSnapshotCreateConf vmSnapshotCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
             }, true);
+            validationService.validate(vmSnapshotCreateConf);
             final String sessionId = RandomUtil.generateRandomSessionId();
             final OpenStackSession openStackSession = createOpenStackSession(userId);
             try {
@@ -281,6 +300,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             VmSnapshotCreateConf vmSnapshotCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
             }, true);
+            validationService.validate(vmSnapshotCreateConf);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVMManager().checkCreateImageFromVm(vmSnapshotCreateConf);
             return new CheckResult();
