@@ -23,10 +23,15 @@
                         <span class="letv-control-label">类型：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <div class="letv-mutiCheck check-disk-type" ng-repeat="diskType in diskTypeList" ng-class="{'selected':isSelectedDiskType(diskType)}" ng-click="selectDiskType(diskType)">
+                        <div class="letv-mutiCheck check-disk-type" ng-repeat="diskType in diskTypeList" ng-class="{'selected':isSelectedDiskType(diskType)}" ng-click="selectDiskType(diskType)" ng-disabled="!diskType.enable">
                             <span>{{diskType.name}}</span>
                             <i class="iconfont icon-checkroundfillicon"></i>
                         </div>
+                    </div>
+                </div>
+                <div class="le-row row-disk-index">
+                    <div class="le-col-offset-3 col-control">
+                        <span>吞吐量：{{selectedDiskType.throughput}}Mb/s&nbsp;&nbsp;&nbsp;IOPS：{{selectedDiskType.iops}}&nbsp;&nbsp;&nbsp;容量：10-{{selectedDiskType.capacity}}GB</span>
                     </div>
                 </div>
                 <div class="le-row">

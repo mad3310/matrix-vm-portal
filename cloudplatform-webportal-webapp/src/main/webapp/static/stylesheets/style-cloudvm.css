@@ -3,6 +3,12 @@
      width: 80px;
 }
 
+.row-disk-index{
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
 /*begin virtual-machine-view style*/
 .vm-create-form  rzslider{width: 70%;top: 3px;}
 .vm-create-form .disk-volume,
@@ -29,6 +35,10 @@
 
 .vm-create-form le-select{
     width: 250px;
+}
+
+.vm-create-form .left-inputs .inputs-item.row-disk-index{
+    margin-bottom:0;
 }
 /*modal-self*/
 .modal-720{width:720px;min-width:720px;}
@@ -93,6 +103,11 @@
 /*begin view-vm-disk style*/
 .modal-vm-disk-attach le-select{
     width: 250px;
+}
+
+.modal-vm-disk-create .le-row.row-disk-index{
+    padding-bottom: 0;
+    padding-top: 0;
 }
 /*end view-vm-disk style*/
 

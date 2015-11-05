@@ -25,7 +25,9 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.selectedDiskType === diskType;
     };
     $scope.selectDiskType = function (diskType) {
-      $scope.selectedDiskType = diskType;
+      if(diskType.enable) {
+        $scope.selectedDiskType = diskType;
+      }
     };
     $scope.createDisk = function () {
       var data = {
@@ -77,7 +79,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       initDiskTypeSelector = function () {
         HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
           $scope.diskTypeList=data.data;
-          $scope.selectedDiskType = $scope.diskTypeList[1];
+          $scope.selectedDiskType = $scope.diskTypeList[0];
         });
       },
       initSnapshotTypeSelector=function(){

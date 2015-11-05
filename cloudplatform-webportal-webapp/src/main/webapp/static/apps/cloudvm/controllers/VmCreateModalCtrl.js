@@ -66,7 +66,9 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.selectedVmRam === vmRam;
     };
     $scope.selectVmDiskType = function (vmDiskType) {
-      $scope.selectedVmDiskType = vmDiskType;
+      if(vmDiskType.enable){
+        $scope.selectedVmDiskType = vmDiskType;
+      }
     };
     $scope.isSelectedVmDiskType = function (vmDiskType) {
       return $scope.selectedVmDiskType === vmDiskType;
@@ -214,7 +216,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           HttpService.doGet(Config.urls.subnet_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
             $scope.vmNetworkSubnetList = data.data.data;
             $scope.vmNetworkSubnetSelectorData=$scope.vmNetworkSubnetList.map(function(subnet){
-              return new ModelService.SelectModel(subnet.name,subnet.name);
+              return new ModelService.SelectModel(subnet.name,subnet.id);
             });
             $scope.selectedVmNetworkSubnet=$scope.vmNetworkSubnetSelectorData[0];
           });

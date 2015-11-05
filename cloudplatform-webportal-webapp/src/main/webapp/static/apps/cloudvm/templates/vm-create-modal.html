@@ -111,10 +111,15 @@
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">数据盘：</span></div>
                             <div class="col-sm-10">
-                                <div class="letv-mutiCheck check-disk-type" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)">
+                                <div class="letv-mutiCheck check-disk-type" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)" ng-disabled="!vmDiskType.enable">
                                     <span>{{vmDiskType.name}}</span>
                                     <i class="iconfont icon-checkroundfillicon"></i>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="inputs-item nomargin row clearfix row-disk-index">
+                            <div class="col-sm-offset-2">
+                                <span>吞吐量：{{selectedVmDiskType.throughput}}Mb/s&nbsp;&nbsp;&nbsp;IOPS：{{selectedVmDiskType.iops}}&nbsp;&nbsp;&nbsp;容量：10-{{selectedVmDiskType.capacity}}GB</span>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix">

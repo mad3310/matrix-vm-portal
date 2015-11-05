@@ -204,7 +204,7 @@
                             <span class="letv-control-label">新密码：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control" ng-model="newPassword" name="vm_new_password" password-restrict />
+                            <input type="password" class="le-form-control" ng-model="newPassword" name="vm_new_password" password-restrict />
                             <span ng-show="(vm_password_change_form.$submitted || vm_password_change_form.vm_new_password.$touched) && vm_password_change_form.vm_new_password.$error.passwordRestrict" class="le-input-validation" title='8-30个字符，同时包含大小写字母和数字，不支持特殊符号'>
                                 <i class="iconfont icon-icon1"></i>
                             </span>
@@ -215,7 +215,7 @@
                             <span class="letv-control-label">确认密码：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control" ng-model="confirmPassword" name="vm_confirm_password" password-confirm password-model="newPassword" />
+                            <input type="password" class="le-form-control" ng-model="confirmPassword" name="vm_confirm_password" password-confirm password-model="newPassword" />
                             <span ng-show="(vm_password_change_form.$submitted || vm_password_change_form.vm_confirm_password.$touched) && vm_password_change_form.vm_confirm_password.$error.passwordConfirm" class="le-input-validation" title='两次输入的密码不一致'>
                                 <i class="iconfont icon-icon1"></i>
                             </span>
