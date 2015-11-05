@@ -38,4 +38,14 @@ public class LocalVolumeTypeResource implements VolumeTypeResource {
     public Long getIops() {
         return cloudvmVolumeType.getIops();
     }
+
+    @Override
+    public Boolean getEnable() {
+        return cloudvmVolumeType.getEnable();
+    }
+
+    @Override
+    public Long getCapacity() {
+        return cloudvmVolumeType.getCapacity();
+    }
 }
