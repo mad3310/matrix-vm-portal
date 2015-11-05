@@ -16,12 +16,12 @@ define(['directives/app.directive'],function (directiveModule) {
             	scope.$watch('layout',function(){
             		var item = element.find(".operation-items");
             		if(scope.layout == 'top-expander'){
-            			item.addClass("operation-expander");
-            			item.height(item.height()+415);
+                        item.addClass("operation-expander");
+                        item.height(item.height()+415);
                         item.css('transition', 'height .5s ease-in-out');
             		}else if(scope.layout == 'top-shrink'){
-            			item.removeClass("operation-expander");
-            			item.height(item.height()-415);
+                        item.removeClass("operation-expander");
+                        item.height(item.height()-415);
                         item.css('transition', 'height .5s ease-in');
             		}
             	});

@@ -110,6 +110,7 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;
 }
+.icon-iconshugang:before { content: "\e63f"; }
 .icon-roundcheckfill:before { content: "\e600"; }
 .icon-roundcheck:before { content: "\e601"; }
 .icon-myfill:before { content: "\e602"; }
@@ -173,3 +174,13 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .icon-xin:before { content: "\e638"; }
 .icon-user-line:before { content: "\e639"; }
 .icon-plus-circle:before { content: "\e63a"; }
+.icon-clouddisk:before { content: "\e640"; }
+.icon-cloudkeypair:before { content: "\e641"; }
+.icon-cloudhost:before { content: "\e642"; }
+.icon-cloudsnap:before { content: "\e643"; }
+.icon-cloudroute:before { content: "\e644"; }
+.icon-cloudrds:before { content: "\e645"; }
+.icon-cloudnet:before { content: "\e646"; }
+.icon-cloudfloatip:before { content: "\e647"; }
+.icon-clouddashboard:before { content: "\e648"; }
+.icon-cloudimage:before { content: "\e649"; }
