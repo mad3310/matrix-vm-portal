@@ -41,4 +41,14 @@ public class VolumeTypeResourceImpl extends AbstractResource implements
 		return null;
 	}
 
+	@Override
+	public Boolean getEnable() {
+		return null;
+	}
+
+	@Override
+	public Long getCapacity() {
+		return null;
+	}
+
 }
