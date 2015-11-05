@@ -45,13 +45,14 @@
 		<div class="body-buyed clearfix">
 			<div class="body-operation clearfix">
 				<div class="operation-title">
-					<span class="operation-column"></span>
+					<!-- <span class="operation-column"></span> -->
+					<span class="iconfont icon-iconshugang operation-column"></span>
 					<span class="title">已开通服务</span>
 				</div>
 				<div class="buyed-products row">
 					<div class="le-col-6 no-paddingR">
 						<a class="product" href="/cvm/#/vm">
-							<span class="iconfont icon-yunzhuji"></span>
+							<span class="iconfont icon-cloudhost"></span>
 							<div class="product-title">云主机</div>
 							<div class="product-num">{{ecs || '0'}}个</div>
 						</a>
@@ -70,7 +71,7 @@
 					</div>
 					<div class="le-col-6 no-paddingL">
 						<a class="product harddisk" href="javascript:void(0);">
-							<span class="iconfont icon-cloudstorageicon"></span>
+							<span class="iconfont icon-clouddisk"></span>
 							<div class="product-title">云硬盘</div>
 							<div class="product-num">{{disk || '0'}}个</div>
 						</a>
@@ -90,7 +91,7 @@
 					<div class="clearfix"></div>
 					<div class="le-col-6 no-paddingR">
 						<a class="product harddisk" href="javascript:void(0);">
-							<span class="iconfont icon-ipicon"></span>
+							<span class="iconfont icon-cloudfloatip"></span>
 							<div class="product-title">公网IP</div>
 							<div class="product-num">{{floatIp || '0'}}个</div>
 						</a>
@@ -109,7 +110,7 @@
 					</div>
 					<div class="le-col-6 no-paddingL">
 						<a class="product" href="javascript:void(0);">
-							<span class="iconfont icon-routeicon"></span>
+							<span class="iconfont icon-cloudroute"></span>
 							<div class="product-title">路由器</div>
 							<div class="product-num">{{router || '0'}}个</div>
 						</a>
@@ -133,9 +134,9 @@
 	</div>
 	<le-expander layout="{{expander.layout}}">
 		<div class="le-col-5 le-expander">
-			<div class="body-operation">
+			<div class="body-operation expand-operation">
 				<div class="operation-title">
-					<span class="operation-column"></span>
+					<span class="iconfont icon-iconshugang operation-column"></span>
 					<span class="title">最近操作</span>
 					<a class="more" ng-click='expanderToggle($event)' ng-hide="expander.length<=0">更多</a>
 					<div class="clearfix"></div>
@@ -165,9 +166,10 @@
 			<div class="body-quota">
 				<div class="body-operation">
 					<div class="operation-title">
-						<span class="operation-column"></span>
+						<!-- <span class="operation-column"></span> -->
+						<span class="iconfont icon-iconshugang operation-column"></span>
 						<span class="title">资源配额</span>
-						<span class="more">更多</span>
+						<!-- <a class="more" ng-click="expanderToggle($event)">更多</a> -->
 						<div class="clearfix"></div>
 					</div>
 				</div>
@@ -313,7 +315,7 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="le-col-6 no-paddingR no-paddingL">
-						<div class="quota-item last">
+						<div class="quota-item">
 							<div class="item-source">
 								<div>公网IP<span>（个）</span></div>
 								<div class="source-precent">
@@ -330,7 +332,7 @@
 						</div>
 					</div>
 					<div class="le-col-6 no-paddingR">
-						<div class="quota-item last">
+						<div class="quota-item">
 							<div class="item-source">
 								<div>路由器<span>（个）</span></div>
 								<div class="source-precent">
@@ -391,7 +393,8 @@
 	<div class="body-recommend le-col-12">
 		<div class="body-operation">
 			<div class="operation-title">
-				<span class="operation-column"></span>
+				<!-- <span class="operation-column"></span> -->
+				<span class="iconfont icon-iconshugang operation-column"></span>
 				<span class="title">推荐的服务</span>
 				<div class="clearfix"></div>
 			</div>

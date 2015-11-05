@@ -22,13 +22,14 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.routeconsume="";
 			$scope.expanderToggle = function(element){
 				var _target=element.target||element.srcElement;
+				var _items=$(_target).parent().parent().find('.operation-items');
 				if($(_target).parent().parent().hasClass('zhankai')){
 					$(_target).parent().parent().removeClass('zhankai');
 					$(_target).text('更多');
 				}else{
 					$(_target).parent().parent().addClass('zhankai');
 					$(_target).text('收起');
-					$('.operation-items').scrollTop();
+					_items.scrollTop();
 				}
 				$scope.expander.layout === "top-expander"? $scope.expander.layout = "top-shrink":$scope.expander.layout="top-expander";
 			}

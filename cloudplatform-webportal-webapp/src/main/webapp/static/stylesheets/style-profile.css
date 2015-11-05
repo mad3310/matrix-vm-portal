@@ -4,9 +4,9 @@
 /*滚动条*/
 ::-webkit-scrollbar{width: 7px;box-shadow: 2px 2px 3px 0;}
 ::-webkit-scrollbar-track{background-color:rgba(235,235,235,1);}
-::-webkit-scrollbar-thumb{background-color:rgba(0, 0, 0,.2);}
-::-webkit-scrollbar-button {height:7px;background-color:rgba(0,0,0,.2);}
-::-webkit-scrollbar-corner{background-color:rgba(0,0,0,.2);}
+::-webkit-scrollbar-thumb{background:#d0cfcf;}
+::-webkit-scrollbar-button {height:7px;background:#dbdbdb;}
+::-webkit-scrollbar-corner{background:#d0cfcf;}
 .main-body{width:1079px;width:100%;min-width:1079px;}
 /*header*/
 .header .header-account .account-icon{width:26px;height:26px;border-radius:50%;}
@@ -22,7 +22,7 @@
 /*operation*/
 .body-operation{font-size:12px;color:#333;}
 .body-operation .operation-title{}
-.operation-title .operation-column{height:17px;border:3px solid #088ac2;border-top:0;border-bottom:0;border-radius:2px;}
+.operation-title .operation-column{/*height:17px;border:3px solid #088ac2;border-top:0;border-bottom:0;border-radius:2px;*/font-size:18px;color:#088ac2;}
 .operation-title .title{padding-left:20px;font-size:14px;}
 .operation-title .more{color:#088ac2;float:right;}
 .operation-title .more:hover{cursor:pointer;text-decoration:none;}
@@ -46,7 +46,7 @@
 .body-buyed{height:385px;margin-top:30px;}
 .body-buyed .buyed-products{margin-top:15px;}
 .buyed-products .product{width:40%;height:175px;padding:25px 0 15px 0;text-align:center;color:#fff;background:#088ac2;float:left;display: block;text-decoration: none;}
-.product .iconfont{font-size:55px;display:block;}
+.product .iconfont{font-size:45px;display:block;}
 .product .product-title{margin-top:5px;font-size:16px;}
 .product .product-num{margin-top:10px;font-size:14px;}
 .buyed-products .productDesc{width:60%;height:175px;padding:30px 15px 0 25px;border:1px solid #ededed;border-left:0;border-right:0;font-size:12px;float:left;color:#888;background-color:#fbfbfb}
@@ -56,9 +56,9 @@
 .product.harddisk{background:#08aec2;}
 /*source quota*/
 .body-quota{margin-top:30px;font-size:12px;color:#333;}
-.body-quota .quota-items{margin-top:15px;}
+.body-quota .quota-items{margin-top:15px;height:350px;overflow-y:scroll !important;}
 .quota-items .quota-item{height:62px;margin-bottom:10px;border:1px solid #ededed;border-left:3px solid #dbdbdb;overflow:hidden;background-color:#fbfbfb}
-.quota-items .quota-item.last{margin-bottom:0;}
+/*.quota-items .quota-item.last{margin-bottom:0;}*/
 .quota-item .item-source{width:60%;height:60px;padding:10px 10px 5px 10px;display:inline-block;}
 .item-source span{letter-spacing:2px;}
 .item-source .source-precent{margin-top:5px;height:6px;}
