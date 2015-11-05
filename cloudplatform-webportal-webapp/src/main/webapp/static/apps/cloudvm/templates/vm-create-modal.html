@@ -264,6 +264,7 @@
                         <li><span class="title">CPU：</span><span class="value">{{selectedVmCpu}}核</span></li>
                         <li><span class="title">内存：</span><span class="value">{{selectedVmRam/1024 | number:0}}GB</span></li>
                         <li><span class="title">硬盘：</span><span class="value">{{dataDiskVolume}}GB</span></li>
+                        <li ng-show="vmNetworkPublicIpModel==='now' && vmNetworkType==='primary'"><span class="title">带宽：</span><span class="value">{{networkBandWidth}}Mbps</span></li>
                         <li><span class="title">购买时长：</span><span class="value">{{vmBuyPeriod | buyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span></li>
                         <li><span class="title">数量：</span><span class="value">{{vmCount}}台</span></li>
                     </ul>
