@@ -3,6 +3,7 @@ package com.letv.portal.enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.letv.portal.constant.Constants;
 import com.letv.portal.service.openstack.resource.FloatingIpResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -10,10 +11,10 @@ import com.letv.portal.service.openstack.resource.VolumeResource;
 
 public enum ProductType{
 	
-	VM(2l, VMResource.class, "openstack"),
-	VOLUME(3l, VolumeResource.class, "openstack"),
-	FLOATINGIP(4l, FloatingIpResource.class, "openstack"),
-	ROUTER(5l, RouterResource.class, "openstack");
+	VM(2l, VMResource.class, Constants.SERVICE_PROVIDER_OPENSTACK),
+	VOLUME(3l, VolumeResource.class, Constants.SERVICE_PROVIDER_OPENSTACK),
+	FLOATINGIP(4l, FloatingIpResource.class, Constants.SERVICE_PROVIDER_OPENSTACK),
+	ROUTER(5l, RouterResource.class, Constants.SERVICE_PROVIDER_OPENSTACK);
 	
 	private final Long id;
 	private final Object type;

@@ -23,5 +23,7 @@ public class Constants {
 	public static final long PRODUCT_ROUTER = 4;//路由器
 	
 	public static final long PRODUCT_FLOATINGIP = 5;//公网IP
+	
+	public static final String SERVICE_PROVIDER_OPENSTACK = "openstack";//服务提供方
 
 }

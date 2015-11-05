@@ -828,6 +828,7 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid {
 .letv-mutiCheck i{line-height: 22px;color: #dbdbdb;}
 .letv-mutiCheck.selected{border-color:#088ac2; }
 .letv-mutiCheck.selected i{color: #088ac2;}
+.letv-mutiCheck[disabled="disabled"]{cursor: not-allowed;}
 /*begin letv-checkbox style*/
 
 /*begin buy-period-selector style*/

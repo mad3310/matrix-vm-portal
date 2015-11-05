@@ -481,14 +481,16 @@ define(['controllers/app.controller'], function (controllerModule) {
                 WidgetService.notifyError('至少选择一个要添加的云主机');
                 return;
             }
-            var data = [];
+            var data = {
+                vmIds:'',
+                region:region,
+                subnetId:subnetInfo.id
+            };
+            var vmIds = [];
             for(var i= 0,len=$scope.selectedAssociatedVm.length;i<len;i++){
-                data.push({
-                    region:region,
-                    vmId:$scope.selectedAssociatedVm[i].id,
-                    subnetId:subnetInfo.id
-                })
+                vmIds.push($scope.selectedAssociatedVm[i].id)
             }
+            data.vmIds = JSON.stringify(vmIds);
             $scope.isOrderSubmiting=true;
             HttpService.doPost(Config.urls.subnet_attach_vm, data).success(function (data, status, headers, config) {
                 if(data.result===1){
@@ -506,12 +508,12 @@ define(['controllers/app.controller'], function (controllerModule) {
               initAssociatedVmList();
           },
           initAssociatedVmList = function () {
-              /*HttpService.doGet(Config.urls.not_in_any_network_vm_list, {region:region}).success(function (data, status, headers, config) {
+              HttpService.doGet(Config.urls.not_in_any_network_vm_list, {region:region}).success(function (data, status, headers, config) {
+                  $scope.associatedVmList = data.data;
+              });
+              /*HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
                   $scope.associatedVmList = data.data.data;
               });*/
-              HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
-                  $scope.associatedVmList = data.data.data;
-              });
           };
         initComponents();
     });
@@ -541,14 +543,16 @@ define(['controllers/app.controller'], function (controllerModule) {
                 WidgetService.notifyError('至少选择一个要移除的云主机');
                 return;
             }
-            var data = [];
+            var data = {
+                vmIds:'',
+                region:region,
+                subnetId:subnetInfo.id
+            };
+            var vmIds = [];
             for(var i= 0,len=$scope.selectedDetachVm.length;i<len;i++){
-                data.push({
-                    region:region,
-                    vmId:$scope.selectedDetachVm[i].id,
-                    subnetId:subnetInfo.id
-                })
+                vmIds.push($scope.selectedDetachVm[i].id)
             }
+            data.vmIds = JSON.stringify(vmIds);
             $scope.isOrderSubmiting=true;
             HttpService.doPost(Config.urls.subnet_detach_vm, data).success(function (data, status, headers, config) {
                 if(data.result===1){
@@ -566,12 +570,12 @@ define(['controllers/app.controller'], function (controllerModule) {
                 initDetachVmList();
             },
             initDetachVmList = function () {
-                /*HttpService.doGet(Config.urls.not_in_any_network_vm_list, {region:region}).success(function (data, status, headers, config) {
-                 $scope.detachVmList = data.data.data;
-                 });*/
-                HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+                HttpService.doGet(Config.urls.vm_attach_subnet_list, {region:region,subnetId:subnetInfo.id}).success(function (data, status, headers, config) {
+                 $scope.detachVmList = data.data;
+                 });
+                /*HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
                     $scope.detachVmList = data.data.data;
-                });
+                });*/
             };
         initComponents();
     });

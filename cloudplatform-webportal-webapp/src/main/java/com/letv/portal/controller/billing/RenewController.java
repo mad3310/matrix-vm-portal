@@ -1,7 +1,6 @@
 package com.letv.portal.controller.billing;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,19 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.DataFormat;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.model.order.Order;
 import com.letv.portal.model.order.OrderSub;
-import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
-import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IHostProductService;
@@ -78,6 +74,11 @@ public class RenewController {
 	public @ResponseBody ResultObject queryProductPrice( @PathVariable Long productId, HttpServletRequest request, ResultObject obj) {
 		Map<String,Object> map = HttpUtil.requestParam2Map(request);
 		BigDecimal ret = null;
+		if(map.get("subscriptionId")==null || map.get("userId")==null) {
+			obj.setResult(0);
+			obj.addMsg("输入参数不合法");
+			return obj;
+		}
 		
 		Map<String, Object> subDetailParams = new HashMap<String, Object>();
 		subDetailParams.put("subscriptionId", map.get("subscriptionId"));
@@ -117,6 +118,11 @@ public class RenewController {
 	@RequestMapping(value="/buy/{productId}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject buy(@PathVariable Long productId, HttpServletRequest request, ResultObject obj) {
 		Map<String,Object> map = HttpUtil.requestParam2Map(request);
+		if(map.get("subscriptionId")==null || map.get("userId")==null) {
+			obj.setResult(0);
+			obj.addMsg("输入参数不合法");
+			return obj;
+		}
 		
 		Long subscriptionId = Long.parseLong((String)map.get("subscriptionId"));
 		Long userId = Long.parseLong((String)map.get("userId"));
