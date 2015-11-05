@@ -391,7 +391,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		List<Subscription> lists = (List<Subscription>) page.getData();
 		
 		//调用服务查询服务名称
-		Map<Class<? extends BillingResource>, List<ResourceLocator>> products = new HashMap<Class<? extends BillingResource>, List<ResourceLocator>>();
+		Map<String, List<ResourceLocator>> products = new HashMap<String, List<ResourceLocator>>();
 		Map<String, String>  rets = new HashMap<String, String>();
 		List<ResourceLocator> ress = null;
 		for (Subscription subscription : lists) {
@@ -399,17 +399,17 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			if(obj==null) {
 				continue;
 			}
-			if(products.containsKey(obj)) {
-				ress = products.get(obj);
+			if(products.containsKey(Constants.SERVICE_PROVIDER_OPENSTACK)) {
+				ress = products.get(Constants.SERVICE_PROVIDER_OPENSTACK);
 			} else {
 				ress = new ArrayList<ResourceLocator>();
-				products.put((Class<? extends BillingResource>) obj, ress);
+				products.put(Constants.SERVICE_PROVIDER_OPENSTACK, ress);
 			}
 			String[] str = subscription.getProductInfoRecord().getInstanceId().split("_");
 			ress.add(new ResourceLocator().id(str[1]).region(str[0]).type((Class<? extends BillingResource>) obj));
 		}
 		//调用openstack接口
-		Map<ResourceLocator, BillingResource> re = resourceQueryService.getResources((Long)params.get("userId"), ress);
+		Map<ResourceLocator, BillingResource> re = resourceQueryService.getResources((Long)params.get("userId"), products.get(Constants.SERVICE_PROVIDER_OPENSTACK));
 		for (ResourceLocator resourceLocator : re.keySet()) {
 			rets.put(resourceLocator.getRegion()+"_"+resourceLocator.getId(), re.get(resourceLocator).getName());
 		}
