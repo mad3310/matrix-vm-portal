@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
+import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.*;
@@ -1921,6 +1922,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							MessageFormat.format("路由“{0}”删除失败。", routerId));
 				}
 
+				OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
+						.onDelete(new ResourceLocator().region(region).id(routerId).type(RouterResource.class));
+
 				long userVoUserId = openStackUser.getUserVoUserId();
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService()
 						.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.ROUTER);
@@ -2358,6 +2362,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					throw new OpenStackException("Floating IP delete failed.",
 							"公网IP删除失败");
 				}
+
+				OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
+						.onDelete(new ResourceLocator().region(region).id(floatingIpId).type(FloatingIpResource.class));
 
 				long userVoUserId = openStackUser.getUserVoUserId();
 				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();

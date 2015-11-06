@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.impl;
 
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
+import com.letv.portal.service.openstack.billing.event.service.EventPublishService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
@@ -36,6 +37,7 @@ public class OpenStackServiceGroup {
 	private LocalImageService localImageService;
 	private ImageSyncService imageSyncService;
 	private LocalRcCountService localRcCountService;
+	private EventPublishService eventPublishService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -182,5 +184,13 @@ public class OpenStackServiceGroup {
 
 	public LocalRcCountService getLocalRcCountService() {
 		return localRcCountService;
+	}
+
+	public void setEventPublishService(EventPublishService eventPublishService) {
+		this.eventPublishService = eventPublishService;
+	}
+
+	public EventPublishService getEventPublishService() {
+		return eventPublishService;
 	}
 }

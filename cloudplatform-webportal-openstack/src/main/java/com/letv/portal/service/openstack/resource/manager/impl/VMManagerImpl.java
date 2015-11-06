@@ -6,6 +6,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
+import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VmSnapshotCreateEvent;
@@ -18,6 +19,7 @@ import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
+import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
@@ -1009,6 +1011,9 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 if (!isSuccess) {
                     throw new VMDeleteException(vm.getId());
                 }
+
+                OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
+                        .onDelete(new ResourceLocator().region(region).id(vm.getId()).type(VMResource.class));
 
                 return null;
             }

@@ -6,6 +6,7 @@ import java.util.*;
 
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
@@ -725,6 +726,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							volumeResource.getId()), MessageFormat.format(
 							"云硬盘“{0}”删除失败。", volumeResource.getId()));
 				}
+
+				OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
+						.onDelete(new ResourceLocator().region(region).id(volumeResource.getId()).type(VolumeResource.class));
 
 				return null;
 			}

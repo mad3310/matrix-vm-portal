@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import com.google.common.base.Optional;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
+import com.letv.portal.service.openstack.billing.event.service.EventPublishService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
@@ -149,6 +150,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private LocalRcCountService localRcCountService;
 
+	@Autowired
+	private EventPublishService eventPublishService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -197,6 +201,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setLocalImageService(localImageService);
 		openStackServiceGroup.setImageSyncService(imageSyncService);
 		openStackServiceGroup.setLocalRcCountService(localRcCountService);
+		openStackServiceGroup.setEventPublishService(eventPublishService);
 	}
 
 	@Override
