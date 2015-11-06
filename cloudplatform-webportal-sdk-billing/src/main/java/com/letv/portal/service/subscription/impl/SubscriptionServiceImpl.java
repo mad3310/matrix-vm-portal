@@ -420,6 +420,12 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		}
 		return page; 
 	}
+
+
+	@Override
+	public void updateSubscriptionStateByInstanceId(String instanceId) {
+		this.subscriptionDao.updateSubscriptionStateByInstanceId(instanceId);
+	}
 	
 
 }

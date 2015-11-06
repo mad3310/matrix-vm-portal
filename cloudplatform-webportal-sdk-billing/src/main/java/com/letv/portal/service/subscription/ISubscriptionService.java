@@ -43,4 +43,14 @@ public interface ISubscriptionService extends IBaseService<Subscription> {
 	  * @date 2015年10月26日 上午11:40:49
 	 */
 	void serviceWarn();
+	
+	/**
+	  * @Title: updateSubscriptionStateByInstanceId
+	  * @Description: 根据服务ID修改订阅状态
+	  * @param instanceId void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月6日 下午6:49:43
+	  */
+	void updateSubscriptionStateByInstanceId(String instanceId);
 }
