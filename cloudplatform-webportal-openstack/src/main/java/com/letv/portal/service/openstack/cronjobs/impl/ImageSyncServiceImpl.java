@@ -19,6 +19,7 @@ import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 
+import com.letv.portal.service.openstack.util.function.Function;
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
@@ -84,9 +85,9 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
     }
 
     public void syncStatus(final List<CloudvmImage> cloudvmImages, final Checker<ImageDetails> checker) {
-        ThreadUtil.asyncExec(new Runnable() {
+        ThreadUtil.asyncExec(new Function<Void>() {
             @Override
-            public void run() {
+            public Void apply() {
                 SyncLocalApiCache apiCache = new SyncLocalApiCache();
                 try {
                     List<CloudvmImage> unFinishedImages = new LinkedList<CloudvmImage>();
@@ -118,6 +119,7 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
                 } finally {
                     apiCache.close();
                 }
+                return null;
             }
         });
     }
