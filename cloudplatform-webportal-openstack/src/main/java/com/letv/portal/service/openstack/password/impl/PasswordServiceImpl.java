@@ -29,9 +29,9 @@ public class PasswordServiceImpl implements PasswordService {
 	@Override
 	public void validateUserAdminPass(String adminPass) throws OpenStackException {
 		if(!adminPass.matches(ValidationRegex.password)){
-			throw new UserOperationException(
-					"User admin password is not valid.",
-					"管理员密码必须为" + ValidationRegex.passwordMessage);
+//			throw new UserOperationException(
+//					"User admin password is not valid.",
+//					"管理员密码必须为" + ValidationRegex.passwordMessage);
 		}
 	}
 
