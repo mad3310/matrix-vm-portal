@@ -50,7 +50,7 @@
 	    insert into MATRIX_BILLING_SUBSCRIPTION 
 	        (SUBSCRIPTION_NUMBER,PRODUCT_ID,BASE_REGION_ID,BUY_TYPE,CHARGE_TYPE,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PRODUCT_INFO_RECORD_ID) 
 	    values
-	        (#{subscriptionNumber},#{productId},#{baseRegionId},#{buyType},#{chargeType},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn},#{productInfoRecordId})
+	        (#{subscriptionNumber},#{productId},#{baseRegionId},#{buyType},#{chargeType},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{productInfoRecordId})
 	</insert>
 	
 	<sql id="Common_Where_Clause">

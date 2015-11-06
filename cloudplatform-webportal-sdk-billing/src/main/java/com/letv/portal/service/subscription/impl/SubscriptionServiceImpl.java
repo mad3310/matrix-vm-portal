@@ -114,7 +114,6 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		sub.setUserId(userId);
 		sub.setCreateUser(userId);
 		sub.setDeleted(false);
-		sub.setCreateTime(new Timestamp(date.getTime()));
 		this.subscriptionDao.insert(sub);
 		for (String key : map.keySet()) {
 			if("region".equals(key) || key.endsWith("_type") 
