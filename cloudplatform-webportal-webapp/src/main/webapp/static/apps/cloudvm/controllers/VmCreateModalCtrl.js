@@ -101,7 +101,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          $window.location.href = '/payment/'+data.data;
+          $window.location.href = '/payment/'+data.data+'/2';
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云主机失败');

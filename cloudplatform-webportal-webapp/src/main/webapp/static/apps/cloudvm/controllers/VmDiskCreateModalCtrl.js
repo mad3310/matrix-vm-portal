@@ -43,7 +43,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.disk_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          $window.location.href = '/payment/'+data.data;
+          $window.location.href = '/payment/'+data.data+'/3';
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云硬盘失败');

@@ -27,7 +27,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.router_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          $window.location.href = '/payment/'+data.data;
+          $window.location.href = '/payment/'+data.data+'/5';
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建路由器失败');
