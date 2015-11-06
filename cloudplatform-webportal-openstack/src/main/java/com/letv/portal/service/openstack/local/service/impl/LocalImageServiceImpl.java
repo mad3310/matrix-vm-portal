@@ -89,7 +89,7 @@ public class LocalImageServiceImpl implements LocalImageService {
     }
 
     @Override
-    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image, Server server) {
+    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image,String imageName, Server server) {
         CloudvmImage cloudvmImage = new CloudvmImage();
         cloudvmImage.setType(CloudvmImageShareType.PRIVATE);
         cloudvmImage.setCreateUser(userId);
@@ -98,7 +98,7 @@ public class LocalImageServiceImpl implements LocalImageService {
         cloudvmImage.setImageId(image.getId());
         cloudvmImage.setMinDisk(image.getMinDisk());
         cloudvmImage.setMinRam(image.getMinRam());
-        cloudvmImage.setName(image.getName());
+        cloudvmImage.setName(imageName);
         cloudvmImage.setSize(image.getSize().get());
         cloudvmImage.setStatus(CloudvmImageStatus.valueOf(image.getStatus().name()));
         cloudvmImage.setImageType(CloudvmImageType.SNAPSHOT);
