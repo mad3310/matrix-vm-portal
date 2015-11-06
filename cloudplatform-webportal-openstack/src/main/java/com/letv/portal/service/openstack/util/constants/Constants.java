@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.util.constants;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import com.letv.portal.service.openstack.billing.BillingResource;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 
 import java.util.regex.Pattern;

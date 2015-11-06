@@ -1,21 +1,20 @@
 package com.letv.portal.service.openstack.util;
 
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.TimeoutException;
+import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function1;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-import com.letv.common.exception.MatrixException;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.function.Function;
-import com.letv.portal.service.openstack.util.function.Function1;
 
 /**
  * Created by zhouxianguang on 2015/10/30.
@@ -23,19 +22,32 @@ import com.letv.portal.service.openstack.util.function.Function1;
 public class ThreadUtil {
     private static final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
 
-    public static void asyncExec(Runnable task) {
-        executorService.submit(task);
+//    public static void asyncExec(Runnable task) {
+//        executorService.submit(task);
+//    }
+
+    public static void asyncExec(final Function<Void> task) {
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    task.apply();
+                } catch (Exception ex) {
+                    ExceptionUtil.logAndEmail(ex);
+                }
+            }
+        });
     }
-    
-	private static <T> List<T> getResultsOfFutures(
-			List<ListenableFuture<T>> futures) throws InterruptedException,
-			ExecutionException, TimeoutException {
-		List<T> results = new LinkedList<T>();
-		for (ListenableFuture<T> future : futures) {
-			results.add(future.get(0L, TimeUnit.SECONDS));
-		}
-		return results;
-	}
+
+    private static <T> List<T> getResultsOfFutures(
+            List<ListenableFuture<T>> futures) throws InterruptedException,
+            ExecutionException, java.util.concurrent.TimeoutException {
+        List<T> results = new LinkedList<T>();
+        for (ListenableFuture<T> future : futures) {
+            results.add(future.get(0L, TimeUnit.SECONDS));
+        }
+        return results;
+    }
 
 //    @Deprecated
 //    public static void concurrentRunAndWait(Runnable currentThreadTask, Runnable... otherTasks) {
@@ -78,16 +90,16 @@ public class ThreadUtil {
             } else {
                 listFuture.get();
             }
-			List<Ref<T>> otherResultRefs = getResultsOfFutures(futures);
+            List<Ref<T>> otherResultRefs = getResultsOfFutures(futures);
 
             List<Ref<T>> resultList = new LinkedList<Ref<T>>();
             resultList.add(new Ref<T>(firstResult));
             if (otherResultRefs != null) {
                 for (Ref<T> resultRef : otherResultRefs) {
                     if (resultRef != null) {
-                    	resultList.add(resultRef);
-                    }else{
-                    	resultList.add(new Ref<T>());
+                        resultList.add(resultRef);
+                    } else {
+                        resultList.add(new Ref<T>());
                     }
                 }
             } else {
@@ -96,7 +108,7 @@ public class ThreadUtil {
                 }
             }
             return resultList;
-        } catch (ExecutionException ex){
+        } catch (ExecutionException ex) {
             ExceptionUtil.throwException(ExceptionUtil.getCause(ex));
         } catch (Exception ex) {
             ExceptionUtil.throwException(ex);
@@ -108,9 +120,24 @@ public class ThreadUtil {
         return resultList;
     }
 
-    public static void concurrentRun(Runnable... tasks) {
-        for (Runnable task : tasks) {
-            executorService.submit(task);
+//    public static void concurrentRun(Runnable... tasks) {
+//        for (Runnable task : tasks) {
+//            executorService.submit(task);
+//        }
+//    }
+
+    public static void concurrentRun(Function<Void>... tasks) {
+        for (final Function<Void> task : tasks) {
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        task.apply();
+                    } catch (Exception ex) {
+                        ExceptionUtil.logAndEmail(ex);
+                    }
+                }
+            });
         }
     }
 
@@ -151,7 +178,7 @@ public class ThreadUtil {
             } else {
                 listFuture.get();
             }
-			List<Ref<RT>> otherNewElementRefs = getResultsOfFutures(futures);
+            List<Ref<RT>> otherNewElementRefs = getResultsOfFutures(futures);
 
             List<RT> newList = new LinkedList<RT>();
             if (firstNewElement != null) {
@@ -166,7 +193,7 @@ public class ThreadUtil {
                 }
             }
             return newList;
-        } catch (ExecutionException ex){
+        } catch (ExecutionException ex) {
             ExceptionUtil.throwException(ExceptionUtil.getCause(ex));
         } catch (Exception ex) {
             ExceptionUtil.throwException(ex);
@@ -174,4 +201,45 @@ public class ThreadUtil {
         return new LinkedList<RT>();
     }
 
+    public static void waiting(Function<Boolean> checker)
+            throws OpenStackException {
+        waiting(checker, null, null);
+    }
+
+    public static void waiting(Function<Boolean> checker, Timeout timeout)
+            throws OpenStackException {
+        waiting(checker, timeout, null);
+    }
+
+    public static void waiting(Function<Boolean> checker, Long sleepTime)
+            throws OpenStackException {
+        waiting(checker, null, sleepTime);
+    }
+
+    public static void waiting(Function<Boolean> checker, Timeout timeout, Long sleepTime)
+            throws OpenStackException {
+        try {
+            Long timeoutMillis = null;
+            if (timeout != null) {
+                timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout.time(), timeout.unit());
+            }
+
+            if (sleepTime == null || sleepTime <= 0) {
+                sleepTime = 1000L;
+            }
+
+            long beginTime = System.currentTimeMillis();
+            while (checker.apply()) {
+                Thread.sleep(sleepTime);
+                if (timeoutMillis != null) {
+                    long timeInterval = System.currentTimeMillis() - beginTime;
+                    if (timeInterval > timeoutMillis) {
+                        throw new TimeoutException(timeout, timeInterval);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ExceptionUtil.throwException(e);
+        }
+    }
 }

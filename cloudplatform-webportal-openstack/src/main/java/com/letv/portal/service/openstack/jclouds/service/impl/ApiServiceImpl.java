@@ -19,6 +19,7 @@ import com.letv.portal.service.openstack.password.PasswordService;
 import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 
+import com.letv.portal.service.openstack.util.function.Function;
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -225,41 +226,45 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     public void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword) {
         final OpenStackUserInfo userInfo = new OpenStackUserInfo(userId, sessionId, openStackUserId, openStackUserPassword);
 
-        ThreadUtil.concurrentRun(new Runnable() {
+        ThreadUtil.concurrentRun(new Function<Void>() {
             @Override
-            public void run() {
+            public Void apply() {
                 try {
                     getApi(CinderApi.class, userInfo);
                 } catch (ExecutionException e) {
                     throw new MatrixException("后台错误", e);
                 }
+                return null;
             }
-        }, new Runnable() {
+        }, new Function<Void>() {
             @Override
-            public void run() {
+            public Void apply() {
                 try {
                     getApi(NovaApi.class, userInfo);
                 } catch (ExecutionException e) {
                     throw new MatrixException("后台错误", e);
                 }
+                return null;
             }
-        }, new Runnable() {
+        }, new Function<Void>() {
             @Override
-            public void run() {
+            public Void apply() {
                 try {
                     getApi(GlanceApi.class, userInfo);
                 } catch (ExecutionException e) {
                     throw new MatrixException("后台错误", e);
                 }
+                return null;
             }
-        }, new Runnable() {
+        }, new Function<Void>() {
             @Override
-            public void run() {
+            public Void apply() {
                 try {
                     getApi(NeutronApi.class, userInfo);
                 } catch (ExecutionException e) {
                     throw new MatrixException("后台错误", e);
                 }
+                return null;
             }
         });
     }

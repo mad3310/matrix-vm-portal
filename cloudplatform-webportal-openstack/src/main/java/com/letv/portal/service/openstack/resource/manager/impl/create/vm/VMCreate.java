@@ -13,6 +13,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.function.Function;
 
 public class VMCreate {
 
@@ -86,9 +87,9 @@ public class VMCreate {
 
             notifyListener(multiVmCreateContext, exceptionOfCreating);
 
-            ThreadUtil.asyncExec(new Runnable() {
+            ThreadUtil.asyncExec(new Function<Void>() {
                 @Override
-                public void run() {
+                public Void apply() {
                     BindFloatingIpTask bindFloatingIpTask = new BindFloatingIpTask();
                     AddVolumeTask addVolumeTask = new AddVolumeTask();
                     boolean needAddVolume = addVolumeTask.isEnable(multiVmCreateContext);
@@ -112,6 +113,7 @@ public class VMCreate {
                     } catch (Exception ex) {
                         ExceptionUtil.logAndEmail(ex);
                     }
+                    return null;
                 }
             });
 
@@ -157,10 +159,10 @@ public class VMCreate {
 
     private void notifyListener(final MultiVmCreateContext context, final String reason) {
         if (context.getVmCreateListener() != null) {
-            ThreadUtil.asyncExec(new Runnable() {
+            ThreadUtil.asyncExec(new Function<Void>() {
 
                 @Override
-                public void run() {
+                public Void apply() {
                     for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
                         try {
                             if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > i) {
@@ -179,6 +181,7 @@ public class VMCreate {
                             ExceptionUtil.processBillingException(ex);
                         }
                     }
+                    return null;
                 }
             });
         }

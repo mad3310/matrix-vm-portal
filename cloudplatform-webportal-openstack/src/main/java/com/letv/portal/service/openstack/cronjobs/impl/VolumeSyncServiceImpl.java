@@ -14,6 +14,7 @@ import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
@@ -66,9 +67,9 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     @Override
     public void syncStatus(final List<CloudvmVolume> cloudvmVolumes, final Checker<Volume>
             checker) {
-        ThreadUtil.asyncExec(new Runnable() {
+        ThreadUtil.asyncExec(new Function<Void>() {
             @Override
-            public void run() {
+            public Void apply() {
                 SyncLocalApiCache apiCache = new SyncLocalApiCache();
                 try {
                     List<CloudvmVolume> unFinishedVolumes = new LinkedList<CloudvmVolume>();
@@ -95,6 +96,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
                 } finally {
                     apiCache.close();
                 }
+                return null;
             }
         });
     }

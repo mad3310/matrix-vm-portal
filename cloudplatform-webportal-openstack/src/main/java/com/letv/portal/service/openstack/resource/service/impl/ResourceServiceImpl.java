@@ -10,6 +10,7 @@ import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.JsonUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.Timeout;
 import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +38,7 @@ import java.io.Closeable;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zhouxianguang on 2015/10/30.
@@ -46,17 +48,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private LocalKeyPairService localKeyPairService;
-
-    private void waitingUtil(Function<Boolean> checker)
-            throws OpenStackException {
-        try {
-            while (!checker.apply()) {
-                Thread.sleep(1000);
-            }
-        } catch (Exception e) {
-            ExceptionUtil.throwException(e);
-        }
-    }
 
     private void checkRegion(NovaApi novaApi, String region) throws RegionNotFoundException {
         if (!novaApi.getConfiguredRegions().contains(region)) {
@@ -83,7 +74,8 @@ public class ResourceServiceImpl implements ResourceService {
         }
     }
 
-    private void checkRegion(String region, Closeable... apis) throws RegionNotFoundException {
+    @Override
+    public void checkRegion(String region, Closeable... apis) throws RegionNotFoundException {
         for (Closeable api : apis) {
             if (api instanceof NovaApi) {
                 checkRegion((NovaApi) api, region);
@@ -249,12 +241,12 @@ public class ResourceServiceImpl implements ResourceService {
                     }
 
                     final String attachmentId = findedInterfaceAttachment.getPortId();
-                    waitingUtil(new Function<Boolean>() {
+                    ThreadUtil.waiting(new Function<Boolean>() {
                         @Override
                         public Boolean apply() throws Exception {
-                            return attachInterfaceApi.get(vmId, attachmentId) == null;
+                            return attachInterfaceApi.get(vmId, attachmentId) != null;
                         }
-                    });
+                    },new Timeout().time(5L).unit(TimeUnit.MINUTES));
                 } catch (Exception ex) {
                     return ex;
                 }
@@ -406,12 +398,12 @@ public class ResourceServiceImpl implements ResourceService {
 
         localKeyPairService.delete(userVoUserId, region, name);
 
-        waitingUtil(new Function<Boolean>() {
+        ThreadUtil.waiting(new Function<Boolean>() {
             @Override
             public Boolean apply() throws Exception {
-                return keyPairApi.get(name) == null;
+                return keyPairApi.get(name) != null;
             }
-        });
+        },new Timeout().time(5L).unit(TimeUnit.MINUTES));
     }
 
 }

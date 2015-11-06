@@ -3,6 +3,10 @@ package com.letv.portal.service.openstack.cronjobs.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.model.cloudvm.*;
+import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
@@ -12,10 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.model.cloudvm.CloudvmServer;
-import com.letv.portal.model.cloudvm.CloudvmServerAddress;
-import com.letv.portal.model.cloudvm.CloudvmServerLink;
-import com.letv.portal.model.cloudvm.CloudvmServerMetadata;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.ICloudvmServerAddressService;
 import com.letv.portal.service.cloudvm.ICloudvmServerLinkService;
@@ -309,6 +309,17 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
         if (cloudvmServer != null) {
             delete(cloudvmServer);
         }
+    }
+
+    @Override
+    public void recordVmDeleted(long userVoUserId, String region, String vmId) throws OpenStackException {
+        LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+        localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.SERVER);
+
+        OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
+        openStackServiceGroup.getVolumeSyncService()
+                .syncStatusAfterServerDeleted(userVoUserId, region, vmId);
+        openStackServiceGroup.getImageSyncService().cleanServerIdAfterServerDeleted(userVoUserId, region, vmId);
     }
 
     @SuppressWarnings("unused")
