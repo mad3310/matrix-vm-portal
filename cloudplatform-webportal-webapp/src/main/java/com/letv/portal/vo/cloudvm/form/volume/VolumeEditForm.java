@@ -3,6 +3,7 @@ package com.letv.portal.vo.cloudvm.form.volume;
 import com.letv.portal.service.openstack.util.constants.ValidationRegex;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -42,7 +43,7 @@ public class VolumeEditForm {
         this.name = name;
     }
 
-    @NotBlank
+    @NotNull
     public String getDescription() {
         return description;
     }
