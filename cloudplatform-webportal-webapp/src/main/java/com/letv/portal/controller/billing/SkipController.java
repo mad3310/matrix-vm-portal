@@ -33,9 +33,10 @@ public class SkipController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value ="/payment/{orderNum}",method=RequestMethod.GET)
-	public ModelAndView topayMent(@PathVariable String orderNum,ModelAndView mav){
+	@RequestMapping(value ="/payment/{orderNum}/{redirect}",method=RequestMethod.GET)
+	public ModelAndView topayMent(@PathVariable String orderNum,@PathVariable String redirect,ModelAndView mav){
 		mav.addObject("orderNum",orderNum);
+		mav.addObject("redirect",redirect);
 		mav.setViewName("/payment/payment");
 		return mav;
 	}

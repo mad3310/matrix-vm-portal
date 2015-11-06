@@ -33,6 +33,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCre
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 
+import com.letv.portal.service.openstack.util.function.Function;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -1002,7 +1003,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     throw new TaskNotFinishedException();
                 }
 
-                removeAndDeleteFloatingIPOfVM(region, vm);
+//                removeAndDeleteFloatingIPOfVM(region, vm);
                 ServerApi serverApi = novaApi.getServerApi(region);
                 boolean isSuccess = serverApi.delete(vm.getId());
                 if (!isSuccess) {
@@ -1045,12 +1046,6 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 if (serverApi.get(vmId) == null) {
                     recordVmDeleted(region, vm.getId());
                 }
-
-                long userVoUserId = openStackUser.getUserVoUserId();
-                OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
-                openStackServiceGroup.getVolumeSyncService()
-                        .syncStatusAfterServerDeleted(userVoUserId, region, vmId);
-                openStackServiceGroup.getImageSyncService().cleanServerIdAfterServerDeleted(userVoUserId, region, vmId);
 
                 return null;
             }
@@ -1632,8 +1627,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
     private void recordVmDeleted(String region, String vmId) throws OpenStackException {
         long userVoUserId = openStackUser.getUserVoUserId();
-        LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-        localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.SERVER);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().recordVmDeleted(userVoUserId,region,vmId);
 
 //        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
 
@@ -1805,7 +1799,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 .getLocalImageService();
         long userVoUserId = openStackUser.getUserVoUserId();
         CloudvmImage cloudvmImage = localImageService
-                .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image, server);
+                .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image, name ,server);
         openStackServiceGroup.getImageSyncService().syncStatus(cloudvmImage, new Checker<ImageDetails>() {
             @Override
             public boolean check(ImageDetails imageDetails) throws Exception {
@@ -1845,14 +1839,15 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
     @Override
     public void createForBilling(final long userId, final VMCreateConf2 conf, final VmCreateListener listener, final Object listenerUserData) throws OpenStackException {
-        ThreadUtil.asyncExec(new Runnable() {
+        ThreadUtil.asyncExec(new Function<Void>() {
             @Override
-            public void run() {
+            public Void apply() {
                 try {
                     new VMCreate(userId, conf, VMManagerImpl.this, VMManagerImpl.this.networkManager, VMManagerImpl.this.volumeManager, listener, listenerUserData).run();
                 } catch (Exception e) {
                     ExceptionUtil.logAndEmail(e);
                 }
+                return null;
             }
         });
     }

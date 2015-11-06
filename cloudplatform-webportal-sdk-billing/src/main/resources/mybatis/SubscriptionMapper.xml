@@ -235,6 +235,10 @@
 	    	MATRIX_BILLING_BASE_REGION region on subscription.BASE_REGION_ID=region.ID
 	    left join
 	    	MATRIX_PRODUCT_INFO_RECORD record on subscription.PRODUCT_INFO_RECORD_ID=record.ID
+	    left join 
+		    	MATRIX_BILLING_ORDER_SUB mbos on subscription.ID=mbos.SUBSCRIPTION_ID
+		left join
+		    	MATRIX_BILLING_ORDER mbo on mbo.ID=mbos.ORDER_ID
 		INNER JOIN (
 		    SELECT mbs.PRODUCT_INFO_RECORD_ID, MAX(mbs.END_TIME) AS MaxDate
 		    FROM 
@@ -250,6 +254,7 @@
 		) tm ON subscription.PRODUCT_INFO_RECORD_ID = tm.PRODUCT_INFO_RECORD_ID AND subscription.END_TIME = tm.MaxDate
 			<include refid="Common_Where_Clause" />
 			and record.INSTANCE_ID is not null
+			and mbo.STATUS=2
 			<if test="productName != null and productName != '' ">
 	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>
@@ -272,6 +277,10 @@
 	    	MATRIX_BILLING_BASE_REGION region on subscription.BASE_REGION_ID=region.ID
 	    left join
 	    	MATRIX_PRODUCT_INFO_RECORD record on subscription.PRODUCT_INFO_RECORD_ID=record.ID
+	    left join 
+		    	MATRIX_BILLING_ORDER_SUB mbos on subscription.ID=mbos.SUBSCRIPTION_ID
+		left join
+		    	MATRIX_BILLING_ORDER mbo on mbo.ID=mbos.ORDER_ID
 	    INNER JOIN (
 		    SELECT mbs.PRODUCT_INFO_RECORD_ID, MAX(mbs.END_TIME) AS MaxDate
 		    FROM 
@@ -287,6 +296,7 @@
 		) tm ON subscription.PRODUCT_INFO_RECORD_ID = tm.PRODUCT_INFO_RECORD_ID AND subscription.END_TIME = tm.MaxDate
 			<include refid="Common_Where_Clause" />
 			and record.INSTANCE_ID is not null
+			and mbo.STATUS=2
 			<if test="productName != null and productName != '' ">
 	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>

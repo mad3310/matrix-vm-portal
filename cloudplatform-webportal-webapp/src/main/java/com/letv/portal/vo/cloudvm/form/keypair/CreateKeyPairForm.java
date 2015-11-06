@@ -1,5 +1,6 @@
 package com.letv.portal.vo.cloudvm.form.keypair;
 
+import com.letv.portal.service.openstack.util.constants.ValidationRegex;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
@@ -21,7 +22,7 @@ public class CreateKeyPairForm {
     }
 
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z][^[@/:=\\\\\"<>\\{\\[\\]\\}\\su4e00-u9fa5]]{2,128}$", message = "密钥名须为2-128个字符，以大小写字母开头，不支持中文、字符@/:=\\\"<>{[]}和空格")
+    @Pattern(regexp = ValidationRegex.keyPairName, message = ValidationRegex.keyPairNameMessage)
     public String getName() {
         return name;
     }

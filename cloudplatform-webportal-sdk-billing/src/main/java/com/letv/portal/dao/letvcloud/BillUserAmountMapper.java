@@ -26,4 +26,6 @@ public interface BillUserAmountMapper {
     void updateUserAmountFromAvailableToFreeze(BillUserAmount userAmount);
     //扣除冻结余额
     void reduceFreezeAmount(BillUserAmount userAmount);
+    //扣除可用余额
+    void reduceAvailableAmount(BillUserAmount userAmount);
 }

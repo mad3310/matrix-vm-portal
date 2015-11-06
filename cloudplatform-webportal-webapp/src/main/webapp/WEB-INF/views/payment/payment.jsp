@@ -15,6 +15,7 @@
 <body>
 	<input id="userId" type="text" class="hide" value="${sessionScope.userSession.userId}">
 	<input id="orderNum" type="text" class="hide" value="${orderNum}">
+	<input id="redirect" type="text" class="hide" value="${redirect}">
 	<div class="main-body">
 		<div class="order">
 			<div class="order-title">订单支付</div>
