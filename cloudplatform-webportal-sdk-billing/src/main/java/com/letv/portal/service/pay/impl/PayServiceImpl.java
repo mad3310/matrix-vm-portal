@@ -152,6 +152,16 @@ public class PayServiceImpl implements IPayService {
 			}
 			
 			if (price.doubleValue() == 0) {
+				if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
+					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));
+					updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2);
+					try {
+						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
+					} catch (IOException e) {
+						logger.error("pay inteface sendRedirect had error, ", e);
+					}
+					return ret;
+				}
 				//设置用户支付部分余额为冻结余额
 				if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
 					ret.put("alert", "用户可使用余额不足");
@@ -182,7 +192,11 @@ public class PayServiceImpl implements IPayService {
 			
 			//充值
 			Map<String, String> params = new HashMap<String, String>();
-			String url = getParams(order.getOrderNumber(), price, pattern, this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
+			String callbackUrl = this.PAY_CALLBACK;
+			if(orderSubs.get(0).getSubscription().getBuyType()==1) {//新购
+				callbackUrl = this.PAY_CALLBACK+"?buyType=1";
+			}
+			String url = getParams(order.getOrderNumber(), price, pattern, callbackUrl, this.PAY_SUCCESS + "/" + orderNumber,
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
 
@@ -207,6 +221,16 @@ public class PayServiceImpl implements IPayService {
 			}
 		}
 		return ret;
+	}
+	
+	private void reNewOperate(List<OrderSub> orderSubs, BigDecimal price) {
+		//扣除用户余额
+		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price);
+		
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
+		//生成用户账单。
+		billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
+				df.format(new Date()), price.toString());
 	}
 
 	private String getParams(String number, BigDecimal price, String pattern,
@@ -303,21 +327,26 @@ public class PayServiceImpl implements IPayService {
 				//更改用户充值信息
 				//this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
 				this.billUserAmountService.rechargeSuccessByOrderCode(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getOrder().getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")));
-				//设置用户支付部分余额为冻结余额
-				if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
-					return false;
+				
+				if(Integer.parseInt((String)map.get("buyType"))==1) {//续费
+					//扣除用户余额
+					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));;
+				} else {
+					//设置用户支付部分余额为冻结余额
+					if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
+						return false;
+					}
+					
+					//发送用户通知
+					//写入最近操作
+					Long createUser = orderSubs.get(0).getCreateUser();
+					UserVo ucUser = this.userService.getUcUserById(createUser);
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
+					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品已成功支付"+map.get("money")+"元，请登录网站matrix.letvcloud.com进行体验！如有问题，可拨打客服电话。");
+					
+					// ④创建应用实例
+					createInstance(orderSubs);
 				}
-				
-				
-				//发送用户通知
-				//写入最近操作
-				Long createUser = orderSubs.get(0).getCreateUser();
-				UserVo ucUser = this.userService.getUcUserById(createUser);
-				if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-				this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品已成功支付"+map.get("money")+"元，请登录网站matrix.letvcloud.com进行体验！如有问题，可拨打客服电话。");
-				
-				// ④创建应用实例
-				createInstance(orderSubs);
 				return true;
 			}
 		}
