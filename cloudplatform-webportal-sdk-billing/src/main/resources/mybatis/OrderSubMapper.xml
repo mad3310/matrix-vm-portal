@@ -33,6 +33,7 @@
 		    <result column="DATE_NUM" property="dateNum" />
 		    <result column="SUB_START_TIME" property="startTime" />
 	   	 	<result column="SUB_END_TIME" property="endTime" />
+	   	 	<result column="BUY_TYPE" property="buyType" />
 		</association>
 		
 		<association property="order" javaType="Order">
@@ -169,7 +170,7 @@
 	
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
-	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,
+	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,sub.BUY_TYPE,
 	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,region.NAME BASE_REGION_NAME,
 	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.PAY_TIME,od.DESCN ORDER_DESCN,od.CREATE_TIME ORDER_CREATE_TIME,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE,
 	        record.ID RECORD_ID,record.INSTANCE_ID,od.ACCOUNT_PRICE

@@ -19,6 +19,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.dao.letvcloud.BillRechargeRecordMapper;
 import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
+import com.letv.portal.model.letvcloud.BillDeduction;
 import com.letv.portal.model.letvcloud.BillRechargeRecord;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.model.message.Message;
@@ -276,6 +277,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				ret = true;
 			} else {
 				logger.error("账户冻结余额小于需要转移金额,用户id:"+userId+",金额："+price);
+				return ret;
 			}
 		}
 		//服务创建失败后保存回退金额消息通知
@@ -306,6 +308,25 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         }
         return ret;
 	}
+	
+	@Override
+	public boolean reduceAvailableAmount(long userId, BigDecimal price) {
+		boolean ret = false;
+		logger.info("开始扣除可用余额,用户id:"+userId+",金额："+price);
+		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
+		synchronized(obj) {
+			if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
+				billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
+				billUserAmountMapper.reduceAvailableAmount(billUserAmount);
+				logger.info("扣除可用余额成功,用户id:"+userId+",金额："+price);
+				ret = true;
+			} else {
+				logger.error("账户可用余额小于可用金额,用户id:"+userId+",金额："+price);
+				return ret;
+			}
+		}
+        return ret;
+	}
 
 	@Override
 	public boolean reduceFreezeAmount(long userId, BigDecimal price, String productName, String productType) {
@@ -320,6 +341,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				ret = true;
 			} else {
 				logger.error("冻结金额小于需要扣除金额,用户id:"+userId+",金额："+price);
+				return ret;
 			}
 		}
 		//服务创建成功后保存扣减金额消息通知
@@ -366,6 +388,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				ret = true;
 			} else {
 				logger.error("冻结金额小于需要处理金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
+				return ret;
 			}
 		}
 		
