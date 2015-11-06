@@ -1,3 +1,10 @@
+var redirects={
+    '2':'/cvm/#/vm',
+    '3':'/cvm/#/vm-disk',
+    '4':'/cvm/#/vm-floatIP',
+    '5':'/cvm/#/vm-router',
+    'renew':'http://uc.letvcloud.com/uc/renew/getRenewView.do'
+}
 //余额选择
 function remainChose(){
     $('.self-checkbox').unbind('click').click(function(event) {
@@ -231,6 +238,7 @@ function alloptionsHandle(){
 function goPay(){
     var width=document.body.scrollWidth;
     var orderNum=$('#orderNum').val();
+    var redirect=$('#redirect').val();
     var remain=orderDetail();
     $('#pay').unbind('click').click(function(event){//窗口&跳转支付
         remain.done(function(){
@@ -281,17 +289,20 @@ function goPay(){
             }
         });   
     });
-    
     $('.paybtn').unbind('click').click(function(event) {//隐藏窗口
         $.ajax({
             url: '/order/pay/'+orderNum,
             type: 'get',
             success:function(data){
+                var url='/cvm/#/vm';
                 if(data.result==0){//error
 
                 }else{
                     if(data.data.status==2){//已付款
-                        window.location.href="/cvm/#/vm";
+                        if(redirects[redirect]){
+                            url=redirects[redirect]
+                        }
+                        window.location.href=url;
                         $('.modal-container').addClass('hide');
                     }else{
                         $('.modal-container').addClass('hide');
