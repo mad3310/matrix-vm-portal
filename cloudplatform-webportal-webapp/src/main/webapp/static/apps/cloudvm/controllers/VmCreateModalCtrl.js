@@ -30,8 +30,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityKeypairList = [];
     $scope.vmSecurityKeypairSelectorData=[];
     $scope.selectedVmSecurityKeypair = null;
-    $scope.vmSecurityPassword = '';
-    //$scope.vmSecurityPasswordConfirm = '';
+    $scope.vmSecurityPassword = {value:''};
     $scope.allVmBuyPeriods = Config.allBuyPeriods;
     $scope.vmBuyPeriod = $scope.allVmBuyPeriods[0];
     $scope.vmCount = 1;
@@ -90,7 +89,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         bindFloatingIp: $scope.vmNetworkPublicIpModel === 'now',
         sharedNetworkId:$scope.vmNetworkType=='primary'? selectedVmSharedNetwork.id:'',
         bandWidth:$scope.networkBandWidth,
-        adminPass: $scope.vmSecurityType=='password'? $scope.vmSecurityPassword:'',
+        adminPass: $scope.vmSecurityType=='password'? $scope.vmSecurityPassword.value:'',
         keyPairName:$scope.vmSecurityType=='keypair'? $scope.selectedVmSecurityKeypair.value:'',
         count:$scope.vmCount,
         privateSubnetId:$scope.vmNetworkType=='private'? $scope.selectedVmNetworkSubnet.value:'',//privateSubnetId和sharedNetworkId是否为空来标识选择的基础网络还是私有网络
