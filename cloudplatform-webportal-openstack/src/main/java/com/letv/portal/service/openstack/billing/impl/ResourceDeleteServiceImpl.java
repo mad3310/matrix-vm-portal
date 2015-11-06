@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.billing.impl;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.service.openstack.billing.BillingResource;
@@ -7,13 +8,11 @@ import com.letv.portal.service.openstack.billing.ResourceDeleteService;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
-import com.letv.portal.service.openstack.resource.FloatingIpResource;
-import com.letv.portal.service.openstack.resource.RouterResource;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.*;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.RandomUtil;
@@ -37,8 +36,11 @@ import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class ResourceDeleteServiceImpl implements ResourceDeleteService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ResourceDeleteServiceImpl.class);
 
     @Autowired
     private ApiService apiService;
@@ -99,14 +103,52 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
     }
 
     private void deleteBillingResource(long userId, String randomSessionId, ResourceLocator resourceLocator) throws OpenStackException {
-        if (resourceLocator.getType() == VMResource.class) {
-            deleteServer(userId, randomSessionId, resourceLocator);
-        } else if (resourceLocator.getType() == RouterResource.class) {
-            deleteRouter(userId, randomSessionId, resourceLocator);
-        } else if (resourceLocator.getType() == FloatingIpResource.class) {
-            deleteFloatingIp(userId, randomSessionId, resourceLocator);
-        } else if (resourceLocator.getType() == VolumeResource.class) {
-            deleteVolume(userId, randomSessionId, resourceLocator);
+        try {
+            if (resourceLocator.getType() == VMResource.class) {
+                deleteServer(userId, randomSessionId, resourceLocator);
+            } else if (resourceLocator.getType() == RouterResource.class) {
+                deleteRouter(userId, randomSessionId, resourceLocator);
+            } else if (resourceLocator.getType() == FloatingIpResource.class) {
+                deleteFloatingIp(userId, randomSessionId, resourceLocator);
+            } else if (resourceLocator.getType() == VolumeResource.class) {
+                deleteVolume(userId, randomSessionId, resourceLocator);
+            }
+        } catch (RegionNotFoundException ex) {
+            logger.error(ex.getMessage(), ex);
+        }
+    }
+
+    private void deleteVolumeSnapshot(long userId, String sessionId, final ResourceLocator locator) throws OpenStackException {
+        CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
+        resourceService.checkRegion(locator.region(), cinderApi);
+        final SnapshotApi snapshotApi = cinderApi.getSnapshotApi(locator.region());
+        final Snapshot snapshot = snapshotApi.get(locator.getId());
+
+        if (snapshot != null) {
+            ThreadUtil.waiting(new Function<Boolean>() {
+                @Override
+                public Boolean apply() throws Exception {
+                    Snapshot latestSnapshot = snapshotApi.get(locator.id());
+                    if (latestSnapshot == null) {
+                        return false;
+                    }
+                    Volume.Status status = latestSnapshot.getStatus();
+                    return status == Volume.Status.CREATING || status == Volume.Status.ATTACHING || status == Volume.Status.DELETING || status == Volume.Status.ERROR_DELETING;
+                }
+            }, new Timeout().time(10L).unit(TimeUnit.MINUTES));
+            if (snapshotApi.get(locator.id()) == null) {
+                return;
+            }
+
+            boolean isSuccess = snapshotApi.delete(snapshot.getId());
+            if (isSuccess) {
+                ThreadUtil.waiting(new Function<Boolean>() {
+                    @Override
+                    public Boolean apply() throws Exception {
+                        return snapshotApi.get(snapshot.getId()) != null;
+                    }
+                }, new Timeout().time(10L).unit(TimeUnit.MINUTES));
+            }
         }
     }
 
@@ -137,15 +179,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
             final SnapshotApi snapshotApi = cinderApi.getSnapshotApi(locator.region());
             for (final Snapshot snapshot : snapshotApi.list().toList()) {
                 if (volume.getId().equals(snapshot.getVolumeId())) {
-                    boolean isSuccess = snapshotApi.delete(snapshot.getId());
-                    if (isSuccess) {
-                        ThreadUtil.waiting(new Function<Boolean>() {
-                            @Override
-                            public Boolean apply() throws Exception {
-                                return snapshotApi.get(snapshot.getId()) != null;
-                            }
-                        }, new Timeout().time(10L).unit(TimeUnit.MINUTES));
-                    }
+                    deleteVolumeSnapshot(userId, sessionId, new ResourceLocator().region(locator.region()).id(snapshot.getId()));
                 }
             }
 
@@ -226,6 +260,10 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                 }
             }
 
+            if (routerApi.get(locator.id()) == null) {
+                return;
+            }
+
             boolean isSuccess = routerApi.delete(locator.id());
             if (isSuccess) {
                 ThreadUtil.waiting(new Function<Boolean>() {
@@ -244,6 +282,33 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         final ServerApi serverApi = novaApi.getServerApi(locator.region());
         Server server = serverApi.get(locator.id());
         if (server != null) {
+
+            ThreadUtil.waiting(new Function<Boolean>() {
+                @Override
+                public Boolean apply() throws Exception {
+                    Server latestServer = serverApi.get(locator.id());
+                    if (latestServer == null) {
+                        return false;
+                    }
+                    Optional<ServerExtendedStatus> serverExtendedStatusOptional = latestServer.getExtendedStatus();
+                    if (serverExtendedStatusOptional.isPresent()) {
+                        if (serverExtendedStatusOptional.get().getTaskState() != null) {
+                            return true;
+                        }
+                    }
+                    Server.Status status = latestServer.getStatus();
+                    return status == Server.Status.HARD_REBOOT
+                            || status == Server.Status.REBOOT
+                            || status == Server.Status.BUILD
+                            || status == Server.Status.REBUILD
+                            || status == Server.Status.PASSWORD
+                            || status == Server.Status.DELETED
+                            || status == Server.Status.MIGRATING;
+                }
+            }, new Timeout().time(60L).unit(TimeUnit.MINUTES));
+            if (serverApi.get(locator.id()) == null) {
+                return;
+            }
 
             boolean isSuccess = serverApi.delete(locator.id());
             if (isSuccess) {
