@@ -113,16 +113,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       $modalInstance.dismiss('cancel');
     };
 
-    $scope.$watch('vmName', function (value) {
-      if (value && value.length>15) {
-        $scope.vmName='';
-      }
-    });
-    $scope.$watch('vmSecurityPassword', function (value) {
-      if (value && value.length>15) {
-        $scope.vmSecurityPassword='';
-      }
-    });
     $scope.$watch('selectedVmCpu', function (value) {
       if (value != null) {
         initVmRamSelector();
