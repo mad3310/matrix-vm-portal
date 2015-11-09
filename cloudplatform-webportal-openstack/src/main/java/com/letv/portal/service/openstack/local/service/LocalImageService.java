@@ -4,6 +4,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmImageStatus;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.resource.ImageResource;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
@@ -20,4 +21,6 @@ public interface LocalImageService {
     void updateVmSnapshotStatus(long userId,long tenantId,String region,String imageId, CloudvmImageStatus status);
 
     void deleteVmSnapshot(long tenantId, String region, String imageId);
+
+    ImageResource getImageOrVmSnapshot(String region, String imageId);
 }
