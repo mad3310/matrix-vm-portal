@@ -6,6 +6,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListener;
@@ -1513,32 +1514,38 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
                         .get();
 
-                boolean success = volumeAttachmentApi.detachVolumeFromServer(
-                        volumeResource.getId(), vmResource.getId());
-                if (!success) {
-                    throw new OpenStackException(MessageFormat.format(
-                            "Volume \"{0}\" detach failed.",
-                            volumeResource.getId()), MessageFormat.format(
-                            "云硬盘“{0}”分离失败。", volumeResource.getId()));
-                }
-
-                volumeManager.waitingVolume(volumeResource.getRegion(),
-                        volumeResource.getId(), new VolumeChecker() {
-
-                            @Override
-                            public boolean check(Volume volume) {
-                                return volume == null
-                                        || volume.getStatus() == Volume.Status.AVAILABLE
-                                        || volume.getStatus() == Volume.Status.ERROR
-                                        || volume.getStatus() == Volume.Status.ERROR_DELETING;
-                            }
-                        });
-
-                LocalVolumeService localVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService();
+                OpenStackServiceGroup serviceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
+                LocalVolumeService localVolumeService = serviceGroup.getLocalVolumeService();
                 Long userVoUserId = openStackUser.getUserVoUserId();
                 String region = volumeResource.getRegion();
-                Volume volume = ((VolumeResourceImpl) volumeManager.get(region, volumeResource.getId())).volume;
-                localVolumeService.update(userVoUserId, userVoUserId, volumeResource.getRegion(), volume);
+                String volumeId = volumeResource.getId();
+                localVolumeService.updateStatus(userVoUserId, userVoUserId, region, volumeId, CloudvmVolumeStatus.DETTACHING);
+
+                try {
+                    boolean success = volumeAttachmentApi.detachVolumeFromServer(
+                            volumeResource.getId(), vmResource.getId());
+                    if (!success) {
+                        throw new OpenStackException(MessageFormat.format(
+                                "Volume \"{0}\" detach failed.",
+                                volumeResource.getId()), MessageFormat.format(
+                                "云硬盘“{0}”分离失败。", volumeResource.getId()));
+                    }
+
+                    volumeManager.waitingVolume(volumeResource.getRegion(),
+                            volumeResource.getId(), new VolumeChecker() {
+
+                                @Override
+                                public boolean check(Volume volume) {
+                                    return volume == null
+                                            || volume.getStatus() == Volume.Status.AVAILABLE
+                                            || volume.getStatus() == Volume.Status.ERROR
+                                            || volume.getStatus() == Volume.Status.ERROR_DELETING;
+                                }
+                            });
+                } finally {
+                    Volume volume = ((VolumeResourceImpl) volumeManager.get(region, volumeResource.getId())).volume;
+                    localVolumeService.update(userVoUserId, userVoUserId, volumeResource.getRegion(), volume);
+                }
 
                 return null;
             }
@@ -1616,7 +1623,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     @SuppressWarnings("unused")
-	@Deprecated
+    @Deprecated
     private void incVmCount() throws OpenStackException {
 //        ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
 //                .getOpenStackServiceGroup().getCloudvmVmCountService();
@@ -1632,7 +1639,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
     private void recordVmDeleted(String region, String vmId) throws OpenStackException {
         long userVoUserId = openStackUser.getUserVoUserId();
-        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().recordVmDeleted(userVoUserId,region,vmId);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().recordVmDeleted(userVoUserId, region, vmId);
 
 //        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
 
@@ -1646,7 +1653,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     @SuppressWarnings("unused")
-	@Deprecated
+    @Deprecated
     private void decVmCount() throws OpenStackException {
 //        ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
 //                .getOpenStackServiceGroup().getCloudvmVmCountService();
@@ -1804,7 +1811,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 .getLocalImageService();
         long userVoUserId = openStackUser.getUserVoUserId();
         CloudvmImage cloudvmImage = localImageService
-                .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image, name ,server);
+                .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image, name, server);
         openStackServiceGroup.getImageSyncService().syncStatus(cloudvmImage, new Checker<ImageDetails>() {
             @Override
             public boolean check(ImageDetails imageDetails) throws Exception {

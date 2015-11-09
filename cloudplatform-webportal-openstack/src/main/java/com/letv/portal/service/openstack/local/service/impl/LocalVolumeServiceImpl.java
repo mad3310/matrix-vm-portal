@@ -139,6 +139,16 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
     }
 
     @Override
+    public void updateStatus(long userId, long tenantId, String region, String volumeId, CloudvmVolumeStatus status) throws OpenStackException {
+        CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volumeId);
+        if (cloudvmVolume != null) {
+            cloudvmVolume.setStatus(status);
+            cloudvmVolume.setUpdateUser(userId);
+            cloudvmVolumeService.update(cloudvmVolume);
+        }
+    }
+
+    @Override
     public void updateNameAndDesc(long userId, long tenantId, String region, String volumeId, String name, String description) {
         CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volumeId);
         if (cloudvmVolume != null) {
