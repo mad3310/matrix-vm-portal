@@ -272,6 +272,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         volumeId:disk.id
       };
       disk.status='attaching';
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -279,6 +280,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+          $scope.isFormSubmiting=false;
         }
       });
     };
