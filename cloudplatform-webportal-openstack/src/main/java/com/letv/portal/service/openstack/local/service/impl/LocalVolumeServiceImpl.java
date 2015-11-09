@@ -128,11 +128,13 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
 
     @Override
     public void update(long userId, long tenantId, String region, Volume volume) throws OpenStackException {
-        CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volume.getId());
-        if (cloudvmVolume != null) {
-            copyProperties(volume, cloudvmVolume);
-            cloudvmVolume.setUpdateUser(userId);
-            cloudvmVolumeService.update(cloudvmVolume);
+        if (volume != null) {
+            CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volume.getId());
+            if (cloudvmVolume != null) {
+                copyProperties(volume, cloudvmVolume);
+                cloudvmVolume.setUpdateUser(userId);
+                cloudvmVolumeService.update(cloudvmVolume);
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class LocalVolumeResource implements VolumeResource {
 //            attachments = new HashSet<VolumeAttachmentResource>();
 //            attachments.add(new LocalVolumeAttachmentResource(serverId, server.getName()));
 //        }
-        if (cloudvmVolume.getServerId() != null && cloudvmVolume.getName() != null) {
+        if (StringUtils.isNotEmpty(cloudvmVolume.getServerId())) {
             attachments = new HashSet<VolumeAttachmentResource>();
             attachments.add(new LocalVolumeAttachmentResource(cloudvmVolume.getServerId(), cloudvmVolume.getServerName()));
         }
