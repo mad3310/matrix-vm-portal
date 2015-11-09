@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.local.resource;
 
+import com.google.common.base.CaseFormat;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
@@ -8,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by zhouxianguang on 2015/10/21.
@@ -38,10 +41,14 @@ public class LocalVolumeResource implements VolumeResource {
 
     @Override
     public String getStatus() {
+        String status;
         if (cloudvmVolume.getStatus() == CloudvmVolumeStatus.WAITING_ATTACHING) {
-            return CloudvmVolumeStatus.ATTACHING.toString().toLowerCase();
+            status = CloudvmVolumeStatus.ATTACHING.toString();
+        } else {
+            status = cloudvmVolume.getStatus().toString();
         }
-        return cloudvmVolume.getStatus().toString().toLowerCase();
+        status = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, status);
+        return status;
     }
 
     @Override
