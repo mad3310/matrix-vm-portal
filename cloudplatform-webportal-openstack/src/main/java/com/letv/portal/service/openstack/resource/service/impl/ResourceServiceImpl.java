@@ -145,7 +145,7 @@ public class ResourceServiceImpl implements ResourceService {
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
-        getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
+        final Network privateNetwork = getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
 
         final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
         final PortApi portApi = neutronApi.getPortApi(region);
@@ -164,10 +164,15 @@ public class ResourceServiceImpl implements ResourceService {
                             Network attachedNetwork = networkApi.get(attachedNetworkId);
                             if (attachedNetwork.getShared()) {
                                 throw new UserOperationException("VM is attached to shared network:" + attachedNetworkId, MessageFormat.format("虚拟机“{0}”已加入基础网络：“{1}”，不能关联私有子网", vmId, attachedNetworkId));
+                            } else if (!StringUtils.equals(privateNetwork.getId(), attachedNetwork.getId())) {
+                                throw new UserOperationException("VM is attached to other private network:" + attachedNetworkId, MessageFormat.format("虚拟机“{0}”已加入私有网络：“{1}”，不能关联其他私有网络下的私有子网", vmId, attachedNetworkId));
                             } else {
                                 if (interfaceAttachment.getFixedIps() != null && !interfaceAttachment.getFixedIps().isEmpty()) {
-                                    String attachedSubnetId = interfaceAttachment.getFixedIps().iterator().next().getSubnetId();
-                                    throw new UserOperationException("VM is attached to subnet:" + attachedSubnetId, MessageFormat.format("虚拟机“{0}”已关联私有子网：“{1}”，需要先解除关联才能关联私有子网", vmId, attachedSubnetId));
+                                    for (FixedIP fixedIP : interfaceAttachment.getFixedIps()) {
+                                        if (StringUtils.equals(fixedIP.getSubnetId(), subnetId)) {
+                                            throw new UserOperationException("VM is attached to subnet:" + fixedIP.getSubnetId(), MessageFormat.format("虚拟机“{0}”已关联私有子网：“{1}”，不需要重复关联", vmId, fixedIP.getSubnetId()));
+                                        }
+                                    }
                                 }
                             }
                         }
