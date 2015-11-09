@@ -4,7 +4,7 @@
 define(['controllers/app.controller'], function (controllerModule) {
   controllerModule.controller('VmImageCrtl', ['$scope','$interval','Config','$modal','HttpService','WidgetService','CurrentContext',
     function ($scope,$interval, Config,$modal,HttpService,WidgetService,CurrentContext) {
-      $scope.searchImgName='';
+      $scope.searchName='';
       $scope.imageList = [];
       $scope.currentPage = 1;
       $scope.totalItems = 0;
@@ -12,6 +12,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.onPageChange = function () {
         refreshimageList();
       };
+
+      $scope.doSearch = function () {
+        refreshimageList();
+      };
+
       $scope.isAllImgChecked=function(){
         var unCheckedImgs=$scope.imageList.filter(function(img){
           return img.checked===false || img.checked===undefined;
@@ -36,7 +41,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       var refreshimageList = function () {
           var queryParams = {
             region:CurrentContext.regionId,
-            name:$scope.searchImgName,
+            name:$scope.searchName,
             currentPage: $scope.currentPage,
             recordsPerPage: $scope.pageSize
           };
