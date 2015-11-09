@@ -89,7 +89,7 @@ public class LocalImageServiceImpl implements LocalImageService {
     }
 
     @Override
-    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image,String imageName, Server server) {
+    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image, String imageName, Server server) {
         CloudvmImage cloudvmImage = new CloudvmImage();
         cloudvmImage.setType(CloudvmImageShareType.PRIVATE);
         cloudvmImage.setCreateUser(userId);
@@ -124,5 +124,14 @@ public class LocalImageServiceImpl implements LocalImageService {
         if (cloudvmImage != null) {
             cloudvmImageService.delete(cloudvmImage);
         }
+    }
+
+    @Override
+    public ImageResource getImageOrVmSnapshot(String region, String imageId) {
+        CloudvmImage cloudvmImage = cloudvmImageService.getImageOrVmSnapshot(region, imageId);
+        if (cloudvmImage != null) {
+            return new LocalImageResource(cloudvmImage);
+        }
+        return null;
     }
 }
