@@ -177,6 +177,10 @@ body {
     background-color: #088ac2;
     border-color: #088ac2;
 }
+
+.tooltip-validate-info{
+    width: 300px;
+}
 /*end override bootstrap style*/
 
 /*begin override rzslider style*/
