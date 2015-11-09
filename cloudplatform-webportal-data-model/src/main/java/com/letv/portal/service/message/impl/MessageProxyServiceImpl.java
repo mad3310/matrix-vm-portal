@@ -70,8 +70,8 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 		map.put("msgStatus", msg.getMsgStatus());
 		map.put("msgType", msg.getMsgType());
 		
-		//buffer.append(UC_AUTH_API_HTTP).append("/pubMessage.do?userid=").append(userId);
-		buffer.append("http://10.150.146.171/uc-http-api/pubMessage.do?userid=").append(userId);
+		buffer.append(UC_AUTH_API_HTTP).append("/pubMessage.do?userid=").append(userId);
+		//buffer.append("http://10.150.146.171/uc-http-api/pubMessage.do?userid=").append(userId);
 		logger.info("saveMessage url:{}",buffer.toString());
 		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
 		logger.info("保存消息:"+map.toString());
