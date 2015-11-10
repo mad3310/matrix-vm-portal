@@ -183,6 +183,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
         }
+        if(checkedDisks[0].status!=='available' && checkedDisks[0].status!=='in-use'){
+          WidgetService.notifyWarning('云硬盘当前状态不可创建快照');
+          return;
+        }
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
           templateUrl: 'VmDiskSnapshotCreateModalTpl',
