@@ -39,7 +39,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         count:$scope.diskCount,
         order_time: $scope.diskBuyPeriod.toString()
       };
-      $scope.isOrderSubmiting=true;
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.disk_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -47,7 +47,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云硬盘失败');
-          $scope.isOrderSubmiting=false;
+          $scope.isFormSubmiting=false;
         }
       });
     };
