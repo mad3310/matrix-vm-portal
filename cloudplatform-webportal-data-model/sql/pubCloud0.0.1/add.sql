@@ -112,7 +112,7 @@ alter table bill_recharge_record add column orderCode varchar(50) DEFAULT NULL C
 CREATE TABLE `WEBPORTAL_OPERATE` (
   `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '最近操作表主键',
   `ACTION` varchar(100) DEFAULT NULL COMMENT '动作',
-  `CONTENT` varchar(128) DEFAULT NULL COMMENT '内容',
+  `CONTENT` varchar(300) DEFAULT NULL COMMENT '内容',
   `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   `CREATE_USER` bigint(20) unsigned DEFAULT NULL COMMENT '创建用户',
   `DESCN` varchar(200) DEFAULT NULL COMMENT '描述',
