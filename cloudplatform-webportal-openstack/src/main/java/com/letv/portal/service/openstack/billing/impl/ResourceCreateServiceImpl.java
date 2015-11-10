@@ -109,7 +109,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
     @Async
     @Override
-    public void createVm(long userId, String reqParaJson, VmCreateListener listener, Object listenerUserData) throws MatrixException {
+    public void createVm(long userId, String reqParaJson, VmCreateListener vmCreateListener, Object listenerUserData) throws MatrixException {
         try {
 //            Session session = sessionService.getSession();
 //            logger.info("ResourceCreateServiceImpl.createVm session = ", session);
@@ -123,7 +123,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
 
-            openStackSession.getVMManager().createForBilling(userId, vmCreateConf, listener, listenerUserData);
+            openStackSession.getVMManager().createForBilling(userId, vmCreateConf, vmCreateListener, listenerUserData);
 
 //            List<ResourceLocator> resourceLocators = new LinkedList<ResourceLocator>();
 //            for (VmCreateContext vmCreateContext : multiVmCreateContext.getVmCreateContexts()) {

@@ -9,7 +9,7 @@ import com.letv.portal.service.openstack.resource.VolumeTypeResource;
  * Created by zhouxianguang on 2015/9/21.
  */
 public interface ResourceCreateService {
-    void createVm(long userId, String reqParaJson, VmCreateListener listener, Object listenerUserData) throws MatrixException;
+    void createVm(long userId, String reqParaJson, VmCreateListener vmCreateListener, Object listenerUserData) throws MatrixException;
 
     CheckResult checkVmCreatePara(String reqParaJson);
 
