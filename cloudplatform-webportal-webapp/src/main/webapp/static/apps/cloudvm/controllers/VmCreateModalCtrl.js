@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region,vmSnapshot) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window,$sce,$httpParamSerializerJQLike,$modal, region,vmSnapshot) {
 
     $scope.isDesignatedVmSnapshot = vmSnapshot?true:false;
     $scope.activeFlow = 1;
@@ -108,8 +108,31 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-    $scope.closeModal = function () {
-      $modalInstance.dismiss('cancel');
+    $scope.openVmKeypairCreateModal = function (size) {
+      var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: '/static/apps/cloudvm/templates/vm-keypair-create-modal.html',
+        controller: 'VmKeypairCreateModalCtrl',
+        size: size,
+        backdrop: 'static',
+        keyboard: false,
+        resolve: {
+          region: function () {
+            return CurrentContext.regionId;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (resultData) {
+        if (resultData) {
+          $scope.keypairDownloadUrl=$sce.trustAsResourceUrl(Config.urls.keypair_create+'?'+$httpParamSerializerJQLike(resultData));
+          $timeout(function(){
+            WidgetService.notifySuccess('密钥创建成功');
+            initVmSecurityKeypairSelector();
+          },2000);
+        }
+      }, function () {
+      });
     };
 
     $scope.$watch('selectedVmCpu', function (value) {
