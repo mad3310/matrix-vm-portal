@@ -15,12 +15,14 @@ import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -138,7 +140,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
         List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByServerIdAndStatus(tenantId, region, serverId, null);
         List<CloudvmVolume> needSyncCloudvmVolumes = new LinkedList<CloudvmVolume>();
         for (CloudvmVolume cloudvmVolume : cloudvmVolumes) {
-            if (cloudvmVolume.getStatus() != CloudvmVolumeStatus.NIL) {
+            if (!ArrayUtils.contains(CloudvmVolumeStatus.matrixStatus, cloudvmVolume.getStatus())) {
                 needSyncCloudvmVolumes.add(cloudvmVolume);
             }
             cloudvmVolume.setServerId(null);
