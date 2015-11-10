@@ -96,6 +96,7 @@ define(['./common.service'], function (serviceModule) {
       {"text": "使用中", "value": "in-use"},
       {"text": "删除中", "value": "deleting"},
       {"text": "异常", "value": "error"},
+      //前端自定义
       {"text": "已删除", "value": "deleted"},
       {"text": "解挂中", "value": "detaching"},
     ];

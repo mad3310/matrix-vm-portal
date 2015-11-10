@@ -81,7 +81,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.detachDisk=function(){
-        var checkedDisks=getCheckedDisk();
+        var checkedDisks=getCheckedDisk(),
+          previousStatus=checkedDisks[0].status;
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
@@ -102,10 +103,12 @@ define(['controllers/app.controller'], function (controllerModule) {
           HttpService.doPost(Config.urls.disk_detach.replace('{region}', checkedDisks[0].region), data).success(function (data, status, headers, config) {
             if(data.result===1){
               modalInstance.close(data);
+              checkedDisks[0].status='available';
               WidgetService.notifySuccess('解挂云硬盘成功');
               refreshDiskList();
             }
             else{
+              checkedDisks[0].status=previousStatus;
               WidgetService.notifyError(data.msgs[0]||'解挂云硬盘失败');
             }
           });
@@ -114,7 +117,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.deleteDisk=function(){
-        var checkedDisks=getCheckedDisk();
+        var checkedDisks=getCheckedDisk(),
+          previousStatus=checkedDisks[0].status;
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
@@ -139,6 +143,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               refreshDiskList();
             }
             else{
+              checkedDisks[0].status=previousStatus;
               WidgetService.notifyError(data.msgs[0]||'删除云硬盘失败');
             }
           });
@@ -150,6 +155,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         var checkedDisks=getCheckedDisk();
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        if(checkedDisks[0].status!=='available' && checkedDisks[0].status!=='in-use'){
+          WidgetService.notifyWarning('云硬盘当前状态不可编辑');
           return;
         }
         var modalInstance = $modal.open({
@@ -274,16 +283,19 @@ define(['controllers/app.controller'], function (controllerModule) {
       var data = {
         vmId:$scope.selectedVm.value,
         volumeId:disk.id
-      };
+      },
+      previousStatus=disk.status;
       disk.status='attaching';
       $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
+          disk.status='in-use';
           WidgetService.notifySuccess('云硬盘挂载成功');
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+          disk.status=previousStatus;
           $scope.isFormSubmiting=false;
         }
       });
@@ -352,15 +364,15 @@ define(['controllers/app.controller'], function (controllerModule) {
         volumeId:disk.id,
         name:$scope.diskSnapshotName
       };
-      $scope.isOrderSubmiting=true;
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.snapshot_disk_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云硬盘快照创建成功');
+          WidgetService.notifySuccess('云硬盘快照创建成功，请前往快照页面查看。');
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'云硬盘快照创建失败');
-          $scope.isOrderSubmiting=false;
+          $scope.isFormSubmiting=false;
         }
       });
     };

@@ -23,7 +23,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         count:1,//为了给计费提供支持
         order_time: $scope.routeBuyPeriod.toString()
       };
-      $scope.isOrderSubmiting=true;
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.router_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -31,7 +31,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建路由器失败');
-          $scope.isOrderSubmiting=false;
+          $scope.isFormSubmiting=false;
         }
       });
     };
