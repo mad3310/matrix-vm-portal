@@ -7,6 +7,7 @@ import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.billing.BillingResource;
 import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.listeners.*;
@@ -14,8 +15,7 @@ import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
-import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.VolumeTypeResource;
+import com.letv.portal.service.openstack.resource.*;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
@@ -44,6 +44,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -116,7 +117,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
             VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             }, true);
-            if(StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())){
+            if (StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())) {
                 vmCreateConf.setBindFloatingIp(false);
             }
             validationService.validate(vmCreateConf);
@@ -140,7 +141,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         try {
             VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             }, true);
-            if(StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())){
+            if (StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())) {
                 vmCreateConf.setBindFloatingIp(false);
             }
             validationService.validate(vmCreateConf);
@@ -150,6 +151,29 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         } catch (Exception e) {
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
+    }
+
+    @Override
+    public Set<Class<? extends BillingResource>> getResourceTypesOfVmCreatePara(String reqParaJson) throws MatrixException {
+        Set<Class<? extends BillingResource>> resourceTypes = new HashSet<Class<? extends BillingResource>>();
+        resourceTypes.add(VMResource.class);
+        try {
+            VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
+            }, true);
+            if (StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())) {
+                vmCreateConf.setBindFloatingIp(false);
+            }
+            if (vmCreateConf.getBindFloatingIp()) {
+                resourceTypes.add(FloatingIpResource.class);
+            }
+            if (vmCreateConf.getVolumeSize() > 0) {
+                resourceTypes.add(VolumeResource.class);
+            }
+            return resourceTypes;
+        } catch (Exception ex) {
+            ExceptionUtil.throwMatrixException(ex);
+        }
+        return resourceTypes;
     }
 
     @Override
