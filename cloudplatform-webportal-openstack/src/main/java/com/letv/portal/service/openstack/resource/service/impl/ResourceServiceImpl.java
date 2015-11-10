@@ -7,7 +7,6 @@ import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
-import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.JsonUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.Timeout;
@@ -146,7 +145,7 @@ public class ResourceServiceImpl implements ResourceService {
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
-        getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
+        final Network privateNetwork = getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
 
         final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
         final PortApi portApi = neutronApi.getPortApi(region);
@@ -165,10 +164,15 @@ public class ResourceServiceImpl implements ResourceService {
                             Network attachedNetwork = networkApi.get(attachedNetworkId);
                             if (attachedNetwork.getShared()) {
                                 throw new UserOperationException("VM is attached to shared network:" + attachedNetworkId, MessageFormat.format("虚拟机“{0}”已加入基础网络：“{1}”，不能关联私有子网", vmId, attachedNetworkId));
+                            } else if (!StringUtils.equals(privateNetwork.getId(), attachedNetwork.getId())) {
+                                throw new UserOperationException("VM is attached to other private network:" + attachedNetworkId, MessageFormat.format("虚拟机“{0}”已加入私有网络：“{1}”，不能关联其他私有网络下的私有子网", vmId, attachedNetworkId));
                             } else {
                                 if (interfaceAttachment.getFixedIps() != null && !interfaceAttachment.getFixedIps().isEmpty()) {
-                                    String attachedSubnetId = interfaceAttachment.getFixedIps().iterator().next().getSubnetId();
-                                    throw new UserOperationException("VM is attached to subnet:" + attachedSubnetId, MessageFormat.format("虚拟机“{0}”已关联私有子网：“{1}”，需要先解除关联才能关联私有子网", vmId, attachedSubnetId));
+                                    for (FixedIP fixedIP : interfaceAttachment.getFixedIps()) {
+                                        if (StringUtils.equals(fixedIP.getSubnetId(), subnetId)) {
+                                            throw new UserOperationException("VM is attached to subnet:" + fixedIP.getSubnetId(), MessageFormat.format("虚拟机“{0}”已关联私有子网：“{1}”，不需要重复关联", vmId, fixedIP.getSubnetId()));
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -246,7 +250,7 @@ public class ResourceServiceImpl implements ResourceService {
                         public Boolean apply() throws Exception {
                             return attachInterfaceApi.get(vmId, attachmentId) != null;
                         }
-                    },new Timeout().time(5L).unit(TimeUnit.MINUTES));
+                    }, new Timeout().time(5L).unit(TimeUnit.MINUTES));
                 } catch (Exception ex) {
                     return ex;
                 }
@@ -270,6 +274,44 @@ public class ResourceServiceImpl implements ResourceService {
                 for (InterfaceAttachment interfaceAttachment : attachInterfaceApi.list(server.getId())) {
                     if (interfaceAttachment.getNetworkId() != null) {
                         return null;
+                    }
+                }
+                return server;
+            }
+        });
+
+        List<VMResource> vmResources = new LinkedList<VMResource>();
+        for (Server server : servers) {
+            vmResources.add(new VMResourceImpl(region, server));
+        }
+        return vmResources;
+    }
+
+    @Override
+    public List<VMResource> listVmCouldAttachSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, final String subnetId) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
+        ServerApi serverApi = novaApi.getServerApi(region);
+        final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
+        SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+        NetworkApi networkApi = neutronApi.getNetworkApi(region);
+        Subnet subnet = getSubnet(subnetApi, subnetId);
+        final Network network = getPrivateNetwork(networkApi, subnet.getNetworkId());
+
+        List<Server> servers = ThreadUtil.concurrentFilter(serverApi.listInDetail().concat().toList(), new Function1<Server, Server>() {
+            @Override
+            public Server apply(Server server) throws Exception {
+                for (InterfaceAttachment interfaceAttachment : attachInterfaceApi.list(server.getId())) {
+                    if (interfaceAttachment.getNetworkId() != null) {
+                        if (StringUtils.equals(interfaceAttachment.getNetworkId(), network.getId())) {
+                            ImmutableSet<FixedIP> fixedIPs = interfaceAttachment.getFixedIps();
+                            for (FixedIP fixedIP : fixedIPs) {
+                                if (StringUtils.equals(fixedIP.getSubnetId(), subnetId)) {
+                                    return null;
+                                }
+                            }
+                        } else {
+                            return null;
+                        }
                     }
                 }
                 return server;
@@ -403,7 +445,7 @@ public class ResourceServiceImpl implements ResourceService {
             public Boolean apply() throws Exception {
                 return keyPairApi.get(name) != null;
             }
-        },new Timeout().time(5L).unit(TimeUnit.MINUTES));
+        }, new Timeout().time(5L).unit(TimeUnit.MINUTES));
     }
 
 }

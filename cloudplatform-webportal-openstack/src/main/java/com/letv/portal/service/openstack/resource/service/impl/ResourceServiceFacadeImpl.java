@@ -43,12 +43,12 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
     }
 
     @SuppressWarnings("unused")
-	private CinderApi getCinderApi() {
+    private CinderApi getCinderApi() {
         return apiService.getCinderApi();
     }
 
     @SuppressWarnings("unused")
-	private GlanceApi getGlanceApi() {
+    private GlanceApi getGlanceApi() {
         return apiService.getGlanceApi();
     }
 
@@ -77,6 +77,13 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
         return resourceService.listVmNotInAnyNetwork(novaApi, neutronApi, region);
+    }
+
+    @Override
+    public List<VMResource> listVmCouldAttachSubnet(String region, String subnetId) throws OpenStackException {
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+        return resourceService.listVmCouldAttachSubnet(novaApi, neutronApi, region, subnetId);
     }
 
     @Override
@@ -115,5 +122,4 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         NovaApi novaApi = getNovaApi();
         resourceService.deleteKeyPair(novaApi, userVoUserId, tenantId, region, name);
     }
-
 }

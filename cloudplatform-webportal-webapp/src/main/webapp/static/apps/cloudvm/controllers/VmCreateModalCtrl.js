@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region,vmSnapshot) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window,$sce,$httpParamSerializerJQLike,$modal, region,vmSnapshot) {
 
     $scope.isDesignatedVmSnapshot = vmSnapshot?true:false;
     $scope.activeFlow = 1;
@@ -96,7 +96,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         snapshotId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmSnapshot.id:'',
         order_time: $scope.vmBuyPeriod.toString(),
       };
-      $scope.isOrderSubmiting=true;
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -104,12 +104,35 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云主机失败');
-          $scope.isOrderSubmiting=false;
+          $scope.isFormSubmiting=false;
         }
       });
     };
-    $scope.closeModal = function () {
-      $modalInstance.dismiss('cancel');
+    $scope.openVmKeypairCreateModal = function (size) {
+      var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: '/static/apps/cloudvm/templates/vm-keypair-create-modal.html',
+        controller: 'VmKeypairCreateModalCtrl',
+        size: size,
+        backdrop: 'static',
+        keyboard: false,
+        resolve: {
+          region: function () {
+            return CurrentContext.regionId;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (resultData) {
+        if (resultData) {
+          $scope.keypairDownloadUrl=$sce.trustAsResourceUrl(Config.urls.keypair_create+'?'+$httpParamSerializerJQLike(resultData));
+          $timeout(function(){
+            WidgetService.notifySuccess('密钥创建成功');
+            initVmSecurityKeypairSelector();
+          },2000);
+        }
+      }, function () {
+      });
     };
 
     $scope.$watch('selectedVmCpu', function (value) {

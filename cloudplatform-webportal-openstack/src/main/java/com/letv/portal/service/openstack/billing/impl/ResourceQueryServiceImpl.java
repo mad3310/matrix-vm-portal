@@ -11,8 +11,10 @@ import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.BillingResource;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.ResourceQueryService;
+import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
+import com.letv.portal.service.openstack.jclouds.cache.UserApiCache;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
@@ -28,6 +30,7 @@ import com.letv.portal.service.openstack.util.tuple.Tuple2;
 
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.keystone.v2_0.features.UserApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.Router;
@@ -99,8 +102,8 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
         }
     }
 
-    private BillingResource getServer(Long userId, String sessionId, ResourceLocator locator) {
-        NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
+    private BillingResource getServer(UserApiCache userApiCache, ResourceLocator locator) throws OpenStackException {
+        NovaApi novaApi = userApiCache.getApi(NovaApi.class);
         if (novaApi.getConfiguredRegions().contains(locator.region())) {
             Server server = novaApi
                     .getServerApi(locator.region()).get(locator.id());
@@ -112,8 +115,8 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
     }
 
     @SuppressWarnings("unused")
-	private BillingResource getVolume(Long userId, String sessionId, ResourceLocator locator) {
-        CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
+    private BillingResource getVolume(UserApiCache userApiCache, ResourceLocator locator) throws OpenStackException {
+        CinderApi cinderApi = userApiCache.getApi(CinderApi.class);
         if (cinderApi.getConfiguredRegions().contains(locator.region())) {
             Volume volume = cinderApi
                     .getVolumeApi(locator.region()).get(locator.id());
@@ -124,8 +127,8 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
         return null;
     }
 
-    private BillingResource getRouter(Long userId, String sessionId, ResourceLocator locator) {
-        NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+    private BillingResource getRouter(UserApiCache userApiCache, ResourceLocator locator) throws OpenStackException {
+        NeutronApi neutronApi = userApiCache.getApi(NeutronApi.class);
         if (neutronApi.getConfiguredRegions().contains(locator.region())) {
             Router router = neutronApi
                     .getRouterApi(locator.region()).get().get(locator.id());
@@ -136,8 +139,8 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
         return null;
     }
 
-    private BillingResource getFloatingIp(Long userId, String sessionId, ResourceLocator locator) {
-        NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+    private BillingResource getFloatingIp(UserApiCache userApiCache, ResourceLocator locator) throws OpenStackException {
+        NeutronApi neutronApi = userApiCache.getApi(NeutronApi.class);
         if (neutronApi.getConfiguredRegions().contains(locator.region())) {
             FloatingIP floatingIP = neutronApi
                     .getFloatingIPApi(locator.region()).get().get(locator.id());
@@ -152,11 +155,11 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
     public Map<ResourceLocator, BillingResource> getResources(final long userId, final Iterable<ResourceLocator> resourceLocators) throws MatrixException {
         final Map<ResourceLocator, BillingResource> map = new HashMap<ResourceLocator, BillingResource>();
         try {
-            final String randomSessionId = RandomUtil.generateRandomSessionId();
-            apiService.loadAllApiForRandomSessionFromBackend(userId, randomSessionId);
+            final UserApiCache userApiCache = new UserApiCache(userId);
             try {
+                userApiCache.loadApis(NovaApi.class, NeutronApi.class);
                 @SuppressWarnings("unchecked")
-				List<Ref<List<Tuple2<ResourceLocator, BillingResource>>>> resultRefList = ThreadUtil.concurrentRunAndWait(new Timeout().time(40L).unit(TimeUnit.MINUTES), new Function<List<Tuple2<ResourceLocator, BillingResource>>>() {
+                List<Ref<List<Tuple2<ResourceLocator, BillingResource>>>> resultRefList = ThreadUtil.concurrentRunAndWait(new Timeout().time(40L).unit(TimeUnit.MINUTES), new Function<List<Tuple2<ResourceLocator, BillingResource>>>() {
                     @Override
                     public List<Tuple2<ResourceLocator, BillingResource>> apply() throws Exception {
                         List<Tuple2<ResourceLocator, BillingResource>> entries = ThreadUtil.concurrentFilter(
@@ -167,11 +170,11 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
                                             throws Exception {
                                         BillingResource billingResource = null;
                                         if (locator.getType() == VMResource.class) {
-                                            billingResource = getServer(userId, randomSessionId, locator);
+                                            billingResource = getServer(userApiCache, locator);
                                         } else if (locator.getType() == RouterResource.class) {
-                                            billingResource = getRouter(userId, randomSessionId, locator);
+                                            billingResource = getRouter(userApiCache, locator);
                                         } else if (locator.getType() == FloatingIpResource.class) {
-                                            billingResource = getFloatingIp(userId, randomSessionId, locator);
+                                            billingResource = getFloatingIp(userApiCache, locator);
                                         }
                                         if (billingResource != null) {
                                             return new Tuple2<ResourceLocator, BillingResource>(locator, billingResource);
@@ -209,7 +212,7 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
                     }
                 }
             } finally {
-                apiService.clearCache(userId, randomSessionId);
+                userApiCache.close();
             }
         } catch (Exception ex) {
             ExceptionUtil.throwMatrixException(ex);

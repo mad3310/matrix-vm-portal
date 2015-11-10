@@ -22,7 +22,8 @@ define([
         'controllers/VmIPcreateModalCtrl',
         'controllers/VmSnapshotCrtl',
         'controllers/VmImageCrtl',
-        'controllers/VmKeypairCrtl'
+        'controllers/VmKeypairCrtl',
+        'controllers/VmKeypairCreateModalCtrl',
   ],
   function (controllerModule) {
 

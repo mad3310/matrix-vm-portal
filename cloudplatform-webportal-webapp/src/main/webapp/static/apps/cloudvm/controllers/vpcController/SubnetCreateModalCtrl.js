@@ -23,14 +23,14 @@ define(['controllers/app.controller'], function (controllerModule) {
                 enableDhcp:'true',
                 gatewayIp:$scope.selectedCidr.relatedOption.gatewayIp
             };
-            $scope.isOrderSubmiting=true;
+            $scope.isFormSubmiting=true;
             HttpService.doPost(Config.urls.subnet_create, data).success(function (data, status, headers, config) {
                 if (data.result === 1) {
                     $modalInstance.close({result: 1});
                     WidgetService.notifySuccess(data.msgs[0] || '创建子网完成');
                 }
                 else {
-                    $scope.isOrderSubmiting=false;
+                    $scope.isFormSubmiting=false;
                     WidgetService.notifyError(data.msgs[0] || '创建子网失败');
                 }
             });
@@ -88,14 +88,14 @@ define(['controllers/app.controller'], function (controllerModule) {
                 enableDhcp:'true',
                 gatewayIp:$scope.selectedCidr.relatedOption.gatewayIp
             };
-            $scope.isOrderSubmiting=true;
+            $scope.isFormSubmiting=true;
             HttpService.doPost(Config.urls.subnet_create, data).success(function (data, status, headers, config) {
                 if (data.result === 1) {
                     $modalInstance.close({result: 1});
                     WidgetService.notifySuccess(data.msgs[0] || '创建子网完成');
                 }
                 else {
-                    $scope.isOrderSubmiting=false;
+                    $scope.isFormSubmiting=false;
                     WidgetService.notifyError(data.msgs[0] || '创建子网失败');
                 }
             });

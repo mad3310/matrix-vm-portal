@@ -578,7 +578,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         vmId:vm.id,
         name:$scope.vmSnapshotName
       };
-      $scope.isOrderSubmiting=true;
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.snapshot_vm_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -586,7 +586,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'云主机快照创建失败');
-          $scope.isOrderSubmiting=false;
+          $scope.isFormSubmiting=false;
         }
       });
     };

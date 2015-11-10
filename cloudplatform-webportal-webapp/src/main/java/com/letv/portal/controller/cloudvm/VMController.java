@@ -628,6 +628,19 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/vm/couldAttachSubnet/list", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject listVmCouldAttachSubnet(@RequestParam String region, @RequestParam String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(resourceServiceFacade.listVmCouldAttachSubnet(region, subnetId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/vm/attached/subnet/list", method = RequestMethod.GET)
 	public
 	@ResponseBody

@@ -491,14 +491,14 @@ define(['controllers/app.controller'], function (controllerModule) {
                 vmIds.push($scope.selectedAssociatedVm[i].id)
             }
             data.vmIds = JSON.stringify(vmIds);
-            $scope.isOrderSubmiting=true;
+            $scope.isFormSubmiting=true;
             HttpService.doPost(Config.urls.subnet_attach_vm, data).success(function (data, status, headers, config) {
                 if(data.result===1){
                     $modalInstance.close({result:1});
                     WidgetService.notifySuccess(data.msgs[0]||'关联云主机完成');
                 }
                 else{
-                    $scope.isOrderSubmiting=false;
+                    $scope.isFormSubmiting=false;
                     WidgetService.notifyError(data.msgs[0]||'关联云主机失败');
                 }
             });
@@ -553,14 +553,14 @@ define(['controllers/app.controller'], function (controllerModule) {
                 vmIds.push($scope.selectedDetachVm[i].id)
             }
             data.vmIds = JSON.stringify(vmIds);
-            $scope.isOrderSubmiting=true;
+            $scope.isFormSubmiting=true;
             HttpService.doPost(Config.urls.subnet_detach_vm, data).success(function (data, status, headers, config) {
                 if(data.result===1){
                     $modalInstance.close({result:1});
                     WidgetService.notifySuccess(data.msgs[0]||'移除云主机完成');
                 }
                 else{
-                    $scope.isOrderSubmiting=false;
+                    $scope.isFormSubmiting=false;
                     WidgetService.notifyError(data.msgs[0]||'移除云主机失败');
                 }
             });

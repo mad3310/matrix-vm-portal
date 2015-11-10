@@ -10,6 +10,7 @@ import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.jclouds.cache.UserApiCache;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.*;
@@ -70,9 +71,10 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
     @Override
     public void deleteResource(final long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
         try {
-            final String randomSessionId = RandomUtil.generateRandomSessionId();
-            apiService.loadAllApiForRandomSessionFromBackend(userId, randomSessionId);
+            final UserApiCache userApiCache = new UserApiCache(userId);
             try {
+                userApiCache.loadApis(NovaApi.class, CinderApi.class, NeutronApi.class);
+
                 Map<Class<? extends BillingResource>, List<ResourceLocator>> typeToLocators = new HashMap<Class<? extends BillingResource>, List<ResourceLocator>>();
 
                 for (Iterator<ResourceLocator> it = resourceLocators.iterator(); it.hasNext(); ) {
@@ -89,37 +91,37 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                     ThreadUtil.concurrentFilter(typeToLocatorsEntry.getValue(), new Function1<Void, ResourceLocator>() {
                         @Override
                         public Void apply(ResourceLocator resourceLocator) throws Exception {
-                            deleteBillingResource(userId, randomSessionId, resourceLocator);
+                            deleteBillingResource(userId, userApiCache, resourceLocator);
                             return null;
                         }
                     });
                 }
             } finally {
-                apiService.clearCache(userId, randomSessionId);
+                userApiCache.close();
             }
         } catch (Exception ex) {
             ExceptionUtil.throwMatrixException(ex);
         }
     }
 
-    private void deleteBillingResource(long userId, String randomSessionId, ResourceLocator resourceLocator) throws OpenStackException {
+    private void deleteBillingResource(long userId, UserApiCache userApiCache, ResourceLocator resourceLocator) throws OpenStackException {
         try {
             if (resourceLocator.getType() == VMResource.class) {
-                deleteServer(userId, randomSessionId, resourceLocator);
+                deleteServer(userId, userApiCache, resourceLocator);
             } else if (resourceLocator.getType() == RouterResource.class) {
-                deleteRouter(userId, randomSessionId, resourceLocator);
+                deleteRouter(userId, userApiCache, resourceLocator);
             } else if (resourceLocator.getType() == FloatingIpResource.class) {
-                deleteFloatingIp(userId, randomSessionId, resourceLocator);
+                deleteFloatingIp(userId, userApiCache, resourceLocator);
             } else if (resourceLocator.getType() == VolumeResource.class) {
-                deleteVolume(userId, randomSessionId, resourceLocator);
+                deleteVolume(userId, userApiCache, resourceLocator);
             }
         } catch (RegionNotFoundException ex) {
             logger.error(ex.getMessage(), ex);
         }
     }
 
-    private void deleteVolumeSnapshot(long userId, String sessionId, final ResourceLocator locator) throws OpenStackException {
-        CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
+    private void deleteVolumeSnapshot(long userId, UserApiCache userApiCache, final ResourceLocator locator) throws OpenStackException {
+        CinderApi cinderApi = userApiCache.getApi(CinderApi.class);
         resourceService.checkRegion(locator.region(), cinderApi);
         final SnapshotApi snapshotApi = cinderApi.getSnapshotApi(locator.region());
         final Snapshot snapshot = snapshotApi.get(locator.getId());
@@ -152,14 +154,14 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         }
     }
 
-    private void deleteVolume(long userId, String sessionId, final ResourceLocator locator) throws OpenStackException {
-        CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
+    private void deleteVolume(long userId, UserApiCache userApiCache, final ResourceLocator locator) throws OpenStackException {
+        CinderApi cinderApi = userApiCache.getApi(CinderApi.class);
         resourceService.checkRegion(locator.region(), cinderApi);
         final VolumeApi volumeApi = cinderApi.getVolumeApi(locator.region());
         Volume volume = volumeApi.get(locator.id());
         if (volume != null) {
             if (!volume.getAttachments().isEmpty()) {
-                NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
+                NovaApi novaApi = userApiCache.getApi(NovaApi.class);
                 final VolumeAttachmentApi volumeAttachmentApi = novaApi.getVolumeAttachmentApi(locator.region()).get();
                 for (final VolumeAttachment volumeAttachment : volume.getAttachments()) {
                     boolean isSuccess = volumeAttachmentApi.detachVolumeFromServer(volumeAttachment.getVolumeId(), volumeAttachment.getServerId());
@@ -179,7 +181,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
             final SnapshotApi snapshotApi = cinderApi.getSnapshotApi(locator.region());
             for (final Snapshot snapshot : snapshotApi.list().toList()) {
                 if (volume.getId().equals(snapshot.getVolumeId())) {
-                    deleteVolumeSnapshot(userId, sessionId, new ResourceLocator().region(locator.region()).id(snapshot.getId()));
+                    deleteVolumeSnapshot(userId, userApiCache, new ResourceLocator().region(locator.region()).id(snapshot.getId()));
                 }
             }
 
@@ -211,8 +213,8 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         }
     }
 
-    private void deleteFloatingIp(long userId, String sessionId, final ResourceLocator locator) throws OpenStackException {
-        NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+    private void deleteFloatingIp(long userId, UserApiCache userApiCache, final ResourceLocator locator) throws OpenStackException {
+        NeutronApi neutronApi = userApiCache.getApi(NeutronApi.class);
         resourceService.checkRegion(locator.region(), neutronApi);
         final FloatingIPApi floatingIPApi = neutronApi.getFloatingIPApi(locator.region()).get();
         final FloatingIP floatingIP = floatingIPApi.get(locator.id());
@@ -229,8 +231,8 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         }
     }
 
-    private void deleteRouter(long userId, String sessionId, final ResourceLocator locator) throws OpenStackException {
-        NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+    private void deleteRouter(long userId, UserApiCache userApiCache, final ResourceLocator locator) throws OpenStackException {
+        NeutronApi neutronApi = userApiCache.getApi(NeutronApi.class);
         resourceService.checkRegion(locator.region(), neutronApi);
         final RouterApi routerApi = neutronApi.getRouterApi(locator.region()).get();
         Router router = routerApi.get(locator.id());
@@ -276,8 +278,8 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         }
     }
 
-    private void deleteServer(long userId, String sessionId, final ResourceLocator locator) throws OpenStackException {
-        NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
+    private void deleteServer(long userId, UserApiCache userApiCache, final ResourceLocator locator) throws OpenStackException {
+        NovaApi novaApi = userApiCache.getApi(NovaApi.class);
         resourceService.checkRegion(locator.region(), novaApi);
         final ServerApi serverApi = novaApi.getServerApi(locator.region());
         Server server = serverApi.get(locator.id());

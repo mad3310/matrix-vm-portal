@@ -62,9 +62,9 @@
                             <span class="price">{{totalPrice}}</span>
                             <span class="unit">元</span>
                         </span>
-                    <button class="btn btn-le-blue" ng-click="vm_ip_create_form.$valid && !isOrderSubmiting && createIP()" ng-disabled="isOrderSubmiting">
-                        <span ng-if="!isOrderSubmiting">提交订单</span>
-                        <span ng-if="isOrderSubmiting">订单提交中...</span>
+                    <button class="btn btn-le-blue" ng-click="vm_ip_create_form.$valid && !isFormSubmiting && createIP()" ng-disabled="isFormSubmiting">
+                        <span ng-if="!isFormSubmiting">提交订单</span>
+                        <span ng-if="isFormSubmiting">订单提交中...</span>
                     </button>
                 </div>
             </div>
