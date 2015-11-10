@@ -171,7 +171,14 @@ public class VMCreate {
                                     context.getVmCreateListener().vmCreateFailed(
                                             new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
                                 } else {
-                                    context.getVmCreateListener().vmCreated(new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), i, context.getListenerUserData()));
+                                    VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), i, context.getListenerUserData());
+                                    if (vmCreateContext.getVolume() != null) {
+                                        vmCreateEvent.setVolumeId(vmCreateContext.getVolume().getId());
+                                    }
+                                    if (vmCreateContext.getFloatingIp() != null) {
+                                        vmCreateEvent.setFloatingIpId(vmCreateContext.getFloatingIp().getId());
+                                    }
+                                    context.getVmCreateListener().vmCreated(vmCreateEvent);
                                 }
                             } else {
                                 context.getVmCreateListener().vmCreateFailed(
