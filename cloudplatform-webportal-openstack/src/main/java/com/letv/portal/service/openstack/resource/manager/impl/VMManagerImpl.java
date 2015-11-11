@@ -16,6 +16,7 @@ import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
@@ -53,10 +54,7 @@ import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.*;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
-import org.jclouds.openstack.nova.v2_0.extensions.ConsolesApi;
-import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
-import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
-import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
+import org.jclouds.openstack.nova.v2_0.extensions.*;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
@@ -1715,6 +1713,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                                 fip.getId()), MessageFormat.format(
                                 "虚拟机已绑定公网IP“{0}”，请先解绑。", fip.getId()));
                     }
+                }
+
+                AttachInterfaceApi attachInterfaceApi = novaApi.getAttachInterfaceApi(region).get();
+                if (attachInterfaceApi.list(vmId).toList().isEmpty()) {
+                    throw new UserOperationException("Vm is not in any network.", "虚拟机不属于任何一个网络，不能绑定公网IP。");
                 }
 
                 floatingIPApi.addToServer(floatingIP.getIp(), vmId);
