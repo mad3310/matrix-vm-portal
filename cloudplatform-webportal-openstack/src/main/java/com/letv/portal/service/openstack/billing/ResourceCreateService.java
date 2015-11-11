@@ -5,13 +5,17 @@ import com.letv.portal.service.openstack.billing.listeners.*;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 
+import java.util.Set;
+
 /**
  * Created by zhouxianguang on 2015/9/21.
  */
 public interface ResourceCreateService {
-    void createVm(long userId, String reqParaJson, VmCreateListener listener, Object listenerUserData) throws MatrixException;
+    void createVm(long userId, String reqParaJson, VmCreateListener vmCreateListener, Object listenerUserData) throws MatrixException;
 
     CheckResult checkVmCreatePara(String reqParaJson);
+
+    Set<Class<? extends BillingResource>> getResourceTypesOfVmCreatePara(String reqParaJson) throws MatrixException;
 
     @Deprecated
     FlavorResource getFlavor(long userId, String region, String flavorId) throws MatrixException;

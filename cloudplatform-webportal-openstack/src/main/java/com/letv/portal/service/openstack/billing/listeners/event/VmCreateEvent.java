@@ -9,12 +9,30 @@ public class VmCreateEvent {
     private String vmId;
     private Integer vmIndex;
     private Object userData;
+    private String volumeId;
+    private String floatingIpId;
 
     public VmCreateEvent(String region, String vmId, Integer vmIndex, Object userData) {
         this.region = region;
         this.vmId = vmId;
         this.vmIndex = vmIndex;
         this.userData = userData;
+    }
+
+    public String getVolumeId() {
+        return volumeId;
+    }
+
+    public void setVolumeId(String volumeId) {
+        this.volumeId = volumeId;
+    }
+
+    public String getFloatingIpId() {
+        return floatingIpId;
+    }
+
+    public void setFloatingIpId(String floatingIpId) {
+        this.floatingIpId = floatingIpId;
     }
 
     public String getRegion() {

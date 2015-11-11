@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.service.cloudvm.ICloudvmRcCountService;
+import com.letv.portal.service.common.ICommonQuotaService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.slf4j.Logger;

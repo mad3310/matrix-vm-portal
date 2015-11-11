@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.common.ICommonQuotaDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CommonQuota">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="MODULE" property="module"/>
+		<result column="TYPE" property="type" />
+		<result column="VALUE" property="value"/>
+		<result column="TENANT_ID" property="tenantId"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_COMMON_QUOTA table all fields -->
+	<sql id="Base_Column_List">
+		q.ID,q.REGION,q.MODULE,q.TYPE,q.VALUE,q.TENANT_ID,
+		q.DELETED,q.CREATE_TIME,q.CREATE_USER,q.UPDATE_TIME,q.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and q.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and q.REGION=#{region}
+			</if>
+			<if test="module != null ">
+				and q.MODULE=#{module}
+			</if>
+			<if test="type != null">
+				and q.TYPE=#{type}
+			</if>
+			<if test="tenantId != null ">
+				and q.TENANT_ID=#{tenantId}
+			</if>
+			<if test="deleted != null  ">
+				and q.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and q.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and q.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and q.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and q.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CommonQuota" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_COMMON_QUOTA(REGION,`MODULE`,`TYPE`,`VALUE`,TENANT_ID,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{module},#{type},#{value},#{tenantId},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CommonQuota">
+		update WEBPORTAL_COMMON_QUOTA
+		set
+		ID=#{id},
+		REGION=#{region},
+		`MODULE`=#{module},
+		`TYPE`=#{type},
+		`VALUE`=#{value},
+		TENANT_ID=#{tenantId},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_COMMON_QUOTA q
+		<include refid="Example_Where_Clause" />
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<select id="selectByMapForSync" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_COMMON_QUOTA q
+		<if test="id != null">
+			where q.ID > #{id}
+		</if>
+		ORDER BY q.ID ASC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CommonQuota">
+		delete from WEBPORTAL_COMMON_QUOTA where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_COMMON_QUOTA q
+		where  q.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_COMMON_QUOTA q
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>
