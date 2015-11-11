@@ -67,7 +67,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       },
       buildDisplayData=function(){
         var data=[];
-        data.push(['数量','1'].join('/:'));
+        data.push(['公网网关',$scope.enablePublicNetworkGateway === 'true'? '开启':'关闭'].join('/:'));
         return data.join('/;');
       };
 

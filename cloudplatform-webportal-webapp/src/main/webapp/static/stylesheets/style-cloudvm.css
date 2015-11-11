@@ -10,6 +10,10 @@
 }
 
 /*begin virtual-machine-view style*/
+.view-virtual-machine .list-common .table .vm-address-private{
+    line-height: 20px;
+}
+
 .vm-create-form  rzslider{width: 70%;top: 3px;}
 .vm-create-form .disk-volume,
 .vm-create-form .disk-volume-unit,
