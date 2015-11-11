@@ -26,62 +26,71 @@ public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
 
     private ICommonQuotaService commonQuotaService;
 
-    @Override
-    public void updateLocalCommonQuotaService(final long userVoUserId, final String osTenantId, final NovaApi novaApi, final NeutronApi neutronApi, final CinderApi cinderApi) throws OpenStackException {
-        ThreadUtil.concurrentRunAndWait(new Function<Void>() {
-            @Override
-            public Void apply() throws Exception {
-                Set<String> regions = novaApi.getConfiguredRegions();
-                ThreadUtil.concurrentFilter(CollectionUtil.toList(regions), new Function1<Void, String>() {
-                    @Override
-                    public Void apply(String region) throws Exception {
-                        Quota quota = novaApi.getQuotaApi(region).get().getByTenant(osTenantId);
-                        List<CommonQuota> commonQuotaList = commonQuotaService.insertDefaultAndSelectByRegion(userVoUserId, region);
-                        ThreadUtil.concurrentFilter(commonQuotaList, new Function1<Void, CommonQuota>() {
-                            @Override
-                            public Void apply(CommonQuota commonQuota) throws Exception {
-                                CommonQuotaType type = commonQuota.getType();
-                                if (type == CommonQuotaType.CLOUDVM_CPU) {
+    
 
-                                } else if (type == CommonQuotaType.CLOUDVM_VM) {
-
-                                } else if (type == CommonQuotaType.CLOUDVM_MEMORY){
-
-                                }
-                                return null;
-                            }
-                        });
-                        return null;
-                    }
-                });
-                return null;
-            }
-        }, new Function<Void>() {
-            @Override
-            public Void apply() throws Exception {
-                Set<String> regions = neutronApi.getConfiguredRegions();
-                ThreadUtil.concurrentFilter(CollectionUtil.toList(regions), new Function1<Void, String>() {
-                    @Override
-                    public Void apply(String region) throws Exception {
-
-                        return null;
-                    }
-                });
-                return null;
-            }
-        }, new Function<Void>() {
-            @Override
-            public Void apply() throws Exception {
-                Set<String> regions = cinderApi.getConfiguredRegions();
-                ThreadUtil.concurrentFilter(CollectionUtil.toList(regions), new Function1<Void, String>() {
-                    @Override
-                    public Void apply(String region) throws Exception {
-
-                        return null;
-                    }
-                });
-                return null;
-            }
-        });
-    }
+//    @Override
+//    public void updateLocalCommonQuotaService(final long userVoUserId, final String osTenantId, final NovaApi novaApi, final NeutronApi neutronApi, final CinderApi cinderApi) throws OpenStackException {
+//        ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+//            @Override
+//            public Void apply() throws Exception {
+//                Set<String> regions = novaApi.getConfiguredRegions();
+//                ThreadUtil.concurrentFilter(CollectionUtil.toList(regions), new Function1<Void, String>() {
+//                    @Override
+//                    public Void apply(String region) throws Exception {
+//                        final Quota quota = novaApi.getQuotaApi(region).get().getByTenant(osTenantId);
+//                        List<CommonQuota> commonQuotaList = commonQuotaService.insertDefaultAndSelectByRegion(userVoUserId, region);
+//                        ThreadUtil.concurrentFilter(commonQuotaList, new Function1<Void, CommonQuota>() {
+//                            @Override
+//                            public Void apply(CommonQuota commonQuota) throws Exception {
+//                                CommonQuotaType type = commonQuota.getType();
+//                                Integer lastestValue = null;
+//                                if (type == CommonQuotaType.CLOUDVM_VM) {
+//                                    lastestValue = quota.getInstances();
+//                                } else if (type == CommonQuotaType.CLOUDVM_CPU) {
+//                                    lastestValue = quota.getCores();
+//                                } else if (type == CommonQuotaType.CLOUDVM_MEMORY) {
+//                                    lastestValue = quota.getRam();
+//                                } else if (type == CommonQuotaType.CLOUDVM_VM) {
+//                                    quota.get
+//                                }
+//                                if (lastestValue != null && commonQuota.getValue() != lastestValue.longValue()) {
+//                                    commonQuota.setValue(lastestValue.longValue());
+//                                    commonQuotaService.update(commonQuota);
+//                                }
+//                                return null;
+//                            }
+//                        });
+//                        return null;
+//                    }
+//                });
+//                return null;
+//            }
+//        }, new Function<Void>() {
+//            @Override
+//            public Void apply() throws Exception {
+//                Set<String> regions = neutronApi.getConfiguredRegions();
+//                ThreadUtil.concurrentFilter(CollectionUtil.toList(regions), new Function1<Void, String>() {
+//                    @Override
+//                    public Void apply(String region) throws Exception {
+//
+//                        return null;
+//                    }
+//                });
+//                return null;
+//            }
+//        }, new Function<Void>() {
+//            @Override
+//            public Void apply() throws Exception {
+//                Set<String> regions = cinderApi.getConfiguredRegions();
+//                ThreadUtil.concurrentFilter(CollectionUtil.toList(regions), new Function1<Void, String>() {
+//                    @Override
+//                    public Void apply(String region) throws Exception {
+//
+//                        return null;
+//                    }
+//                });
+//                return null;
+//            }
+//        });
+//    }
 }
