@@ -527,6 +527,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			if (snapshot == null) {
 				throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeCreateConf.getVolumeSnapshotId());
 			} else {
+				if (snapshot.getSize() > volumeCreateConf.getSize()) {
+					throw new UserOperationException("Volume size can not be less than volume snapshot size.", "云硬盘的大小不能小于云硬盘快照的大小");
+				}
 				createVolumeOptions.snapshotId(volumeCreateConf.getVolumeSnapshotId());
 			}
 		}
@@ -597,6 +600,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			if (snapshot == null) {
 				throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeCreateConf.getVolumeSnapshotId());
 			} else {
+				if (snapshot.getSize() > volumeCreateConf.getSize()) {
+					throw new UserOperationException("Volume size can not be less than volume snapshot size.", "云硬盘的大小不能小于云硬盘快照的大小");
+				}
 				createVolumeOptions.snapshotId(volumeCreateConf.getVolumeSnapshotId());
 			}
 		}
