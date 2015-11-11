@@ -946,6 +946,7 @@ le-select .le-select-menu li{
     line-height: 20px;
 }
 le-select .le-select-menu li:hover{
+    cursor:pointer;
     background: #f5f5f5;
 }
 le-select .le-select-menu li a{

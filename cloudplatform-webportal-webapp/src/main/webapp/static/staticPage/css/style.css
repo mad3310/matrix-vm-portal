@@ -14,7 +14,7 @@ a:hover{cursor:pointer;}
 .top-nav li a:hover{cursor:pointer;color:#088ac2}
 .top-nav .nav-item>a{color:#fff;}
 .top-nav .nav-item a:hover{cursor:pointer;color:#088ac2}
-.nav-item .item-arrow{position:relative;}
+.nav-item .item-arrow{position:relative;height:7px;}
 .item-arrow img{position:absolute;top:0px;left:-776px;}
 .item-arrow span{position:absolute;left:-127px;top:-7.5px;width:760px;overflow:hidden;color:#088ac2}
 .item-uls{width:100%;position:absolute;left:0;line-height:normal}
@@ -154,6 +154,8 @@ a:hover{cursor:pointer;}
 .body-footer{height:200px;padding-top:50px;font-size:1.2rem;font-size:12px\9;color:#fff;background:rgba(2,40,56,.9);background-color:#022838\9;}
 .footer ul{margin:25px 0 0 0;padding:0;text-align:center\9;}
 .footer ul li{list-style:none;margin-bottom:15px;}
+.footer a{color:#fff;}
+.footer a:hover,.footer a:active{color:#088ac2;}
 .footer .footer-linkTitle{font-size:1.4rem;font-size:14px\9;text-align:center\9;}
 .footer .footer-right{border-left:1px solid #9aa9af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .footer-right .right-logo img{width:50px;width:100%;min-width:50px;width:70px\9;}
@@ -221,6 +223,7 @@ a:hover{cursor:pointer;}
 .price-table-desc p{margin:10px 0;}
 .try-btn{width:160px;height:35px;margin-top:30px;border:1px solid #088ac2;border-radius:2px;text-align:center;line-height:35px;color:#088ac2}
 .try-btn:hover{cursor:pointer;color:#fff;background:#088ac2}
+.try-btn a:hover{color:#fff;}
 #productcanvas{margin-left:15px;}
 #build{width:240px;height:170px;position:absolute;top:0;left:0;margin-left:155px;margin-top:-30px;z-index:150}
 #build.index-build{left:220px;margin-left:0;margin-top:0;}
@@ -233,9 +236,10 @@ a:hover{cursor:pointer;}
 #earth{width:40px;height:40px;position:absolute;top:6px;left:230px;z-index:100}
 /*help*/
 .body-product-help{height:240px;margin:35px 0;font-size:1.2rem;font-size:12px\9;color:#fff;overflow:hidden;}
+.body-product-help a{color:#fff;}
 .body-product-help a:hover,.body-product-help a:active{color:#088ac2}
-.body-product-help .help-left{height:240px;padding-top:40px;background-repeat:repeat-x;background-image:url(img/help-left.png);}
-.body-product-help .help-right{height:240px;padding-top:40px;background-repeat:repeat-x;background-image:url(img/help-right.png);}
+.body-product-help .help-left{height:240px;padding-top:40px;background-image:url(img/help-left.png);background-position:center center;background-size:100%;}
+.body-product-help .help-right{height:240px;padding-top:40px;background-image:url(img/help-right.png);background-position:center center;background-size:100%;}
 .body-product-help .help-center{height:240px;padding:15px 0;font-size:2.4rem;font-size:24px\9;}
 .help-center .rotate img{-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg);transform:rotate(180deg);}
 .body-product-help dl{margin:0;}

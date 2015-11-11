@@ -207,7 +207,6 @@ function helpScrollNav(sheight){
         var vtop=$(this).scrollTop();
         var height=$(this).height();
         var _target=$('.tab-fixed');
-        console.log(vtop+"  "+height+"   "+scrollh);
         if(vtop>=sheight){
         	$('.tab-layout').addClass('hide');
         	var _tabClone=$('.tab-layout').children().clone();
@@ -260,7 +259,6 @@ function tabClick(){
 		var _anchor=_target.children('a').attr('href');
 		var _top=$(_anchor).offset();
 		if(_top){
-			console.log('tabclick    '+_top.top)
 			// $('html, body').animate({
 			// 	scrollTop:$(_anchor).offset().top
 			// },500);

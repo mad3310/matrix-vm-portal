@@ -20,6 +20,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.diskconsume="";
 			$scope.floatipconsume="";
 			$scope.routeconsume="";
+			$scope.quotas={};
 			$scope.expanderToggle = function(element){
 				var _target=element.target||element.srcElement;
 				var _items=$(_target).parent().parent().find('.operation-items');
@@ -42,8 +43,19 @@ define(['controllers/app.controller'], function (controllerModule) {
 				var operationurl="/operate";
 				var serviceurl="/service?region="+CurrentContext.regionId;
 				var consumeurl="/billing/product/daily/consume";
-				$http.get(usinfourl).success(function(data){
-					if(data.result==0){//error
+				var quotaurl="/quota?region="+CurrentContext.regionId;
+				userinfo(usinfourl);
+				unreadMes(messageurl);
+				remain(remainurl);
+				billing(billMesurl);
+				operation(operationurl);
+				// service(serviceurl);
+				consume(consumeurl);
+				quotas(quotaurl,serviceurl)
+			}
+			function userinfo(usinfourl){
+				HttpService.doGet(usinfourl).success(function(data){
+						if(data.result==0){//error
 						WidgetService.notifyError('获取用户信息失败！')
 					}else{
 						var _data=data.data;
@@ -59,36 +71,46 @@ define(['controllers/app.controller'], function (controllerModule) {
 						$scope.emailStatus=_data.emailStatus;
 						$scope.userStatus=_data.examineStatus;
 					}
-				});
-				$http.get(messageurl).success(function(data){
+				})
+			}
+			function unreadMes(messageurl){
+				HttpService.doGet(messageurl).success(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取消息失败！')
 					}else{
 						$scope.message=data.data;
 					}
 				});
-				$http.get(remainurl).success(function(data){
+			}
+			function remain(remainurl){
+				HttpService.doGet(remainurl).success(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取账户余额失败！')
 					}else{
 						$scope.remain=data.data;
 					}
 				});
-				$http.get(billMesurl).success(function(data){
+			}
+			function billing(billMesurl){
+				HttpService.doGet(billMesurl).success(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取账单信息失败！')
 					}else{
 						$scope.billMes=data.data;
 					}
 				});
-				$http.get(operationurl).success(function(data){
+			}
+			function operation(operationurl){
+				HttpService.doGet(operationurl).success(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取操作信息失败！')
 					}else{
 						$scope.expander=data.data;
 					}
 				});
-				$http.get(serviceurl).success(function(data){
+			}
+			function service(serviceurl){
+				return HttpService.doGet(serviceurl).success(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
@@ -99,7 +121,9 @@ define(['controllers/app.controller'], function (controllerModule) {
 						$scope.router=data.data.router;
 					}
 				});
-				$http.get(consumeurl).success(function(data){
+			}
+			function consume(consumeurl){
+				HttpService.doGet(consumeurl).success(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
@@ -108,6 +132,35 @@ define(['controllers/app.controller'], function (controllerModule) {
 						$scope.floatipconsume=data.data["4"];
 						$scope.routeconsume=data.data["5"];
 					}
+				});
+			}
+			function quotas(quotaurl,serviceurl){
+				var serviceTemp=service(serviceurl);
+				// console.log()
+				serviceTemp.then(function(data){
+					HttpService.doGet(quotaurl).success(function(data){
+						if(data.result==0){//error
+							WidgetService.notifyError('获取配额信息失败！')
+						}else{
+							$scope.quotas.CLOUDVM_BAND_WIDTH=data.data.CLOUDVM_BAND_WIDTH;
+							$scope.quotas.bandwidthStyle={width:$scope.ecs/$scope.quotas.CLOUDVM_BAND_WIDTH*100+"%"}
+							$scope.quotas.CLOUDVM_CPU=data.data.CLOUDVM_CPU;
+							$scope.quotas.CLOUDVM_FLOATING_IP=data.data.CLOUDVM_FLOATING_IP;
+							$scope.quotas.floatIpStyle={width:$scope.floatIp/$scope.quotas.CLOUDVM_FLOATING_IP*100+"%"}
+							$scope.quotas.CLOUDVM_KEY_PAIR=data.data.CLOUDVM_KEY_PAIR;
+							$scope.quotas.CLOUDVM_MEMORY=data.data.CLOUDVM_MEMORY;
+							$scope.quotas.CLOUDVM_NETWORK=data.data.CLOUDVM_NETWORK;
+							$scope.quotas.CLOUDVM_ROUTER=data.data.CLOUDVM_ROUTER;
+							$scope.quotas.routerStyle={width:$scope.router/$scope.quotas.CLOUDVM_ROUTER*100+"%"}
+							$scope.quotas.CLOUDVM_SUBNET=data.data.CLOUDVM_SUBNET;
+							$scope.quotas.CLOUDVM_VM=data.data.CLOUDVM_VM;
+							$scope.quotas.CLOUDVM_VM_SNAPSHOT=data.data.CLOUDVM_VM_SNAPSHOT;
+							$scope.quotas.CLOUDVM_VOLUME=data.data.CLOUDVM_VOLUME;
+							$scope.quotas.volumeStyle={width:$scope.disk/$scope.quotas.CLOUDVM_VOLUME*100+"%"}
+							$scope.quotas.CLOUDVM_VOLUME_SIZE=data.data.CLOUDVM_VOLUME_SIZE;
+							$scope.quotas.CLOUDVM_VOLUME_SNAPSHOT=data.data.CLOUDVM_VOLUME_SNAPSHOT;
+						}
+					});
 				});
 			}
 			inite();
