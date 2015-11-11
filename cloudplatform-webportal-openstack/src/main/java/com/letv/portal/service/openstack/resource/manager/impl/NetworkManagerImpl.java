@@ -1534,7 +1534,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					FloatingIP
 							.updateBuilder()
 							.fipQos(createFipQos(openStackConf
-									.getRouterGatewayBandWidth()))
+                                    .getRouterGatewayBandWidth()))
 							.build());
 		}
 
@@ -2100,7 +2100,12 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				for (Port port : portApi.list().concat().toList()) {
 					if ("network:router_interface"
 							.equals(port.getDeviceOwner())) {
-						ImmutableSet<IP> fixedIps = port.getFixedIps();
+                        if (router.getId().equals(port.getDeviceId()) && !subnet.getNetworkId().equals(port.getNetworkId())) {
+                            throw new UserOperationException(
+                                    "Router can not associate with subnets under different private networks"
+                                    , MessageFormat.format("路由已关联子网“{0}”，不能同时关联不同私有网络下的子网",subnetId));
+                        }
+                        ImmutableSet<IP> fixedIps = port.getFixedIps();
 						if (fixedIps != null) {
 							for (IP ip : fixedIps) {
 								if (subnetId.equals(ip.getSubnetId())) {
@@ -2604,7 +2609,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			}
 		});
 	}
-	
+
 	public void checkCreateFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf) throws OpenStackException {
 		final String region = createConf.getRegion();
 //		final String name = createConf.getName();
