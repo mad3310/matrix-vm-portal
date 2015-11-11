@@ -1,7 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm.check;
 
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
@@ -23,6 +26,16 @@ public class CheckVolumeQuotaTask implements VmsCreateCheckSubTask {
 
         List<? extends Volume> volumes = context.getCinderApi().getVolumeApi(region).list().toList();
         List<? extends Snapshot> snapshots = context.getCinderApi().getSnapshotApi(region).list().toList();
+        int pureVolumeSize = 0;
+        for (Volume volume : volumes) {
+            pureVolumeSize += volume.getSize();
+        }
+
+        long tenantId = context.getUserId();
+        int count = context.getVmCreateConf().getCount();
+        LocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
+        localCommonQuotaSerivce.checkQuota(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME, volumes.size() + count);
+        localCommonQuotaSerivce.checkQuota(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * context.getVmCreateConf().getVolumeSize());
 
         VolumeQuota quota = context
                 .getCinderApi()

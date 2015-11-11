@@ -5,18 +5,10 @@ import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.common.ICommonQuotaService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
-import com.letv.portal.service.openstack.util.CollectionUtil;
-import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
-import com.letv.portal.service.openstack.util.function.Function1;
-import org.jclouds.openstack.cinder.v1.CinderApi;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.Quota;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.text.MessageFormat;
 
 /**
  * Created by zhouxianguang on 2015/11/11.
@@ -24,9 +16,22 @@ import java.util.Set;
 @Service
 public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
 
+    @Autowired
     private ICommonQuotaService commonQuotaService;
 
-    
+    @Override
+    public void checkQuota(long userVoUserId, String region, CommonQuotaType type, int value) throws OpenStackException {
+        CommonQuota commonQuota = commonQuotaService.get(userVoUserId, region, type.getModule(), type);
+        if (commonQuota == null) {
+            throw new OpenStackException("User quota is not exists.", MessageFormat.format("用户的{0}配额不可用", type.getName()));
+        }
+        if (commonQuota.getValue() < value) {
+            Object[] arguments = new Object[]{type.getName(), type.getUnit(), commonQuota.getValue(), value};
+            throw new OpenStackException(
+                    MessageFormat.format("{0} exceeding the quota,tenantId:{1},region:{2},value:{3}", type.toString(), userVoUserId, region, value),
+                    MessageFormat.format("{0}{3}{1}超过了配额{2}{1}", arguments));
+        }
+    }
 
 //    @Override
 //    public void updateLocalCommonQuotaService(final long userVoUserId, final String osTenantId, final NovaApi novaApi, final NeutronApi neutronApi, final CinderApi cinderApi) throws OpenStackException {

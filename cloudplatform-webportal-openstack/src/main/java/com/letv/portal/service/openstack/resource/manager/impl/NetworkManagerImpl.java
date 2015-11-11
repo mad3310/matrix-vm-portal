@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
@@ -537,6 +538,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 				}
 
+				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_NETWORK, privateNetworkCount + 1);
+
 				Optional<QuotaApi> quotaApiOptional = neutronApi
 						.getQuotaApi(region);
 				if (!quotaApiOptional.isPresent()) {
@@ -739,6 +743,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							"网关IP不在子网的网段内");
 				}
 
+				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, existsSubnetList.size() + 1);
+
 				Optional<QuotaApi> quotaApiOptional = neutronApi
 						.getQuotaApi(region);
 				if (!quotaApiOptional.isPresent()) {
@@ -817,11 +824,17 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 				}
 
+				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_NETWORK, privateNetworkIds.size() + 1);
+
 				if (quota.getNetwork() <= privateNetworkIds.size()) {
 					throw new UserOperationException(
 							"Private network count exceeding the quota.",
 							"私有网络数量超过配额。");
 				}
+
+				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, existsSubnetList.size() + 1);
 
 				if (quota.getSubnet() <= privateSubnetCount) {
 					throw new UserOperationException(
@@ -1453,6 +1466,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		int existsRouterCount = routerApi.list().concat().toList()
 				.size();
 
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_ROUTER, existsRouterCount + 1);
+
 		Optional<QuotaApi> quotaApiOptional = neutronApi
 				.getQuotaApi(region);
 		if (!quotaApiOptional.isPresent()) {
@@ -1494,6 +1510,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		int existsRouterCount = routerApi.list().concat().toList()
 				.size();
+
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_ROUTER, existsRouterCount + 1);
 
 		Optional<QuotaApi> quotaApiOptional = neutronApi
 				.getQuotaApi(region);
@@ -2671,6 +2690,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		final int floatingIpCountQuota = quota.getFloatingIp()
 				- quota.getRouter();
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.",
@@ -2680,6 +2701,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		final int floatingIpBandWidthQuota = quota.getBandWidth()
 				- quota.getRouter()
 				* openStackConf.getRouterGatewayBandWidth();
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
 			throw new UserOperationException(
 					"Floating IP band width exceeding the quota.",
@@ -2748,6 +2771,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		final int floatingIpCountQuota = quota.getFloatingIp()
 				- quota.getRouter();
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.",
@@ -2757,6 +2782,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		final int floatingIpBandWidthQuota = quota.getBandWidth()
 				- quota.getRouter()
 				* openStackConf.getRouterGatewayBandWidth();
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
 			throw new UserOperationException(
 					"Floating IP band width exceeding the quota.",

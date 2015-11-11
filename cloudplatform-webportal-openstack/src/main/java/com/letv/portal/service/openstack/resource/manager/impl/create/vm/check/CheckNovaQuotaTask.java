@@ -1,7 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm.check;
 
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Quota;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
@@ -34,6 +37,14 @@ public class CheckNovaQuotaTask implements VmsCreateCheckSubTask {
             serverTotalVcpus += flavor.getVcpus();
             serverTotalRam += flavor.getRam();
         }
+
+        LocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
+        Long userId = context.getUserId();
+        int count = context.getVmCreateConf().getCount();
+        Flavor flavor = context.getFlavor();
+        localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_VM, servers.size() + count);
+        localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_CPU, serverTotalVcpus + count * flavor.getVcpus());
+        localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_MEMORY, (serverTotalRam + count * flavor.getRam()) / 1024);
 
         Quota novaQuota = context
                 .getNovaApi()

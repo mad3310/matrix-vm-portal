@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import org.apache.commons.lang3.StringUtils;
@@ -41,11 +42,16 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
 			throw new OpenStackException("Floating IP quota is not available.",
 					"公网IP配额不可用。");
 		}
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(context.getUserId(), context.getVmCreateConf().getRegion(), CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpTotalCount + context.getVmCreateConf().getCount());
 		if (floatingIpTotalCount + context.getVmCreateConf().getCount() > quota
 				.getFloatingIp() - quota.getRouter()) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.", "公网IP数量超过配额。");
 		}
+		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+				.checkQuota(context.getUserId(), context.getVmCreateConf().getRegion(), CommonQuotaType.CLOUDVM_BAND_WIDTH, floatingIpTotalBandWidth + context.getVmCreateConf().getCount()
+						* context.getVmCreateConf().getBandWidth());
 		if (floatingIpTotalBandWidth + context.getVmCreateConf().getCount()
 				* context.getVmCreateConf().getBandWidth() > quota
 				.getBandWidth()

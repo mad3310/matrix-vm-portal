@@ -7,6 +7,7 @@ import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListener;
@@ -16,12 +17,10 @@ import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
-import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
@@ -1805,14 +1804,19 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
             throw new ResourceNotFoundException("VM", "虚拟机", vmId);
         }
 
-        String imageId = serverApi.createImageFromServer(name, vmId);
-
-        ImageApi imageApi = glanceApi.getImageApi(region);
-        ImageDetails image = imageApi.get(imageId);
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         LocalImageService localImageService = openStackServiceGroup
                 .getLocalImageService();
         long userVoUserId = openStackUser.getUserVoUserId();
+
+        int vmSnapshotCount = localImageService.countVmSnapshot(userVoUserId, region, null);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+                .checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_VM_SNAPSHOT, vmSnapshotCount + 1);
+
+        String imageId = serverApi.createImageFromServer(name, vmId);
+
+        ImageApi imageApi = glanceApi.getImageApi(region);
+        ImageDetails image = imageApi.get(imageId);
         CloudvmImage cloudvmImage = localImageService
                 .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image, name, server);
         openStackServiceGroup.getImageSyncService().syncStatus(cloudvmImage, new Checker<ImageDetails>() {

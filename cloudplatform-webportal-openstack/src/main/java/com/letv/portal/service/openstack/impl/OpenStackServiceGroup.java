@@ -7,6 +7,7 @@ import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
@@ -38,6 +39,7 @@ public class OpenStackServiceGroup {
 	private ImageSyncService imageSyncService;
 	private LocalRcCountService localRcCountService;
 	private EventPublishService eventPublishService;
+	private LocalCommonQuotaSerivce localCommonQuotaSerivce;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -192,5 +194,13 @@ public class OpenStackServiceGroup {
 
 	public EventPublishService getEventPublishService() {
 		return eventPublishService;
+	}
+
+	public void setLocalCommonQuotaSerivce(LocalCommonQuotaSerivce localCommonQuotaSerivce) {
+		this.localCommonQuotaSerivce = localCommonQuotaSerivce;
+	}
+
+	public LocalCommonQuotaSerivce getLocalCommonQuotaSerivce() {
+		return localCommonQuotaSerivce;
 	}
 }
