@@ -85,7 +85,7 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
     }
 
     @Override
-    public List<CommonQuota> selectByRegionOrInsertDefault(long tenantId, String region) {
+    public List<CommonQuota> insertDefaultAndselectByRegion(long tenantId, String region) {
         List<CommonQuota> commonQuotas = selectByRegion(tenantId, region);
         Map<CommonQuotaType, CommonQuota> typeToQuota = new HashMap<CommonQuotaType, CommonQuota>();
         for (CommonQuota commonQuota : commonQuotas) {
@@ -108,8 +108,8 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
     }
 
     @Override
-    public Map<String, Long> selectMapByRegionOrInsertDefault(long tenantId, String region) {
-        List<CommonQuota> commonQuotas = selectByRegionOrInsertDefault(tenantId, region);
+    public Map<String, Long> insertDefaultAndselectMapByRegion(long tenantId, String region) {
+        List<CommonQuota> commonQuotas = insertDefaultAndselectByRegion(tenantId, region);
         Map<String, Long> typeToValue = new HashMap<String, Long>();
         for (CommonQuota commonQuota : commonQuotas) {
             typeToValue.put(commonQuota.getType().toString().toUpperCase(), commonQuota.getValue());
