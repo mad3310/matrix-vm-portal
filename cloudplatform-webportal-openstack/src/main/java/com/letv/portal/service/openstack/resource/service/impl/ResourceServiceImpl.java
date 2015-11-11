@@ -208,6 +208,7 @@ public class ResourceServiceImpl implements ResourceService {
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
+        final PortApi portApi = neutronApi.getPortApi(region);
 
         final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
 
@@ -244,11 +245,11 @@ public class ResourceServiceImpl implements ResourceService {
                                 MessageFormat.format("虚拟机“{0}”和子网“{1}”解除关联失败。", vmId, subnetId));
                     }
 
-                    final String attachmentId = findedInterfaceAttachment.getPortId();
+                    final String portId = findedInterfaceAttachment.getPortId();
                     ThreadUtil.waiting(new Function<Boolean>() {
                         @Override
                         public Boolean apply() throws Exception {
-                            return attachInterfaceApi.get(vmId, attachmentId) != null;
+                            return portApi.get(portId) != null;
                         }
                     }, new Timeout().time(5L).unit(TimeUnit.MINUTES));
                 } catch (Exception ex) {
