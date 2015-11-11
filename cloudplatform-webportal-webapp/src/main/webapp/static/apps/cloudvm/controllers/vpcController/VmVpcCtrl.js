@@ -508,7 +508,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               initAssociatedVmList();
           },
           initAssociatedVmList = function () {
-              HttpService.doGet(Config.urls.not_in_any_network_vm_list, {region:region}).success(function (data, status, headers, config) {
+              HttpService.doGet(Config.urls.could_attach_subnet_list, {region:region,subnetId:subnetInfo.id}).success(function (data, status, headers, config) {
                   $scope.associatedVmList = data.data;
               });
               /*HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {

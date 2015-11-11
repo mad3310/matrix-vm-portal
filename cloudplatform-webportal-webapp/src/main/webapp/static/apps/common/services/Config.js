@@ -9,6 +9,7 @@ define(['./common.service'], function (serviceModule) {
       region_list:'/ecs/region/list',
       vm_list: '/ecs/region/{region}',
       not_in_any_network_vm_list:'/ecs/vm/notInAnyNetwork/list',
+      could_attach_subnet_list:'/ecs/vm/couldAttachSubnet/list',
       vm_attach_subnet_list:"/ecs/vm/attached/subnet/list",
       image_list: '/osi/image/list',
       flavor_group_data: '/osf/region/{region}/group',
