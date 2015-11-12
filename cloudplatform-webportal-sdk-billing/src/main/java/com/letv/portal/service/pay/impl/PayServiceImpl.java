@@ -194,11 +194,7 @@ public class PayServiceImpl implements IPayService {
 			
 			//充值
 			Map<String, String> params = new HashMap<String, String>();
-			String callbackUrl = this.PAY_CALLBACK;
-			if(orderSubs.get(0).getSubscription().getBuyType()==1) {//新购
-				callbackUrl = this.PAY_CALLBACK+"?buyType=1";
-			}
-			String url = getParams(order.getOrderNumber(), price, pattern, callbackUrl, this.PAY_SUCCESS + "/" + orderNumber,
+			String url = getParams(order.getOrderNumber(), price, pattern, this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
 
@@ -330,7 +326,7 @@ public class PayServiceImpl implements IPayService {
 				//this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
 				this.billUserAmountService.rechargeSuccessByOrderCode(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getOrder().getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")));
 				
-				if(Integer.parseInt((String)map.get("buyType"))==1) {//续费
+				if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
 					//扣除用户余额
 					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));;
 				} else {
