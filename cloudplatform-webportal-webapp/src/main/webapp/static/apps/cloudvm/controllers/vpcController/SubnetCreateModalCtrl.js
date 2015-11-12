@@ -101,17 +101,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             });
         };
         var initComponents = function () {
-                initVpcSelector();
                 initSelector();
-            },
-            initVpcSelector = function () {
-                HttpService.doGet(Config.urls.vpc_list, {region: subnetInfo.region}).success(function (data, status, headers, config) {
-                    $scope.vpcList = data.data.data;
-                    $scope.vpcListSelectorData = $scope.vpcList.map(function (vpc) {
-                        return new ModelService.SelectModel(vpc.name, vpc.id);
-                    });
-                    $scope.selectedVpc = $scope.vpcListSelectorData[0];
-                });
             },
             initSelector = function () {
                 $scope.cidrs = [

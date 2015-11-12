@@ -39,6 +39,7 @@ public class MultiVmCreateCheckContext {
     private VolumeType volumeType;
     private KeyPair keyPair;
     private Network floatingNetwork;
+    private Long userId;
 
     public NovaApi getNovaApi() {
         return novaApi;
@@ -182,5 +183,13 @@ public class MultiVmCreateCheckContext {
 
     public void setFloatingNetwork(Network floatingNetwork) {
         this.floatingNetwork = floatingNetwork;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

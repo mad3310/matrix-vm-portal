@@ -89,6 +89,11 @@ public class LocalImageServiceImpl implements LocalImageService {
     }
 
     @Override
+    public int countVmSnapshot(long tenantId, String region, String name) throws OpenStackException {
+        return cloudvmImageService.selectCountVmSnapshotByName(tenantId, region, name);
+    }
+
+    @Override
     public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image, String imageName, Server server) {
         CloudvmImage cloudvmImage = new CloudvmImage();
         cloudvmImage.setType(CloudvmImageShareType.PRIVATE);

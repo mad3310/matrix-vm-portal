@@ -2,7 +2,9 @@ package com.letv.portal.service.openstack.resource.service.impl;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.exception.*;
+import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
@@ -47,6 +49,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private LocalKeyPairService localKeyPairService;
+
+    @Autowired
+    private LocalCommonQuotaSerivce localCommonQuotaSerivce;
 
     private void checkRegion(NovaApi novaApi, String region) throws RegionNotFoundException {
         if (!novaApi.getConfiguredRegions().contains(region)) {
@@ -208,6 +213,7 @@ public class ResourceServiceImpl implements ResourceService {
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
+        final PortApi portApi = neutronApi.getPortApi(region);
 
         final AttachInterfaceApi attachInterfaceApi = getAttachInterfaceApi(novaApi, region);
 
@@ -244,11 +250,11 @@ public class ResourceServiceImpl implements ResourceService {
                                 MessageFormat.format("虚拟机“{0}”和子网“{1}”解除关联失败。", vmId, subnetId));
                     }
 
-                    final String attachmentId = findedInterfaceAttachment.getPortId();
+                    final String portId = findedInterfaceAttachment.getPortId();
                     ThreadUtil.waiting(new Function<Boolean>() {
                         @Override
                         public Boolean apply() throws Exception {
-                            return attachInterfaceApi.get(vmId, attachmentId) != null;
+                            return portApi.get(portId) != null;
                         }
                     }, new Timeout().time(5L).unit(TimeUnit.MINUTES));
                 } catch (Exception ex) {
@@ -368,6 +374,8 @@ public class ResourceServiceImpl implements ResourceService {
                 throw new UserOperationException("Name cannot be repeated.", "名称不能重复");
             }
         }
+
+        localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_KEY_PAIR, keyPairs.size() + 1);
 
         QuotaApi quotaApi = getNovaQuotaApi(novaApi, region);
         Quota quota = quotaApi.getByTenant(tenantId);

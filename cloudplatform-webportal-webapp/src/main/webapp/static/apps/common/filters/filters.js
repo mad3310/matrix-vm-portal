@@ -47,16 +47,30 @@ define(['./common.filter'], function (filterModule) {
   });
 
   filterModule.filter('vmStatusFilter', ['Config', function (Config) {
-    var allStatuses = Config.vmStatuses;
+    var vmStatuses = Config.vmStatuses,
+      vmTaskStatuses=Config.vmTaskStatuses;
     return function (input) {
-      var out = '';
-      for (var i = 0, leng = allStatuses.length; i < leng; i++) {
-        if (allStatuses[i].value == input) {
-          out = allStatuses[i].text;
-          break;
+      var out = '',
+        vmStateAndTaskStateArray = input.split(';'),
+        vmState = vmStateAndTaskStateArray[0],
+        taskState = vmStateAndTaskStateArray[1];
+      if (taskState) {
+        if (vmTaskStatuses[taskState]) {
+          out = vmTaskStatuses[taskState];
+        }
+        else {
+          out = taskState;
         }
       }
-      return out || '未知';
+      else {
+        if (vmStatuses[vmState]) {
+          out = vmStatuses[vmState];
+        }
+        else {
+          out = vmState;
+        }
+      }
+      return out;
     }
   }]);
 

@@ -61,6 +61,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云硬盘快照');
           return;
         }
+        if(checkedSnapshots[0].status!=='available') {
+          WidgetService.notifyWarning('快照当前状态不可创建云硬盘');
+          return;
+        }
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
           templateUrl: '/static/apps/cloudvm/templates/vm-disk-create-modal.html',
@@ -90,6 +94,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         var checkedSnapshots=getCheckedSnapshot();
         if(checkedSnapshots.length !==1){
           WidgetService.notifyWarning('请选中一个云主机快照');
+          return;
+        }
+        if(checkedSnapshots[0].status!=='ACTIVE') {
+          WidgetService.notifyWarning('快照当前状态不可创建云主机');
           return;
         }
         var modalInstance = $modal.open({
@@ -131,7 +139,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.deleteDiskSnapshot=function(){
-        var checkedSnapshots=getCheckedSnapshot();
+        var checkedSnapshots=getCheckedSnapshot(),
+          originalStatus=checkedSnapshots[0].status;
         if(checkedSnapshots.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘快照');
           return;
@@ -157,6 +166,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               refreshSnapshotList();
             }
             else{
+              checkedSnapshots[0].status=originalStatus;
               WidgetService.notifyError(data.msgs[0]||'删除云硬盘快照失败');
             }
           });
@@ -165,9 +175,14 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.deleteVmSnapshot=function(){
-        var checkedSnapshots=getCheckedSnapshot();
+        var checkedSnapshots=getCheckedSnapshot(),
+          originalStatus=checkedSnapshots[0].status;
         if(checkedSnapshots.length !==1){
           WidgetService.notifyWarning('请选中一个云主机快照');
+          return;
+        }
+        if(originalStatus!=='ACTIVE' && originalStatus!=='KILLED') {
+          WidgetService.notifyWarning('云主机快照当前状态不可删除');
           return;
         }
         var data={
@@ -178,7 +193,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
           WidgetService.notifyInfo('云主机快照删除执行中...');
-          checkedSnapshots[0].status='DELETEING';
+          checkedSnapshots[0].status='PENDING_DELETE';
           HttpService.doPost(Config.urls.snapshot_vm_delete, data).success(function (data, status, headers, config) {
             if(data.result===1){
               checkedSnapshots[0].status='DELETED';
@@ -186,8 +201,9 @@ define(['controllers/app.controller'], function (controllerModule) {
               WidgetService.notifySuccess('删除云主机快照成功');
               refreshSnapshotList();
             }
-            else{
-              WidgetService.notifyError(data.msgs[0]||'删除云主机快照失败');
+            else {
+              checkedSnapshots[0].status = originalStatus;
+              WidgetService.notifyError(data.msgs[0] || '删除云主机快照失败');
             }
           });
         }, function () {

@@ -1,4 +1,4 @@
-<div class="view-common" ng-controller="VirtualMachineCrtl">
+<div class="view-common view-virtual-machine" ng-controller="VirtualMachineCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')"><span>创建云主机</span></button>
@@ -51,11 +51,20 @@
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm)"></span>
                     </td>
                     <td><span>{{vm.name}}</span></td>
+                    <!--
+                    <td>
+                        <span>
+                            <div class="vm-address-private"><span>内网1：</span><span>172.30.0.249</span></div>
+                            <div class="vm-address-private"><span>内网2：</span><span>172.30.0.249</span></div>
+                            <div class="vm-address-private"><span>内网2：</span><span>172.30.0.249</span></div>
+                        </span>
+                    </td>
+                    -->
                     <td><span>{{vm.ipAddresses.private.join(', ') || '未设置'}}</span></td>
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
-                        <span>{{vm.status | vmStatusFilter}}</span>
-                        <span ng-if="['BUILD','STARTING','STOPING','DELETEING'].indexOf(vm.status)>-1" class="status-loading"></span>
+                        <span>{{[vm.vmState,vm.taskState].join(';') | vmStatusFilter}}</span>
+                        <span ng-show="vmTaskStatuses[vm.taskState]" class="status-loading"></span>
                     </td>
                     <td><span>{{vm.image.name || '无'}}</span></td>
                     <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>

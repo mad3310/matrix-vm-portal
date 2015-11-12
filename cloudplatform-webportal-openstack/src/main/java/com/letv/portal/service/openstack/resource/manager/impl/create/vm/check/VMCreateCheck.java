@@ -34,6 +34,7 @@ public class VMCreateCheck {
                 multiVmCreateCheckContext.setVmManager(vmManager);
                 multiVmCreateCheckContext.setNetworkManager(networkManager);
                 multiVmCreateCheckContext.setVolumeManager(volumeManager);
+                multiVmCreateCheckContext.setUserId(vmManager.getOpenStackUser().getUserVoUserId());
 
                 List<VmsCreateCheckSubTask> tasks = new ArrayList<VmsCreateCheckSubTask>();
                 tasks.add(new CheckVmCreateConfTask());

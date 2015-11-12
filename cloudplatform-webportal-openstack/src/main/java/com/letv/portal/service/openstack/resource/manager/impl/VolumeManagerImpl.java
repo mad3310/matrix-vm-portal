@@ -6,8 +6,10 @@ import java.util.*;
 
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
+import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
@@ -527,6 +529,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			if (snapshot == null) {
 				throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeCreateConf.getVolumeSnapshotId());
 			} else {
+				if (snapshot.getSize() > volumeCreateConf.getSize()) {
+					throw new UserOperationException("Volume size can not be less than volume snapshot size.", "云硬盘的大小不能小于云硬盘快照的大小");
+				}
 				createVolumeOptions.snapshotId(volumeCreateConf.getVolumeSnapshotId());
 			}
 		}
@@ -545,6 +550,16 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		{
 			List<? extends Volume> volumes = volumeApi.list().toList();
 			List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(volumeCreateConf.getRegion()).list().toList();
+			int pureVolumeSize = 0;
+			for (Volume volume : volumes) {
+				pureVolumeSize += volume.getSize();
+			}
+			long userVoUserId=openStackUser.getUserVoUserId();
+			String region=volumeCreateConf.getRegion();
+
+			LocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
+			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME, volumes.size() + count);
+			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * volumeCreateConf.getSize());
 
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(volumeCreateConf.getRegion())
 					.getByTenant(openStackUser.getTenantId());
@@ -597,6 +612,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			if (snapshot == null) {
 				throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeCreateConf.getVolumeSnapshotId());
 			} else {
+				if (snapshot.getSize() > volumeCreateConf.getSize()) {
+					throw new UserOperationException("Volume size can not be less than volume snapshot size.", "云硬盘的大小不能小于云硬盘快照的大小");
+				}
 				createVolumeOptions.snapshotId(volumeCreateConf.getVolumeSnapshotId());
 			}
 		}
@@ -615,6 +633,16 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		{
 			List<? extends Volume> volumes = volumeApi.list().toList();
 			List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(volumeCreateConf.getRegion()).list().toList();
+			int pureVolumeSize = 0;
+			for (Volume volume : volumes) {
+				pureVolumeSize += volume.getSize();
+			}
+			long userVoUserId=openStackUser.getUserVoUserId();
+			String region=volumeCreateConf.getRegion();
+
+			LocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
+			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME, volumes.size() + count);
+			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * volumeCreateConf.getSize());
 
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(volumeCreateConf.getRegion())
 					.getByTenant(openStackUser.getTenantId());
@@ -953,6 +981,8 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}
 				List<? extends Volume> volumes = volumeApi.list().toList();
 				List<? extends Snapshot> snapshots = snapshotApi.list().toList();
+				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_VOLUME_SNAPSHOT, snapshots.size() + 1);
 				if (sumGigabytes(volumes, snapshots) + volume.getSize() > quota.getGigabytes()) {
 					throw new UserOperationException(
 							"Volume snapshot size exceeding the quota.",

@@ -1,7 +1,7 @@
 <div class="view-common view-vm-snapshot" ng-controller="VmSnapshotCrtl">
     <div class="le-row le-tab-header">
-        <div class="le-tab-btn" ng-class="{'le-tab-active':tabShow === 'VmSnapshot'}" ng-click="tabShow = 'VmSnapshot';refreshSnapshotList();"><span>云主机快照</span></div><!--消除空格
-        --><div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'DiskSnapshot'}" ng-click="tabShow = 'DiskSnapshot';refreshSnapshotList();"><span>云硬盘快照</span></div>
+        <div class="le-tab-btn" ng-class="{'le-tab-active':tabShow === 'VmSnapshot'}" ng-click="tabShow = 'VmSnapshot';refreshSnapshotList();"><span>云主机快照</span></div>
+        <div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'DiskSnapshot'}" ng-click="tabShow = 'DiskSnapshot';refreshSnapshotList();"><span>云硬盘快照</span></div>
     </div>
     <div ng-show="tabShow === 'VmSnapshot'">
         <div class="le-row operate-panel">

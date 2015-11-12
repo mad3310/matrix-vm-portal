@@ -16,6 +16,7 @@ import com.letv.portal.service.openstack.internal.UserExists;
 import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
@@ -153,6 +154,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private EventPublishService eventPublishService;
 
+	@Autowired
+	private LocalCommonQuotaSerivce localCommonQuotaSerivce;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -202,6 +206,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setImageSyncService(imageSyncService);
 		openStackServiceGroup.setLocalRcCountService(localRcCountService);
 		openStackServiceGroup.setEventPublishService(eventPublishService);
+		openStackServiceGroup.setLocalCommonQuotaSerivce(localCommonQuotaSerivce);
 	}
 
 	@Override

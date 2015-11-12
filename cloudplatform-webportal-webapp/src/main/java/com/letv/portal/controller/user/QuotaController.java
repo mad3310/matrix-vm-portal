@@ -26,7 +26,7 @@ public class QuotaController {
     @ResponseBody
     ResultObject getQuota(@RequestParam String region, ResultObject obj) throws Exception {
         long userId = sessionService.getSession().getUserId();
-        obj.setData(commonQuotaService.selectMapByRegionOrInsertDefault(userId, region));
+        obj.setData(commonQuotaService.insertDefaultAndSelectMapByRegion(userId, region));
         return obj;
     }
 }

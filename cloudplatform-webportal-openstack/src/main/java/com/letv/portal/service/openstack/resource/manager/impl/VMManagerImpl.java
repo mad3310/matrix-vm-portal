@@ -7,6 +7,7 @@ import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.VmSnapshotCreateListener;
@@ -20,7 +21,6 @@ import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
@@ -53,10 +53,7 @@ import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.*;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
-import org.jclouds.openstack.nova.v2_0.extensions.ConsolesApi;
-import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
-import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
-import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
+import org.jclouds.openstack.nova.v2_0.extensions.*;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
@@ -1717,6 +1714,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     }
                 }
 
+                AttachInterfaceApi attachInterfaceApi = novaApi.getAttachInterfaceApi(region).get();
+                if (attachInterfaceApi.list(vmId).toList().isEmpty()) {
+                    throw new UserOperationException("Vm is not in any network.", "虚拟机不属于任何一个网络，不能绑定公网IP。");
+                }
+
                 floatingIPApi.addToServer(floatingIP.getIp(), vmId);
 
                 VMResource vmResource = get(region, vmId);
@@ -1802,14 +1804,19 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
             throw new ResourceNotFoundException("VM", "虚拟机", vmId);
         }
 
-        String imageId = serverApi.createImageFromServer(name, vmId);
-
-        ImageApi imageApi = glanceApi.getImageApi(region);
-        ImageDetails image = imageApi.get(imageId);
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         LocalImageService localImageService = openStackServiceGroup
                 .getLocalImageService();
         long userVoUserId = openStackUser.getUserVoUserId();
+
+        int vmSnapshotCount = localImageService.countVmSnapshot(userVoUserId, region, null);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
+                .checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_VM_SNAPSHOT, vmSnapshotCount + 1);
+
+        String imageId = serverApi.createImageFromServer(name, vmId);
+
+        ImageApi imageApi = glanceApi.getImageApi(region);
+        ImageDetails image = imageApi.get(imageId);
         CloudvmImage cloudvmImage = localImageService
                 .createVmSnapshot(userVoUserId, userVoUserId, createConf.getRegion(), image, name, server);
         openStackServiceGroup.getImageSyncService().syncStatus(cloudvmImage, new Checker<ImageDetails>() {
