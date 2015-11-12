@@ -63,8 +63,8 @@
                     <td><span>{{vm.ipAddresses.private.join(', ') || '未设置'}}</span></td>
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
-                        <span>{{vm.status | vmStatusFilter}}</span>
-                        <span ng-if="['BUILD','STARTING','STOPING','DELETEING'].indexOf(vm.status)>-1" class="status-loading"></span>
+                        <span>{{[vm.vmState,vm.taskState].join(';') | vmStatusFilter}}</span>
+                        <span ng-show="vmTaskStatuses[vm.taskState]" class="status-loading"></span>
                     </td>
                     <td><span>{{vm.image.name || '无'}}</span></td>
                     <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>

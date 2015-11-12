@@ -82,7 +82,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.detachDisk=function(){
         var checkedDisks=getCheckedDisk(),
-          previousStatus=checkedDisks[0].status;
+          originalStatus=checkedDisks[0].status;
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
@@ -108,7 +108,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               refreshDiskList();
             }
             else{
-              checkedDisks[0].status=previousStatus;
+              checkedDisks[0].status=originalStatus;
               WidgetService.notifyError(data.msgs[0]||'解挂云硬盘失败');
             }
           });
@@ -118,7 +118,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.deleteDisk=function(){
         var checkedDisks=getCheckedDisk(),
-          previousStatus=checkedDisks[0].status;
+          originalStatus=checkedDisks[0].status;
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
@@ -143,7 +143,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               refreshDiskList();
             }
             else{
-              checkedDisks[0].status=previousStatus;
+              checkedDisks[0].status=originalStatus;
               WidgetService.notifyError(data.msgs[0]||'删除云硬盘失败');
             }
           });
@@ -284,7 +284,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         vmId:$scope.selectedVm.value,
         volumeId:disk.id
       },
-      previousStatus=disk.status;
+      originalStatus=disk.status;
       disk.status='attaching';
       $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
@@ -295,7 +295,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
-          disk.status=previousStatus;
+          disk.status=originalStatus;
           $scope.isFormSubmiting=false;
         }
       });

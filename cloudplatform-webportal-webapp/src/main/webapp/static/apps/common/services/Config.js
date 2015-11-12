@@ -79,17 +79,24 @@ define(['./common.service'], function (serviceModule) {
       NAME_NO_ZH: /^[a-zA-Z][^\s"@\/:=<>{\[\]}\u4e00-\u9fa5]{1,127}$/,
       PASSWORD: /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*)[a-zA-Z0-9]{8,30}$/,
     };
-    config.vmStatuses = [
-      {"text": "活跃", "value": "ACTIVE"},
-      {"text": "创建中", "value": "BUILD"},
-      {"text": "已暂停", "value": "PAUSED"},
-      {"text": "已挂起", "value": "SUSPENDED"},
-      {"text": "已删除", "value": "DELETED"},
-      {"text": "已停止", "value": "SHUTOFF"},
-      {"text": "启动中", "value": "STARTING"},
-      {"text": "停止中", "value": "STOPING"},
-      {"text": "删除中", "value": "DELETEING"},
-    ];
+    config.vmStatuses = {
+      'active':'活跃',
+      'building':'创建中',
+      'paused':'已暂停',
+      'suspended':'已挂起',
+      'stopped':'已停止',
+      'error':'异常',
+      //前端添加
+      'deleted':'已删除',
+  };
+    config.vmTaskStatuses = {
+      'building':'创建中',
+      'deleting':'删除中',
+      'stopping':'停止中',
+      'starting':'启动中',
+      'rebooting':'重启中',
+      'spawning':'创建中'
+    };
     config.vmDiskStatuses = [
       {"text": "创建中", "value": "creating"},
       {"text": "可用的", "value": "available"},
