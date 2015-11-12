@@ -14,6 +14,11 @@
 	    <result column="UPDATE_TIME" property="updateTime" />
 	    <result column="CREATE_USER" property="createUser" />
 	    <result column="UPDATE_USER" property="updateUser" />
+	    
+	    <association property="baseElement" javaType="BaseElement">
+			<result column="ELEMENT_ID" property="id" />
+			<result column="NAME" property="name" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -68,6 +73,17 @@
 	    from
 	        MATRIX_BILLING_PRODUCT_ELEMENT productElement
 	        <include refid="Common_Where_Clause" />
+	</select>
+	
+	<select id="selectByProductIdWithBaseElement" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />,baseElement.NAME,baseElement.ID ELEMENT_ID
+	    from
+	        MATRIX_BILLING_PRODUCT_ELEMENT productElement
+	   	left join
+	   		MATRIX_BILLING_BASE_ELEMENT baseElement on baseElement.ID=productElement.BASE_ELEMENT_ID
+	    where 
+	    	productElement.PRODUCT_ID=#{productId}
 	</select>
 
 </mapper>   

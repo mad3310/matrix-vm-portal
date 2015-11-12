@@ -31,7 +31,7 @@ import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
 
 /**
- * 订单接口
+ * 支付接口
  * @author lisuxiao
  *
  */

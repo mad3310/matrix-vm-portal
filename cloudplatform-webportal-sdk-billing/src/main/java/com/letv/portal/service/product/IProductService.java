@@ -1,9 +1,11 @@
 package com.letv.portal.service.product;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.product.Product;
+import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.service.IBaseService;
 
 /**Program Name: IBaseElementService <br>
@@ -36,6 +38,17 @@ public interface IProductService extends IBaseService<Product> {
 	  * @date 2015年9月6日 下午5:00:37
 	  */
 	boolean validateData(Long id, Map<String,Object> map);
+	
+	/**
+	  * @Title: selectByProductIdWithBaseElement
+	  * @Description: 根据产品id获取产品元素
+	  * @param productId
+	  * @return List<ProductElement>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月11日 下午3:35:45
+	  */
+	List<ProductElement> selectByProductIdWithBaseElement(Long productId);
 	/**
 	  * @Title: dailyConsume
 	  * @Description: 获取该用户下各产品每日消费情况

@@ -16,11 +16,18 @@ public class ProductInfoRecord extends BaseModel{
 	private static final long serialVersionUID = 7865544036106203329L;
 	
 	private String params;//页面参数
-	private String productType;//商品类型,2-云主机
+	private Long productId;//商品ID,2-云主机
 	private String invokeType;//调用类型，1-去调用，0-不调用
+	private Integer batch;//批次
 	private String descn;
 	private String instanceId;//实例ID
 	
+	public Integer getBatch() {
+		return batch;
+	}
+	public void setBatch(Integer batch) {
+		this.batch = batch;
+	}
 	public String getInstanceId() {
 		return instanceId;
 	}
@@ -39,11 +46,11 @@ public class ProductInfoRecord extends BaseModel{
 	public void setParams(String params) {
 		this.params = params;
 	}
-	public String getProductType() {
-		return productType;
+	public Long getProductId() {
+		return productId;
 	}
-	public void setProductType(String productType) {
-		this.productType = productType;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 	public String getDescn() {
 		return descn;

@@ -31,7 +31,7 @@
 	    <association property="productInfoRecord" javaType="ProductInfoRecord">
 			<result column="RECORD_ID" property="id" />
 			<result column="PARAMS" property="params" />
-		    <result column="PRODUCT_TYPE" property="productType" />
+		    <result column="PRODUCT_ID" property="productId" />
 		    <result column="INVOKE_TYPE" property="invokeType" />
 		    <result column="INSTANCE_ID" property="instanceId" />
 		    <result column="RECORD_CREATE_TIME" property="createTime" />
@@ -205,7 +205,7 @@
 	
 	<select id="selectMaxEndTimeSubscription" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
-	        <include refid="Base_Column_List" />,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE,
+	        <include refid="Base_Column_List" />,record.PARAMS,record.PRODUCT_ID,record.INVOKE_TYPE,
 	        record.ID RECORD_ID,record.INSTANCE_ID,product.NAME PRODUCT_NAME,
 			region.NAME BASE_REGION_NAME
 	    from

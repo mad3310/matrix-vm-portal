@@ -1,6 +1,8 @@
 package com.letv.portal.model.subscription;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -39,8 +41,20 @@ public class Subscription extends BaseModel{
 	private String dateNum;//倒计时
 	private String name;//名称（用户页面填入名称）
 	
+	private List<SubscriptionDetail> subscriptionDetails;//订阅下的子订单
+	
 	private ProductInfoRecord productInfoRecord;//商品记录表
 	
+	
+	public List<SubscriptionDetail> getSubscriptionDetails() {
+		return subscriptionDetails;
+	}
+	public void addSubscriptionDetail(SubscriptionDetail subscriptionDetail) {
+		if(subscriptionDetails==null) {
+			subscriptionDetails = new ArrayList<SubscriptionDetail>();
+		}
+		this.subscriptionDetails.add(subscriptionDetail);
+	}
 	public String getName() {
 		return name;
 	}

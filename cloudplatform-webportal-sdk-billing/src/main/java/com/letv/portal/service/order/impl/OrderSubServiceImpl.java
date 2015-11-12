@@ -118,10 +118,10 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		}
 		
 		List<Map<String, Object>> retList = new ArrayList<Map<String, Object>>();
-		Set<String> judgeParam = new HashSet<String>();
+		Set<Long> judgeParam = new HashSet<Long>();
 		
 		for (OrderSub orderSub : orderSubs) {
-			if(judgeParam.contains(orderSub.getProductInfoRecord().getParams())) {
+			if(judgeParam.contains(orderSub.getSubscription().getProductId())) {
 				continue;
 			}
 			Map<String, Object> params = JSONObject.parseObject(orderSub.getProductInfoRecord().getParams(), Map.class);	
@@ -133,9 +133,9 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			ret.put("orderNumber", orderSub.getOrder().getOrderNumber());
 			ret.put("orderTime", orderSub.getSubscription().getOrderTime());
 			ret.put("orderNum", (Integer)params.get("count"));
-			ret.put("params", orderSub.getOrder().getDescn());
+			ret.put("params", orderSub.getProductInfoRecord().getDescn());
 			retList.add(ret);
-			judgeParam.add(orderSub.getProductInfoRecord().getParams());
+			judgeParam.add(orderSub.getSubscription().getProductId());
 		}
 		
 		return retList;

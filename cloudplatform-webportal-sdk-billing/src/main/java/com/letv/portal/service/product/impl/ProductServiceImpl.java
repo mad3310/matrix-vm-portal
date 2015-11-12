@@ -366,5 +366,10 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		return ret;
 	}
 
+	@Override
+	public List<ProductElement> selectByProductIdWithBaseElement(Long productId) {
+		return this.productElementDao.selectByProductIdWithBaseElement(productId);
+	}
+
 
 }
