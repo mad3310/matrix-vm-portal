@@ -9,6 +9,7 @@ import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
+import com.letv.portal.service.openstack.local.service.LocalNetworkService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 
@@ -24,7 +25,7 @@ public class OpenStackServiceGroup {
 	private ITemplateMessageSender defaultEmailSender;
 	private PasswordService passwordService;
 	private SessionServiceImpl sessionService;
-//	private ICloudvmVmCountService cloudvmVmCountService;
+	// private ICloudvmVmCountService cloudvmVmCountService;
 	private SchedulingTaskExecutor threadPoolTaskExecutor;
 	private ErrorEmailService errorEmailService;
 	private ICloudvmFlavorService cloudvmFlavorService;
@@ -40,6 +41,7 @@ public class OpenStackServiceGroup {
 	private LocalRcCountService localRcCountService;
 	private EventPublishService eventPublishService;
 	private LocalCommonQuotaSerivce localCommonQuotaSerivce;
+	private LocalNetworkService localNetworkService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -90,14 +92,14 @@ public class OpenStackServiceGroup {
 		this.sessionService = sessionService;
 	}
 
-//	public ICloudvmVmCountService getCloudvmVmCountService() {
-//		return cloudvmVmCountService;
-//	}
-//
-//	public void setCloudvmVmCountService(
-//			ICloudvmVmCountService cloudvmVmCountService) {
-//		this.cloudvmVmCountService = cloudvmVmCountService;
-//	}
+	// public ICloudvmVmCountService getCloudvmVmCountService() {
+	// return cloudvmVmCountService;
+	// }
+	//
+	// public void setCloudvmVmCountService(
+	// ICloudvmVmCountService cloudvmVmCountService) {
+	// this.cloudvmVmCountService = cloudvmVmCountService;
+	// }
 
 	public void setThreadPoolTaskExecutor(
 			SchedulingTaskExecutor threadPoolTaskExecutor) {
@@ -111,7 +113,7 @@ public class OpenStackServiceGroup {
 	public void setErrorEmailService(ErrorEmailService errorEmailService) {
 		this.errorEmailService = errorEmailService;
 	}
-	
+
 	public ErrorEmailService getErrorEmailService() {
 		return errorEmailService;
 	}
@@ -120,7 +122,8 @@ public class OpenStackServiceGroup {
 		return cloudvmFlavorService;
 	}
 
-	public void setCloudvmFlavorService(ICloudvmFlavorService cloudvmFlavorService) {
+	public void setCloudvmFlavorService(
+			ICloudvmFlavorService cloudvmFlavorService) {
 		this.cloudvmFlavorService = cloudvmFlavorService;
 	}
 
@@ -128,7 +131,8 @@ public class OpenStackServiceGroup {
 		return cloudvmServerService;
 	}
 
-	public void setCloudvmServerService(ICloudvmServerService cloudvmServerService) {
+	public void setCloudvmServerService(
+			ICloudvmServerService cloudvmServerService) {
 		this.cloudvmServerService = cloudvmServerService;
 	}
 
@@ -156,7 +160,8 @@ public class OpenStackServiceGroup {
 		return volumeSyncService;
 	}
 
-	public void setCloudvmVolumeService(ICloudvmVolumeService cloudvmVolumeService) {
+	public void setCloudvmVolumeService(
+			ICloudvmVolumeService cloudvmVolumeService) {
 		this.cloudvmVolumeService = cloudvmVolumeService;
 	}
 
@@ -196,11 +201,20 @@ public class OpenStackServiceGroup {
 		return eventPublishService;
 	}
 
-	public void setLocalCommonQuotaSerivce(LocalCommonQuotaSerivce localCommonQuotaSerivce) {
+	public void setLocalCommonQuotaSerivce(
+			LocalCommonQuotaSerivce localCommonQuotaSerivce) {
 		this.localCommonQuotaSerivce = localCommonQuotaSerivce;
 	}
 
 	public LocalCommonQuotaSerivce getLocalCommonQuotaSerivce() {
 		return localCommonQuotaSerivce;
+	}
+
+	public void setLocalNetworkService(LocalNetworkService localNetworkService) {
+		this.localNetworkService = localNetworkService;
+	}
+	
+	public LocalNetworkService getLocalNetworkService() {
+		return localNetworkService;
 	}
 }

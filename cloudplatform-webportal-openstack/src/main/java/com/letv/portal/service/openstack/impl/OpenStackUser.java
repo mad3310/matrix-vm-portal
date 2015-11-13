@@ -16,10 +16,6 @@ public class OpenStackUser implements Serializable{
 //	private boolean firstLogin;
 	private boolean internalUser;
 	private String tenantId;
-
-	private String publicNetworkName;
-	private String privateNetworkName;
-	private String sharedNetworkName;
 	
 	public OpenStackUser(){
 	}
@@ -62,30 +58,6 @@ public class OpenStackUser implements Serializable{
 
 	public void setInternalUser(boolean internalUser) {
 		this.internalUser = internalUser;
-	}
-
-	public String getPublicNetworkName() {
-		return publicNetworkName;
-	}
-
-	public void setPublicNetworkName(String publicNetworkName) {
-		this.publicNetworkName = publicNetworkName;
-	}
-
-	public String getPrivateNetworkName() {
-		return privateNetworkName;
-	}
-
-	public void setPrivateNetworkName(String privateNetworkName) {
-		this.privateNetworkName = privateNetworkName;
-	}
-
-	public String getSharedNetworkName() {
-		return sharedNetworkName;
-	}
-
-	public void setSharedNetworkName(String sharedNetworkName) {
-		this.sharedNetworkName = sharedNetworkName;
 	}
 
 	public String getEmail() {

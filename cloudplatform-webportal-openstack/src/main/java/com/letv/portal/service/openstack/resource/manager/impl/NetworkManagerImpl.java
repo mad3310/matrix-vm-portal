@@ -249,148 +249,148 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	// return neutronApi;
 	// }
 
-	public Network getPublicNetwork(final String region)
-			throws OpenStackException {
-		return runWithApi(new ApiRunnable<NeutronApi, Network>() {
+//	public Network getPublicNetwork(final String region)
+//			throws OpenStackException {
+//		return runWithApi(new ApiRunnable<NeutronApi, Network>() {
+//
+//			@Override
+//			public Network run(NeutronApi neutronApi) throws Exception {
+//				return getPublicNetwork(neutronApi, region);
+//			}
+//		});
+//	}
 
-			@Override
-			public Network run(NeutronApi neutronApi) throws Exception {
-				return getPublicNetwork(neutronApi, region);
-			}
-		});
-	}
+//	public Network getPublicNetwork(NeutronApi neutronApi, String region) {
+//		return neutronApi.getNetworkApi(region).get(
+//				openStackConf.getGlobalPublicNetworkId());
+//	}
 
-	public Network getPublicNetwork(NeutronApi neutronApi, String region) {
-		return neutronApi.getNetworkApi(region).get(
-				openStackConf.getGlobalPublicNetworkId());
-	}
+//	public Subnet getUserPrivateSubnet(final String region)
+//			throws OpenStackException {
+//		return runWithApi(new ApiRunnable<NeutronApi, Subnet>() {
+//
+//			@Override
+//			public Subnet run(NeutronApi neutronApi) throws Exception {
+//				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+//				Subnet privateSubnet = null;
+//				for (Subnet subnet : subnetApi.list().concat().toList()) {
+//					if (openStackConf.getUserPrivateNetworkSubnetName().equals(
+//							subnet.getName())) {
+//						privateSubnet = subnet;
+//						break;
+//					}
+//				}
+//				return privateSubnet;
+//			}
+//		});
+//	}
 
-	public Subnet getUserPrivateSubnet(final String region)
-			throws OpenStackException {
-		return runWithApi(new ApiRunnable<NeutronApi, Subnet>() {
+//	public Network getUserPrivateNetwork(final String region)
+//			throws OpenStackException {
+//		return runWithApi(new ApiRunnable<NeutronApi, Network>() {
+//
+//			@Override
+//			public Network run(NeutronApi neutronApi) throws Exception {
+//				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+//				Network privateNetwork = null;
+//				for (Network network : networkApi.list().concat().toList()) {
+//					if (openStackConf.getUserPrivateNetworkName().equals(
+//							network.getName())) {
+//						privateNetwork = network;
+//						break;
+//					}
+//				}
+//				return privateNetwork;
+//			}
+//		});
+//	}
 
-			@Override
-			public Subnet run(NeutronApi neutronApi) throws Exception {
-				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
-				Subnet privateSubnet = null;
-				for (Subnet subnet : subnetApi.list().concat().toList()) {
-					if (openStackConf.getUserPrivateNetworkSubnetName().equals(
-							subnet.getName())) {
-						privateSubnet = subnet;
-						break;
-					}
-				}
-				return privateSubnet;
-			}
-		});
-	}
+//	public Network getOrCreateUserPrivateNetwork(final String region)
+//			throws OpenStackException {
+//		return runWithApi(new ApiRunnable<NeutronApi, Network>() {
+//
+//			@Override
+//			public Network run(NeutronApi neutronApi) throws Exception {
+//
+//				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+//
+//				Network privateNetwork = getUserPrivateNetwork(region);
+//				if (privateNetwork == null) {
+//					privateNetwork = networkApi.create(Network.CreateNetwork
+//							.createBuilder("")
+//							.name(openStackConf.getUserPrivateNetworkName())
+//							.build());
+//				}
+//
+//				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+//
+//				Subnet privateSubnet = getUserPrivateSubnet(region);
+//				if (privateSubnet == null) {
+//					privateSubnet = subnetApi.create(Subnet.CreateSubnet
+//							.createBuilder(
+//                                    privateNetwork.getId(),
+//                                    openStackConf
+//                                            .getUserPrivateNetworkSubnetCidr())
+//							.enableDhcp(true)
+//							.name(openStackConf
+//                                    .getUserPrivateNetworkSubnetName())
+//							.ipVersion(4).build());
+//				}
+//
+//				return privateNetwork;
+//
+//			}
+//		});
+//	}
 
-	public Network getUserPrivateNetwork(final String region)
-			throws OpenStackException {
-		return runWithApi(new ApiRunnable<NeutronApi, Network>() {
-
-			@Override
-			public Network run(NeutronApi neutronApi) throws Exception {
-				NetworkApi networkApi = neutronApi.getNetworkApi(region);
-				Network privateNetwork = null;
-				for (Network network : networkApi.list().concat().toList()) {
-					if (openStackConf.getUserPrivateNetworkName().equals(
-							network.getName())) {
-						privateNetwork = network;
-						break;
-					}
-				}
-				return privateNetwork;
-			}
-		});
-	}
-
-	public Network getOrCreateUserPrivateNetwork(final String region)
-			throws OpenStackException {
-		return runWithApi(new ApiRunnable<NeutronApi, Network>() {
-
-			@Override
-			public Network run(NeutronApi neutronApi) throws Exception {
-
-				NetworkApi networkApi = neutronApi.getNetworkApi(region);
-
-				Network privateNetwork = getUserPrivateNetwork(region);
-				if (privateNetwork == null) {
-					privateNetwork = networkApi.create(Network.CreateNetwork
-							.createBuilder("")
-							.name(openStackConf.getUserPrivateNetworkName())
-							.build());
-				}
-
-				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
-
-				Subnet privateSubnet = getUserPrivateSubnet(region);
-				if (privateSubnet == null) {
-					privateSubnet = subnetApi.create(Subnet.CreateSubnet
-							.createBuilder(
-                                    privateNetwork.getId(),
-                                    openStackConf
-                                            .getUserPrivateNetworkSubnetCidr())
-							.enableDhcp(true)
-							.name(openStackConf
-                                    .getUserPrivateNetworkSubnetName())
-							.ipVersion(4).build());
-				}
-
-				return privateNetwork;
-
-			}
-		});
-	}
-
-	public Router getOrCreateUserPrivateRouter(final String region)
-			throws OpenStackException {
-		return runWithApi(new ApiRunnable<NeutronApi, Router>() {
-
-			@Override
-			public Router run(NeutronApi neutronApi) throws Exception {
-				RouterApi routerApi = neutronApi.getRouterApi(region).get();
-
-				Router privateRouter = null;
-				for (Router router : routerApi.list().concat().toList()) {
-					if (openStackConf.getUserPrivateRouterName().equals(
-							router.getName())) {
-						privateRouter = router;
-						break;
-					}
-				}
-				if (privateRouter == null) {
-					privateRouter = routerApi.create(Router.CreateRouter
-							.createBuilder()
-							.name(openStackConf.getUserPrivateRouterName())
-							.externalGatewayInfo(
-                                    ExternalGatewayInfo.builder()
-                                            // .enableSnat(true)
-                                            .networkId(
-                                                    getPublicNetwork(region)
-                                                            .getId()).build())
-							.build());
-					try {
-						routerApi.addInterfaceForSubnet(privateRouter.getId(),
-								getUserPrivateSubnet(region).getId());
-					} catch (Exception ex) {
-						routerApi.delete(privateRouter.getId());
-						throw new OpenStackException("后台服务异常", ex);
-					}
-				}
-
-				// Router router = routerApi.create(Router.CreateRouter
-				// .createBuilder().name(openStackConf.getUserPrivateRouterName())
-				// .build());
-				// .externalGatewayInfo(
-				// ExternalGatewayInfo.builder().enableSnat(true)
-				// .networkId(publicNetwork.getId())
-				// .build())
-
-				return privateRouter;
-			}
-		});
-	}
+//	public Router getOrCreateUserPrivateRouter(final String region)
+//			throws OpenStackException {
+//		return runWithApi(new ApiRunnable<NeutronApi, Router>() {
+//
+//			@Override
+//			public Router run(NeutronApi neutronApi) throws Exception {
+//				RouterApi routerApi = neutronApi.getRouterApi(region).get();
+//
+//				Router privateRouter = null;
+//				for (Router router : routerApi.list().concat().toList()) {
+//					if (openStackConf.getUserPrivateRouterName().equals(
+//							router.getName())) {
+//						privateRouter = router;
+//						break;
+//					}
+//				}
+//				if (privateRouter == null) {
+//					privateRouter = routerApi.create(Router.CreateRouter
+//							.createBuilder()
+//							.name(openStackConf.getUserPrivateRouterName())
+//							.externalGatewayInfo(
+//                                    ExternalGatewayInfo.builder()
+//                                            // .enableSnat(true)
+//                                            .networkId(
+//                                                    getPublicNetwork(region)
+//                                                            .getId()).build())
+//							.build());
+//					try {
+//						routerApi.addInterfaceForSubnet(privateRouter.getId(),
+//								getUserPrivateSubnet(region).getId());
+//					} catch (Exception ex) {
+//						routerApi.delete(privateRouter.getId());
+//						throw new OpenStackException("后台服务异常", ex);
+//					}
+//				}
+//
+//				// Router router = routerApi.create(Router.CreateRouter
+//				// .createBuilder().name(openStackConf.getUserPrivateRouterName())
+//				// .build());
+//				// .externalGatewayInfo(
+//				// ExternalGatewayInfo.builder().enableSnat(true)
+//				// .networkId(publicNetwork.getId())
+//				// .build())
+//
+//				return privateRouter;
+//			}
+//		});
+//	}
 
 	/**
 	 *
@@ -2941,9 +2941,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				List<NetworkResource> networkResources = new LinkedList<NetworkResource>();
 				for (Network network : networkApi.list().concat().toList()) {
-					if (network.getShared()
-							&& !StringUtils.equals(network.getId(),
-									openStackConf.getGlobalSharedNetworkId())) {
+					if (network.getShared()) {
+//							&& !StringUtils.equals(network.getId(),
+//									openStackConf.getGlobalSharedNetworkId())) {
 						networkResources.add(new NetworkResourceImpl(network));
 					}
 				}

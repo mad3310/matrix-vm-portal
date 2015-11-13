@@ -38,10 +38,10 @@ public interface VMManager extends ResourceManager {
 			ResourceNotFoundException, APINotAvailableException,
 			OpenStackException;
 
-	VMResource create(String region, VMCreateConf conf)
-			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException, PollingInterruptedException,
-			OpenStackException;
+//	VMResource create(String region, VMCreateConf conf)
+//			throws RegionNotFoundException, ResourceNotFoundException,
+//			APINotAvailableException, PollingInterruptedException,
+//			OpenStackException;
 
 	void create2(VMCreateConf2 conf) throws OpenStackException;
 
@@ -49,9 +49,9 @@ public interface VMManager extends ResourceManager {
 
 	void createForBilling(long userId, VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException;
 
-	void publish(String region, VMResource vm) throws RegionNotFoundException,
-			APINotAvailableException, TaskNotFinishedException,
-			VMStatusException, OpenStackException;
+//	void publish(String region, VMResource vm) throws RegionNotFoundException,
+//			APINotAvailableException, TaskNotFinishedException,
+//			VMStatusException, OpenStackException;
 
 	void unpublish(String region, VMResource vm)
 			throws RegionNotFoundException, APINotAvailableException,

@@ -226,22 +226,22 @@ public class VMController {
 //		return result;
 //	}
 
-	@RequestMapping(value = "/region/{region}/vm-publish", method = RequestMethod.POST)
-	public @ResponseBody ResultObject publish(@PathVariable String region,
-			@RequestParam String vmId) {
-		ResultObject result = new ResultObject();
-		try {
-			VMManager vmManager = Util.session(sessionService).getVMManager();
-			VMResource vmResource = vmManager.get(region, vmId);
-			vmManager.publish(region, vmResource);
-		} catch (UserOperationException e) {
-			result.addMsg(e.getUserMessage());
-			result.setResult(0);
-		} catch (OpenStackException e) {
-			throw e.matrixException();
-		}
-		return result;
-	}
+//	@RequestMapping(value = "/region/{region}/vm-publish", method = RequestMethod.POST)
+//	public @ResponseBody ResultObject publish(@PathVariable String region,
+//			@RequestParam String vmId) {
+//		ResultObject result = new ResultObject();
+//		try {
+//			VMManager vmManager = Util.session(sessionService).getVMManager();
+//			VMResource vmResource = vmManager.get(region, vmId);
+//			vmManager.publish(region, vmResource);
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
+//		return result;
+//	}
 
 	@RequestMapping(value = "/region/{region}/vm-unpublish", method = RequestMethod.POST)
 	public @ResponseBody ResultObject unpublish(@PathVariable String region,

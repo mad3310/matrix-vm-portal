@@ -7,7 +7,6 @@ import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
-import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
 import org.jclouds.openstack.neutron.v2.domain.*;
@@ -108,9 +107,8 @@ public class CheckVmCreateConfTask implements VmsCreateCheckSubTask{
             }
 
             if (StringUtils.isEmpty(vmCreateConf.getFloatingNetworkId())) {
-                vmCreateConf.setFloatingNetworkId(context
-                        .getVmManager().getOpenStackConf()
-                        .getGlobalPublicNetworkId());
+                vmCreateConf.setFloatingNetworkId(OpenStackServiceImpl.getOpenStackServiceGroup()
+                		.getLocalNetworkService().getPublicNetworkId(context.getNeutronApi(), region));
             }
             Network floatingNetwork = context.getNeutronApi()
                     .getNetworkApi(region).get(vmCreateConf.getFloatingNetworkId());

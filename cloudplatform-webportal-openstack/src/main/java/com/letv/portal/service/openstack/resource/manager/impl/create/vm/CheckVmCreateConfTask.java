@@ -1,11 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
-import java.lang.invoke.ConstantCallSite;
 import java.text.MessageFormat;
 
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
-import com.letv.portal.service.openstack.util.constants.Constants;
-import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
 import org.jclouds.openstack.neutron.v2.domain.IP;
@@ -21,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 
 public class CheckVmCreateConfTask extends VmsCreateSubTask {
 
@@ -103,9 +100,8 @@ public class CheckVmCreateConfTask extends VmsCreateSubTask {
 			}
 
 			if (StringUtils.isEmpty(vmCreateConf.getFloatingNetworkId())) {
-				vmCreateConf.setFloatingNetworkId(multiVmCreateContext
-						.getVmManager().getOpenStackConf()
-						.getGlobalPublicNetworkId());
+				vmCreateConf.setFloatingNetworkId(OpenStackServiceImpl.getOpenStackServiceGroup()
+                		.getLocalNetworkService().getPublicNetworkId(multiVmCreateContext.getApiCache().getApiSession().getNeutronApi(), vmCreateConf.getRegion()));
 			}
 			Network floatingNetwork = multiVmCreateContext.getApiCache()
 					.getNetworkApi().get(vmCreateConf.getFloatingNetworkId());

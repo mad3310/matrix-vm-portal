@@ -31,25 +31,25 @@ public class WaitingVMCreated implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			Server server =((VMResourceImpl) vmManager.get(region,vmId)).server;
-			while (server
-					.getAddresses()
-					.get(vmManager.getOpenStackConf()
-							.getUserPrivateNetworkName()).isEmpty()) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					throw new PollingInterruptedException(e);
-				}
-				server =((VMResourceImpl) vmManager.get(region,vmId)).server;
-			}
-			for (Runnable task : afterTasks) {
-				task.run();
-			}
-		} catch (OpenStackException e) {
-			logger.error(e.getMessage(), e);
-		}
+//		try {
+//			Server server =((VMResourceImpl) vmManager.get(region,vmId)).server;
+//			while (server
+//					.getAddresses()
+//					.get(vmManager.getOpenStackConf()
+//							.getUserPrivateNetworkName()).isEmpty()) {
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					throw new PollingInterruptedException(e);
+//				}
+//				server =((VMResourceImpl) vmManager.get(region,vmId)).server;
+//			}
+//			for (Runnable task : afterTasks) {
+//				task.run();
+//			}
+//		} catch (OpenStackException e) {
+//			logger.error(e.getMessage(), e);
+//		}
 	}
 
 }

@@ -162,9 +162,6 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			if (!openStackUser.getEmail().contains("@") || !openStackUser.getUserId().contains("@")) {
 				throw new OpenStackException(MessageFormat.format("invalid user email or id,email:'{0}',userId:'{1}'.", openStackUser.getEmail(), openStackUser.getUserId()), "用户信息不合法");
 			}
-
-			openStackUser.setPrivateNetworkName(openStackConf
-					.getUserPrivateNetworkName());
 		} catch (NoSuchAlgorithmException e) {
 			throw new OpenStackException("后台服务不可用", e);
 		}
@@ -193,26 +190,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			try {
 				for (final String region : neutronApi.getConfiguredRegions()) {
 					final NetworkApi networkApi = neutronApi.getNetworkApi(region);
-
 					ThreadUtil.concurrentRunAndWait(new Function<Void>() {
-						@Override
-						public Void apply() {
-							Network publicNetwork = networkManager.getPublicNetwork(neutronApi, region);
-							// for (Network network : networkApi.list().concat().toList()) {
-							// if ("__public_network".equals(network.getName())) {
-							// publicNetwork = network;
-							// break;
-							// }
-							// }
-							if (publicNetwork == null) {
-								throw new OpenStackException(
-										"can not find public network under region: " + region,
-										"后台服务异常").matrixException();
-							}
-							openStackUser.setPublicNetworkName(publicNetwork.getName());
-							return null;
-						}
-					}, new Function<Void>() {
 						@Override
 						public Void apply() throws Exception{
 							Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
@@ -303,15 +281,6 @@ public class OpenStackSessionImpl implements OpenStackSession {
 											.protocol(RuleProtocol.TCP).portRangeMin(22)
 											.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
 								}
-							}
-							return null;
-						}
-					}, new Function<Void>() {
-						@Override
-						public Void apply() {
-							if (openStackUser.getInternalUser() && !openStackConf.getGlobalSharedNetworkId().isEmpty()) {
-								openStackUser.setSharedNetworkName(networkApi.get(
-										openStackConf.getGlobalSharedNetworkId()).getName());
 							}
 							return null;
 						}

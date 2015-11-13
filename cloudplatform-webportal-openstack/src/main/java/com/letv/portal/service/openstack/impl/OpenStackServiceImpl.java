@@ -18,6 +18,7 @@ import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
+import com.letv.portal.service.openstack.local.service.LocalNetworkService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.util.CollectionUtil;
@@ -26,6 +27,7 @@ import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.*;
@@ -67,23 +69,23 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Value("${openstack.keystone.user.register.token}")
 	private String userRegisterToken;
 
-	@Value("${openstack.neutron.network.global.public.id}")
-	private String globalPublicNetworkId;
+//	@Value("${openstack.neutron.network.global.public.id}")
+//	private String globalPublicNetworkId;
+//
+//	@Value("${openstack.neutron.network.global.shared.id}")
+//	private String globalSharedNetworkId;
 
-	@Value("${openstack.neutron.network.global.shared.id}")
-	private String globalSharedNetworkId;
-
-	@Value("${openstack.neutron.network.user.private.name}")
-	private String userPrivateNetworkName;
-
-	@Value("${openstack.neutron.network.user.private.subnet.name}")
-	private String userPrivateNetworkSubnetName;
-
-	@Value("${openstack.neutron.network.user.private.subnet.cidr}")
-	private String userPrivateNetworkSubnetCidr;
-
-	@Value("${openstack.neutron.router.user.private.name}")
-	private String userPrivateRouterName;
+//	@Value("${openstack.neutron.network.user.private.name}")
+//	private String userPrivateNetworkName;
+//
+//	@Value("${openstack.neutron.network.user.private.subnet.name}")
+//	private String userPrivateNetworkSubnetName;
+//
+//	@Value("${openstack.neutron.network.user.private.subnet.cidr}")
+//	private String userPrivateNetworkSubnetCidr;
+//
+//	@Value("${openstack.neutron.router.user.private.name}")
+//	private String userPrivateRouterName;
 
 	@Value("${openstack.neutron.router.gateway.bandWidth}")
 	private String routerGatewayBandWidth;
@@ -156,6 +158,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Autowired
 	private LocalCommonQuotaSerivce localCommonQuotaSerivce;
+	
+	@Autowired
+	private LocalNetworkService localNetworkService;
 
 	private OpenStackServiceGroup openStackServiceGroup;
 
@@ -172,15 +177,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		adminEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol,
 				keystoneHost, adminPort, keystoneVersion);
 		openStackConf = new OpenStackConf();
-		openStackConf.setGlobalPublicNetworkId(globalPublicNetworkId);
-		openStackConf.setGlobalSharedNetworkId(globalSharedNetworkId);
 		openStackConf.setPublicEndpoint(publicEndpoint);
-		openStackConf.setUserPrivateNetworkName(userPrivateNetworkName);
-		openStackConf
-				.setUserPrivateNetworkSubnetCidr(userPrivateNetworkSubnetCidr);
-		openStackConf
-				.setUserPrivateNetworkSubnetName(userPrivateNetworkSubnetName);
-		openStackConf.setUserPrivateRouterName(userPrivateRouterName);
 		openStackConf.setAdminEndpoint(adminEndpoint);
 		openStackConf.setUserRegisterToken(userRegisterToken);
 		openStackConf.setRouterGatewayBandWidth(Integer.parseInt(routerGatewayBandWidth));
@@ -207,6 +204,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setLocalRcCountService(localRcCountService);
 		openStackServiceGroup.setEventPublishService(eventPublishService);
 		openStackServiceGroup.setLocalCommonQuotaSerivce(localCommonQuotaSerivce);
+		openStackServiceGroup.setLocalNetworkService(localNetworkService);
 	}
 
 	@Override

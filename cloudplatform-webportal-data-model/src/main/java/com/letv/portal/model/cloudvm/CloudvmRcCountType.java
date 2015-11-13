@@ -6,7 +6,7 @@ import com.letv.portal.model.adminoplog.IntEnum;
  * Created by zhouxianguang on 2015/10/29.
  */
 public enum CloudvmRcCountType implements IntEnum {
-    SERVER(1), FLOATING_IP(2), ROUTER(3);
+    SERVER(1), FLOATING_IP(2), ROUTER(3), CPU(4), MEMORY(5), ;
 
     private Integer code;
 
