@@ -28,6 +28,10 @@ public class SubnetResourceImpl extends AbstractResource implements
 	private RouterResource router;
 	private NetworkResource network;
 
+	public SubnetResourceImpl(String region, Subnet subnet) {
+		this(region, null, subnet, null, null);
+	}
+
 	public SubnetResourceImpl(String region,String regionDisplayName,Subnet subnet){
 		this(region,regionDisplayName,subnet,null,null);
 	}

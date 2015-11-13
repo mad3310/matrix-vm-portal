@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.resource.service.impl;
 
+import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
@@ -121,5 +122,16 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         NovaApi novaApi = getNovaApi();
         resourceService.deleteKeyPair(novaApi, userVoUserId, tenantId, region, name);
+    }
+
+    @Override
+    public Page listVm(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+        CinderApi cinderApi = getCinderApi();
+        return resourceService.listVm(novaApi, neutronApi, cinderApi, userVoUserId, region, name, currentPage, recordsPerPage);
     }
 }

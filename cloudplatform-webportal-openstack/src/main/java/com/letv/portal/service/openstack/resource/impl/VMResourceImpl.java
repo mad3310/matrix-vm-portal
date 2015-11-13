@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.resource.*;
 import com.letv.portal.service.openstack.resource.manager.impl.ImageManagerImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -16,11 +17,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Multimap;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
-import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.IPAddresses;
-import com.letv.portal.service.openstack.resource.ImageResource;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
 public class VMResourceImpl extends AbstractResource implements VMResource {
@@ -89,7 +85,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 			if (publicIPs.contains(ip)) {
 				ipAddresses.getPublicIP().add(ip);
 			} else {
-				ipAddresses.getPrivateIP().add(ip);
+				ipAddresses.getPrivateIP().add(new SubnetIp(ip));
 			}
 
 //			if (networkNameToPublicIps.get(networkName) != null && networkNameToPublicIps.get(networkName).contains(ip)) {
@@ -291,4 +287,15 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 		this.volumes = volumes;
 	}
 
+	public void setImage(ImageResource imageResource) {
+		this.imageResource = imageResource;
+	}
+
+	public void setFlavor(FlavorResource flavorResource) {
+		this.flavorResource = flavorResource;
+	}
+
+	public void setIpAddresses(IPAddresses ipAddresses) {
+		this.ipAddresses = ipAddresses;
+	}
 }

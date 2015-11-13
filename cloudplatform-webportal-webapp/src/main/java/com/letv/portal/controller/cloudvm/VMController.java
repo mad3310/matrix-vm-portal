@@ -98,11 +98,12 @@ public class VMController {
 			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util
-					.session(sessionService)
-					.getVMManager()
-					.listByRegionGroup(region, Util.optPara(name), currentPage,
-                            recordsPerPage));
+//			result.setData(Util
+//					.session(sessionService)
+//					.getVMManager()
+//					.listByRegionGroup(region, Util.optPara(name), currentPage,
+//                            recordsPerPage));
+			result.setData(resourceServiceFacade.listVm(region,name,currentPage,recordsPerPage));
 //			result.setData(vmQueryService.list(region,name,currentPage,recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
