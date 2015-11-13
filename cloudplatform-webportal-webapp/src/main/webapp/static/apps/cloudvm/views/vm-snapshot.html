@@ -1,7 +1,7 @@
 <div class="view-common view-vm-snapshot" ng-controller="VmSnapshotCrtl">
     <div class="le-row le-tab-header">
-        <div class="le-tab-btn" ng-class="{'le-tab-active':tabShow === 'VmSnapshot'}" ng-click="tabShow = 'VmSnapshot';refreshSnapshotList();"><span>云主机快照</span></div><!--消除空格
-        --><div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'DiskSnapshot'}" ng-click="tabShow = 'DiskSnapshot';refreshSnapshotList();"><span>云硬盘快照</span></div>
+        <div class="le-tab-btn" ng-class="{'le-tab-active':tabShow === 'VmSnapshot'}" ng-click="tabShow = 'VmSnapshot';refreshSnapshotList();"><span>云主机快照</span></div>
+        <div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'DiskSnapshot'}" ng-click="tabShow = 'DiskSnapshot';refreshSnapshotList();"><span>云硬盘快照</span></div>
     </div>
     <div ng-show="tabShow === 'VmSnapshot'">
         <div class="le-row operate-panel">
@@ -36,7 +36,7 @@
                             <span>{{snapshot.status | vmImageStatusFilter}}</span>
                         </td>
                         <td><span>{{snapshot.size}}GB</span></td>
-                        <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd'}}</span></td>
+                        <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd hh:mm'}}</span></td>
                     </tr>
                     <tr ng-if="vmSnapshotList.length==0">
                         <td ng-if="!isListLoading" colspan=10>暂无云主机快照，去创建吧。</td>
@@ -89,7 +89,7 @@
                             <span>{{snapshot.status | diskStatusFilter}}</span>
                         </td>
                         <td><span>{{snapshot.size}}GB</span></td>
-                        <td><span>{{snapshot.created | date:'yyyy-MM-dd'}}</span></td>
+                        <td><span>{{snapshot.created | date:'yyyy-MM-dd hh:mm'}}</span></td>
                     </tr>
                     <tr ng-if="diskSnapshotList.length==0">
                         <td ng-if="!isListLoading" colspan=10>暂无云硬盘快照，去创建吧。</td>

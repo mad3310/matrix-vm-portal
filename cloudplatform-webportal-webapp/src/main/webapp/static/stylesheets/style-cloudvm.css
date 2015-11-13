@@ -132,19 +132,36 @@
 
 }
 .le-tab-btn span:hover{
-    cursor:pointer
+    cursor:pointer;
+
 }
 .le-tab-btn{
+    position: relative;
     display: inline-block;
+    border:1px solid rgba(228,228,228, 0);
+    border-top:2px solid rgba(228,228,228, 0);
+    border-bottom:1px solid #e4e4e4;
+    top: 1px;
     width: 90px;
     height: 32px;
-    border:solid #e4e4e4;
-    border-width: 1px 1px 0px 1px;
+}
+.le-tab-btn:hover{
+    border:1px solid rgba(228,228,228, 1);
+    border-top:2px solid rgba(228,228,228, 1);
+    background: #ffffff;
 }
 .le-tab-active{
     color: #6aacd2;
+    border:1px solid #e4e4e4;
+    border-top:2px solid #6aacd2;
+    border-bottom:1px solid #ffffff;
+}
+.le-tab-active:hover{
+    border:1px solid #e4e4e4;
+    border-top:2px solid #6aacd2;
+    border-bottom:1px solid #ffffff;
 }
 .le-tab-btn:first-child{
     margin-left: 12px;
-    border-right: 0px;
+    /*border-right: 0px;*/
 }

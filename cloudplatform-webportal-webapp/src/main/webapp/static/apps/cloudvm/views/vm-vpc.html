@@ -1,7 +1,7 @@
 <div class="view-common" ng-controller="VmVpcCtrl">
     <div class="le-row le-tab-header">
-        <div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'vpc'}" ng-click="switchTabToVpc()"><span>VPC</span></div><!--消除空格
-        --><div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'subnet'}" ng-click="switchTabToSubnet()"><span>子网</span></div>
+        <div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'vpc'}" ng-click="switchTabToVpc()"><span>VPC</span></div>
+        <div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'subnet'}" ng-click="switchTabToSubnet()"><span>子网</span></div>
     </div>
     <div ng-show="tabShow === 'vpc'">
         <div class="le-row operate-panel">
@@ -38,7 +38,7 @@
                         <td>
                             <span>{{vpc.status | vpcStatusFilter}}</span>
                         </td>
-                        <td><span>{{vpc.created | date:'yyyy-MM-dd'}}</span></td>
+                        <td><span>{{vpc.created | date:'yyyy-MM-dd hh:mm'}}</span></td>
                     </tr>
                     <tr ng-if="vpcList.length==0">
                         <td ng-if="!isListLoading" colspan=10>暂无私有网络，去创建吧。</td>
@@ -100,7 +100,7 @@
                         <td><span>{{subnet.network.name}}</span></td>
                         <td><span>{{subnet.cidr}}</span></td>
                         <td><span>{{subnet.router.name}}</span></td>
-                        <td><span>{{subnet.created | date:'yyyy-MM-dd'}}</span></td>
+                        <td><span>{{subnet.created | date:'yyyy-MM-dd hh:mm'}}</span></td>
                     </tr>
                     <tr ng-if="subnetList.length==0">
                         <td ng-if="!isListLoading" colspan=10>暂无子网，去创建吧。</td>
