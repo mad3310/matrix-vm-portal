@@ -296,18 +296,24 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       },
       buildDisplayData=function(){
-        var data=[];
-        data.push(['配置',selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存, '+ $scope.dataDiskVolume+'G数据盘'].join('/:'));
-        data.push(['带宽',$scope.networkBandWidth+'Mbps'].join('/:'));
+        var part1=[],
+          part2=[],
+          part3=[];
+        part1.push('配置/:'+selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存');
         if($scope.imageActiveTab === 'snapshot'){
-          data.push(['快照',$scope.selectedVmSnapshot.name].join('/:'));
+          part1.push('快照/:'+$scope.selectedVmSnapshot.name);
         }
         else{
-          data.push(['镜像',$scope.selectedVmImage.name].join('/:'));
+          part1.push('镜像/:'+$scope.selectedVmImage.name);
         }
-        data.push(['地域',CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name].join('/:'));
-        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'基础网络':'私有网络'].join('/:'));
-        return data.join('/;');
+        part1.push('地域/:'+CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name);
+        part1.push('网络类型/:'+$scope.vmNetworkType == 'primary'?'基础网络':'私有网络');
+        part2.push('类型/:'+$scope.selectedVmDiskType.name);
+        part2.push('容量/:'+$scope.dataDiskVolume+'G数据盘');
+        if($scope.vmNetworkPublicIpModel==='now' && $scope.vmNetworkType==='primary'){
+          part3.push('带宽/:'+$scope.networkBandWidth+'Mbps');
+        }
+        return [part1.join('/;'),part2.join('/;'),part3.join('/;')].join(';;');
       },
       updateDiskVolumeOfCalculatePrice=function(value) {
         diskVolumeOfCalculatePrice = value;

@@ -1004,6 +1004,7 @@ le-select .le-select-menu li a{
 .view-common .operate-panel .more-operation-dropdown .dropdown-menu{
     min-width: 0;
     width: 100%;
+    font-size: 12px;
     background-color: #f5f5f5;
     margin:0;
     padding: 0 0 5px;

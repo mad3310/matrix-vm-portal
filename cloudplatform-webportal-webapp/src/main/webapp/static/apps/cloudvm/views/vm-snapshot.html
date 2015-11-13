@@ -36,7 +36,7 @@
                             <span>{{snapshot.status | vmImageStatusFilter}}</span>
                         </td>
                         <td><span>{{snapshot.size}}GB</span></td>
-                        <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd'}}</span></td>
+                        <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd hh:mm'}}</span></td>
                     </tr>
                     <tr ng-if="vmSnapshotList.length==0">
                         <td ng-if="!isListLoading" colspan=10>暂无云主机快照，去创建吧。</td>
@@ -89,7 +89,7 @@
                             <span>{{snapshot.status | diskStatusFilter}}</span>
                         </td>
                         <td><span>{{snapshot.size}}GB</span></td>
-                        <td><span>{{snapshot.created | date:'yyyy-MM-dd'}}</span></td>
+                        <td><span>{{snapshot.created | date:'yyyy-MM-dd hh:mm'}}</span></td>
                     </tr>
                     <tr ng-if="diskSnapshotList.length==0">
                         <td ng-if="!isListLoading" colspan=10>暂无云硬盘快照，去创建吧。</td>
