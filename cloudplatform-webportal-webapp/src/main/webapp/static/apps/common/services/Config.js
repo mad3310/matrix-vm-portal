@@ -88,6 +88,7 @@ define(['./common.service'], function (serviceModule) {
       'error':'异常',
       //前端添加
       'deleted':'已删除',
+      'arrearaged':'欠费停机'
   };
     config.vmTaskStatuses = {
       'building':'创建中',
@@ -130,6 +131,32 @@ define(['./common.service'], function (serviceModule) {
       {"text": "无", "value": "NIL"},
     ];
     config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
+    config.statusOperations={
+      "virtualMachine":{
+        "active":{"create":1,"start":0,"stop":1,"restart":1,"createsnap":1,"changeconfig":0,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},
+        "stopped":{"create":1,"start":1,"stop":0,"restart":0,"createsnap":1,"changeconfig":0,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
+                  "joinnet":1,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":1},
+        "building":{"create":0,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
+        "deleting":{"create":0,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
+        "stopping":{"create":0,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
+        "starting":{"create":0,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
+        "rebooting":{"create":0,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
+        "spawning":{"create":0,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0}, 
+        "deleted":{"create":1,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},           
+      },
+      "disk":{
+
+      }
+    }
+
     return config;
   }]);
 });

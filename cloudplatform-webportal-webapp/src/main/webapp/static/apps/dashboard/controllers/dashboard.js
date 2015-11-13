@@ -117,7 +117,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 						$scope.ecs=data.data.ecs;
 						$scope.ecs_sleep=data.data['ecs-sleep'];
 						$scope.disk=data.data.disk;
-						$scope.floatIp=data.data.floatIp;
+						$scope.floatIp=data.data.floatingIp;
 						$scope.router=data.data.router;
 					}
 				});
