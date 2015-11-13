@@ -68,7 +68,8 @@
                                         </ul>
                                     </div>
                                     <div class="tab-pane" ng-class="{active:imageActiveTab === 'snapshot'}">
-                                        <ul class="system-content clearfix">
+                                        <div class="vm-snapshot-no-message" ng-show="!vmSnapshotList.length">暂无快照，去创建吧。</div>
+                                        <ul ng-show="vmSnapshotList.length" class="system-content clearfix">
                                             <li ng-repeat="vmSnapshot in vmSnapshotList">
                                                 <div class="letv-radioCheck" ng-class="{'selected':isSelectedVmSnapshot(vmSnapshot)}" ng-click="selectVmSnapshot(vmSnapshot)">
                                                     <i class="iconfont icon-checkblockicon"></i>
