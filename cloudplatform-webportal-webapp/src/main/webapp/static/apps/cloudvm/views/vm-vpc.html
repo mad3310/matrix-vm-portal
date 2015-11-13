@@ -8,7 +8,7 @@
             <div class="le-col-6 le-btn-group">
                 <button class="btn btn-le-blue" ng-click="openVpcCreateModal('500')"><span>创建VPC</span></button>
                 <button class="btn btn-le-blueGreen" ng-click="subnetCreateWithVpc()"><span>创建子网</span></button>
-                <button class="btn btn-le-green" ng-click="editVpc()"><span>修改VPC</span></button>
+                <button class="btn btn-le-green" ng-click="editVpc()"><span>编辑VPC</span></button>
                 <button class="btn btn-le-roseRed" ng-click="deleteVpc()"><span>删除VPC</span></button>
             </div>
         </div>
@@ -202,7 +202,7 @@
     <script type="text/ng-template" id="VpcEditModalTpl">
         <form novalidate class="form-vm-vpc-create" name="vpc_edit_form">
             <div class="letv-modal-header">
-                <span class="header-title">修改VPC</span>
+                <span class="header-title">编辑VPC</span>
                 <a class="close" ng-click="closeModal()">
                     <i class="iconfont icon-add"></i>
                 </a>
@@ -223,7 +223,7 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="editVpc()"><span>提交修改</span></button>
+                        <button class="btn btn-le-blue" ng-click="editVpc()"><span>编辑</span></button>
                     </div>
                 </div>
             </div>
@@ -232,7 +232,7 @@
     <script type="text/ng-template" id="SubnetEditModalTpl">
         <form novalidate class="form-vm-subnet-create" name="subnet_edit_form">
             <div class="letv-modal-header">
-                <span class="header-title">修改子网</span>
+                <span class="header-title">编辑子网</span>
                 <a class="close" ng-click="closeModal()">
                     <i class="iconfont icon-add"></i>
                 </a>
@@ -253,7 +253,7 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="editSubnet()"><span>提交修改</span></button>
+                        <button class="btn btn-le-blue" ng-click="editSubnet()"><span>编辑</span></button>
                     </div>
                 </div>
             </div>
