@@ -1084,7 +1084,7 @@ le-select .le-select-menu li a{
 /*end view-common style*/
 
 /*begin btn-le style*/
-.btn-le-blue, .btn-le-blueGreen, .btn-le-green, .btn-le-yellow, .btn-le-red {
+.btn-le-blue, .btn-le-blueGreen, .btn-le-green, .btn-le-yellow, .btn-le-red , .btn-le-roseRed{
     width: 100px;
     height: 30px;
     line-height: 30px;
@@ -1119,6 +1119,11 @@ le-select .le-select-menu li a{
 
 .btn-le-red {
     background-color: #ff3c37;
+    color: #fff;
+}
+
+.btn-le-roseRed {
+    background-color: #e05c69;
     color: #fff;
 }
 .btn-le-blue:hover,.btn-le-blue:active,.btn-le-blue:focus{color:#fff;background:#077CAE;}

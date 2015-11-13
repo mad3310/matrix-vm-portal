@@ -2,11 +2,11 @@
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openVmKeypairCreateModal('500')"><span>创建密钥</span></button>
-            <button class="btn btn-le-blueGreen" ng-click="deleteKeypair()"><span>删除</span></button>
+            <button class="btn btn-le-roseRed" ng-click="deleteKeypair()"><span>删除密钥</span></button>
         </div>
         <div class="le-col-6">
             <div class="le-search-box pull-right">
-                <input type="text" ng-model="searchName" ng-model-options="{debounce:500}" ng-change="doSearch()"/>
+                <input type="text" ng-model="searchName" ng-model-options="{debounce:500}" ng-change="doSearch()" placeholder="输入密钥名称"/>
                 <span class="search-icon"></span>
             </div>
         </div>
