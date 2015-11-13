@@ -325,7 +325,10 @@
 			</div>
 		</div>
 		<div class="col-md-4 bg-yellow">
-			<img src="/static/staticPage/img/advantage-free.png">
+			<div class="canvas-img">
+				<img src="/static/staticPage/img/advantage-free.png">
+				<span class="" style="font-size:30px;color:#333;position:absolute;left:88px;top:40px;opacity:1">7</span>
+			</div>
 			<div class="anvantage-desc">
 				<div>免费试用</div>
 				<div><span class="desc-specific">全网产品7天免费试用</span></div>
@@ -743,7 +746,8 @@ var client=new ClientInfor();
 browerversion(client);//判断浏览器版本
 // topNavHover();//导航滑过效果
 navMore();//登录注册
-carousels();//轮播
+// carousels();//轮播
+carouselFocus();
 iflogged();//判断是否登录
 var browser=client.getBrowserInfor();
 if (browser.ie){

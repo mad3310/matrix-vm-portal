@@ -1,9 +1,9 @@
 (function init(){
-	// var engine={},browser={},system={};
+	
 	toTop();
 	customerToolInit();
 })();
-
+var timeInterval='';
 //  common:监测浏览器版本
 function browerversion(obj){
 	var _browser=obj.getBrowserInfor();
@@ -103,7 +103,7 @@ function navMore(){
 }
 // index:carousels
 function carousels(){
-	var timeInterval='';
+	timeInterval='';
 	if(timeInterval){
 	}else{
 		timeInterval=setInterval(function(){
@@ -119,7 +119,7 @@ function carousels(){
 			$('.carousel-control img:eq('+nxtIndex+')').removeClass('control-short');
 			_targetParent.children(':first').removeClass('hide').find('.carousel-content .col-md-5').addClass('fadeIn')
 			_targetParent.children(':first').find('.carousel-content .col-md-7').addClass('slideR');
-		},5000);
+		},3000);
 	}
 	//轮播control
 	$('.carousel-control').unbind('click').click(function(event) {
@@ -144,20 +144,34 @@ function carousels(){
 		if(timeInterval){
 			clearInterval(timeInterval);
 		}
-		timeInterval=setInterval(function(){
-			var _targetF=_targetParent.children(':first');
-			_targetF.addClass('hide').find('.carousel-content .col-md-5').removeClass('fadeIn');
-			_targetF.find('.carousel-content .col-md-7').removeClass('slideR');
-			//carousel-control change
-			var preIndex2=_targetF.attr('self-carousel-id');
-			$('.carousel-control img:eq('+preIndex2+')').addClass('control-short');
-			_targetParent.append(_targetF);
-			var nxtIndex=_targetParent.children(':first').attr('self-carousel-id');
-			$('.carousel-control img:eq('+nxtIndex+')').removeClass('control-short');
-			_targetParent.children(':first').removeClass('hide').find('.carousel-content .col-md-5').addClass('fadeIn')
-			_targetParent.children(':first').find('.carousel-content .col-md-7').addClass('slideR');
-		},5000);
+		// timeInterval=setInterval(function(){
+		// 	var _targetF=_targetParent.children(':first');
+		// 	_targetF.addClass('hide').find('.carousel-content .col-md-5').removeClass('fadeIn');
+		// 	_targetF.find('.carousel-content .col-md-7').removeClass('slideR');
+		// 	//carousel-control change
+		// 	var preIndex2=_targetF.attr('self-carousel-id');
+		// 	$('.carousel-control img:eq('+preIndex2+')').addClass('control-short');
+		// 	_targetParent.append(_targetF);
+		// 	var nxtIndex=_targetParent.children(':first').attr('self-carousel-id');
+		// 	$('.carousel-control img:eq('+nxtIndex+')').removeClass('control-short');
+		// 	_targetParent.children(':first').removeClass('hide').find('.carousel-content .col-md-5').addClass('fadeIn')
+		// 	_targetParent.children(':first').find('.carousel-content .col-md-7').addClass('slideR');
+		// },2000);
 	});
+}
+function carouselFocus(){
+	$('.carousel-control img').mouseenter(function() {
+	    clearInterval(timeInterval);
+	}).mouseleave(function() {
+		//打开定时器-自动
+		carousels()
+	});
+	$('.carousels').mouseenter(function(event) {
+		clearInterval(timeInterval);
+	}).mouseleave(function(event) {
+		carousels()
+	});
+	carousels()
 }
 // products:scroll-nav
 function scrollNav(sheight){

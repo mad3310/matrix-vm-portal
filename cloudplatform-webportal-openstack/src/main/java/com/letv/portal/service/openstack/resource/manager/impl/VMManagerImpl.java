@@ -49,9 +49,12 @@ import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.*;
 import org.jclouds.openstack.glance.v1_0.domain.Image;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
+import org.jclouds.openstack.neutron.v2.domain.*;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.*;
+import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
+import org.jclouds.openstack.nova.v2_0.domain.Quota;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
 import org.jclouds.openstack.nova.v2_0.extensions.*;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
@@ -1890,5 +1893,9 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 return novaApi.getServerApi(region).list().concat().toList();
             }
         });
+    }
+
+    public static boolean isPublicFloatingIp(FloatingIP floatingIP) {
+        return !StringUtils.equals(floatingIP.getFixedIp(), floatingIP.getIp());
     }
 }

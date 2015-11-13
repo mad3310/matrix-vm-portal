@@ -105,7 +105,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
-        if(checkedVms[0].taskState || checkedVms[0].vmState!=='active' || checkedVms[0].vmState !=='stopped'){
+        if(originalTaskState || (originalVmState!=='active' && originalVmState !=='stopped')){
           WidgetService.notifyWarning('云主机当前状态不可删除');
           return;
         }
@@ -206,7 +206,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
-        if(checkedVms[0].taskState || checkedVms[0].vmState!=='active' || checkedVms[0].vmState !=='stopped'){
+        if(checkedVms[0].taskState || (checkedVms[0].vmState!=='active' && checkedVms[0].vmState !=='stopped')){
           WidgetService.notifyWarning('云主机当前状态不可挂载云硬盘');
           return;
         }
@@ -276,7 +276,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
-        if(checkedVms[0].taskState || checkedVms[0].vmState!=='active' || checkedVms[0].vmState!=='stopped'){
+        if(checkedVms[0].taskState || (checkedVms[0].vmState!=='active' && checkedVms[0].vmState!=='stopped')){
           WidgetService.notifyWarning('云主机当前状态不可绑定公网ip');
           return;
         }
@@ -350,7 +350,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
-        if(checkedVms[0].taskState || checkedVms[0].vmState!=='active' || checkedVms[0].vmState!=='stopped'){
+        if(checkedVms[0].taskState || (checkedVms[0].vmState!=='active' && checkedVms[0].vmState!=='stopped')){
           WidgetService.notifyWarning('云主机当前状态不可创建快照');
           return;
         }

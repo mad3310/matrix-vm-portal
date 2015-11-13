@@ -161,4 +161,11 @@
 			limit #{page.startRowPosition},#{page.recordsPerPage}
 		</if>
 	</select>
+
+	<select id="selectAllImageOrVmSnapshot" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE i
+		where i.REGION = #{region} and (i.TENANT_ID = #{tenantId} or i.IMAGE_TYPE = #{imageType})
+	</select>
 </mapper>
