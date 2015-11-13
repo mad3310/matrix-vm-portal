@@ -361,7 +361,8 @@ width:150px;height:40px;
     background-color: #f5c131;
 }
 .dropdown-menu .dropdown-btn{border:none;border-radius:0;padding:3px; width:98px;text-align:center;background-color:transparent;}
-.dropdown-menu .dropdown-btn:hover{cursor:pointer;color:#fff;background-color:#b3b3b3}
+.dropdown-menu .dropdown-btn:hover{color:#fff;background-color:#b3b3b3}
+.dropdown-menu button[disabled]{cursor:not-allowed;}
 /*end header style*/
 
 /*begin footer style*/
