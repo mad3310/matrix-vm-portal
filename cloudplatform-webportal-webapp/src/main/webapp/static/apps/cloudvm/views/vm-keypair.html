@@ -31,7 +31,7 @@
                     </td>
                     <td><span>{{keypair.name|| '未设置'}}</span></td>
                     <td><span>{{keypair.fingerprint}}</span></td>
-                    <td><span>{{keypair.created | date:'yyyy-MM-dd'}}</span></td>
+                    <td><span>{{keypair.created | date:'yyyy-MM-dd hh:mm'}}</span></td>
                 </tr>
                 <tr ng-if="keypairList.length==0">
                     <td ng-if="!isListLoading" colspan=10>暂无密钥，去创建吧。</td>
