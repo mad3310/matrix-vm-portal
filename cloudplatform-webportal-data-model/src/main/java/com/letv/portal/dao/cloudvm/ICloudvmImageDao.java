@@ -13,4 +13,6 @@ import java.util.Map;
  */
 public interface ICloudvmImageDao extends IBaseDao<CloudvmImage> {
     List<CloudvmImage> selectByMapForSync(Map<String, Object> map);
+
+    List<CloudvmImage> selectAllImageOrVmSnapshot(Map<String, Object> paras);
 }

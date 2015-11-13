@@ -24,6 +24,7 @@ import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -990,7 +991,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				PortApi portApi = neutronApi.getPortApi(region);
 				String routerId = null;
 				findRouterId: for (Port port : portApi.list().concat().toList()) {
-					if ("network:router_interface"
+					if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
 							.equals(port.getDeviceOwner())) {
 						if (subnet.getNetworkId().equals(port.getNetworkId())) {
 							ImmutableSet<IP> fixedIps = port.getFixedIps();
@@ -1219,7 +1220,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						}
 						List<Port> portList = new LinkedList<Port>();
 						for (Port port : portApi.list().concat().toList()) {
-							if ("network:router_interface".equals(port
+							if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE.equals(port
 									.getDeviceOwner())) {
 								portList.add(port);
 							}
@@ -1400,7 +1401,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				PortApi portApi = neutronApi.getPortApi(region);
 				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
 				for (Port port : portApi.list().concat().toList()) {
-					if ("network:router_interface"
+					if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
 							.equals(port.getDeviceOwner())) {
 						if (StringUtils.equals(routerId, port.getDeviceId())) {
 							ImmutableSet<IP> fixedIps = port.getFixedIps();
@@ -1684,7 +1685,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						Map<String, Port> subnetIdToPort = new HashMap<String, Port>();
 						for (Port port : neutronApi.getPortApi(region).list()
 								.concat().toList()) {
-							if ("network:router_interface".equals(port
+							if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE.equals(port
 									.getDeviceOwner())) {
 								ImmutableSet<IP> fixedIps = port.getFixedIps();
 								if (fixedIps != null) {
@@ -1924,7 +1925,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				PortApi portApi = neutronApi.getPortApi(region);
 				for (Port port : portApi.list().concat().toList()) {
-					if ("network:router_interface"
+					if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
 							.equals(port.getDeviceOwner())) {
 						if (StringUtils.equals(routerId, port.getDeviceId())) {
 							throw new UserOperationException(
@@ -2021,7 +2022,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				PortApi portApi = neutronApi.getPortApi(region);
 				Set<String> unAvailableSubnetIds = new HashSet<String>();
 				for (Port port : portApi.list().concat().toList()) {
-					if ("network:router_interface"
+					if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
 							.equals(port.getDeviceOwner())) {
 						ImmutableSet<IP> fixedIps = port.getFixedIps();
 						if (fixedIps != null) {
@@ -2117,7 +2118,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				int routerSubnetPortCount = 0;
 				for (Port port : portApi.list().concat().toList()) {
-					if ("network:router_interface"
+					if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
 							.equals(port.getDeviceOwner())) {
                         if (router.getId().equals(port.getDeviceId()) && !subnet.getNetworkId().equals(port.getNetworkId())) {
                             throw new UserOperationException(
@@ -2204,7 +2205,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				Port associatedPort = null;
 				checkPortExist: for (Port port : portApi.list().concat()
 						.toList()) {
-					if ("network:router_interface"
+					if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
 							.equals(port.getDeviceOwner())
 							&& routerId.equals(port.getDeviceId())) {
 						ImmutableSet<IP> fixedIps = port.getFixedIps();

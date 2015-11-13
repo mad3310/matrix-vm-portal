@@ -7,6 +7,8 @@ import com.letv.common.model.BaseModel;
  */
 public class CloudvmRcCount extends BaseModel {
 
+    private static final long serialVersionUID = 2437609928884379927L;
+
     private String region;
     private CloudvmRcCountType type;
     private Long tenantId;

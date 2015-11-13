@@ -7,27 +7,27 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class IPAddresses {
 	
-	private List<String> privateIP;
+	private List<SubnetIp> privateIP;
 	
 	private List<String> publicIP;
 	
 	private List<String> sharedIP;
 
-	private List<String> internalIP;
+//	private List<String> internalIP;
 
 	public IPAddresses() {
-		privateIP = new LinkedList<String>();
+		privateIP = new LinkedList<SubnetIp>();
 		publicIP = new LinkedList<String>();
 		sharedIP = new LinkedList<String>();
-		internalIP = new LinkedList<String>();
+//		internalIP = new LinkedList<String>();
 	}
 
 	@JsonProperty("private")
-	public List<String> getPrivateIP() {
+	public List<SubnetIp> getPrivateIP() {
 		return privateIP;
 	}
 
-	public void setPrivateIP(List<String> privateIP) {
+	public void setPrivateIP(List<SubnetIp> privateIP) {
 		this.privateIP = privateIP;
 	}
 
@@ -49,12 +49,12 @@ public class IPAddresses {
 		this.sharedIP = sharedIP;
 	}
 
-	@JsonProperty("internal")
-	public List<String> getInternalIP() {
-		return internalIP;
-	}
-
-	public void setInternalIP(List<String> internalIP) {
-		this.internalIP = internalIP;
-	}
+//	@JsonProperty("internal")
+//	public List<String> getInternalIP() {
+//		return internalIP;
+//	}
+//
+//	public void setInternalIP(List<String> internalIP) {
+//		this.internalIP = internalIP;
+//	}
 }
