@@ -1,18 +1,16 @@
 <div class="view-common" ng-controller="VmRouterCtrl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-click="openVmRouterCreateModal('500')"><span>创建路由</span></button>
-            <button class="btn btn-le-green" ng-click="deleteRouter()"><span>删除路由</span></button>
+            <button class="btn btn-le-blue" ng-click="openVmRouterCreateModal('500')"><span>创建路由器</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="associateSubnet()"><span>关联子网</span></button>
+            <button class="btn btn-le-green" ng-click="editRouter()"><span>编辑路由器</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                    <li><a href="javascript:void(0);" ng-click="functionDisable()">绑定公网IP</a></li>
-                    <li><a href="javascript:void(0);" ng-click="functionDisable()">解绑公网IP</a></li>
-                    <li><a href="javascript:void(0);" ng-click="associateSubnet()">关联子网</a></li>
                     <li><a href="javascript:void(0);" ng-click="removeSubnet()">解除关联子网</a></li>
-                    <li><a href="javascript:void(0);" ng-click="editRouter()">编辑路由器</a></li>
+                    <li><a href="javascript:void(0);" ng-click="deleteRouter()">删除路由</a></li>
                 </ul>
             </div>
         </div>

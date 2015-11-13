@@ -1106,6 +1106,11 @@ le-select .le-select-menu li a{
     color: #fff;
 }
 
+.btn-le-red {
+    background-color: #e05c69;
+    color: #fff;
+}
+
 .btn-le-green {
     background-color: #08c2b3;
     color: #fff;
