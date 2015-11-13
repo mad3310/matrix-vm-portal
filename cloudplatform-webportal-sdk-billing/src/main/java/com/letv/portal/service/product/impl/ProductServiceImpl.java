@@ -2,12 +2,13 @@ package com.letv.portal.service.product.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.base.IBaseRegionDao;
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductDao;
@@ -371,5 +373,21 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		return this.productElementDao.selectByProductIdWithBaseElement(productId);
 	}
 
+	
+	
+	/**
+	  * @Title: getProductInfo
+	  * @Description: 系统启动时保存产品信息到内存常量  
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月13日 下午3:09:14
+	  */
+	@PostConstruct
+	private void getProductInfo() {
+		List<Product> products = this.productDao.selectByMap(null);
+		for (Product product : products) {
+			Constants.productInfo.put(product.getId(), product.getName());
+		}
+	}
 
 }

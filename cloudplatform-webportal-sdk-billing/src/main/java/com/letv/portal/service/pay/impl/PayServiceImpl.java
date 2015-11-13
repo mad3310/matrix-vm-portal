@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
@@ -42,6 +44,7 @@ import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.driver.cloudvm.CloudvmResourceInfoService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.IMessageProxyService;
@@ -109,6 +112,10 @@ public class PayServiceImpl implements IPayService {
 	private IMessageProxyService messageProxyService;
 	@Autowired
 	private MessageFormatServiceUtil messageFormatServiceUtil;
+	@Autowired
+	private CloudvmResourceInfoService cloudvmResourceInfoService;
+	@Autowired
+	private ITemplateMessageSender defaultEmailSender;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -222,13 +229,36 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	private void reNewOperate(List<OrderSub> orderSubs, BigDecimal price) {
+		String productName = this.cloudvmResourceInfoService.getCloudvmResourceNameById(orderSubs.get(0).getSubscription().getUserId()
+				, orderSubs.get(0).getSubscription().getProductId(), orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[1], 
+				orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[0]);
+		String productType = Constants.productInfo.get(orderSubs.get(0).getSubscription().getProductId());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    Date d = new Date();
+		
 		//扣除用户余额
-		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price);
+		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price, productName, 
+				productType, sdf.format(d));
 		
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 		//生成用户账单。
 		billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
-				df.format(new Date()), price.toString());
+				df.format(d), price.toString());
+		
+		//续费成功后发送邮件
+	    UserVo user = this.userService.getUcUserById(orderSubs.get(0).getSubscription().getUserId());
+	    Map<String, Object> mailMessageModel = new HashMap<String, Object>();
+		mailMessageModel.put("userName", user.getUsername());
+		mailMessageModel.put("time", sdf.format(d));
+		mailMessageModel.put("productType", productType);
+		mailMessageModel.put("productName", productName);
+	    
+		
+		MailMessage mailMessage = new MailMessage(productType+"续费成功",user.getEmail(),productType+"续费成功",
+				"product/reNewNotice.ftl",mailMessageModel);
+		mailMessage.setHtml(true);
+		defaultEmailSender.sendMessage(mailMessage);
+		
 	}
 
 	private String getParams(String number, BigDecimal price, String pattern,

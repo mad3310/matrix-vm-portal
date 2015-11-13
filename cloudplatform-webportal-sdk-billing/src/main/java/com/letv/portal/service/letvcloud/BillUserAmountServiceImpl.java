@@ -310,7 +310,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	}
 	
 	@Override
-	public boolean reduceAvailableAmount(long userId, BigDecimal price) {
+	public boolean reduceAvailableAmount(long userId, BigDecimal price, String productName, String productType, String date) {
 		boolean ret = false;
 		logger.info("开始扣除可用余额,用户id:"+userId+",金额："+price);
 		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
@@ -325,6 +325,33 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				return ret;
 			}
 		}
+		
+		//续费成功后保存金额消息通知
+        StringBuffer buffer = new StringBuffer();
+        Message msg = new Message();
+    	buffer.setLength(0);
+        buffer.append("您在");
+        buffer.append(date);
+        buffer.append("续费");
+        buffer.append(productType);
+        buffer.append("【");
+        buffer.append(productName);
+        buffer.append("】成功，");
+        buffer.append("消费");
+        buffer.append(price);
+        buffer.append("元，当前账户余额为[￥");
+        buffer.append(billUserAmount.getAvailableAmount());
+        buffer.append("]，如有问题，可拨打客服电话。");
+        msg.setMsgTitle("续费成功，消费金额"+price+"元");
+        msg.setMsgContent(buffer.toString());
+        msg.setMsgStatus("0");//未读
+        msg.setMsgType("2");//个人消息
+        msg.setCreatedTime(new Date());
+        Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
+        if(!(Boolean) saveRet.get("result")) {
+        	logger.error("续费成功后保存金额消息通知，失败原因:"+saveRet.get("message"));
+        }
+        
         return ret;
 	}
 
