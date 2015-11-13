@@ -49,9 +49,11 @@
 		<association property="productInfoRecord" javaType="ProductInfoRecord">
 			<result column="RECORD_ID" property="id" />
 			<result column="PARAMS" property="params" />
-		    <result column="PRODUCT_TYPE" property="productType" />
+		    <result column="RECORD_PRODUCT_ID" property="productId" />
+		    <result column="BATCH" property="batch" />
 		    <result column="INVOKE_TYPE" property="invokeType" />
 		    <result column="INSTANCE_ID" property="instanceId" />
+		    <result column="RECORD_DESCN" property="descn" />
 		</association>
 	</resultMap>
 	
@@ -172,8 +174,9 @@
 	    select
 	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,sub.BUY_TYPE,
 	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,region.NAME BASE_REGION_NAME,
-	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.PAY_TIME,od.DESCN ORDER_DESCN,od.CREATE_TIME ORDER_CREATE_TIME,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE,
-	        record.ID RECORD_ID,record.INSTANCE_ID,od.ACCOUNT_PRICE
+	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.PAY_TIME,od.DESCN ORDER_DESCN,od.CREATE_TIME ORDER_CREATE_TIME,
+	        record.PARAMS,record.PRODUCT_ID RECORD_PRODUCT_ID,record.INVOKE_TYPE,
+	        record.ID RECORD_ID,record.INSTANCE_ID,record.DESCN RECORD_DESCN,record.BATCH,od.ACCOUNT_PRICE
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
 	    left join

@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
@@ -40,6 +44,7 @@ import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.driver.cloudvm.CloudvmResourceInfoService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.IMessageProxyService;
@@ -107,6 +112,10 @@ public class PayServiceImpl implements IPayService {
 	private IMessageProxyService messageProxyService;
 	@Autowired
 	private MessageFormatServiceUtil messageFormatServiceUtil;
+	@Autowired
+	private CloudvmResourceInfoService cloudvmResourceInfoService;
+	@Autowired
+	private ITemplateMessageSender defaultEmailSender;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -192,11 +201,7 @@ public class PayServiceImpl implements IPayService {
 			
 			//充值
 			Map<String, String> params = new HashMap<String, String>();
-			String callbackUrl = this.PAY_CALLBACK;
-			if(orderSubs.get(0).getSubscription().getBuyType()==1) {//新购
-				callbackUrl = this.PAY_CALLBACK+"?buyType=1";
-			}
-			String url = getParams(order.getOrderNumber(), price, pattern, callbackUrl, this.PAY_SUCCESS + "/" + orderNumber,
+			String url = getParams(order.getOrderNumber(), price, pattern, this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
 
@@ -224,13 +229,36 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	private void reNewOperate(List<OrderSub> orderSubs, BigDecimal price) {
+		String productName = this.cloudvmResourceInfoService.getCloudvmResourceNameById(orderSubs.get(0).getSubscription().getUserId()
+				, orderSubs.get(0).getSubscription().getProductId(), orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[1], 
+				orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[0]);
+		String productType = Constants.productInfo.get(orderSubs.get(0).getSubscription().getProductId());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    Date d = new Date();
+		
 		//扣除用户余额
-		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price);
+		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price, productName, 
+				productType, sdf.format(d));
 		
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 		//生成用户账单。
 		billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
-				df.format(new Date()), price.toString());
+				df.format(d), price.toString());
+		
+		//续费成功后发送邮件
+	    UserVo user = this.userService.getUcUserById(orderSubs.get(0).getSubscription().getUserId());
+	    Map<String, Object> mailMessageModel = new HashMap<String, Object>();
+		mailMessageModel.put("userName", user.getUsername());
+		mailMessageModel.put("time", sdf.format(d));
+		mailMessageModel.put("productType", productType);
+		mailMessageModel.put("productName", productName);
+	    
+		
+		MailMessage mailMessage = new MailMessage(productType+"续费成功",user.getEmail(),productType+"续费成功",
+				"product/reNewNotice.ftl",mailMessageModel);
+		mailMessage.setHtml(true);
+		defaultEmailSender.sendMessage(mailMessage);
+		
 	}
 
 	private String getParams(String number, BigDecimal price, String pattern,
@@ -328,7 +356,7 @@ public class PayServiceImpl implements IPayService {
 				//this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
 				this.billUserAmountService.rechargeSuccessByOrderCode(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getOrder().getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")));
 				
-				if(Integer.parseInt((String)map.get("buyType"))==1) {//续费
+				if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
 					//扣除用户余额
 					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));;
 				} else {
@@ -444,13 +472,13 @@ public class PayServiceImpl implements IPayService {
 			if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
 				//真正服务创建所需参数
 				Map<String, Object> serviceParams = transResult(orderSubs.get(0).getProductInfoRecord().getParams());
-				if (orderSub.getSubscription().getProductId() == 2) {//云主机
+				if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
 					createVm(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == 3) {//云硬盘
+				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
 					createVolume(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == 4) {//公网IP
+				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
 					createFloatingIp(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == 5) {//路由
+				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_ROUTER) {//路由
 					createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
 				}
 			}
@@ -471,7 +499,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("路由器创建成功回调! num="+event.getRouterIndex());
 				successCount.incrementAndGet();
 				ids.add(event.getRouterId());
-				serviceCallback(orderSubs, event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
+				serviceCallback(event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_ROUTER, ids);
 			}
 			
@@ -480,7 +508,7 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("路由器创建失败回调! num="+event.getRouterIndex());
 				failCount.incrementAndGet();
-				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getRouterIndex(), event.getUserData());
+				serviceCallbackWithFailed(orderSubs, event.getRouterIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_ROUTER, ids);
 			}
 		}, records);
@@ -501,7 +529,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("公网IP创建成功回调! num="+event.getFloatingIpIndex());
 				successCount.incrementAndGet();
 				ids.add(event.getFloatingIpId());
-				serviceCallback(orderSubs, event.getRegion(), event.getFloatingIpId(), event.getFloatingIpIndex(), event.getUserData());
+				serviceCallback(event.getRegion(), event.getFloatingIpId(), event.getFloatingIpIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_FLOATINGIP, ids);
 			}
 			
@@ -510,7 +538,7 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("公网IP创建失败回调! num="+event.getFloatingIpIndex());
 				failCount.incrementAndGet();
-				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getFloatingIpIndex(), event.getUserData());
+				serviceCallbackWithFailed(orderSubs, event.getFloatingIpIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_FLOATINGIP, ids);
 			}
 			
@@ -532,7 +560,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("云硬盘创建成功回调! num="+event.getVolumeIndex());
 				successCount.incrementAndGet();
 				ids.add(event.getVolumeId());
-				serviceCallback(orderSubs, event.getRegion(), event.getVolumeId(), event.getVolumeIndex(), event.getUserData());
+				serviceCallback(event.getRegion(), event.getVolumeId(), event.getVolumeIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_VOLUME, ids);
 			}
 			@Override
@@ -540,7 +568,7 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("云硬盘创建失败回调! num="+event.getVolumeIndex());
 				failCount.incrementAndGet();
-				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getVolumeIndex(), event.getUserData());
+				serviceCallbackWithFailed(orderSubs, event.getVolumeIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_VOLUME, ids);
 			}
 			
@@ -562,7 +590,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("云主机创建成功回调! num="+event.getVmIndex());
 				successCount.incrementAndGet();
 				ids.add(event.getVmId());
-				serviceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVmIndex(), event.getUserData());
+				vmServiceCallback(event.getRegion(), event.getVmId(), event.getVolumeId(), event.getFloatingIpId(), event.getVmIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_OPENSTACK, ids);
 			}
 
@@ -570,11 +598,48 @@ public class PayServiceImpl implements IPayService {
 			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
 				logger.info("云主机创建失败回调! num="+event.getVmIndex());
 				failCount.incrementAndGet();
-				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getVmIndex(), event.getUserData());
+				vmServiceCallbackWithFailed(orderSubs, event.getVmIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.CREATE_OPENSTACK, ids);
 			}
 		}, records);
 		logger.info("调用创建云主机成功!");
+	}
+	
+	//服务创建失败后回调
+	private void vmServiceCallbackWithFailed(List<OrderSub> orderSubs, int index) {
+		for (OrderSub orderSub : orderSubs) {
+			if(orderSub.getProductInfoRecord().getBatch()==index) {
+				orderSub.getSubscription().setValid(0);//更改该订阅为0-无效
+			}
+		}
+	}
+	
+	//服务创建成功后回调
+	@SuppressWarnings("unchecked")
+	private void vmServiceCallback(String region, String vmId, String volumeId, String floatingIpId, int index, Object userData) {
+		List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
+		if(index>records.size()) {
+			throw new ValidateException("服务回调index超出List范围！");
+		}
+		
+		for (ProductInfoRecord record : records) {
+			if(record.getBatch()==index) {
+				record.setParams(null);
+				record.setInvokeType(null);
+				record.setDescn(null);
+				if(Constants.PRODUCT_VM==record.getProductId()) {
+					record.setInstanceId(region+"_"+vmId);
+					productInfoRecordService.updateBySelective(record);
+				} else if(Constants.PRODUCT_VOLUME==record.getProductId() && volumeId!=null) {
+					record.setInstanceId(region+"_"+volumeId);
+					productInfoRecordService.updateBySelective(record);
+				} else if(Constants.PRODUCT_FLOATINGIP==record.getProductId() && floatingIpId!=null) {
+					record.setInstanceId(region+"_"+floatingIpId);
+					productInfoRecordService.updateBySelective(record);
+				}
+			}
+		}
+		
 	}
 	
 	/**
@@ -588,11 +653,15 @@ public class PayServiceImpl implements IPayService {
 	  * @date 2015年10月20日 下午2:37:43
 	  */
 	private void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, Map<String, Object> serviceParams, String productType, List<String> ids){
-		if(successCount+failCount==orderSubs.size()){
+		Set<Integer> batch = new HashSet<Integer>();
+		for (OrderSub orderSub : orderSubs) {
+			batch.add(orderSub.getProductInfoRecord().getBatch());
+		}
+		if(successCount+failCount==batch.size()){
 			logger.info(productType+"创建全部回调完成.");
 			
-			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())).multiply(new BigDecimal(successCount));
-			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())).multiply(new BigDecimal(failCount));
+			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(successCount));
+			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(failCount));
 			
 			//更新订阅订单起始时间
 			updateSubscriptionAndOrderTime(orderSubs);
@@ -655,7 +724,7 @@ public class PayServiceImpl implements IPayService {
 	
 	//服务创建成功后回调
 	@SuppressWarnings("unchecked")
-	private void serviceCallback(List<OrderSub> orderSubs, String region, String id, int index, Object userData) {
+	private void serviceCallback(String region, String id, int index, Object userData) {
 		List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
 		if(index>records.size()) {
 			throw new ValidateException("服务回调index超出List范围！");
@@ -663,14 +732,15 @@ public class PayServiceImpl implements IPayService {
 		//①更新商品信息记录表（添加实例ID）
 		ProductInfoRecord record = records.get(index);
 		record.setParams(null);
-		record.setProductType(null);
+		record.setProductId(null);
 		record.setInvokeType(null);
+		record.setDescn(null);
 		record.setInstanceId(region+"_"+id);
 		productInfoRecordService.updateBySelective(record);
 	}
 	
 	//服务创建失败后回调
-	private void serviceCallbackWithFailed(List<OrderSub> orderSubs, String region, int index, Object userData) {
+	private void serviceCallbackWithFailed(List<OrderSub> orderSubs, int index) {
 		//①更改该条订阅为0-无效
 		orderSubs.get(index).getSubscription().setValid(0);
 	}

@@ -7,7 +7,8 @@
 	<resultMap id="BaseResultMap" type="ProductInfoRecord">
 	    <result column="ID" property="id" />
 	    <result column="PARAMS" property="params" />
-	    <result column="PRODUCT_TYPE" property="productType" />
+	    <result column="PRODUCT_ID" property="productId" />
+	    <result column="BATCH" property="batch" />
 	    <result column="INVOKE_TYPE" property="invokeType" />
 	    <result column="DELETED" property="deleted" />
 	    <result column="CREATE_TIME" property="createTime" />
@@ -19,15 +20,15 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    record.ID,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE,record.DELETED,record.CREATE_TIME,
+	    record.ID,record.PARAMS,record.PRODUCT_ID,record.BATCH,record.INVOKE_TYPE,record.DELETED,record.CREATE_TIME,
 	    record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN,record.INSTANCE_ID
 	</sql>
 	
 	<insert id="insert" parameterType="ProductInfoRecord" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_PRODUCT_INFO_RECORD 
-	        (PARAMS,PRODUCT_TYPE,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,INSTANCE_ID) 
+	        (PARAMS,PRODUCT_ID,BATCH,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,INSTANCE_ID) 
 	    values
-	        (#{params},#{productType},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{instanceId})
+	        (#{params},#{productId},#{batch},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{instanceId})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -39,8 +40,11 @@
 	        <if test="params != null ">
 	            and record.PARAMS=#{params}
 	        </if>
-	        <if test="productType != null ">
-	            and record.PRODUCT_TYPE=#{productType}
+	        <if test="productId != null ">
+	            and record.PRODUCT_ID=#{productId}
+	        </if>
+	        <if test="batch != null ">
+	            and record.BATCH=#{batch}
 	        </if>
 	        <if test="invokeType != null ">
 	            and record.INVOKE_TYPE=#{invokeType}
@@ -84,8 +88,11 @@
 			<if test="params != null ">
 	            PARAMS=#{params},
 	        </if>
-	        <if test="productType != null ">
-	            PRODUCT_TYPE=#{productType},
+	        <if test="productId != null ">
+	            PRODUCT_ID=#{productId},
+	        </if>
+	        <if test="batch != null ">
+	            BATCH=#{batch},
 	        </if>
 	        <if test="invokeType != null ">
 	            INVOKE_TYPE=#{invokeType},

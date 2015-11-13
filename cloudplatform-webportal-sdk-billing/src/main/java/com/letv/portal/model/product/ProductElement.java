@@ -19,6 +19,15 @@ public class ProductElement extends BaseModel{
 	private Long baseElementId;//基础元素ID
 	private String descn;//描述
 	
+	private BaseElement baseElement;//基础元素
+	
+	
+	public BaseElement getBaseElement() {
+		return baseElement;
+	}
+	public void setBaseElement(BaseElement baseElement) {
+		this.baseElement = baseElement;
+	}
 	public void setDescn(String descn) {
 		this.descn = descn;
 	}

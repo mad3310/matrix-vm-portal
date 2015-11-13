@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.DataFormat;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.constant.Constants;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.product.IHostProductService;
@@ -53,17 +54,17 @@ public class CalculateController {
 	  * @date 2015年10月13日 下午3:29:17
 	  */
 	private void transferParams(Map<String, Object> params, Long id) {
-		if(id==2) {//云主机参数转换
+		if(id==Constants.PRODUCT_VM) {//云主机参数转换
 			params.put("os_cpu_ram", params.get("cpu_ram"));
 			params.put("os_cpu_ram_type", params.get("cpu_ram"));
 			params.put("os_storage", params.get("volumeSize")+"");
 			params.put("os_storage_type", params.get("volumeType")+"");
-		} else if(id==3) {//云硬盘
+		} else if(id==Constants.PRODUCT_VOLUME) {//云硬盘
 			params.put("os_storage", params.get("volumeSize")+"");
 			params.put("os_storage_type", params.get("volumeType")+"");
-		} else if(id==4) {//公网IP
+		} else if(id==Constants.PRODUCT_FLOATINGIP) {//公网IP
 			
-		} else if(id==5) {//路由器
+		} else if(id==Constants.PRODUCT_ROUTER) {//路由器
 			
 		}
 	}
@@ -80,7 +81,13 @@ public class CalculateController {
 		
 		transferParams(map, id);
 		
-		if(id==2 || id==3 || id==4 || id==5) {//云主机走自己的验证和计算
+		if(id==Constants.PRODUCT_VM) {//云主机走自己的验证和计算
+			if(hostProductService.validateData(Constants.PRODUCT_VM, map) && hostProductService.validateData(Constants.PRODUCT_VOLUME, map) 
+					&& hostProductService.validateData(Constants.PRODUCT_FLOATINGIP, map)) {
+				ret =  hostCalculateService.calculatePrice(Constants.PRODUCT_VM, map).add(hostCalculateService.calculatePrice(Constants.PRODUCT_VOLUME, map))
+						.add(hostCalculateService.calculatePrice(Constants.PRODUCT_FLOATINGIP, map));
+			}
+		} else if(id==Constants.PRODUCT_FLOATINGIP || id==Constants.PRODUCT_VOLUME || id==Constants.PRODUCT_ROUTER) {
 			if(hostProductService.validateData(id, map)) {
 				ret =  hostCalculateService.calculatePrice(id, map);
 			}

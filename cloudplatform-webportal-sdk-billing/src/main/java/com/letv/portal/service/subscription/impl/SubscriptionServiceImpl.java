@@ -28,6 +28,7 @@ import com.letv.portal.dao.subscription.ISubscriptionDetailDao;
 import com.letv.portal.enumeration.ProductType;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.model.message.Message;
+import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.IUserService;
@@ -115,7 +116,9 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		sub.setCreateUser(userId);
 		sub.setDeleted(false);
 		this.subscriptionDao.insert(sub);
-		for (String key : map.keySet()) {
+		List<ProductElement> productElements = this.productService.selectByProductIdWithBaseElement(id);
+		for (ProductElement productElement : productElements) {
+			String key = productElement.getBaseElement().getName();
 			if("region".equals(key) || key.endsWith("_type") 
 					|| "order_num".equals(key) || "order_time".equals(key)) {
 				continue;
@@ -133,6 +136,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			detail.setDeleted(false);
 			detail.setValid(true);
 			this.subscriptionDetailDao.insert(detail);
+			sub.addSubscriptionDetail(detail);
 		}
 		return sub;
 	}
