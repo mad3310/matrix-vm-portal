@@ -165,6 +165,10 @@ body {
 }
 
 .pagination{
+    /*by yk 按钮靠右*/
+    position: absolute;
+    right: 12px;
+    /*end*/
     border-radius: 2px;
 }
 
