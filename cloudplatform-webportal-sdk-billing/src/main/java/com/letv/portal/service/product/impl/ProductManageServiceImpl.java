@@ -209,13 +209,13 @@ public class ProductManageServiceImpl implements IProductManageService {
 			if(productId==Constants.PRODUCT_VM) {
 				if(pros!=null){
 					if(pros.contains(VMResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_VM, paramsData, displayData, billingParams, orderTime, i==0?1:0, i, subs);
+						createFormAndSubscription(Constants.PRODUCT_VM, paramsData, displayData.split(";;")[0], billingParams, orderTime, i==0?1:0, i, subs);
 					}
 					if(pros.contains(VolumeResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_VOLUME, paramsData, displayData, billingParams, orderTime, 0, i, subs);
+						createFormAndSubscription(Constants.PRODUCT_VOLUME, paramsData, displayData.split(";;")[1], billingParams, orderTime, 0, i, subs);
 					}
 					if(pros.contains(FloatingIpResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_FLOATINGIP, paramsData, displayData, billingParams, orderTime, 0, i, subs);
+						createFormAndSubscription(Constants.PRODUCT_FLOATINGIP, paramsData, displayData.split(";;")[2], billingParams, orderTime, 0, i, subs);
 					}
 				}
 			} else {
