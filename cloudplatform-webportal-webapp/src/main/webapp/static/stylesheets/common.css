@@ -221,6 +221,9 @@ rzslider span.rz-bubble{
 .toast-bottom-right {
     bottom: 30px;
 }
+.toast-top-right {
+    top: 70px;
+}
 .close{
     opacity: 0.6;
 }
