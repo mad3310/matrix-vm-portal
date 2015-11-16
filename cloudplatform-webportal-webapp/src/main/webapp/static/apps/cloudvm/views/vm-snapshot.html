@@ -35,7 +35,7 @@
                         <td>
                             <span>{{snapshot.status | vmImageStatusFilter}}</span>
                         </td>
-                        <td><span>{{snapshot.size}}GB</span></td>
+                        <td><span>{{snapshot.size | vmImageSizeFilter}}</span></td>
                         <td><span>{{snapshot.createdAt | date:'yyyy-MM-dd hh:mm'}}</span></td>
                     </tr>
                     <tr ng-if="vmSnapshotList.length==0">
