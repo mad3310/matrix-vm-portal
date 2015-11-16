@@ -124,7 +124,7 @@
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 
                 <!-- 支付回调callBack地址 -->
-                <pay.callback>http://10.200.91.144/pay/callback</pay.callback>
+                <pay.callback>http://10.154.255.50/pay/callback</pay.callback>
                 <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
                 <!-- 用户中心及oauth配置 -->
                 <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
