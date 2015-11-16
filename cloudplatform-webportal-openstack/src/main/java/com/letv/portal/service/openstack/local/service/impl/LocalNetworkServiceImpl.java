@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.local.service.impl;
 
+import java.text.MessageFormat;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +45,7 @@ public class LocalNetworkServiceImpl implements LocalNetworkService {
 					return network.getId();
 				}
 			}
-			return null;
+			throw new OpenStackException("can not find public network", "后台错误");
 		}
 	}
 
