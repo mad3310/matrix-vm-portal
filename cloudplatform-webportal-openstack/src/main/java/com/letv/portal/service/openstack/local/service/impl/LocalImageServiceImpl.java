@@ -144,4 +144,13 @@ public class LocalImageServiceImpl implements LocalImageService {
         }
         return null;
     }
+
+    @Override
+    public ImageResource getVmSnapshot(long tenantId, String region, String imageId) {
+        CloudvmImage cloudvmImage = cloudvmImageService.selectVmSnapshotByVmSnapshotId(tenantId, region, imageId);
+        if (cloudvmImage != null) {
+            return new LocalImageResource(cloudvmImage);
+        }
+        return null;
+    }
 }

@@ -27,4 +27,6 @@ public interface LocalImageService {
     void deleteVmSnapshot(long tenantId, String region, String imageId);
 
     ImageResource getImageOrVmSnapshot(String region, String imageId);
+
+    ImageResource getVmSnapshot(long tenantId, String region, String imageId);
 }

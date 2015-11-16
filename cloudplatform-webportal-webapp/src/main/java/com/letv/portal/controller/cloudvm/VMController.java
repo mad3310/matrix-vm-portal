@@ -495,6 +495,17 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/vm/snapshot/{vmSnapshotId}", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject getVmSnapshot(
+			@PathVariable String region, @PathVariable String vmSnapshotId) {
+		ResultObject result = new ResultObject();
+		long userId = Util.userId(sessionService);
+		result.setData(localImageService.getVmSnapshot(userId, region, vmSnapshotId));
+		return result;
+	}
+
 	@RequestMapping(value = "/vm/snapshot/create", method = RequestMethod.POST)
 	public
 	@ResponseBody
