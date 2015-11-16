@@ -133,4 +133,15 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
         return cloudvmVolumeDao.selectByMap(paras);
     }
 
+    @Override
+    public long selectCountSizeByRegion(long tenantId, String region) {
+        if (StringUtils.isEmpty(region)) {
+            throw new ValidateException("地域不能为空");
+        }
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("region", region);
+        return cloudvmVolumeDao.selectByMapCountSize(paras);
+    }
+
 }
