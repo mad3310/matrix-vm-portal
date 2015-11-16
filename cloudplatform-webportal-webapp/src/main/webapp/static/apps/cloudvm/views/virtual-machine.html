@@ -1,21 +1,28 @@
 <div class="view-common view-virtual-machine" ng-controller="VirtualMachineCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')"><span>创建云主机</span></button>
-            <button class="btn btn-le-blueGreen" ng-click="startVm('400')"><span>启动</span></button>
-            <button class="btn btn-le-green" ng-click="stopVm('400')"><span>停止</span></button>
+            <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')" ng-disabled="operationBtn.create==0"><span>创建云主机</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="startVm('400')" ng-disabled="operationBtn.start==0"><span>启动</span></button>
+            <button class="btn btn-le-green" ng-click="stopVm('400')" ng-disabled="operationBtn.stop==0"><span>关机</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                    <li><a href="javascript:void(0);" ng-click="rebootVm('400')">重启云主机</a></li>
+                    <!-- <li><a href="javascript:void(0);" ng-click="rebootVm('400')">重启云主机</a></li>
                     <li><a href="javascript:void(0);" ng-click="openVmSnapshotCreateModal('500')">创建快照</a></li>
                     <li><a href="javascript:void(0);" ng-click="openDiskAttachModal('500')">挂载云硬盘</a></li>
                     <li><a href="javascript:void(0);" ng-click="openDiskDetachModal('500')">卸载云硬盘</a></li>
                     <li><a href="javascript:void(0);" ng-click="openFloatingIpBindModal('500')">绑定公网IP</a></li>
                     <li><a href="javascript:void(0);" ng-click="openVmPasswordChangeModal('500')">修改密码</a></li>
-                    <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
+                    <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li> -->
+                    <li><button class="btn dropdown-btn" ng-click="rebootVm('400')" ng-disabled="operationBtn.restart==0">重启云主机</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openVmSnapshotCreateModal('500')" ng-disabled="operationBtn.createsnap==0">创建快照</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openDiskAttachModal('500')" ng-disabled="operationBtn.attachdisk==0">挂载云硬盘</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openDiskDetachModal('500')" ng-disabled="operationBtn.detachdisk==0">卸载云硬盘</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openFloatingIpBindModal('500')" ng-disabled="operationBtn.bindfloatIp==0">绑定公网IP</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openVmPasswordChangeModal('500')" ng-disabled="operationBtn.editpass==0">修改密码</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="deleteVm('400')" ng-disabled="operationBtn.delete==0">删除云主机</button></li>
                 </ul>
             </div>
         </div>
@@ -48,7 +55,7 @@
                 <tbody id="tby">
                 <tr ng-if="vmList.length>0" ng-repeat="vm in vmList">
                     <td>
-                        <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm)"></span>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm,$index)"></span>
                     </td>
                     <td><span>{{vm.name}}</span></td>
                     <td>
