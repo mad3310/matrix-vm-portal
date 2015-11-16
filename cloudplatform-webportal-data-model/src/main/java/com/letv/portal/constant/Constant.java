@@ -108,5 +108,8 @@ public class Constant {
 	
 	public static final String SUBNET_ATTACH_VM = "私有网络添加云主机";
 	public static final String SUBNET_DETACH_VM = "私有网络移除云主机";
+	
+	//无名称云产品统一为“未设置”
+	public static final String NO_NAME = "未设置";
 
 }
