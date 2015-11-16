@@ -11,6 +11,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.currentPage = 1;
       $scope.totalItems = 0;
       $scope.pageSize = 10;
+      $scope.operationBtn={};
+      var operationArry=[];
       $scope.onPageChange = function () {
         refreshVmList();
       };
@@ -196,8 +198,41 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
 
       };
-      $scope.checkVm = function (vm) {
+      $scope.checkVm = function (vm,index) {
         vm.checked = vm.checked === true ? false : true;
+        // 状态预判
+        if(vm.checked){
+          operationArry[index]=[Config.statusOperations['virtualMachine'][vm.vmState]['create'],
+            Config.statusOperations['virtualMachine'][vm.vmState]['start'],
+            Config.statusOperations['virtualMachine'][vm.vmState]['stop'],
+            Config.statusOperations['virtualMachine'][vm.vmState]['delete'],
+            Config.statusOperations['virtualMachine'][vm.vmState]['restart'],
+            Config.statusOperations['virtualMachine'][vm.vmState]['createsnap'],
+            Config.statusOperations['virtualMachine'][vm.vmState]['attachdisk'],
+            Config.statusOperations['virtualMachine'][vm.vmState]['detachdisk']
+          ]
+        }else{
+          operationArry[index]=[1,1,1,1,1,1,1,1]
+        }
+        var create='1',start='1',stop='1',del='1',restart='1',createsnap='1',attachdisk='1',detachdisk='1';
+        for(var i in operationArry){//多记录状态叠加
+          create=create*operationArry[i][0];
+          start=start*operationArry[i][1];
+          stop=stop*operationArry[i][2];
+          del=del*operationArry[i][3];
+          restart=restart*operationArry[i][4];
+          createsnap=createsnap*operationArry[i][5];
+          attachdisk=attachdisk*operationArry[i][6];
+          detachdisk=detachdisk*operationArry[i][7];
+        }
+        $scope.operationBtn.create=create;//操作按钮状态初始化
+        $scope.operationBtn.start=start;
+        $scope.operationBtn.stop=stop;
+        $scope.operationBtn.del=del;
+        $scope.operationBtn.restart=restart;
+        $scope.operationBtn.createsnap=createsnap;
+        $scope.operationBtn.attachdisk=attachdisk;
+        $scope.operationBtn.detachdisk=detachdisk;
       };
 
       $scope.openDiskAttachModal = function (size) {
@@ -243,6 +278,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         if(checkedVms[0].taskState || checkedVms[0].vmState!=='active'){
           WidgetService.notifyWarning('云主机当前状态不可解挂云硬盘');
+          return;
+        }
+        if(!checkedVms[0].volumes || !checkedVms[0].volumes.length){
+          WidgetService.notifyWarning('云主机还没有绑定云硬盘');
           return;
         }
         var modalInstance = $modal.open({

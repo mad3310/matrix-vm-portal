@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.order.IOrderSubDao;
 import com.letv.portal.dao.order.IOrderSubDetailDao;
 import com.letv.portal.model.order.OrderSub;
@@ -118,10 +119,10 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		}
 		
 		List<Map<String, Object>> retList = new ArrayList<Map<String, Object>>();
-		Set<Long> judgeParam = new HashSet<Long>();
+		Set<String> judgeParam = new HashSet<String>();
 		
 		for (OrderSub orderSub : orderSubs) {
-			if(judgeParam.contains(orderSub.getSubscription().getProductId())) {
+			if(judgeParam.contains(orderSub.getSubscription().getProductId()+orderSub.getProductInfoRecord().getParams())) {
 				continue;
 			}
 			Map<String, Object> params = JSONObject.parseObject(orderSub.getProductInfoRecord().getParams(), Map.class);	
@@ -132,10 +133,11 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			ret.put("payNumber", orderSub.getOrder().getPayNumber());
 			ret.put("orderNumber", orderSub.getOrder().getOrderNumber());
 			ret.put("orderTime", orderSub.getSubscription().getOrderTime());
+			ret.put("productName", Constants.productInfo.get(orderSub.getSubscription().getProductId()));
 			ret.put("orderNum", (Integer)params.get("count"));
 			ret.put("params", orderSub.getProductInfoRecord().getDescn());
 			retList.add(ret);
-			judgeParam.add(orderSub.getSubscription().getProductId());
+			judgeParam.add(orderSub.getSubscription().getProductId()+orderSub.getProductInfoRecord().getParams());
 		}
 		
 		return retList;

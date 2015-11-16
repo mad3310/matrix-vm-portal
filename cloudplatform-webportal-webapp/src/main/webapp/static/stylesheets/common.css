@@ -363,7 +363,7 @@ width:150px;height:40px;
 .header .header-region .dropdown-menu > li >a:hover{
     background-color: #f5c131;
 }
-.dropdown-menu .dropdown-btn{border:none;border-radius:0;padding:3px; width:98px;text-align:center;background-color:transparent;}
+.dropdown-menu .dropdown-btn{border:none;border-radius:0;padding:4px;width:98px;font-size:12px;text-align:center;background-color:transparent;}
 .dropdown-menu .dropdown-btn:hover{color:#fff;background-color:#b3b3b3}
 .dropdown-menu button[disabled]{cursor:not-allowed;}
 /*end header style*/
@@ -848,7 +848,7 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid:focus{
 
 /*begin letv-checkbox style*/
 .letv-mutiCheck{line-height: 22px;border:1px solid #dbdbdb;margin:3px 3px 2px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
-.letv-mutiCheck:hover{cursor:pointer;color:#088ac2;}
+.letv-mutiCheck:hover{cursor:pointer;}
 .letv-mutiCheck span{line-height: 22px}
 .letv-mutiCheck i{line-height: 22px;color: #dbdbdb;}
 .letv-mutiCheck.selected{border-color:#088ac2; }
@@ -873,6 +873,7 @@ buy-period-selector .check-buy-period.selected{
 /*begin letv-radioCheck style*/
 .radio-check-group{line-height: 30px;}
 .letv-radioCheck{width: 80px;height: 22px;line-height: 22px;padding: 0;margin:0;display: inline-block;}
+.letv-radioCheck:hover{cursor:pointer;}
 .letv-radioCheck i.iconfont{color: #dbdbdb; }
 .letv-radioCheck.selected i.iconfont,.letv-radioCheck.selected span.letv-radio-content{color: #088ac2; }
 /*begin letv-radioCheck style*/
@@ -930,7 +931,13 @@ le-select .le-select-toggle{
 }
 le-select .le-select-toggle .select-value{
     line-height: 30px;
-    margin-left: 4px;
+    width: 100%;
+    display: inline-block;
+    padding-left: 4px;
+    padding-right: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 le-select .le-select-toggle .select-arrow{
     position: absolute;
@@ -965,6 +972,9 @@ le-select .le-select-menu.open{
 le-select .le-select-menu li{
     padding: 4px;
     line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 le-select .le-select-menu li:hover{
     cursor:pointer;
