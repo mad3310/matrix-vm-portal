@@ -11,4 +11,5 @@ import java.util.List;
  */
 public interface ICloudvmRcCountService extends IBaseService<CloudvmRcCount> {
     CloudvmRcCount selectByType(long tenantId, String region, CloudvmRcCountType type);
+    List<CloudvmRcCount> selectByRegion(long tenantId, String region);
 }

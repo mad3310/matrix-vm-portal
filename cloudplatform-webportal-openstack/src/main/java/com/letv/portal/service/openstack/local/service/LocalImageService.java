@@ -16,7 +16,9 @@ public interface LocalImageService {
 
     Page listVmSnapshot(long tenantId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 
-    int countVmSnapshot(long tenantId, String region, String name) throws OpenStackException;
+    int countVmSnapshot(long tenantId, String region, String name);
+
+    int countVmSnapshot(long tenantId, String region);
 
     CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image, String imageName, Server server);
 
