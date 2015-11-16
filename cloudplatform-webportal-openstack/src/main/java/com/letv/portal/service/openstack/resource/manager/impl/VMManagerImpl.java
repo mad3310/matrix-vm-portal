@@ -1050,7 +1050,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 });
 
                 if (serverApi.get(vmId) == null) {
-                    recordVmDeleted(region, vm.getId());
+                    recordVmDeleted(region, vm.getId(), ((FlavorResourceImpl)vm.getFlavor()).flavor);
                 }
 
                 return null;
@@ -1591,9 +1591,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 //        recordVmCreated(null, region, server);
 //    }
 
-    public void recordVmCreated(long userId, String region, Server server) throws OpenStackException {
+    public void recordVmCreated(long userId, String region, Server server, Flavor flavor) throws OpenStackException {
         LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
         localRcCountService.incRcCount(userId, userId, region, CloudvmRcCountType.SERVER);
+        localRcCountService.incRcCount(userId, region, CloudvmRcCountType.CPU, flavor.getVcpus());
+        localRcCountService.incRcCount(userId, region, CloudvmRcCountType.MEMORY, flavor.getRam());
 
 //        ICloudvmFlavorService cloudvmFlavorService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmFlavorService();
 //        if (cloudvmFlavorService.selectByFlavorId(region, server.getFlavor().getId()) == null) {
@@ -1637,9 +1639,9 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 //        }
     }
 
-    private void recordVmDeleted(String region, String vmId) throws OpenStackException {
+    private void recordVmDeleted(String region, String vmId, Flavor flavor) throws OpenStackException {
         long userVoUserId = openStackUser.getUserVoUserId();
-        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().recordVmDeleted(userVoUserId, region, vmId);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().recordVmDeleted(userVoUserId, region, vmId, flavor);
 
 //        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
 

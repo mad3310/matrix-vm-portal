@@ -31,9 +31,19 @@ public class LocalRcCountServiceImpl implements LocalRcCountService {
 
     @Override
     public void incRcCount(long userId, long tenantId, String region, CloudvmRcCountType type) {
+        incRcCount(userId, tenantId, region, type, 1);
+    }
+
+    @Override
+    public void incRcCount(long tenantId, String region, CloudvmRcCountType type) {
+        incRcCount(tenantId, tenantId, region, type, 1);
+    }
+
+    @Override
+    public void incRcCount(long userId, long tenantId, String region, CloudvmRcCountType type, long count) {
         CloudvmRcCount rcCount = cloudvmRcCountService.selectByType(tenantId, region, type);
         if (rcCount != null) {
-            rcCount.setCount(rcCount.getCount() + 1);
+            rcCount.setCount(rcCount.getCount() + count);
             rcCount.setUpdateUser(userId);
             cloudvmRcCountService.update(rcCount);
         } else {
@@ -41,33 +51,28 @@ public class LocalRcCountServiceImpl implements LocalRcCountService {
             rcCount.setTenantId(tenantId);
             rcCount.setRegion(region);
             rcCount.setType(type);
-            rcCount.setCount(1L);
+            rcCount.setCount(count);
             rcCount.setCreateUser(userId);
             cloudvmRcCountService.insert(rcCount);
         }
     }
 
     @Override
-    public void incRcCount(long tenantId, String region, CloudvmRcCountType type) {
-        
-    }
-
-    @Override
-    public void incRcCount(long userId, long tenantId, String region, CloudvmRcCountType type, long count) {
-
-    }
-
-    @Override
     public void incRcCount(long tenantId, String region, CloudvmRcCountType type, long count) {
-
+        incRcCount(tenantId, tenantId, region, type, count);
     }
 
     @Override
     public void decRcCount(long userId, long tenantId, String region, CloudvmRcCountType type) {
+        decRcCount(userId, tenantId, region, type, 1);
+    }
+
+    @Override
+    public void decRcCount(long userId, long tenantId, String region, CloudvmRcCountType type, long count) {
         CloudvmRcCount rcCount = cloudvmRcCountService.selectByType(tenantId, region, type);
         if (rcCount != null) {
             if (rcCount.getCount() > 0) {
-                rcCount.setCount(rcCount.getCount() - 1);
+                rcCount.setCount(rcCount.getCount() - count);
             }
             rcCount.setUpdateUser(userId);
             cloudvmRcCountService.update(rcCount);
@@ -75,18 +80,13 @@ public class LocalRcCountServiceImpl implements LocalRcCountService {
     }
 
     @Override
-    public void decRcCount(long userId, long tenantId, String region, CloudvmRcCountType type, long count) {
-
-    }
-
-    @Override
     public void decRcCount(long tenantId, String region, CloudvmRcCountType type) {
-
+        decRcCount(tenantId, tenantId, region, type, 1);
     }
 
     @Override
     public void decRcCount(long tenantId, String region, CloudvmRcCountType type, long count) {
-
+        decRcCount(tenantId, tenantId, region, type, count);
     }
 
     @Override

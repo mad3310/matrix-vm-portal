@@ -2,13 +2,15 @@ package com.letv.portal.service.openstack.resource.impl;
 
 import com.letv.portal.service.openstack.resource.FlavorResource;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 
 public class FlavorResourceImpl extends AbstractResource implements
 		FlavorResource {
 
 	private String region;
-	private Flavor flavor;
+	@JsonIgnore
+	public Flavor flavor;
 
 	public FlavorResourceImpl(String region, Flavor flavor) {
 		this.region = region;
