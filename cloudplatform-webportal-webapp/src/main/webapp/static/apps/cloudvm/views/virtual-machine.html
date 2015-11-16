@@ -51,16 +51,13 @@
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm)"></span>
                     </td>
                     <td><span>{{vm.name}}</span></td>
-                    <!--
                     <td>
                         <span>
-                            <div class="vm-address-private"><span>内网1：</span><span>172.30.0.249</span></div>
-                            <div class="vm-address-private"><span>内网2：</span><span>172.30.0.249</span></div>
-                            <div class="vm-address-private"><span>内网2：</span><span>172.30.0.249</span></div>
+                            <div class="vm-address-private" ng-repeat="privateAddress in vm.ipAddresses.private">
+                                <span>{{privateAddress.subnet.name}}：</span><span>{{privateAddress.ipAddress}}</span>
+                            </div>
                         </span>
                     </td>
-                    -->
-                    <td><span>{{vm.ipAddresses.private.join(', ') || '未设置'}}</span></td>
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
                         <span>{{[vm.vmState,vm.taskState].join(';') | vmStatusFilter}}</span>
