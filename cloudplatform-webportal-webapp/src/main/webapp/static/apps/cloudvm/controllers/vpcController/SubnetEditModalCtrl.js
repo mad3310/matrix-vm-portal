@@ -20,12 +20,14 @@ define(['controllers/app.controller'], function (controllerModule) {
         gatewayIp:subnetInfo.gatewayIp,
         enableDhcp:false
       };
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.subnet_edit, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close({result:1});
           WidgetService.notifySuccess(data.msgs[0]||'修改子网完成');
         }
         else{
+          $scope.isFormSubmiting=false;
           $modalInstance.dismiss('cancel');
           WidgetService.notifyError(data.msgs[0]||'修改子网失败');
         }

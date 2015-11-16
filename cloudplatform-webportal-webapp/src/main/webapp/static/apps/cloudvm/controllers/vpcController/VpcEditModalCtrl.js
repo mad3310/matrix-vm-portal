@@ -18,12 +18,14 @@ define(['controllers/app.controller'], function (controllerModule) {
         networkId:vpcInfo.vpcId,
         name: $scope.vpcEdit.name
       };
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.vpc_edit, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close({result:1});
           WidgetService.notifySuccess(data.msgs[0]||'修改VPC完成');
         }
         else{
+          $scope.isFormSubmiting=false;
           $modalInstance.dismiss('cancel');
           WidgetService.notifyError(data.msgs[0]||'修改VPC失败');
         }

@@ -171,4 +171,9 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
     public long count(long tenantId, String region) {
         return cloudvmVolumeService.selectCountByName(tenantId, region, null);
     }
+
+    @Override
+    public long countSize(long tenantId, String region) {
+        return cloudvmVolumeService.selectCountSizeByRegion(tenantId, region);
+    }
 }

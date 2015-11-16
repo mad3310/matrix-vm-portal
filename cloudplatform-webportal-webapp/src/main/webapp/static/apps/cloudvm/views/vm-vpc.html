@@ -223,7 +223,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="editVpc()"><span>编辑</span></button>
+                        <button class="btn btn-le-blue" ng-click="vpc_edit_form.$valid && !isFormSubmiting && editVpc()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">编辑</span>
+                            <span ng-if="isFormSubmiting">编辑执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -253,7 +256,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="editSubnet()"><span>编辑</span></button>
+                        <button class="btn btn-le-blue" ng-click="subnet_edit_form.$valid && !isFormSubmiting && editSubnet()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">编辑</span>
+                            <span ng-if="isFormSubmiting">编辑执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -404,7 +410,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="associateRouter()"><span>添加关联</span></button>
+                        <button class="btn btn-le-blue" ng-click="associate_router_form.$valid && !isFormSubmiting && associateRouter()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">关联</span>
+                            <span ng-if="isFormSubmiting">关联执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -453,7 +462,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="associateVm()"><span>添加云主机</span></button>
+                        <button class="btn btn-le-blue" ng-click="associate_vm_form.$valid && !isFormSubmiting && associateVm()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">添加</span>
+                            <span ng-if="isFormSubmiting">添加执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -502,7 +514,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="detachVm()"><span>移除云主机</span></button>
+                        <button class="btn btn-le-blue" ng-click="detach_vm_form.$valid && !isFormSubmiting && detachVm()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">移除</span>
+                            <span ng-if="isFormSubmiting">移除执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
