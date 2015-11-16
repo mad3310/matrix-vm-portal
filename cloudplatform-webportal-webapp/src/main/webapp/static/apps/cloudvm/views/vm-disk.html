@@ -51,7 +51,7 @@
                         <span ng-if="['creating','attaching','deleting','detaching'].indexOf(disk.status)>-1" class="status-loading"></span>
                     </td>
                     <td><span>{{(disk.attachments[0] && disk.attachments[0].vmName)|| '未挂载'}}</span></td>
-                    <td><span>{{disk.created | date:'yyyy-MM-dd hh:mm'}}</span></td>
+                    <td><span>{{disk.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
                 </tr>
                 <tr ng-if="diskList.length==0">
                     <td ng-if="!isListLoading" colspan=10>暂无云硬盘，去创建吧。</td>
