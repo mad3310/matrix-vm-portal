@@ -31,6 +31,7 @@ define([
     $httpProvider.defaults.headers.post['Accept'] ='application/json, text/javascript, */*; q=0.01';
     $httpProvider.defaults.headers.post['Accept-Language'] ='zh-CN,zh;q=0.8,en;q=0.6';
     $httpProvider.defaults.headers.post['X-Requested-With'] ='XMLHttpRequest';
+    $httpProvider.defaults.headers.get['X-Requested-With'] ='XMLHttpRequest';
     $httpProvider.defaults.transformRequest = function(data){
       if (data === undefined) {
         return data;
