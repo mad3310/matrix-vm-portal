@@ -229,15 +229,15 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	private void reNewOperate(List<OrderSub> orderSubs, BigDecimal price) {
-		String productName = this.cloudvmResourceInfoService.getCloudvmResourceNameById(orderSubs.get(0).getSubscription().getUserId()
-				, orderSubs.get(0).getSubscription().getProductId(), orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[1], 
-				orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[0]);
+		String productName = this.cloudvmResourceInfoService.getCloudvmResourceNameById(orderSubs.get(0).getCreateUser()
+				, orderSubs.get(0).getSubscription().getProductId(), orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[0], 
+				orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[1]);
 		String productType = Constants.productInfo.get(orderSubs.get(0).getSubscription().getProductId());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    Date d = new Date();
 		
 		//扣除用户余额
-		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price, productName, 
+		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price, productName==null?"未命名":productName, 
 				productType, sdf.format(d));
 		
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
@@ -246,12 +246,12 @@ public class PayServiceImpl implements IPayService {
 				df.format(d), price.toString());
 		
 		//续费成功后发送邮件
-	    UserVo user = this.userService.getUcUserById(orderSubs.get(0).getSubscription().getUserId());
+	    UserVo user = this.userService.getUcUserById(orderSubs.get(0).getCreateUser());
 	    Map<String, Object> mailMessageModel = new HashMap<String, Object>();
 		mailMessageModel.put("userName", user.getUsername());
 		mailMessageModel.put("time", sdf.format(d));
 		mailMessageModel.put("productType", productType);
-		mailMessageModel.put("productName", productName);
+		mailMessageModel.put("productName", productName==null?"未命名":productName);
 	    
 		
 		MailMessage mailMessage = new MailMessage(productType+"续费成功",user.getEmail(),productType+"续费成功",

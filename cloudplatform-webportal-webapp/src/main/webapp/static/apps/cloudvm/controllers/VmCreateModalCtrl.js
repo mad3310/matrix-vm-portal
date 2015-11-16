@@ -307,7 +307,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           part1.push('镜像/:'+$scope.selectedVmImage.name);
         }
         part1.push('地域/:'+CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name);
-        part1.push('网络类型/:'+$scope.vmNetworkType == 'primary'?'基础网络':'私有网络');
+        part1.push('网络类型/:'+($scope.vmNetworkType == 'primary'?'基础网络':'私有网络'));
         part2.push('类型/:'+$scope.selectedVmDiskType.name);
         part2.push('容量/:'+$scope.dataDiskVolume+'G数据盘');
         if($scope.vmNetworkPublicIpModel==='now' && $scope.vmNetworkType==='primary'){

@@ -43,7 +43,10 @@ public class CloudvmResourceInfoService {
 		ress.add(new ResourceLocator().id(id).region(region).type((Class<? extends BillingResource>) obj));
 		//调用openstack接口
 		Map<ResourceLocator, BillingResource> re = resourceQueryService.getResources(userId, ress);
-		return re.values().iterator().next().getName();
+		if(re!=null && re.values().iterator().hasNext()) {
+			return re.values().iterator().next().getName();
+		}
+		return null;
 	}
 	
 }
