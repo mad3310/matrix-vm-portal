@@ -103,7 +103,7 @@ payOptionChose();//支付方式选择
 rollup();//展开&收起
 userInfo();//用户名&余额
 goPay();//支付
-orderDetail();//订单详情
+// orderDetail();//订单详情
 $(window).resize(function(event) {
 	var width=document.body.scrollWidth;
     var height=document.body.scrollHeight;
