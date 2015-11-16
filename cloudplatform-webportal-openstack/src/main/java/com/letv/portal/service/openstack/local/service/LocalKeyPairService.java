@@ -14,4 +14,6 @@ public interface LocalKeyPairService {
     CloudvmKeyPair create(long userId, long tenantId, String region, KeyPair keyPair);
 
     void delete(long tenantId, String region, String name);
+
+    int count(long tenantId, String region);
 }

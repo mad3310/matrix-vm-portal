@@ -9,6 +9,7 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.v2_0.domain.Link;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -312,9 +313,11 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
     }
 
     @Override
-    public void recordVmDeleted(long userVoUserId, String region, String vmId) throws OpenStackException {
+    public void recordVmDeleted(long userVoUserId, String region, String vmId, Flavor flavor) throws OpenStackException {
         LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
         localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.SERVER);
+        localRcCountService.decRcCount(userVoUserId, region, CloudvmRcCountType.CPU, flavor.getVcpus());
+        localRcCountService.decRcCount(userVoUserId, region, CloudvmRcCountType.MEMORY, flavor.getRam());
 
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         openStackServiceGroup.getVolumeSyncService()

@@ -2,6 +2,7 @@ package com.letv.portal.controller.cloudvm;
 
 import com.letv.portal.vo.cloudvm.form.volume.VolumeEditForm;
 import com.letv.portal.vo.cloudvm.form.volume_snapshot.VolumeSnapshotCreateForm;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
@@ -165,7 +169,15 @@ public class VolumeController {
 		}
 		ResultObject result = new ResultObject();
 		long userId = Util.userId(sessionService);
+		VolumeResource volume;
+		try {
+			volume = Util.session(sessionService).getVolumeManager().get(form.getRegion(), form.getVolumeId());
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		localVolumeService.updateNameAndDesc(userId, userId, form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
+		//保存编辑云硬盘操作
+		this.recentOperateService.saveInfo(Constant.EDIT_VOLUME, form.getName()+"=="+volume.getName());
 		return result;
 	}
 
@@ -211,7 +223,7 @@ public class VolumeController {
 		try {
 			Util.session(sessionService).getVolumeManager()
 					.createVolumeSnapshot(form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
-			//保存启动操作
+			//保存创建云硬盘快照操作
 			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, form.getName()+"=="+Util.session(sessionService).getVolumeManager().get(form.getRegion(), form.getVolumeId()).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());

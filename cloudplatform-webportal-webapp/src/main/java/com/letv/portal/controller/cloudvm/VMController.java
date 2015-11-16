@@ -389,8 +389,11 @@ public class VMController {
 			OpenStackSession openStackSession = Util.session(sessionService);
 			VMManager vmManager = openStackSession.getVMManager();
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
-			vmManager.detachVolume(vmManager.get(region, vmId),
-					volumeManager.get(region, volumeId));
+			VMResource vmResource =  vmManager.get(region, vmId);
+			VolumeResource volumeResource = volumeManager.get(region, volumeId);
+			vmManager.detachVolume(vmResource, volumeResource);
+			//保存解挂云硬盘操作
+			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK, volumeResource.getName()+"=="+vmResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -495,6 +498,17 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/vm/snapshot/detail", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject getVmSnapshot(
+			@RequestParam String region, @RequestParam String vmSnapshotId) {
+		ResultObject result = new ResultObject();
+		long userId = Util.userId(sessionService);
+		result.setData(localImageService.getVmSnapshot(userId, region, vmSnapshotId));
+		return result;
+	}
+
 	@RequestMapping(value = "/vm/snapshot/create", method = RequestMethod.POST)
 	public
 	@ResponseBody
@@ -546,6 +560,8 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.rebootSync(vmResource);
+			//保存重启云主机操作
+			this.recentOperateService.saveInfo(Constant.REBOOT_OPENSTACK, vmResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -567,6 +583,8 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(form.getRegion(), form.getVmId());
 			vmManager.changeAdminPass(vmResource, form.getAdminPass());
+			//保存修改密码操作
+			this.recentOperateService.saveInfo(Constant.MODIFY_PWD_OPENSTACK, vmResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -593,6 +611,8 @@ public class VMController {
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
+        //保存私有网络绑定云主机操作
+		//this.recentOperateService.saveInfo(Constant.CREATE_KEYPAIR, form.getName(), this.sessionService.getSession().getUserId(), null);
         return result;
     }
 
@@ -678,6 +698,8 @@ public class VMController {
 		}
         try {
             String privateKey = resourceServiceFacade.createKeyPair(form.getRegion(), form.getName());
+            //保存密钥创建操作
+			this.recentOperateService.saveInfo(Constant.CREATE_KEYPAIR, form.getName(), this.sessionService.getSession().getUserId(), null);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDispositionFormData("attachment", form.getName() + ".pem");
@@ -717,6 +739,8 @@ public class VMController {
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
+		//删除密钥创建操作
+		this.recentOperateService.saveInfo(Constant.DELETE_KEYPAIR, name, this.sessionService.getSession().getUserId(), null);
 		return result;
 	}
 }

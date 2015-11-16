@@ -30,4 +30,6 @@ public interface LocalVolumeService {
     void delete(long tenantId, String region, String volumeId);
 
     long count(long tenantId, String region);
+
+    long countSize(long tenantId, String region);
 }

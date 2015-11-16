@@ -51,4 +51,16 @@ public class CloudvmRcCountServiceImpl extends BaseServiceImpl<CloudvmRcCount> i
         }
         return null;
     }
+
+    @Override
+    public List<CloudvmRcCount> selectByRegion(long tenantId, String region) {
+        if (StringUtils.isEmpty(region)) {
+            throw new ValidateException("地域不能为空");
+        }
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("region", region);
+        List<CloudvmRcCount> resultList = cloudvmRcCountDao.selectByMap(paras);
+        return resultList;
+    }
 }

@@ -2,6 +2,8 @@ package com.letv.portal.controller.billing;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,8 @@ import com.letv.portal.service.subscription.ISubscriptionService;
 @RequestMapping("/billing")
 public class ProductController {
 	
+	private final static Logger logger = LoggerFactory.getLogger(ProductController.class);
+	
 	@Autowired
 	IProductService productService;
 	@Autowired
@@ -48,6 +52,7 @@ public class ProductController {
 		//去服务提供方验证参数是否合法
 		CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(id, paramsData);
 		if(!validateResult.isSuccess()) {
+			logger.info("虚拟机接口提供方验证失败：{}", validateResult.getFailureReason());
 			obj.setResult(0);
 			obj.addMsg(validateResult.getFailureReason());
 			return obj;
