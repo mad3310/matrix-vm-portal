@@ -133,8 +133,11 @@
                         </div>
                     </div>
                     <div class="left-button">
-                        <div class="col-sm-12">
-                            <button class="btn btn-le-blue pull-right" ng-click="editIP()"><span>提交</span></button>
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-blue" ng-click="vm_ip_edit_form.$valid && !isFormSubmiting && editIP()" ng-disabled="isFormSubmiting">
+                                <span ng-if="!isFormSubmiting">编辑</span>
+                                <span ng-if="isFormSubmiting">编辑执行中...</span>
+                            </button>
                         </div>
                         <div class="clearfix"></div>
                     </div>

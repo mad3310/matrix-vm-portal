@@ -267,6 +267,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         name: $scope.ipName,
         bandWidth: $scope.networkBandWidth,
       };
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.floatIP_edit,data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -274,6 +275,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           // $window.location.href = '/payment/'+data.data;
         }
         else{
+          $scope.isFormSubmiting=flase;
           WidgetService.notifyError(data.msgs[0]||'修改公网IP失败');
         }
       });
