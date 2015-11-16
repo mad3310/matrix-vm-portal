@@ -56,8 +56,11 @@ public class Constant {
 	public static final String START_OPENSTACK = "启动云主机";
 	//停止云主机
 	public static final String STOP_OPENSTACK = "停止云主机";
+	public static final String REBOOT_OPENSTACK = "重启云主机";
+	public static final String MODIFY_PWD_OPENSTACK = "云主机修改密码";
 	//绑定云硬盘
 	public static final String ATTACH_VOLUME_OPENSTACK = "绑定云硬盘";
+	public static final String DETACH_VOLUME_OPENSTACK = "解挂云硬盘";
 	//创建快照
 	public static final String SNAPSHOT_CREATE_OPENSTACK = "创建云主机快照";
 	//删除云主机
@@ -73,6 +76,7 @@ public class Constant {
 	public static final String DELETE_VOLUME = "删除云硬盘";
 	//创建快照
 	public static final String SNAPSHOT_CREATE_VOLUME = "创建云硬盘快照";
+	public static final String EDIT_VOLUME = "编辑云硬盘";
 	
 	//创建公网IP
 	public static final String CREATE_FLOATINGIP = "公网IP";
@@ -98,5 +102,14 @@ public class Constant {
 	public static final String CREATE_SUBNET = "创建子网";
 	public static final String EDIT_SUBNET = "编辑子网";
 	public static final String DELETE_SUBNET = "删除子网";
+	
+	public static final String CREATE_KEYPAIR = "创建秘钥";
+	public static final String DELETE_KEYPAIR = "删除秘钥";
+	
+	public static final String SUBNET_ATTACH_VM = "私有网络添加云主机";
+	public static final String SUBNET_DETACH_VM = "私有网络移除云主机";
+	
+	//无名称云产品统一为“未设置”
+	public static final String NO_NAME = "未设置";
 
 }

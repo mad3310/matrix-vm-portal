@@ -140,7 +140,7 @@ public class NetworkController {
 			String oldName = neworkManager.getPrivate(form.getRegion(), form.getNetworkId()).getName();
 			neworkManager.editPrivate(form.getRegion(), form.getNetworkId(), form.getName());
 			//保存编辑私网操作
-			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName+"=-"+form.getName());
+			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName==null?Constant.NO_NAME:oldName+"=-"+form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -469,7 +469,7 @@ public class NetworkController {
 			String floatingIpName = neworkManager.getFloatingIp(region, floatingIpId).getName();
 			neworkManager.deleteFloaingIp(region, floatingIpId);
 			//保存删除公网IP操作
-			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, floatingIpName);
+			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, floatingIpName==null?Constant.NO_NAME:floatingIpName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -546,7 +546,7 @@ public class NetworkController {
 			String oldName = neworkManager.getFloatingIp(form.getRegion(), form.getFloatingIpId()).getName();
 			neworkManager.editFloatingIp(form.getRegion(), form.getFloatingIpId(), form.getName(), form.getBandWidth());
 			//保存编辑公网IP操作
-			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName+"=-"+form.getName());
+			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName==null?Constant.NO_NAME:oldName+"=-"+form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
