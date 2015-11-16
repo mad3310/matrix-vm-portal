@@ -177,4 +177,12 @@
 		from WEBPORTAL_CLOUDVM_VOLUME v
 		<include refid="Example_Where_Clause" />
 	</select>
+
+	<!-- 统计大小 -->
+	<select id="selectByMapCountSize" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select sum(v.SIZE)
+		from WEBPORTAL_CLOUDVM_VOLUME v
+		<include refid="Example_Where_Clause" />
+	</select>
 </mapper>

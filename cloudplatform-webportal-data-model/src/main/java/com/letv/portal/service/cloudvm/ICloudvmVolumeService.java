@@ -23,4 +23,6 @@ public interface ICloudvmVolumeService extends IBaseService<CloudvmVolume> {
     List<CloudvmVolume> selectByServerIdAndStatus(long tenantId, String region, String serverId, CloudvmVolumeStatus status);
 
     List<CloudvmVolume> selectByRegionsAndVolumeIds(long tenantId, List<String> regions, List<String> volumeIds);
+
+    long selectCountSizeByRegion(long tenantId, String region);
 }

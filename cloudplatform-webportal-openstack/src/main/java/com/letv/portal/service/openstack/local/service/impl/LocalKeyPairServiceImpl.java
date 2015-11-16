@@ -75,4 +75,9 @@ public class LocalKeyPairServiceImpl implements LocalKeyPairService {
         }
     }
 
+    @Override
+    public int count(long tenantId, String region) {
+        return cloudvmKeyPairService.selectCountByName(tenantId, region, null);
+    }
+
 }

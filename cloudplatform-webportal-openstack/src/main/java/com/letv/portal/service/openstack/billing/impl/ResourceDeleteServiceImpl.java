@@ -36,6 +36,7 @@ import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
@@ -284,6 +285,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         final ServerApi serverApi = novaApi.getServerApi(locator.region());
         Server server = serverApi.get(locator.id());
         if (server != null) {
+            Flavor flavor = novaApi.getFlavorApi(locator.region()).get(server.getFlavor().getId());
 
             ThreadUtil.waiting(new Function<Boolean>() {
                 @Override
@@ -320,7 +322,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                         return serverApi.get(locator.id()) != null;
                     }
                 }, new Timeout().time(60L).unit(TimeUnit.MINUTES));
-                vmSyncService.recordVmDeleted(userId, locator.region(), server.getId());
+                vmSyncService.recordVmDeleted(userId, locator.region(), server.getId(), flavor);
             }
         }
     }

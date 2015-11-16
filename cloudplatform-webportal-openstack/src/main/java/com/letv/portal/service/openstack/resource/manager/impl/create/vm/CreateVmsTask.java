@@ -51,7 +51,7 @@ public class CreateVmsTask extends VmsCreateSubTask {
 
 		vmContext.setServer(context.getApiCache().getServerApi().get(serverCreated.getId()));
 
-		context.getVmManager().recordVmCreated(context.getUserId(), context.getVmCreateConf().getRegion(), vmContext.getServer());
+		context.getVmManager().recordVmCreated(context.getUserId(), context.getVmCreateConf().getRegion(), vmContext.getServer(), context.getFlavor());
 	}
 
 	@Override
