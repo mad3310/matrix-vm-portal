@@ -245,6 +245,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('云主机当前状态不可解挂云硬盘');
           return;
         }
+        if(!checkedVms[0].volumes || !checkedVms[0].volumes.length){
+          WidgetService.notifyWarning('云主机还没有绑定云硬盘');
+          return;
+        }
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
           templateUrl: 'DiskDetachModalTpl',
