@@ -51,9 +51,8 @@ define(['./common.filter'], function (filterModule) {
       vmTaskStatuses=Config.vmTaskStatuses;
     return function (input) {
       var out = '',
-        vmStateAndTaskStateArray = input.split(';'),
-        vmState = vmStateAndTaskStateArray[0],
-        taskState = vmStateAndTaskStateArray[1];
+        vmState = input.vmState,
+        taskState = input.taskState;
       if (taskState) {
         if (vmTaskStatuses[taskState]) {
           out = vmTaskStatuses[taskState];
@@ -136,8 +135,19 @@ define(['./common.filter'], function (filterModule) {
   }]);
 
   filterModule.filter('vmFlavorFilter', [ function () {
-    return function (flavor) {
-      return [flavor.vcpus+'核',Math.ceil(flavor.ram/1024)+'G',flavor.disk+'G'].join('/');
+    return function (vm) {
+      var totalVolumeSize = 0;
+      if(vm.volumes && vm.volumes.length){
+        if(vm.volumes.length>1){
+          totalVolumeSize =  vm.volumes.reduce(function (x, y) {
+            return x.size + y.size;
+          });
+        }
+        else{
+          totalVolumeSize =  vm.volumes[0].size;
+        }
+      }
+      return [vm.flavor.vcpus + '核', Math.ceil(vm.flavor.ram / 1024) + 'G', totalVolumeSize + 'G'].join('/');
     }
 
   }]);
