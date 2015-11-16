@@ -177,10 +177,16 @@ function orderDetail(){
              var totalprice=0;
              var order,orderHtml='',params='',paramsArray='';
              var index='',title='',desc='';
+             orderHtml=orderHtml+'<tr>'
+                                 +'<td>'+orderArray[0].orderNumber+'</td>'
+                                 +'<td><div style="width:50%;text-align:right;">云服务产品</div></td>'
+                                 +'<td>'+orderArray.length+'</td>'
+                                 +'<td>1个月</td>'
+                                 +'<td class="price">¥'+orderArray[0].totalPrice+'</td>'
+                             +'</tr>'
              for(var i in orderArray){
                 var paramsHtml='';
                 order=orderArray[i];
-                // totalprice=totalprice+order.totalPrice;
                 totalprice=totalprice+order.price;
                 paramsArray=order.params.split("/;");
                 for(var j in paramsArray){
@@ -193,8 +199,8 @@ function orderDetail(){
                                         +'</div>'
                 }
                 orderHtml=orderHtml+'<tr>'
-                                         +'<td>'+order.orderNumber+'</td>'
-                                         +'<td><div style="width:50%;text-align:right;">购买服务器</div></td>'
+                                         +'<td></td>'
+                                         +'<td><div style="width:50%;text-align:right;">'+order.productName+'</div></td>'
                                          +'<td>'+order.orderNum+'</td>'
                                          +'<td>1个月</td>'
                                          +'<td class="price">¥'+order.price+'</td>'
