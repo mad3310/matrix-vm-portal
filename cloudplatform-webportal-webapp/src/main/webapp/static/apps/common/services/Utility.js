@@ -33,6 +33,7 @@ define(['./common.service'],function (serviceModule) {
           var operaArraytemp=productInfo.operations;
           var operationArraycopy=[];
           for(var i in objList){
+            operationArry[i]=[];
             if(objList[i].checked){
               for(var j in operaArraytemp){
                 operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];

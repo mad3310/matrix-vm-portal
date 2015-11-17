@@ -12,7 +12,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.totalItems = 0;
       $scope.pageSize = 10;
       $scope.operationBtn={};
-      var operationArry=new Array(8);
+      var operationArry=[];
       $scope.onPageChange = function () {
         refreshVmList();
       };
@@ -517,6 +517,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         else{
           $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+          $scope.isFormSubmiting=false;
         }
       });
     };
@@ -565,6 +566,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         else{
           $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'云硬盘解挂失败');
+          $scope.isFormSubmiting=false;
         }
       });
     };
@@ -575,7 +577,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       initDiskSelector = function () {
           $scope.diskList = vm.volumes;
           $scope.diskListSelectorData=$scope.diskList.filter(function(disk){
-            return disk.name && disk.status==='available';
+            return disk.name;
           }).map(function(disk){
             return new ModelService.SelectModel(disk.name,disk.id);
           });
@@ -612,6 +614,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         else{
           $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'绑定公网ip失败');
+          $scope.isFormSubmiting=false;
         }
       });
     };

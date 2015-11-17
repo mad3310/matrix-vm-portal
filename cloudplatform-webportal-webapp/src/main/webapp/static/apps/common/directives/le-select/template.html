@@ -1,9 +1,9 @@
  <div class="le-select-toggle" ng-click="toggleSelect()">
-     <span class="select-value">{{model.text}}</span>
+     <span class="select-value" title="{{model.text}}">{{model.text}}</span>
      <a class="select-arrow" href="javascript:void(0);"><i class="fa fa-caret-down"></i></a>
  </div>
  <ul class="le-select-menu" ng-class="{open:isOpen}">
      <li ng-repeat="option in options" ng-click="selectOption(option)">
-         <a>{{option.text}}</a>
+         <a title="{{option.text}}">{{option.text}}</a>
      </li>
  </ul>
