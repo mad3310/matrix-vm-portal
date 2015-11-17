@@ -29,7 +29,7 @@
                     </thead>
                     <tbody id="tby">
                     <tr ng-repeat="vpc in vpcList">
-                        <td>
+                        <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:vpc.checked}"
                               ng-click="checkVpc(vpc)"></span>
                         </td>
@@ -92,7 +92,7 @@
                     </thead>
                     <tbody id="subnet-tby">
                     <tr ng-repeat="subnet in subnetList">
-                        <td>
+                        <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:subnet.checked}"
                               ng-click="checkSubnet(subnet)"></span>
                         </td>

@@ -26,7 +26,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>
+                    <th  class="unselectable">
                          <span class="iconfont icon-righticon"  ng-class="{checked:isAllRouterChecked()}" ng-click="checkAllRouter()"></span>
                     </th>
                     <th><span>名称(ID)</span></th>
@@ -38,7 +38,7 @@
                 </thead>
                 <tbody id="tby">
                 <tr ng-repeat="router in routerList">
-                    <td>
+                    <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:router.checked}" ng-click="checkRouter(router)"></span>
                     </td>
                     <td><span>{{router.name|| '未设置'}}</span></td>

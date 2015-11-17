@@ -16,7 +16,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>
+                    <th class="unselectable">
                          <span class="iconfont icon-righticon"  ng-class="{checked:isAllKeypairChecked()}" ng-click="checkAllKeypair()"></span>
                     </th>
                     <th><span>名称</span></th>
@@ -26,7 +26,7 @@
                 </thead>
                 <tbody id="tby">
                 <tr ng-repeat="keypair in keypairList">
-                    <td>
+                    <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:keypair.checked}" ng-click="checkKeypair(keypair)"></span>
                     </td>
                     <td><span>{{keypair.name|| '未设置'}}</span></td>

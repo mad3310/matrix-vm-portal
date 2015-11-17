@@ -12,7 +12,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>
+                    <th  class="unselectable">
                          <span class="iconfont icon-righticon"  ng-class="{checked:isAllImgChecked()}" ng-click="checkAllimg()"></span>
                     </th>
                     <th><span>名称</span></th>
@@ -25,7 +25,7 @@
                 </thead>
                 <tbody id="tby">
                 <tr ng-repeat="img in imageList">
-                    <td>
+                    <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:img.checked}" ng-click="checkimg(img)"></span>
                     </td>
                     <td><span>{{img.name|| '未设置'}}</span></td>
