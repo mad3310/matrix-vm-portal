@@ -1401,7 +1401,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
                 Server.Status vmStatus = ((VMResourceImpl) vmResource).server
                         .getStatus();
-                if (vmStatus != Server.Status.ACTIVE) {
+                if (vmStatus != Status.SHUTOFF && vmStatus != Server.Status.ACTIVE) {
                     throw new UserOperationException(
                             "The current status of the virtual machine can not attach volume.",
                             "虚拟机当前的状态不能附加云硬盘。");
@@ -1472,7 +1472,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
                 Server.Status vmStatus = ((VMResourceImpl) vmResource).server
                         .getStatus();
-                if (vmStatus != Server.Status.ACTIVE) {
+                if (vmStatus != Status.SHUTOFF && vmStatus != Server.Status.ACTIVE) {
                     throw new UserOperationException(
                             "The current status of the virtual machine can not attach volume.",
                             "虚拟机当前的状态不能分离云硬盘。");
