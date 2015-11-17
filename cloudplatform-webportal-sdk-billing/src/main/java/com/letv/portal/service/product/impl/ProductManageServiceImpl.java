@@ -1,6 +1,7 @@
 package com.letv.portal.service.product.impl;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -227,7 +228,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 				o.setOrderNumber(SerialNumberUtil.getNumber(2));
 				o.setStatus(0);
 				o.setCreateUser(sessionService.getSession().getUserId());
-				
+				o.setCreateTime(new Timestamp(new Date().getTime()));
 				this.orderService.insert(o);
 				obj.setData(o.getOrderNumber());
 			}

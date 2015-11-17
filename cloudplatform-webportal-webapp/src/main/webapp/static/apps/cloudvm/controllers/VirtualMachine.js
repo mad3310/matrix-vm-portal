@@ -515,6 +515,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifySuccess('云硬盘挂载成功');
         }
         else{
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
           $scope.isFormSubmiting=false;
         }
@@ -563,6 +564,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifySuccess('云硬盘解挂成功');
         }
         else{
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'云硬盘解挂失败');
           $scope.isFormSubmiting=false;
         }
@@ -610,6 +612,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifySuccess('绑定公网ip成功');
         }
         else{
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'绑定公网ip失败');
           $scope.isFormSubmiting=false;
         }

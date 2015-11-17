@@ -2,6 +2,8 @@ package com.letv.portal.controller.cloudvm;
 
 import javax.validation.Valid;
 
+import com.letv.portal.service.openstack.util.tuple.Tuple2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,9 @@ import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.vo.cloudvm.form.keypair.CreateKeyPairForm;
 import com.letv.portal.vo.cloudvm.form.vm.ChangeAdminPassForm;
 import com.letv.portal.vo.cloudvm.form.vm_snapshot.VmSnapshotCreateForm;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 @Controller
 @RequestMapping("/ecs")
@@ -609,8 +614,9 @@ public class VMController {
     @ResponseBody
     ResultObject attachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
-        try {
-            resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId);
+		Tuple2<List<String>, String> vmNamesAndSubnetName = new Tuple2<List<String>, String>();
+		try {
+            resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId, vmNamesAndSubnetName);
         } catch (OpenStackCompositeException e) {
             result.getMsgs().addAll(e.toMsgs());
             result.setResult(0);
@@ -622,8 +628,11 @@ public class VMController {
             throw e.matrixException();
         }
         //保存私有网络绑定云主机操作
-		//this.recentOperateService.saveInfo(Constant.CREATE_KEYPAIR, form.getName(), this.sessionService.getSession().getUserId(), null);
-        return result;
+		this.recentOperateService.saveInfo(Constant.SUBNET_ATTACH_VM
+				, MessageFormat.format("子网{0}添加虚拟机{1}", vmNamesAndSubnetName._2
+				, StringUtils.join(vmNamesAndSubnetName._1, ","))
+				, this.sessionService.getSession().getUserId(), null);
+		return result;
     }
 
     @RequestMapping(value = "/vm/detach/subnet", method = RequestMethod.POST)

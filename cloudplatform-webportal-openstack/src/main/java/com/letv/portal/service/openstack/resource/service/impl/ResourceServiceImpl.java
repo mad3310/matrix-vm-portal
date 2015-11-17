@@ -55,6 +55,7 @@ import org.springframework.stereotype.Service;
 import java.io.Closeable;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -164,13 +165,16 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId) throws OpenStackException {
+    public void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
+        vmNamesAndSubnetName._1 = new CopyOnWriteArrayList<String>();
+
         checkRegion(region, novaApi, neutronApi);
 
         final ServerApi serverApi = novaApi.getServerApi(region);
 
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
+        vmNamesAndSubnetName._2 = privateSubnet.getName();
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         final Network privateNetwork = getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
 
@@ -183,7 +187,8 @@ public class ResourceServiceImpl implements ResourceService {
             @Override
             public Exception apply(String vmId) throws Exception {
                 try {
-                    getVm(serverApi, vmId);
+                    Server server = getVm(serverApi, vmId);
+                    vmNamesAndSubnetName._1.add(server.getName());
                     List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
                     for (InterfaceAttachment interfaceAttachment : interfaceAttachments) {
                         String attachedNetworkId = interfaceAttachment.getNetworkId();
