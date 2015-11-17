@@ -231,13 +231,16 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId) throws OpenStackException {
+    public void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
+        vmNamesAndSubnetName._1 = new CopyOnWriteArrayList<String>();
+
         checkRegion(region, novaApi, neutronApi);
 
         final ServerApi serverApi = novaApi.getServerApi(region);
 
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
+        vmNamesAndSubnetName._2 = privateSubnet.getName();
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
         final PortApi portApi = neutronApi.getPortApi(region);
@@ -250,7 +253,8 @@ public class ResourceServiceImpl implements ResourceService {
             @Override
             public Exception apply(final String vmId) throws Exception {
                 try {
-                    getVm(serverApi, vmId);
+                    Server server = getVm(serverApi, vmId);
+                    vmNamesAndSubnetName._1.add(server.getName());
                     List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
                     InterfaceAttachment findedInterfaceAttachment = null;
                     FindedInterfaceAttachment:

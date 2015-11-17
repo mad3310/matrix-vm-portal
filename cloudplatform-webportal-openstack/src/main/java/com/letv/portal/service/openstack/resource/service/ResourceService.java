@@ -21,7 +21,7 @@ public interface ResourceService {
 
     void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
 
-    void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, String subnetId) throws OpenStackException;
+    void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
 
     List<VMResource> listVmNotInAnyNetwork(NovaApi novaApi, NeutronApi neutronApi, String region) throws OpenStackException;
 

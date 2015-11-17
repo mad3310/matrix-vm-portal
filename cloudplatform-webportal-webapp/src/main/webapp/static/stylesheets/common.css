@@ -365,7 +365,7 @@ width:150px;height:40px;
 }
 .dropdown-menu .dropdown-btn{border:none;border-radius:0;padding:4px;width:98px;font-size:12px;text-align:center;background-color:transparent;}
 .dropdown-menu .dropdown-btn:hover{color:#fff;background-color:#b3b3b3}
-.dropdown-menu button[disabled]{cursor:not-allowed;}
+.dropdown-menu .dropdown-btn[disabled]:hover{color:inherit;background-color:inherit;}
 /*end header style*/
 
 /*begin footer style*/
@@ -1110,32 +1110,32 @@ le-select .le-select-menu li a{
     line-height: 30px;
 }
 
-.btn-le-blue {
+.btn-le-blue,.btn-le-blue[disabled]:hover {
     background-color: #088ac2;
     color: #fff;
 }
 
-.btn-le-blueGreen {
+.btn-le-blueGreen,.btn-le-blueGreen[disabled]:hover{
     background-color: #08aec2;
     color: #fff;
 }
 
-.btn-le-green {
+.btn-le-green,.btn-le-green[disabled]:hover {
     background-color: #08c2b3;
     color: #fff;
 }
 
-.btn-le-yellow {
+.btn-le-yellow,.btn-le-yellow[disabled]:hover {
     background-color: #f5c131;
     color: #fff;
 }
 
-.btn-le-red {
+.btn-le-red,.btn-le-red[disabled]:hover{
     background-color: #ff3c37;
     color: #fff;
 }
 
-.btn-le-roseRed {
+.btn-le-roseRed,.btn-le-roseRed[disabled]:hover{
     background-color: #e05c69;
     color: #fff;
 }

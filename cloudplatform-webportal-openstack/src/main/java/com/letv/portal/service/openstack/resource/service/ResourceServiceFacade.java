@@ -16,7 +16,7 @@ import java.util.List;
 public interface ResourceServiceFacade {
     void attachVmsToSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
 
-    void detachVmsFromSubnet(String region, String vmIds, String subnetId) throws OpenStackException;
+    void detachVmsFromSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
 
     List<VMResource> listVmNotInAnyNetwork(String region) throws OpenStackException;
 

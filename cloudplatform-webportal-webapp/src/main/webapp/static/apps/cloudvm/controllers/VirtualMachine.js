@@ -12,7 +12,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.totalItems = 0;
       $scope.pageSize = 10;
       $scope.operationBtn={};
-      var operationArry=new Array(8);
+      var operationArry=[];
       $scope.onPageChange = function () {
         refreshVmList();
       };

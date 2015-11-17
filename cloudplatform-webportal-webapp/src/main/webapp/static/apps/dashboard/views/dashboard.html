@@ -54,7 +54,7 @@
 						<a class="product" href="/cvm/#/vm">
 							<span class="iconfont icon-cloudhost"></span>
 							<div class="product-title">云主机</div>
-							<div class="product-num">{{ecs || '0'}}个</div>
+							<div class="product-num">{{service.ecs || '0'}}个</div>
 						</a>
 						<div class="productDesc">
 							<span>每日消费</span>
@@ -73,7 +73,7 @@
 						<a class="product harddisk" href="/cvm/#/vm-disk">
 							<span class="iconfont icon-clouddisk"></span>
 							<div class="product-title">云硬盘</div>
-							<div class="product-num">{{disk || '0'}}个</div>
+							<div class="product-num">{{service.disk || '0'}}个</div>
 						</a>
 						<div class="productDesc last">
 							<span>每日消费</span>
@@ -93,7 +93,7 @@
 						<a class="product harddisk" href="/cvm/#/vm-floatIP">
 							<span class="iconfont icon-cloudfloatip"></span>
 							<div class="product-title">公网IP</div>
-							<div class="product-num">{{floatIp || '0'}}个</div>
+							<div class="product-num">{{service.floatingIp || '0'}}个</div>
 						</a>
 						<div class="productDesc">
 							<span>每日消费</span>
@@ -112,7 +112,7 @@
 						<a class="product" href="/cvm/#/vm-router">
 							<span class="iconfont icon-cloudroute"></span>
 							<div class="product-title">路由器</div>
-							<div class="product-num">{{router || '0'}}个</div>
+							<div class="product-num">{{service.router || '0'}}个</div>
 						</a>
 						<div class="productDesc last">
 							<span>每日消费</span>
@@ -179,14 +179,14 @@
 							<div class="item-source">
 								<div>云主机<span>（个）</span></div>
 								<div class="source-precent">
-									<div class="active" ng-style="quotas.bandwidthStyle"></div>
+									<div class="active" ng-style="quotas.ecsStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">{{ecs || '0'}}</div>
+								<div class="text-left">{{service.ecs || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">{{quotas.CLOUDVM_BAND_WIDTH}}</div>
+								<div class="text-right">{{quotas.CLOUDVM_VM}}</div>
 							</div>
 						</div>
 					</div>
@@ -195,15 +195,14 @@
 							<div class="item-source">
 								<div>带宽<span>（mbps）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.bandwidthStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.bandWidth || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_BAND_WIDTH}}</div>
 							</div>
 						</div>
 					</div>
@@ -213,15 +212,14 @@
 							<div class="item-source">
 								<div>CPU<span>（核）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.cpuStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.cpu || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_CPU}}</div>
 							</div>
 						</div>
 					</div>
@@ -230,15 +228,14 @@
 							<div class="item-source">
 								<div>内存<span>（GB）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.memoryStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.memory/1024 || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_MEMORY}}</div>
 							</div>
 						</div>
 					</div>
@@ -248,13 +245,12 @@
 							<div class="item-source">
 								<div>云硬盘<span>（个）</span></div>
 								<div class="source-precent">
-									<div class="active" ng-style="quotas.volumeStyle"></div>
-									<!-- <div class="unactive" style="width:70%"></div> -->
+									<div class="active" ng-style="quotas.diskStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">{{disk || '0'}}</div>
+								<div class="text-left">{{service.disk || '0'}}</div>
 								<div class="quota-line"></div>
 								<div class="text-right">{{quotas.CLOUDVM_VOLUME}}</div>
 							</div>
@@ -265,15 +261,14 @@
 							<div class="item-source">
 								<div>云硬盘容量<span>（GB）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.volumeSizeStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.volumeSize || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_VOLUME_SIZE}}</div>
 							</div>
 						</div>
 					</div>
@@ -283,15 +278,14 @@
 							<div class="item-source">
 								<div>云主机快照<span>（个）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.vmSnapshotStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.vmSnapshot || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_VM_SNAPSHOT}}</div>
 							</div>
 						</div>
 					</div>
@@ -300,15 +294,14 @@
 							<div class="item-source">
 								<div>云硬盘快照<span>（个）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.volumeSnapshotStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.volumeSnapshot || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_VOLUME_SNAPSHOT}}</div>
 							</div>
 						</div>
 					</div>
@@ -319,12 +312,11 @@
 								<div>公网IP<span>（个）</span></div>
 								<div class="source-precent">
 									<div class="active" ng-style="quotas.floatIpStyle"></div>
-									<!-- <div class="unactive" style="width:70%"></div> -->
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">{{floatingIp || '0'}}</div>
+								<div class="text-left">{{service.floatingIp || '0'}}</div>
 								<div class="quota-line"></div>
 								<div class="text-right">{{quotas.CLOUDVM_FLOATING_IP}}</div>
 							</div>
@@ -336,12 +328,11 @@
 								<div>路由器<span>（个）</span></div>
 								<div class="source-precent">
 									<div class="active" ng-style="quotas.routerStyle"></div>
-									<!-- <div class="unactive" style="width:70%"></div> -->
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">{{router || '0'}}</div>
+								<div class="text-left">{{service.router || '0'}}</div>
 								<div class="quota-line"></div>
 								<div class="text-right">{{quotas.CLOUDVM_ROUTER}}</div>
 							</div>
@@ -353,15 +344,14 @@
 							<div class="item-source">
 								<div>VPC<span>（个）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.vpcStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.privateNetwork || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_NETWORK}}</div>
 							</div>
 						</div>
 					</div>
@@ -370,15 +360,14 @@
 							<div class="item-source">
 								<div>子网<span>（个）</span></div>
 								<div class="source-precent">
-									<div class="active" style="width:30%"></div>
-									<div class="unactive" style="width:70%"></div>
+									<div class="active" ng-style="quotas.subNetStyle"></div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="item-quota">
-								<div class="text-left">4</div>
+								<div class="text-left">{{service.privateSubnet || '0'}}</div>
 								<div class="quota-line"></div>
-								<div class="text-right">10</div>
+								<div class="text-right">{{quotas.CLOUDVM_SUBNET}}</div>
 							</div>
 						</div>
 					</div>
