@@ -571,6 +571,16 @@ public class ResourceServiceImpl implements ResourceService {
         }, new Function<Object>() {
             @Override
             public Object apply() throws Exception {
+                List<Network> networkList = neutronApi.getNetworkApi(region).list().concat().toList();
+                Map<String, Network> idToNetwork = new HashMap<String, Network>();
+                for (Network network : networkList) {
+                    idToNetwork.put(network.getId(), network);
+                }
+                return idToNetwork;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
                 List<Flavor> flavorList = novaApi.getFlavorApi(region).listInDetail().concat().toList();
                 Map<String, Flavor> idToFlavor = new HashMap<String, Flavor>();
                 for (Flavor flavor : flavorList) {
@@ -617,11 +627,13 @@ public class ResourceServiceImpl implements ResourceService {
 
         Map<String, Subnet> idToSubnet = (Map<String, Subnet>) objListRefList.get(3).get();
 
-        Map<String, Flavor> idToFlavor = (Map<String, Flavor>) objListRefList.get(4).get();
+        Map<String, Network> idToNetwork = (Map<String, Network>) objListRefList.get(4).get();
 
-        Map<String, List<CloudvmVolume>> vmIdToCloudvmVolumeList = (Map<String, List<CloudvmVolume>>) objListRefList.get(5).get();
+        Map<String, Flavor> idToFlavor = (Map<String, Flavor>) objListRefList.get(5).get();
 
-        Map<String, CloudvmImage> imageIdToCloudvmImage = (Map<String, CloudvmImage>) objListRefList.get(6).get();
+        Map<String, List<CloudvmVolume>> vmIdToCloudvmVolumeList = (Map<String, List<CloudvmVolume>>) objListRefList.get(6).get();
+
+        Map<String, CloudvmImage> imageIdToCloudvmImage = (Map<String, CloudvmImage>) objListRefList.get(7).get();
 
         List<VMResource> vmResources = new LinkedList<VMResource>();
         for (Server server : serverList) {
@@ -666,8 +678,11 @@ public class ResourceServiceImpl implements ResourceService {
                             if (StringUtils.isNotEmpty(subnetId)) {
                                 Subnet subnet = idToSubnet.get(subnetId);
                                 if (subnet != null) {
-                                    ipAddresses.getPrivateIP().add(new SubnetIp(new SubnetResourceImpl(region, subnet), fixedIp.getIpAddress()));
-                                    publicOrPrivateIps.add(fixedIp.getIpAddress());
+                                    Network network = idToNetwork.get(subnet.getNetworkId());
+                                    if (network != null && !network.getShared() && !network.getExternal()) {
+                                        ipAddresses.getPrivateIP().add(new SubnetIp(new SubnetResourceImpl(region, subnet), fixedIp.getIpAddress()));
+                                        publicOrPrivateIps.add(fixedIp.getIpAddress());
+                                    }
                                 }
                             }
                         }

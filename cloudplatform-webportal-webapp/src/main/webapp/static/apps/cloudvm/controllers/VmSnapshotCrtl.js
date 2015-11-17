@@ -20,6 +20,19 @@ define(['controllers/app.controller'], function (controllerModule) {
             if(isVmTabActive){
               $scope.vmSnapshotList = data.data.data;
               $scope.vmTotalItems = data.data.totalRecords;
+              $scope.vmSnapshotList.filter(function(vmSnapshot){return vmSnapshot.status=='QUEUED'}).forEach(function(vmSnapshot) {
+                var vmSnapshotDetailUrl = Config.urls.snapshot_vm_detail,
+                  queryData = {region: CurrentContext.regionId, vmSnapshotId: vmSnapshot.id};
+                var pendingStatusInterval = $interval(function () {
+                  HttpService.doGet(vmSnapshotDetailUrl, queryData).success(function (data, status, headers, config) {
+                    if (data.result === 1 && data.data.status != 'QUEUED') {
+                      vmSnapshot.status = data.data.status;
+                      $interval.cancel(pendingStatusInterval);
+                      refreshSnapshotList();
+                    }
+                  });
+                }, 5000);
+              });
             }
             else{
               $scope.diskSnapshotList = data.data.data;
