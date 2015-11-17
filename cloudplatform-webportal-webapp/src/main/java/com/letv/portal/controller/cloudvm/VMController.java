@@ -448,7 +448,7 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
-			vmManager.bindFloatingIp(region, vmId, floatingIpId);
+			resourceServiceFacade.bindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机绑定公网IP操作
 			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK, firName==null?Constant.NO_NAME:firName

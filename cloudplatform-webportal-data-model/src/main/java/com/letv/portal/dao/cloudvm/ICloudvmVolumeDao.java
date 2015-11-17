@@ -12,5 +12,5 @@ import java.util.Map;
 public interface ICloudvmVolumeDao extends IBaseDao<CloudvmVolume> {
     List<CloudvmVolume> selectByMapForSync(Map<String, Object> map);
 
-    int selectByMapCountSize(Map<String, Object> paras);
+    Integer selectByMapCountSize(Map<String, Object> paras);
 }

@@ -2,17 +2,23 @@ package com.letv.portal.service.openstack.resource.service.impl;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.bean.MailMessage;
+import com.letv.common.email.impl.DefaultEmailSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
+import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
 import com.letv.portal.service.openstack.exception.*;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.resource.LocalImageResource;
 import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
+import com.letv.portal.service.openstack.local.service.LocalRegionService;
 import com.letv.portal.service.openstack.resource.IPAddresses;
 import com.letv.portal.service.openstack.resource.SubnetIp;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -20,12 +26,10 @@ import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
-import com.letv.portal.service.openstack.util.JsonUtil;
-import com.letv.portal.service.openstack.util.Ref;
-import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.Timeout;
+import com.letv.portal.service.openstack.util.*;
 import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
 import com.letv.portal.service.openstack.util.function.Function;
 import com.letv.portal.service.openstack.util.function.Function1;
@@ -37,6 +41,7 @@ import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.*;
 import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
@@ -45,6 +50,7 @@ import org.jclouds.openstack.nova.v2_0.domain.*;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Quota;
 import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
+import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
 import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
@@ -54,7 +60,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.Closeable;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -75,6 +83,12 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private ICloudvmVolumeService cloudvmVolumeService;
+
+    @Autowired
+    private ICloudvmRegionService cloudvmRegionService;
+
+    @Autowired
+    private ITemplateMessageSender emailSender;
 
     private void checkRegion(NovaApi novaApi, String region) throws RegionNotFoundException {
         if (!novaApi.getConfiguredRegions().contains(region)) {
@@ -154,6 +168,16 @@ public class ResourceServiceImpl implements ResourceService {
             throw new APINotAvailableException(QuotaApi.class);
         }
         return quotaApiOptional.get();
+    }
+
+    private FloatingIPApi getNovaFloatingIPApi(NovaApi novaApi, String region) throws APINotAvailableException {
+        Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+                .getFloatingIPApi(region);
+        if (!floatingIPApiOptional.isPresent()) {
+            throw new APINotAvailableException(FloatingIPApi.class);
+        }
+        FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+        return floatingIPApi;
     }
 
     private Network getPrivateNetwork(NetworkApi networkApi, String networkId) throws ResourceNotFoundException {
@@ -726,6 +750,193 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         return page;
+    }
+
+    @Override
+    public void bindFloatingIp(final NovaApi novaApi, NeutronApi neutronApi, final String region, final String vmId, String floatingIpId, final String email, final String userName) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
+
+        ServerApi serverApi = novaApi.getServerApi(region);
+        final Server server = getVm(serverApi, vmId);
+
+        if (server.getStatus() == Server.Status.ERROR) {
+            throw new UserOperationException("VM status is \"ERROR\", cannot bind the floating IP.", "虚拟机状态为错误，不能绑定公网IP");
+        }
+
+        final FloatingIPApi floatingIPApi = getNovaFloatingIPApi(novaApi, region);
+
+        final FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+        if (floatingIP == null || !VMManagerImpl.isPublicFloatingIp(floatingIP)) {
+            throw new ResourceNotFoundException("FloatingIP", "公网IP",
+                    floatingIpId);
+        }
+
+        if (floatingIP.getInstanceId() != null) {
+            throw new UserOperationException(MessageFormat.format(
+                    "Floating IP is binded to the VM '{0}'.",
+                    floatingIP.getInstanceId()), MessageFormat.format(
+                    "公网IP已绑定到虚拟机“{0}”，请先解绑。",
+                    floatingIP.getInstanceId()));
+        }
+
+        final AttachInterfaceApi attachInterfaceApi = novaApi.getAttachInterfaceApi(region).get();
+        final NetworkApi networkApi = neutronApi.getNetworkApi(region);
+        final SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+        final PortApi portApi = neutronApi.getPortApi(region);
+        final RouterApi routerApi = neutronApi.getRouterApi(region).get();
+
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<FloatingIP> floatingIPList = floatingIPApi.list().toList();
+                for (FloatingIP fip : floatingIPList) {
+                    if (vmId.equals(fip.getInstanceId())) {
+                        throw new UserOperationException(MessageFormat.format(
+                                "VM is binded to the Floating IP '{0}'.",
+                                fip.getId()), MessageFormat.format(
+                                "虚拟机已绑定公网IP“{0}”，请先解绑。", fip.getId()));
+                    }
+                }
+                return floatingIPList;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
+                if (interfaceAttachments.isEmpty()) {
+                    throw new UserOperationException("Vm is not in any network.", "虚拟机不属于任何一个网络，不能绑定公网IP。");
+                }
+                return interfaceAttachments;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<Port> portList = portApi.list().concat().toList();
+                return portList;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<Network> networkList = networkApi.list().concat().toList();
+                Map<String, Network> idToNetwork = new HashMap<String, Network>();
+                for (Network network : networkList) {
+                    idToNetwork.put(network.getId(), network);
+                }
+                return idToNetwork;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<Router> routerList = routerApi.list().concat().toList();
+                Map<String, Router> idToRouter = new HashMap<String, Router>();
+                for (Router router : routerList) {
+                    idToRouter.put(router.getId(), router);
+                }
+                return idToRouter;
+            }
+        });
+        final List<InterfaceAttachment> interfaceAttachments = (List<InterfaceAttachment>) objListRefList.get(1).get();
+        final List<Port> portList = (List<Port>) objListRefList.get(2).get();
+        final Map<String, Network> idToNetwork = (Map<String, Network>) objListRefList.get(3).get();
+        final Map<String, Router> idToRouter = (Map<String, Router>) objListRefList.get(4).get();
+
+        final Ref<Boolean> isInSharedNetworkRef = new Ref<Boolean>(false);
+        final Set<String> findedRouterIds = new ConcurrentSkipListSet<String>();
+        ThreadUtil.concurrentFilter(interfaceAttachments, new Function1<Void, InterfaceAttachment>() {
+            @Override
+            public Void apply(InterfaceAttachment interfaceAttachment) throws Exception {
+                final String networkId = interfaceAttachment.getNetworkId();
+                Network network = idToNetwork.get(networkId);
+                if (network != null) {
+                    if (network.getShared()) {
+                        isInSharedNetworkRef.set(true);
+                    } else {
+                        ThreadUtil.concurrentFilter(CollectionUtil.toList(interfaceAttachment.getFixedIps()), new Function1<Void, FixedIP>() {
+                            @Override
+                            public Void apply(FixedIP fixedIP) throws Exception {
+                                String subnetId = fixedIP.getSubnetId();
+                                if (subnetId != null) {
+                                    String routerId = null;
+                                    findRouterId:
+                                    for (Port port : portList) {
+                                        if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
+                                                .equals(port.getDeviceOwner())) {
+                                            if (networkId.equals(port.getNetworkId())) {
+                                                ImmutableSet<IP> fixedIps = port.getFixedIps();
+                                                if (fixedIps != null) {
+                                                    for (IP ip : fixedIps) {
+                                                        if (subnetId.equals(ip.getSubnetId())) {
+                                                            routerId = port.getDeviceId();
+                                                            break findRouterId;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (routerId != null) {
+                                        Router router = idToRouter.get(routerId);
+                                        if (router != null) {
+                                            findedRouterIds.add(routerId);
+                                        }
+                                    }
+                                }
+                                return null;
+                            }
+                        });
+                    }
+                }
+                return null;
+            }
+        });
+
+        if(!isInSharedNetworkRef.get()) {
+            if (findedRouterIds.isEmpty()) {
+                throw new UserOperationException("Subnet is not associated with router.", "虚拟机所在的私有子网没有关联到路由");
+            }
+            boolean isEnableGateway = false;
+            for (String routerId : findedRouterIds) {
+                Router router = idToRouter.get(routerId);
+                ExternalGatewayInfo gatewayInfo = router.getExternalGatewayInfo();
+                if (gatewayInfo != null && gatewayInfo.getNetworkId() != null) {
+                    isEnableGateway = true;
+                    break;
+                }
+            }
+            if (!isEnableGateway) {
+                throw new UserOperationException("Router gateway is not enabled.", "虚拟机所在的私有子网关联的路由没有开启网关");
+            }
+        }
+
+        floatingIPApi.addToServer(floatingIP.getIp(), vmId);
+
+        ThreadUtil.asyncExec(new Function<Void>() {
+            @Override
+            public Void apply() throws Exception {
+                emailBindIP(region, server, floatingIP.getIp(), email, userName);
+                return null;
+            }
+        });
+
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region, server);
+    }
+
+    private void emailBindIP(String region, Server server, String ip, String email, String userName) throws OpenStackException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userName", userName);
+        params.put("region", cloudvmRegionService.selectByCode(region).getDisplayName());
+        params.put("vmId", server.getId());
+        params.put("vmName", server.getName());
+        params.put("ip", ip);
+        params.put("port", 22);
+        params.put("bindTime", format.format(new Date()));
+
+        MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",
+                email, "乐视云平台web-portal系统通知",
+                "cloudvm/bindFloatingIp.ftl", params);
+        mailMessage.setHtml(true);
+        emailSender.sendMessage(mailMessage);
     }
 
 }

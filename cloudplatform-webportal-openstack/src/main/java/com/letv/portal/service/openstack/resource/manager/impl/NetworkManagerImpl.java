@@ -1069,30 +1069,30 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				Subnet subnet = getPrivateSubnet(neutronApi, region, subnetId);
 
-				SubnetInfo subnetInfo = new SubnetUtils(subnet.getCidr())
-						.getInfo();
-				if (!subnetInfo.isInRange(gatewayIp)) {
-					throw new UserOperationException(
-							"The gateway IP network segment is not in the subnet.",
-							"网关IP不在子网的网段内");
-				}
-
-				long gatewayIpNum = ipStrToNum(gatewayIp);
-				for (AllocationPool allocationPool : subnet
-						.getAllocationPools()) {
-					long startIpNum = ipStrToNum(allocationPool.getStart());
-					long endIpNum = ipStrToNum(allocationPool.getEnd());
-					if (gatewayIpNum >= startIpNum && gatewayIpNum <= endIpNum) {
-						throw new UserOperationException(
-								"Gateway ip conflicts with allocation pool.",
-								"网关IP不能在子网的IP分配池内");
-					}
-				}
+//				SubnetInfo subnetInfo = new SubnetUtils(subnet.getCidr())
+//						.getInfo();
+//				if (!subnetInfo.isInRange(gatewayIp)) {
+//					throw new UserOperationException(
+//							"The gateway IP network segment is not in the subnet.",
+//							"网关IP不在子网的网段内");
+//				}
+//
+//				long gatewayIpNum = ipStrToNum(gatewayIp);
+//				for (AllocationPool allocationPool : subnet
+//						.getAllocationPools()) {
+//					long startIpNum = ipStrToNum(allocationPool.getStart());
+//					long endIpNum = ipStrToNum(allocationPool.getEnd());
+//					if (gatewayIpNum >= startIpNum && gatewayIpNum <= endIpNum) {
+//						throw new UserOperationException(
+//								"Gateway ip conflicts with allocation pool.",
+//								"网关IP不能在子网的IP分配池内");
+//					}
+//				}
 
 				Subnet.UpdateBuilder updateBuilder = Subnet.updateBuilder()
-						.name(name).enableDhcp(enableDhcp);
+						.name(name)/*.enableDhcp(enableDhcp)*/;
 
-				updateBuilder.gatewayIp(gatewayIp);
+//				updateBuilder.gatewayIp(gatewayIp);
 
 				neutronApi.getSubnetApi(region).update(subnetId,
 						updateBuilder.build());
