@@ -544,7 +544,7 @@ public class NetworkController {
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			String oldName = neworkManager.getFloatingIp(form.getRegion(), form.getFloatingIpId()).getName();
-			neworkManager.editFloatingIp(form.getRegion(), form.getFloatingIpId(), form.getName(), form.getBandWidth());
+			neworkManager.editFloatingIp(form.getRegion(), form.getFloatingIpId(), form.getName());
 			//保存编辑公网IP操作
 			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName==null?Constant.NO_NAME:oldName+"=-"+form.getName());
 		} catch (UserOperationException e) {

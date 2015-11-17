@@ -15,7 +15,7 @@ public class EditFloatingIpForm {
     private String region;
     private String floatingIpId;
     private String name;
-    private Integer bandWidth;
+//    private Integer bandWidth;
 
     @NotBlank
     public String getRegion() {
@@ -45,14 +45,14 @@ public class EditFloatingIpForm {
         this.name = name;
     }
 
-    @Min(1)
-    @Max(50)
-    @NotNull
-    public Integer getBandWidth() {
-        return bandWidth;
-    }
-
-    public void setBandWidth(Integer bandWidth) {
-        this.bandWidth = bandWidth;
-    }
+//    @Min(1)
+//    @Max(50)
+//    @NotNull
+//    public Integer getBandWidth() {
+//        return bandWidth;
+//    }
+//
+//    public void setBandWidth(Integer bandWidth) {
+//        this.bandWidth = bandWidth;
+//    }
 }

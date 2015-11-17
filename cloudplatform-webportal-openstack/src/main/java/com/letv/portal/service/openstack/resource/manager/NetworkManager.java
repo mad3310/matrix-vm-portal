@@ -94,8 +94,8 @@ public interface NetworkManager extends ResourceManager {
 
 	void createFloatingIp(FloatingIpCreateConf floatingIpCreateConf) throws OpenStackException;
 
-	void editFloatingIp(String region, String floatingIpId, String name,
-			int bandWidth) throws OpenStackException;
+	void editFloatingIp(String region, String floatingIpId, String name/*,
+			int bandWidth*/) throws OpenStackException;
 	
 	List<NetworkResource> listShared(String region) throws OpenStackException;
 

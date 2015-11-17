@@ -254,7 +254,6 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('VmIpEditModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,floatIp) {
     Utility.getRzSliderHack($scope)();
-    $scope.networkBandWidth=floatIp.bandWidth;
     $scope.ipName=floatIp.name;
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
@@ -264,8 +263,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       var data = {
         'region':region,
         floatingIpId:floatIp.id,
-        name: $scope.ipName,
-        bandWidth: $scope.networkBandWidth,
+        name: $scope.ipName
       };
       $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.floatIP_edit,data).success(function (data, status, headers, config) {
