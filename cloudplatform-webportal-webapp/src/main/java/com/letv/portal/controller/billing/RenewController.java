@@ -1,6 +1,8 @@
 package com.letv.portal.controller.billing;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,16 +156,16 @@ public class RenewController {
 				obj.addMsg("查询原有订单失败或状态异常,订阅ID:" + subscriptionId);
 				return obj;
 			}
-			Order o = new Order();
 			
 			//生产订阅
 			Subscription sub = this.subscriptionService.createSubscription(productId, map, 
 					subDetails.get(0).getSubscription().getProductInfoRecordId(), subDetails.get(0).getSubscription().getEndTime(), orderTime, userId, 1);
 			//生产总订单
+			Order o = new Order();
 			o.setOrderNumber(SerialNumberUtil.getNumber(2));
 			o.setStatus(0);
 			o.setCreateUser(userId);
-			o.setDescn(orderSubs.get(0).getOrder().getDescn());
+			o.setCreateTime(new Timestamp(new Date().getTime()));
 			this.orderService.insert(o);
 			obj.setData(o.getOrderNumber());
 				

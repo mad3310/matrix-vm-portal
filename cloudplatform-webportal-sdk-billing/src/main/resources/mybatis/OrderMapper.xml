@@ -28,7 +28,7 @@
 	    insert into MATRIX_BILLING_ORDER 
 	        (ORDER_NUMBER,STATUS,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PAY_NUMBER,PAY_TIME) 
 	    values
-	        (#{orderNumber},#{status},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{payNumber},#{payTime})
+	        (#{orderNumber},#{status},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn},#{payNumber},#{payTime})
 	</insert>
 	
 	<!--根据id，有选择的修改记录 -->
