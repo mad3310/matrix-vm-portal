@@ -79,6 +79,7 @@ CREATE TABLE `bill_user_billing` (
   `billingMoney` varchar(10) NOT NULL COMMENT '账单金额',
   `userId` bigint(20) NOT NULL COMMENT '用户ID',
   `serviceCode` bigint(20) NOT NULL COMMENT '业务编码',
+  `createdTime` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`billingId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE TABLE `bill_user_invoice` (

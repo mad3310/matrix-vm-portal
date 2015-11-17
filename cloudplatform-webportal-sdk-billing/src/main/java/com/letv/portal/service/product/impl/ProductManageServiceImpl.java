@@ -135,10 +135,10 @@ public class ProductManageServiceImpl implements IProductManageService {
 			ret = this.resourceCreateService.checkVmCreatePara(params);
 		} else if(id==Constants.PRODUCT_VOLUME) {//云硬盘
 			ret = this.resourceCreateService.checkVolumeCreatePara(params);
-		} else if(id==Constants.PRODUCT_ROUTER) {//公网IP
-			ret = this.resourceCreateService.checkFloatingIpCreatePara(params);
-		} else if(id==Constants.PRODUCT_FLOATINGIP) {//路由器
+		} else if(id==Constants.PRODUCT_ROUTER) {//路由器
 			ret = this.resourceCreateService.checkRouterCreatePara(params);
+		} else if(id==Constants.PRODUCT_FLOATINGIP) {//公网IP
+			ret = this.resourceCreateService.checkFloatingIpCreatePara(params);
 		}
 		return ret;
 	}

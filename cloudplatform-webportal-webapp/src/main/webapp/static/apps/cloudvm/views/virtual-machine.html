@@ -38,7 +38,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>
+                    <th  class="unselectable">
                          <span class="iconfont icon-righticon"  ng-class="{checked:isAllVmChecked()}" ng-click="checkAllVm()"></span>
                     </th>
                     <th><span>名称</span></th>
@@ -54,7 +54,7 @@
                 </thead>
                 <tbody id="tby">
                 <tr ng-if="vmList.length>0" ng-repeat="vm in vmList">
-                    <td>
+                    <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm,$index)"></span>
                     </td>
                     <td><span>{{vm.name}}</span></td>

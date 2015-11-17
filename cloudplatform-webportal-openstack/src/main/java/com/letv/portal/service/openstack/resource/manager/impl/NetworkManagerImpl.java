@@ -2878,17 +2878,19 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	@Override
 	public void editFloatingIp(final String region, final String floatingIpId,
-			final String name, final int bandWidth) throws OpenStackException {
+			final String name/*, final int bandWidth*/) throws OpenStackException {
 		runWithApi(new ApiRunnable<NeutronApi, Void>() {
 
 			@Override
 			public Void run(NeutronApi neutronApi) throws Exception {
 				checkRegion(region);
 
+				/*
 				if (bandWidth <= 0) {
 					throw new UserOperationException("bandWidth <= 0",
 							"带宽必须大于0");
 				}
+				*/
 
 				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
 						.getFloatingIPApi(region);
@@ -2906,6 +2908,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							floatingIpId);
 				}
 
+				/*
 				int othersBandWidth = 0;
 				for (FloatingIP fip : floatingIPApi.list().concat().toList()) {
 					if (!StringUtils.equals(fip.getFixedIpAddress(),
@@ -2937,9 +2940,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							"Floating IP band width exceeding the quota.",
 							"公网IP带宽超过配额");
 				}
+				*/
 
 				floatingIPApi.update(floatingIpId, (FloatingIP.updateBuilder()
-						.name(name).fipQos(createFipQos(bandWidth)).build()));
+						.name(name)/*.fipQos(createFipQos(bandWidth))*/.build()));
 
 				return null;
 			}

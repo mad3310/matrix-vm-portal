@@ -1,6 +1,7 @@
 package com.letv.portal.model.letvcloud;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户账单表
@@ -21,11 +22,26 @@ public class BillUserBilling implements Serializable{
     private String billingMoney;
     //用户ID
     private Long userId;
+    //创建时间
+    private Date createdTime;
+    //产品名称-用户页面展示
+    private String productName;
 
-    public String getBillingId() {
+    public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+	public String getBillingId() {
         return billingId;
     }
-
     public void setBillingId(String billingId) {
         this.billingId = billingId;
     }

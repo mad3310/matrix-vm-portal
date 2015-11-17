@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
 import com.letv.portal.dao.letvcloud.BillUserBillingMapper;
 import com.letv.portal.letvcloud.bill.vo.BillMonthBilling;
@@ -39,6 +40,7 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
         BigDecimal totalMoney = new BigDecimal(0);
         List<BillUserBilling> billUserBillingList = billUserBillingDao.getUserBillings(userId, month);
         for (BillUserBilling billUserBilling : billUserBillingList) {
+        	billUserBilling.setProductName(Constants.productInfo.get(Long.parseLong(billUserBilling.getServiceCode())));
             totalMoney = totalMoney.add(new BigDecimal(billUserBilling.getBillingMoney()));
         }
         billMonthBilling.setTotalMoney(totalMoney.doubleValue()); //账单总额
