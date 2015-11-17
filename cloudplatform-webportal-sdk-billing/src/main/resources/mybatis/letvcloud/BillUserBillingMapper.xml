@@ -4,7 +4,7 @@
 
   <select id="getUserBillings"  resultType="com.letv.portal.model.letvcloud.BillUserBilling">
     select
-    billingId,orderId,billingMonth,billingMoney,userId,serviceCode
+    billingId,orderId,billingMonth,billingMoney,userId,serviceCode,createdTime
     from
     bill_user_billing
     where userId = #{userId} and billingMonth = #{billingMonth}
@@ -29,14 +29,16 @@
         billingMonth,
         billingMoney,
         userId,
-        serviceCode
+        serviceCode,
+        createdTime
       )values(
         #{billingId},
         #{orderId},
         #{billingMonth},
         #{billingMoney},
         #{userId},
-        #{serviceCode}
+        #{serviceCode},
+        now()
       )
     </insert>
     
