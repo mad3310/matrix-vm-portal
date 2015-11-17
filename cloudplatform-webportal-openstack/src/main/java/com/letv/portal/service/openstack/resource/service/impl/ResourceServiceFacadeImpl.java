@@ -11,6 +11,7 @@ import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.openstack.util.Util;
 
+import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -60,10 +61,10 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
     }
 
     @Override
-    public void attachVmsToSubnet(String region, String vmIds, String subnetId) throws OpenStackException {
+    public void attachVmsToSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
-        resourceService.attachVmsToSubnet(novaApi, neutronApi, region, vmIds, subnetId);
+        resourceService.attachVmsToSubnet(novaApi, neutronApi, region, vmIds, subnetId, vmNamesAndSubnetName);
     }
 
     @Override
