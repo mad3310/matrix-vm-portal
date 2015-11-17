@@ -508,13 +508,14 @@ define(['controllers/app.controller'], function (controllerModule) {
         vmId:vm.id,
         volumeId:$scope.selectedDisk.value
       };
-      WidgetService.notifyInfo('云硬盘挂载执行中');
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
           WidgetService.notifySuccess('云硬盘挂载成功');
         }
         else{
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
         }
       });
@@ -555,13 +556,14 @@ define(['controllers/app.controller'], function (controllerModule) {
         vmId:vm.id,
         volumeId:$scope.selectedDisk.value
       };
-      WidgetService.notifyInfo('云硬盘解挂执行中');
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.disk_detach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
           WidgetService.notifySuccess('云硬盘解挂成功');
         }
         else{
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'云硬盘解挂失败');
         }
       });
@@ -601,13 +603,14 @@ define(['controllers/app.controller'], function (controllerModule) {
         vmId:vm.id,
         floatingIpId:$scope.selectedFloatingIp.value
       };
-      WidgetService.notifyInfo('公网ip绑定执行中');
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.floatIp_bindVm, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
           WidgetService.notifySuccess('绑定公网ip成功');
         }
         else{
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'绑定公网ip失败');
         }
       });
