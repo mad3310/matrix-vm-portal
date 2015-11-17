@@ -68,10 +68,10 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
     }
 
     @Override
-    public void detachVmsFromSubnet(String region, String vmIds, String subnetId) throws OpenStackException {
+    public void detachVmsFromSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
-        resourceService.detachVmsFromSubnet(novaApi, neutronApi, region, vmIds, subnetId);
+        resourceService.detachVmsFromSubnet(novaApi, neutronApi, region, vmIds, subnetId, vmNamesAndSubnetName);
     }
 
     @Override

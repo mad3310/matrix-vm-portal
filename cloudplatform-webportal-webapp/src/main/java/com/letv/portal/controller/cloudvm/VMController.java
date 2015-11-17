@@ -640,8 +640,9 @@ public class VMController {
     @ResponseBody
     ResultObject detachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
+		Tuple2<List<String>, String> vmNamesAndSubnetName = new Tuple2<List<String>, String>();
         try {
-            resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId);
+            resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId, vmNamesAndSubnetName);
         } catch (OpenStackCompositeException e) {
             result.getMsgs().addAll(e.toMsgs());
             result.setResult(0);
@@ -652,6 +653,11 @@ public class VMController {
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
+		//保存私有网络解绑云主机操作
+		this.recentOperateService.saveInfo(Constant.SUBNET_DETACH_VM
+				, MessageFormat.format("子网{0}移除虚拟机{1}", vmNamesAndSubnetName._2
+				, StringUtils.join(vmNamesAndSubnetName._1, ","))
+				, this.sessionService.getSession().getUserId(), null);
         return result;
     }
 
