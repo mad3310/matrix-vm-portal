@@ -9,17 +9,13 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.userStatus='';
 			$scope.remain='';
 			$scope.billMes='';
-			$scope.expander='';
-			$scope.ecs='';
-			$scope.ecs_sleep='';
-			$scope.disk='';
-			$scope.floatIp='';
-			$scope.router='';
+			$scope.expander='';		
 			$scope.expander.layout= "normal";
 			$scope.ecsconsume="";
 			$scope.diskconsume="";
 			$scope.floatipconsume="";
 			$scope.routeconsume="";
+			$scope.service={}
 			$scope.quotas={};
 			$scope.expanderToggle = function(element){
 				var _target=element.target||element.srcElement;
@@ -114,11 +110,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 					if(data.result==0){//error
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
-						$scope.ecs=data.data.ecs;
-						$scope.ecs_sleep=data.data['ecs-sleep'];
-						$scope.disk=data.data.disk;
-						$scope.floatIp=data.data.floatingIp;
-						$scope.router=data.data.router;
+						$scope.service=data.data;
 					}
 				});
 			}
@@ -143,22 +135,31 @@ define(['controllers/app.controller'], function (controllerModule) {
 							WidgetService.notifyError('获取配额信息失败！')
 						}else{
 							$scope.quotas.CLOUDVM_BAND_WIDTH=data.data.CLOUDVM_BAND_WIDTH;
-							$scope.quotas.bandwidthStyle={width:$scope.ecs/$scope.quotas.CLOUDVM_BAND_WIDTH*100+"%"}
+							$scope.quotas.bandwidthStyle={width:$scope.service.bandWidth/$scope.quotas.CLOUDVM_BAND_WIDTH*100+"%"}
 							$scope.quotas.CLOUDVM_CPU=data.data.CLOUDVM_CPU;
+							$scope.quotas.cupStyle={width:$scope.service.cpu/$scope.quotas.CLOUDVM_CPU*100+"%"}
 							$scope.quotas.CLOUDVM_FLOATING_IP=data.data.CLOUDVM_FLOATING_IP;
-							$scope.quotas.floatIpStyle={width:$scope.floatIp/$scope.quotas.CLOUDVM_FLOATING_IP*100+"%"}
+							$scope.quotas.floatIpStyle={width:$scope.service.floatingIp/$scope.quotas.CLOUDVM_FLOATING_IP*100+"%"}
 							$scope.quotas.CLOUDVM_KEY_PAIR=data.data.CLOUDVM_KEY_PAIR;
+							$scope.quotas.keyPairStyle={width:$scope.service.keyPair/$scope.quotas.CLOUDVM_KEY_PAIR*100+"%"}
 							$scope.quotas.CLOUDVM_MEMORY=data.data.CLOUDVM_MEMORY;
+							$scope.quotas.memoryStyle={width:$scope.service.memory/1024/$scope.quotas.CLOUDVM_MEMORY*100+"%"}
 							$scope.quotas.CLOUDVM_NETWORK=data.data.CLOUDVM_NETWORK;
+							$scope.quotas.vpcStyle={width:$scope.service.privateNetwork/$scope.quotas.CLOUDVM_NETWORK*100+"%"}
 							$scope.quotas.CLOUDVM_ROUTER=data.data.CLOUDVM_ROUTER;
-							$scope.quotas.routerStyle={width:$scope.router/$scope.quotas.CLOUDVM_ROUTER*100+"%"}
+							$scope.quotas.routerStyle={width:$scope.service.router/$scope.quotas.CLOUDVM_ROUTER*100+"%"}
 							$scope.quotas.CLOUDVM_SUBNET=data.data.CLOUDVM_SUBNET;
+							$scope.quotas.subNetStyle={width:$scope.service.privateSubnet/$scope.quotas.CLOUDVM_SUBNET*100+"%"}
 							$scope.quotas.CLOUDVM_VM=data.data.CLOUDVM_VM;
+							$scope.quotas.ecsStyle={width:$scope.service.ecs/$scope.quotas.CLOUDVM_VM*100+"%"}
 							$scope.quotas.CLOUDVM_VM_SNAPSHOT=data.data.CLOUDVM_VM_SNAPSHOT;
+							$scope.quotas.vmSnapshotStyle={width:$scope.service.vmSnapshot/$scope.quotas.CLOUDVM_VM_SNAPSHOT*100+"%"}
 							$scope.quotas.CLOUDVM_VOLUME=data.data.CLOUDVM_VOLUME;
-							$scope.quotas.volumeStyle={width:$scope.disk/$scope.quotas.CLOUDVM_VOLUME*100+"%"}
+							$scope.quotas.diskStyle={width:$scope.service.disk/$scope.quotas.CLOUDVM_VOLUME*100+"%"}
 							$scope.quotas.CLOUDVM_VOLUME_SIZE=data.data.CLOUDVM_VOLUME_SIZE;
+							$scope.quotas.volumeSizeStyle={width:$scope.service.volumeSize/$scope.quotas.CLOUDVM_VOLUME_SIZE*100+"%"}
 							$scope.quotas.CLOUDVM_VOLUME_SNAPSHOT=data.data.CLOUDVM_VOLUME_SNAPSHOT;
+							$scope.quotas.volumeSnapshotStyle={width:$scope.service.volumeSnapshot/$scope.quotas.CLOUDVM_VOLUME_SNAPSHOT*100+"%"}
 						}
 					});
 				});
