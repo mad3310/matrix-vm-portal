@@ -245,7 +245,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
-        if(checkedVms[0].taskState || checkedVms[0].vmState!=='active'){
+        if(checkedVms[0].taskState || (checkedVms[0].vmState!=='active' && checkedVms[0].vmState !=='stopped')){
           WidgetService.notifyWarning('云主机当前状态不可解挂云硬盘');
           return;
         }

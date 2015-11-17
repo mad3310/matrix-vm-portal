@@ -242,7 +242,7 @@ public class PayServiceImpl implements IPayService {
 		
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 		//生成用户账单。
-		billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
+		billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
 				df.format(d), price.toString());
 		
 		//续费成功后发送邮件
@@ -672,7 +672,7 @@ public class PayServiceImpl implements IPayService {
 			if(succPrice.compareTo(new BigDecimal(0))==1) {
 				SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 				//生成用户账单。
-				billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
+				billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
 						df.format(new Date()), succPrice.toString());
 				
 				//保存最近操作
