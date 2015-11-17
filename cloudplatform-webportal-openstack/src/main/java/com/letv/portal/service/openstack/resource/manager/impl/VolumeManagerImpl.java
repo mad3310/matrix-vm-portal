@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.common.CommonQuotaType;
+import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
+import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
@@ -899,7 +903,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			public Page run(final CinderApi cinderApi) throws Exception {
 				checkRegion(region);
 
-				final Map<String, Volume> idToVolume = new HashMap<String, Volume>();
+				final Map<String, VolumeResource> idToVolume = new HashMap<String, VolumeResource>();
 				final Ref<List<? extends Snapshot>> volumeSnapshotsRef = new Ref<List<? extends Snapshot>>();
 				final Page page;
 				if (currentPage == null || recordsPerPage == null) {
@@ -930,9 +934,10 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}, new Function<Void>() {
 					@Override
 					public Void apply() {
-						List<? extends Volume> volumes = cinderApi.getVolumeApi(region).list().toList();
-						for (Volume volume : volumes) {
-							idToVolume.put(volume.getId(), volume);
+						ICloudvmVolumeService cloudvmVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmVolumeService();
+						List<CloudvmVolume> cloudvmVolumeList = cloudvmVolumeService.selectByRegion(openStackUser.getUserVoUserId(),region);
+						for (CloudvmVolume cloudvmVolume : cloudvmVolumeList) {
+							idToVolume.put(cloudvmVolume.getVolumeId(), new LocalVolumeResource(cloudvmVolume));
 						}
 						return null;
 					}
@@ -1000,6 +1005,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}
 				snapshotApi.create(volumeId, createSnapshotOptions);
 
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
+
 				return null;
 			}
 		});
@@ -1032,6 +1040,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							snapshotId), MessageFormat.format(
 							"云硬盘快照“{0}”删除失败。", snapshotId));
 				}
+
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
 
 				waitingVolumeSnapshot(snapshotApi, snapshotId, new Checker<Snapshot>() {
 					@Override

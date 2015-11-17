@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface ICloudvmVolumeService extends IBaseService<CloudvmVolume> {
 
+    List<CloudvmVolume> selectByRegion(long tenantId, String region);
+
     CloudvmVolume selectByVolumeId(long tenantId, String region, String volumeId);
 
     List<CloudvmVolume> selectForSync(Long minId, Page page);

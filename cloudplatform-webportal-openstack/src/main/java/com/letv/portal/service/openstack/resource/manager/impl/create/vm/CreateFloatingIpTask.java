@@ -80,6 +80,8 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
                                                     .getVmCreateConf()
                                                     .getBandWidth())).build()));
 			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
+			localRcCountService.incRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH
+					, context.getVmCreateConf().getBandWidth());
 		}
 	}
 
@@ -102,6 +104,8 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
 				boolean isSuccess = floatingIPApi.delete(vmCreateContext.getFloatingIp().getId());
                 if(isSuccess) {
                     localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
+					localRcCountService.decRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH
+							, context.getVmCreateConf().getBandWidth());
                 }
 			}
 		}
