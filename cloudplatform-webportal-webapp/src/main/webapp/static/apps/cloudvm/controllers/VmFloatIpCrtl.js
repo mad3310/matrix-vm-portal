@@ -240,8 +240,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         vmId:$scope.selectedVm.value,
         floatingIpId:bindfloatIp.id
       };
+      $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.floatIp_bindVm,data).success(function(data){
         if(data.result==0){//error
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'绑定云主机出错');
         }else{
           $modalInstance.close(data);
@@ -273,7 +275,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           // $window.location.href = '/payment/'+data.data;
         }
         else{
-          $scope.isFormSubmiting=flase;
+          $scope.isFormSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'修改公网IP失败');
         }
       });

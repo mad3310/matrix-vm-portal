@@ -117,7 +117,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="attachDisk()"><span>挂载云硬盘</span></button>
+                        <button class="btn btn-le-blue" ng-click="!isFormSubmiting && attachDisk()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">挂载</span>
+                            <span ng-if="isFormSubmiting">挂载执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -142,7 +145,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="detachDisk()"><span>卸载云硬盘</span></button>
+                        <button class="btn btn-le-blue" ng-click="!isFormSubmiting && detachDisk()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">卸载</span>
+                            <span ng-if="isFormSubmiting">卸载执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -167,7 +173,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="bindFloatingIp()"><span>绑定公网ip</span></button>
+                        <button class="btn btn-le-blue" ng-click="!isFormSubmiting && bindFloatingIp()" ng-disabled="isFormSubmiting">
+                            <span ng-if="!isFormSubmiting">绑定</span>
+                            <span ng-if="isFormSubmiting">绑定执行中...</span>
+                        </button>
                     </div>
                 </div>
             </div>
