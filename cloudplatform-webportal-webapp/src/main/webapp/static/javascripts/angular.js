@@ -9403,6 +9403,7 @@ function $HttpProvider() {
         'Accept': 'application/json, text/plain, */*'
       },
       post:   shallowCopy(CONTENT_TYPE_APPLICATION_JSON),
+      get:   shallowCopy(CONTENT_TYPE_APPLICATION_JSON),
       put:    shallowCopy(CONTENT_TYPE_APPLICATION_JSON),
       patch:  shallowCopy(CONTENT_TYPE_APPLICATION_JSON)
     },

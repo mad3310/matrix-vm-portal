@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
@@ -1000,6 +1002,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}
 				snapshotApi.create(volumeId, createSnapshotOptions);
 
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
+
 				return null;
 			}
 		});
@@ -1032,6 +1037,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							snapshotId), MessageFormat.format(
 							"云硬盘快照“{0}”删除失败。", snapshotId));
 				}
+
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
 
 				waitingVolumeSnapshot(snapshotApi, snapshotId, new Checker<Snapshot>() {
 					@Override

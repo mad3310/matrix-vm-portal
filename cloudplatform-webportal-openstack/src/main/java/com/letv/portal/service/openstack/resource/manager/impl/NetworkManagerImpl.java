@@ -559,6 +559,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				networkApi.create(Network.createBuilder(name).build());
 
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_NETWORK);
+
 				return null;
 			}
 		});
@@ -634,6 +637,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						return isDeleteFinished(network);
 					}
 				});
+
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_NETWORK);
 
 				return null;
 			}
@@ -770,6 +776,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 				subnetApi.create(createBuilder.build());
 
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
+
 				return null;
 			}
 
@@ -851,6 +860,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					createBuilder.gatewayIp(gatewayIp);
 				}
 				subnetApi.create(createBuilder.build());
+
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.incRcCount(openStackUser.getUserVoUserId(),region,CloudvmRcCountType.PRIVATE_NETWORK);
+				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
 
 				return null;
 			}
@@ -1132,6 +1145,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						return isSubnetDeleteFinished(subnet);
 					}
 				});
+
+				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
 
 				return null;
 			}
@@ -2394,6 +2410,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				long userVoUserId = openStackUser.getUserVoUserId();
 				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 				localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
+				localRcCountService.decRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH
+						, getBandWidth(floatingIP.getFipQos()));
 
 				waitingFloatingIP(floatingIpId, floatingIPApi,
 						new Checker<FloatingIP>() {
@@ -2800,6 +2818,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				successCreatedFloatingIps.add(floatingIP);
 			}
 			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
+			localRcCountService.incRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH, bandWidth);
 		}
 	}
 

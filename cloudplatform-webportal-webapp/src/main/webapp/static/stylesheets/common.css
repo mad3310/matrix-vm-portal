@@ -775,7 +775,6 @@ width:150px;height:40px;
 /*begin le-confim style*/
 .le-confirm{
     width: 398px;
-    height: 238px;
 }
 .le-confirm .confirm-header{
     height: 50px;
@@ -811,6 +810,7 @@ width:150px;height:40px;
     vertical-align: middle;
     line-height: 30px;
     width: 280px;
+    overflow-wrap: break-word;
 }
 
 .le-confirm .confirm-content i{

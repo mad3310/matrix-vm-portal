@@ -73,7 +73,7 @@
                     <td><span>{{vm.image.name || '无'}}</span></td>
                     <td><span>{{vm | vmFlavorFilter}}</span></td>
                     <td><span class="iconfont icon-monitor"></span></td>
-                    <td><span>{{vm.created | date:'yyyy-MM-dd hh:mm'}}</span></td>
+                    <td><span>{{vm.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
                     <td><span class="iconfont icon-computer" ng-click="navigateToVNC(vm)"></span></td>
                 </tr>
                 <tr ng-if="vmList.length==0">

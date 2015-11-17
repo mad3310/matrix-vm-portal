@@ -1,7 +1,7 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.portal.vo.cloudvm.form.volume.VolumeEditForm;
-import com.letv.portal.vo.cloudvm.form.volume_snapshot.VolumeSnapshotCreateForm;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,8 +22,8 @@ import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.operate.IRecentOperateService;
-
-import javax.validation.Valid;
+import com.letv.portal.vo.cloudvm.form.volume.VolumeEditForm;
+import com.letv.portal.vo.cloudvm.form.volume_snapshot.VolumeSnapshotCreateForm;
 
 @Controller
 @RequestMapping("/osv")
@@ -146,7 +146,7 @@ public class VolumeController {
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			volumeManager.deleteSync(region, volumeResource);
 			//保存硬盘删除操作
-			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, volumeResource.getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, volumeResource.getName()==null?Constant.NO_NAME:volumeResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -165,7 +165,15 @@ public class VolumeController {
 		}
 		ResultObject result = new ResultObject();
 		long userId = Util.userId(sessionService);
+		String volumeName;
+		try {
+			volumeName = Util.session(sessionService).getVolumeManager().get(form.getRegion(), form.getVolumeId()).getName();
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		localVolumeService.updateNameAndDesc(userId, userId, form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
+		//保存编辑云硬盘操作
+		this.recentOperateService.saveInfo(Constant.EDIT_VOLUME, volumeName==null?Constant.NO_NAME:volumeName+"=-"+form.getName());
 		return result;
 	}
 
@@ -209,10 +217,12 @@ public class VolumeController {
 		}
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getVolumeManager()
-					.createVolumeSnapshot(form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
-			//保存启动操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, form.getName()+"=="+Util.session(sessionService).getVolumeManager().get(form.getRegion(), form.getVolumeId()).getName());
+			VolumeManager volumeManage = Util.session(sessionService).getVolumeManager();
+			volumeManage.createVolumeSnapshot(form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
+			String volumeResourceName = volumeManage.get(form.getRegion(), form.getVolumeId()).getName();
+			//保存创建云硬盘快照操作
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, form.getName()+"=="+
+					volumeResourceName==null?Constant.NO_NAME:volumeResourceName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

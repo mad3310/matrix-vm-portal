@@ -251,7 +251,7 @@ public class PayServiceImpl implements IPayService {
 		mailMessageModel.put("userName", user.getUsername());
 		mailMessageModel.put("time", sdf.format(d));
 		mailMessageModel.put("productType", productType);
-		mailMessageModel.put("productName", productName==null?"未命名":productName);
+		mailMessageModel.put("productName", productName==null?Constant.NO_NAME:productName);
 	    
 		
 		MailMessage mailMessage = new MailMessage(productType+"续费成功",user.getEmail(),productType+"续费成功",

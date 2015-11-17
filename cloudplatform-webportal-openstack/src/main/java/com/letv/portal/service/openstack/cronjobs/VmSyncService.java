@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.cronjobs;
 
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
 /**
@@ -16,5 +17,5 @@ public interface VmSyncService {
 
     void delete(String region, String vmId);
 
-    void recordVmDeleted(long userId, String region, String vmId) throws OpenStackException;
+    void recordVmDeleted(long userId, String region, String vmId, Flavor flavor) throws OpenStackException;
 }

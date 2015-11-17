@@ -3,6 +3,8 @@ package com.letv.portal.service.openstack.billing.impl;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.exception.MatrixException;
+import com.letv.portal.model.cloudvm.CloudvmRcCount;
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.service.openstack.billing.BillingResource;
 import com.letv.portal.service.openstack.billing.ResourceDeleteService;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
@@ -12,8 +14,10 @@ import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.cache.UserApiCache;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.*;
+import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.RandomUtil;
@@ -36,6 +40,7 @@ import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
@@ -67,6 +72,9 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 
     @Autowired
     private LocalVolumeService localVolumeService;
+
+    @Autowired
+    private LocalRcCountService localRcCountService;
 
     @Override
     public void deleteResource(final long userId, Iterable<ResourceLocator> resourceLocators) throws MatrixException {
@@ -150,6 +158,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                         return snapshotApi.get(snapshot.getId()) != null;
                     }
                 }, new Timeout().time(10L).unit(TimeUnit.MINUTES));
+                localRcCountService.decRcCount(userId, locator.region(), CloudvmRcCountType.VOLUME_SNAPSHOT);
             }
         }
     }
@@ -227,6 +236,9 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                         return floatingIPApi.get(locator.id()) != null;
                     }
                 }, new Timeout().time(10L).unit(TimeUnit.MINUTES));
+                localRcCountService.decRcCount(userId, locator.region(), CloudvmRcCountType.FLOATING_IP);
+                localRcCountService.decRcCount(userId, locator.region(), CloudvmRcCountType.BAND_WIDTH
+                        , NetworkManagerImpl.getBandWidth(floatingIP.getFipQos()));
             }
         }
     }
@@ -274,6 +286,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                         return routerApi.get(locator.id()) != null;
                     }
                 }, new Timeout().time(10L).unit(TimeUnit.MINUTES));
+                localRcCountService.decRcCount(userId,locator.region(),CloudvmRcCountType.ROUTER);
             }
         }
     }
@@ -284,6 +297,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         final ServerApi serverApi = novaApi.getServerApi(locator.region());
         Server server = serverApi.get(locator.id());
         if (server != null) {
+            Flavor flavor = novaApi.getFlavorApi(locator.region()).get(server.getFlavor().getId());
 
             ThreadUtil.waiting(new Function<Boolean>() {
                 @Override
@@ -320,7 +334,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                         return serverApi.get(locator.id()) != null;
                     }
                 }, new Timeout().time(60L).unit(TimeUnit.MINUTES));
-                vmSyncService.recordVmDeleted(userId, locator.region(), server.getId());
+                vmSyncService.recordVmDeleted(userId, locator.region(), server.getId(), flavor);
             }
         }
     }
