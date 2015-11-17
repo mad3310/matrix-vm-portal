@@ -5,6 +5,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window,$sce,$httpParamSerializerJQLike,$modal, region,vmSnapshot) {
 
+    $scope.isCalculatingPrice=true;
     $scope.isDesignatedVmSnapshot = vmSnapshot?true:false;
     $scope.activeFlow = 1;
     $scope.vmName = '';
@@ -286,7 +287,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           cpu_ram: $scope.selectedVmCpu + '_' + $scope.selectedVmRam,
         };
         calculatePriceData=data;
+        $scope.isCalculatingPrice=true;
         HttpService.doPost(Config.urls.vm_calculate_price,data).success(function (data, status, headers, config) {
+          $scope.isCalculatingPrice=false;
           if(data.result===1){
             $scope.vmTotalPrice=data.data;
           }

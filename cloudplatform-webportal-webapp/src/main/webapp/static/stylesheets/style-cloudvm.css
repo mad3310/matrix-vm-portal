@@ -92,6 +92,8 @@
 .body-right .right-bottom{padding:15px 0 0 0;}
 .body-right .right-bottom .row-order-price > span{margin-left: 25px;}
 .body-right .right-bottom span.price{padding:0 5px 0 0;font-size:18px;color:#ff3c37;}
+.body-right .right-bottom .row-calculating-price{text-align:center;margin-bottom: -5px;}
+.body-right .right-bottom .row-calculating-price > span{font-size: 15px;color: #ff3c37;line-height: 30px;}
 .body-right .right-bottom .row-submit-order{text-align: center;}
 .body-right .right-bottom .btn-submit-order{margin-top: 10px;}
 /*.body-left .left-button{margin-top:60px;}*/
