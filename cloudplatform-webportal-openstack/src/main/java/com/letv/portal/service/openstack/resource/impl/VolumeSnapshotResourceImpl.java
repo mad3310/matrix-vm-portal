@@ -1,8 +1,8 @@
 package com.letv.portal.service.openstack.resource.impl;
 
+import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
-import org.jclouds.openstack.cinder.v1.domain.Volume;
 
 /**
  * Created by zhouxianguang on 2015/10/12.
@@ -11,9 +11,9 @@ public class VolumeSnapshotResourceImpl implements VolumeSnapshotResource {
 
     private String region;
     private Snapshot snapshot;
-    private Volume volume;
+    private VolumeResource volume;
 
-    public VolumeSnapshotResourceImpl(String region, Snapshot snapshot, Volume volume) {
+    public VolumeSnapshotResourceImpl(String region, Snapshot snapshot, VolumeResource volume) {
         this.region = region;
         this.snapshot = snapshot;
         this.volume = volume;
@@ -24,7 +24,7 @@ public class VolumeSnapshotResourceImpl implements VolumeSnapshotResource {
         this.snapshot = snapshot;
     }
 
-    public void setVolume(Volume volume) {
+    public void setVolume(VolumeResource volume) {
         this.volume = volume;
     }
 

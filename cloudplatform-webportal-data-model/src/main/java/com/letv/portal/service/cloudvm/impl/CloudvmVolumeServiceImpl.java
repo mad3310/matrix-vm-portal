@@ -42,6 +42,17 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
     }
 
     @Override
+    public List<CloudvmVolume> selectByRegion(long tenantId, String region) {
+        if (StringUtils.isEmpty(region)) {
+            throw new ValidateException("地域不能为空");
+        }
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("region", region);
+        return cloudvmVolumeDao.selectByMap(paras);
+    }
+
+    @Override
     public CloudvmVolume selectByVolumeId(long tenantId, String region, String volumeId) {
         if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
