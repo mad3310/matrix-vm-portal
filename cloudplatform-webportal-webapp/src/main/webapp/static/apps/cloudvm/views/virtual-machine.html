@@ -59,11 +59,15 @@
                     </td>
                     <td><span>{{vm.name}}</span></td>
                     <td>
-                        <span>
+                        <span ng-show="vm.ipAddresses.private.length || vm.ipAddresses.shared.length">
                             <div class="vm-address-private" ng-repeat="privateAddress in vm.ipAddresses.private">
                                 <span>{{privateAddress.subnet.name}}：</span><span>{{privateAddress.ipAddress}}</span>
                             </div>
+                            <div class="vm-address-private" ng-repeat="sharedAddress in vm.ipAddresses.shared">
+                                 <span>{{sharedAddress}}</span>
+                            </div>
                         </span>
+                        <span ng-show="!vm.ipAddresses.private.length && !vm.ipAddresses.shared.length">未设置</span>
                     </td>
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
