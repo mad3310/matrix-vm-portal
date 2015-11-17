@@ -27,7 +27,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>
+                    <th  class="unselectable">
                          <span class="iconfont icon-righticon"  ng-class="{checked:isAllDiskChecked()}" ng-click="checkAllDisk()"></span>
                     </th>
                     <th><span>名称</span></th>
@@ -40,7 +40,7 @@
                 </thead>
                 <tbody id="tby">
                 <tr ng-repeat="disk in diskList">
-                    <td>
+                    <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:disk.checked}" ng-click="checkDisk(disk)"></span>
                     </td>
                     <td><span>{{disk.name|| '未设置'}}</span></td>

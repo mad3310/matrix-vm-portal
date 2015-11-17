@@ -1212,3 +1212,5 @@ le-select .le-select-menu li a{
     width: 250px;
 }
 /*end le-modal style*/
+/*禁止选中*/
+.unselectable{-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;}
