@@ -66,6 +66,7 @@ define(['./common.service'], function (serviceModule) {
       snapshot_disk_create:'/osv/volume/snapshot/create',
       snapshot_disk_delete:'/osv/volume/snapshot/delete',
       snapshot_vm_list:'/ecs/vm/snapshot/list',
+      snapshot_vm_detail:'/ecs/vm/snapshot/detail',
       snapshot_vm_create:'/ecs/vm/snapshot/create',
       snapshot_vm_delete:'/ecs/vm/snapshot/delete',
       vm_vnc:'/ecs/region/{region}/vm-open-console',
