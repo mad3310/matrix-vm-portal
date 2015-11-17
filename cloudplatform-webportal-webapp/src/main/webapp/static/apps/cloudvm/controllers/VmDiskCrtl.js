@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VmDiskCrtl', ['$scope','$interval','$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
-    function ($scope,$interval,$modal, Config, HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VmDiskCrtl', ['$scope','$interval','$modal', 'Config','Utility', 'HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval,$modal, Config,Utility, HttpService,WidgetService,CurrentContext) {
 
       $scope.searchName='';
       $scope.diskList = [];
@@ -11,6 +11,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.currentPage = 1;
       $scope.totalItems = 0;
       $scope.pageSize = 10;
+      $scope.operationBtn={};
+      var operationArry=new Array(6);
       $scope.onPageChange = function () {
         refreshDiskList();
       };
@@ -263,9 +265,26 @@ define(['controllers/app.controller'], function (controllerModule) {
             return item.checked===true;
           });
         };
-
+      var watchStateChange=function(){
+        var productInfo={
+          'type':'disk',
+          'state':'status',
+          'operations':['create','createsnap','attachdisk','edit','detachdisk','delete']
+        }
+        $scope.$watch(function(){
+          return $scope.diskList.map(function(obj) {
+            return obj.checked;
+          }).join(';');
+        },function(){
+          var operationArraycopy=Utility.setOperationBtns($scope,$scope.diskList,productInfo,operationArry,Config);
+          var operaArraytemp=productInfo.operations;
+          for(var k in operaArraytemp){
+            $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
+          }
+        });
+      }
       refreshDiskList();
-
+      watchStateChange();
     }
   ]);
 

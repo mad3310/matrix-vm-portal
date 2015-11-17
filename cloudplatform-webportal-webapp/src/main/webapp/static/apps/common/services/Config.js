@@ -154,7 +154,15 @@ define(['./common.service'], function (serviceModule) {
                   "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},           
       },
       "disk":{
-
+        "creating":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
+        "available":{"create":1,"createsnap":1,"attachdisk":1,"detachdisk":0,"expandVolume":1,"delete":1,"edit":1},
+        "attaching":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
+        "in-use":{"create":1,"createsnap":1,"attachdisk":0,"detachdisk":1,"expandVolume":0,"delete":1,"edit":1},
+        "deleting":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
+        "error":{"create":1,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
+        //前端自定义
+        "deleted":{"create":1,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
+        "detaching":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0}
       }
     }
 
