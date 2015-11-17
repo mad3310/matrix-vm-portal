@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VirtualMachineCrtl', ['$scope','$interval','$window', '$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
-    function ($scope,$interval,$window, $modal, Config, HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VirtualMachineCrtl', ['$scope','$interval','$window', '$modal', 'Config','Utility', 'HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval,$window, $modal, Config,Utility, HttpService,WidgetService,CurrentContext) {
       $scope.searchVmName = '';
       $scope.vmTaskStatuses = Config.vmTaskStatuses;
       $scope.vmList = [];
@@ -12,7 +12,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.totalItems = 0;
       $scope.pageSize = 10;
       $scope.operationBtn={};
-      var operationArry=[];
+      var operationArry=new Array(8);
       $scope.onPageChange = function () {
         refreshVmList();
       };
@@ -49,6 +49,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               checkedVms[0].taskState=null;
               modalInstance.close(data);
               WidgetService.notifySuccess('启动云主机成功');
+              refreshVmList();
             }
             else{
               checkedVms[0].vmState=originalVmState;
@@ -88,6 +89,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               checkedVms[0].taskState=null;
               modalInstance.close(data);
               WidgetService.notifySuccess('停止云主机成功');
+              refreshVmList();
             }
             else{
               checkedVms[0].vmState=originalVmState;
@@ -200,39 +202,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
       $scope.checkVm = function (vm,index) {
         vm.checked = vm.checked === true ? false : true;
-        // 状态预判
-        if(vm.checked){
-          operationArry[index]=[Config.statusOperations['virtualMachine'][vm.vmState]['create'],
-            Config.statusOperations['virtualMachine'][vm.vmState]['start'],
-            Config.statusOperations['virtualMachine'][vm.vmState]['stop'],
-            Config.statusOperations['virtualMachine'][vm.vmState]['delete'],
-            Config.statusOperations['virtualMachine'][vm.vmState]['restart'],
-            Config.statusOperations['virtualMachine'][vm.vmState]['createsnap'],
-            Config.statusOperations['virtualMachine'][vm.vmState]['attachdisk'],
-            Config.statusOperations['virtualMachine'][vm.vmState]['detachdisk']
-          ]
-        }else{
-          operationArry[index]=[1,1,1,1,1,1,1,1]
-        }
-        var create='1',start='1',stop='1',del='1',restart='1',createsnap='1',attachdisk='1',detachdisk='1';
-        for(var i in operationArry){//多记录状态叠加
-          create=create*operationArry[i][0];
-          start=start*operationArry[i][1];
-          stop=stop*operationArry[i][2];
-          del=del*operationArry[i][3];
-          restart=restart*operationArry[i][4];
-          createsnap=createsnap*operationArry[i][5];
-          attachdisk=attachdisk*operationArry[i][6];
-          detachdisk=detachdisk*operationArry[i][7];
-        }
-        $scope.operationBtn.create=create;//操作按钮状态初始化
-        $scope.operationBtn.start=start;
-        $scope.operationBtn.stop=stop;
-        $scope.operationBtn.del=del;
-        $scope.operationBtn.restart=restart;
-        $scope.operationBtn.createsnap=createsnap;
-        $scope.operationBtn.attachdisk=attachdisk;
-        $scope.operationBtn.detachdisk=detachdisk;
       };
 
       $scope.openDiskAttachModal = function (size) {
@@ -501,10 +470,27 @@ define(['controllers/app.controller'], function (controllerModule) {
             return item.checked===true;
           });
         };
-
+      var watchStateChange=function(){
+        var productInfo={
+          'type':'virtualMachine',
+          'state':'vmState',
+          'operations':['create','start','stop','delete','restart','createsnap','attachdisk','detachdisk']
+        }
+        $scope.$watch(function(){
+          return $scope.vmList.map(function(vm) {
+            return vm.checked;
+          }).join(';');
+        },function(){
+          var operationArraycopy=Utility.setOperationBtns($scope,$scope.vmList,productInfo,operationArry,Config);
+          var operaArraytemp=productInfo.operations;
+          for(var k in operaArraytemp){
+            $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
+          }
+        });
+      } 
       refreshVmList();
-
-    }
+      watchStateChange();
+      }
   ]);
 
   controllerModule.controller('DiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {

@@ -27,7 +27,28 @@ define(['./common.service'],function (serviceModule) {
         };
 
       };
-
+      service.setOperationBtns=function($scope,objList,productInfo,operationArry,Config){
+          var type=productInfo.type;
+          var state=productInfo.state;
+          var operaArraytemp=productInfo.operations;
+          var operationArraycopy=[];
+          for(var i in objList){
+            if(objList[i].checked){
+              for(var j in operaArraytemp){
+                operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];
+                operationArraycopy[j]=1;
+              }
+            }else{
+              operationArry[i]=[1,1,1,1,1,1,1,1]
+            }   
+          }
+          for(var i in operationArry){//多记录状态叠加
+            for(var j in operationArry[i]){
+              operationArraycopy[j]=operationArraycopy[j]*operationArry[i][j];
+            }
+          }
+          return operationArraycopy
+      };
       return service;
     }]);
 });
