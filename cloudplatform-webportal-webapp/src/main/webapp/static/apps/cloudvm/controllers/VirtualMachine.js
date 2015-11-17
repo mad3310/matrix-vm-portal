@@ -246,7 +246,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           return;
         }
         if(checkedVms[0].taskState || (checkedVms[0].vmState!=='active' && checkedVms[0].vmState !=='stopped')){
-          WidgetService.notifyWarning('云主机当前状态不可解挂云硬盘');
+          WidgetService.notifyWarning('云主机当前状态不可卸载云硬盘');
           return;
         }
         if(!checkedVms[0].volumes || !checkedVms[0].volumes.length){
@@ -561,11 +561,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.disk_detach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云硬盘解挂成功');
+          WidgetService.notifySuccess('云硬盘卸载成功');
         }
         else{
           $scope.isFormSubmiting=false;
-          WidgetService.notifyError(data.msgs[0]||'云硬盘解挂失败');
+          WidgetService.notifyError(data.msgs[0]||'云硬盘卸载失败');
           $scope.isFormSubmiting=false;
         }
       });

@@ -108,7 +108,7 @@ define(['./common.service'], function (serviceModule) {
       {"text": "异常", "value": "error"},
       //前端自定义
       {"text": "已删除", "value": "deleted"},
-      {"text": "解挂中", "value": "detaching"},
+      {"text": "卸载中", "value": "detaching"},
     ];
     config.vmVpcStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
