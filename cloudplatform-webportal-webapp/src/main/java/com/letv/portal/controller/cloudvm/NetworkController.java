@@ -1,5 +1,19 @@
 package com.letv.portal.controller.cloudvm;
 
+import java.text.MessageFormat;
+
+import javax.validation.Valid;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.constant.Constant;
@@ -14,12 +28,6 @@ import com.letv.portal.vo.cloudvm.form.network.EditPrivateNetworkForm;
 import com.letv.portal.vo.cloudvm.form.router.EditRouterForm;
 import com.letv.portal.vo.cloudvm.form.subnet.CreatePrivateSubnetForm;
 import com.letv.portal.vo.cloudvm.form.subnet.EditPrivateSubnetForm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/osn")
@@ -140,7 +148,8 @@ public class NetworkController {
 			String oldName = neworkManager.getPrivate(form.getRegion(), form.getNetworkId()).getName();
 			neworkManager.editPrivate(form.getRegion(), form.getNetworkId(), form.getName());
 			//保存编辑私网操作
-			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, oldName==null?Constant.NO_NAME:oldName+"=-"+form.getName());
+			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, 
+					MessageFormat.format(Constant.STYLE_OPERATE_2, oldName, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -257,8 +266,9 @@ public class NetworkController {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			String oldName = neworkManager.getPrivateSubnet(form.getRegion(),form.getSubnetId()).getName();
 			neworkManager.editPrivateSubnet(form.getRegion(), form.getSubnetId(), form.getName(), form.getGatewayIp(), false);
-			//保存编辑私网操作
-			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, oldName+"=-"+form.getName());
+			//保存编辑子网操作
+			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, 
+					MessageFormat.format(Constant.STYLE_OPERATE_2, oldName, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -276,7 +286,7 @@ public class NetworkController {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			String privateSubnetName = neworkManager.getPrivateSubnet(region, subnetId).getName();
 			neworkManager.deletePrivateSubnet(region, subnetId);
-			//保存删除私网操作
+			//保存删除子网操作
 			this.recentOperateService.saveInfo(Constant.DELETE_SUBNET, privateSubnetName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
@@ -373,7 +383,8 @@ public class NetworkController {
 			neworkManager.editRouter(form.getRegion(), form.getRouterId(), form.getName(),
 							form.getEnablePublicNetworkGateway(), form.getPublicNetworkId());
 			//保存编辑路由操作
-			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, oldName+"=-"+form.getName());
+			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, 
+					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -418,7 +429,9 @@ public class NetworkController {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			neworkManager.associateSubnetWithRouter(region, routerId, subnetId);
 			//保存路由器关联子网操作
-			this.recentOperateService.saveInfo(Constant.BINDED_SUBNET_ROUTER, neworkManager.getPrivateSubnet(region, subnetId).getName()+"=="+neworkManager.getRouter(region, routerId).getName());
+			this.recentOperateService.saveInfo(Constant.BINDED_SUBNET_ROUTER, 
+					MessageFormat.format(Constant.STYLE_OPERATE_1, neworkManager.getPrivateSubnet(region, subnetId).getName(), 
+							neworkManager.getRouter(region, routerId).getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -437,7 +450,9 @@ public class NetworkController {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			neworkManager.separateSubnetFromRouter(region, routerId, subnetId);
 			//保存路由器解除关联子网操作
-			this.recentOperateService.saveInfo(Constant.UNBINDED_SUBNET_ROUTER, neworkManager.getPrivateSubnet(region, subnetId).getName()+"=="+neworkManager.getRouter(region, routerId).getName());
+			this.recentOperateService.saveInfo(Constant.UNBINDED_SUBNET_ROUTER, 
+					MessageFormat.format(Constant.STYLE_OPERATE_1, neworkManager.getPrivateSubnet(region, subnetId).getName(), 
+							neworkManager.getRouter(region, routerId).getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -469,7 +484,7 @@ public class NetworkController {
 			String floatingIpName = neworkManager.getFloatingIp(region, floatingIpId).getName();
 			neworkManager.deleteFloaingIp(region, floatingIpId);
 			//保存删除公网IP操作
-			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, floatingIpName==null?Constant.NO_NAME:floatingIpName);
+			this.recentOperateService.saveInfo(Constant.DELETE_FLOATINGIP, StringUtils.isEmpty(floatingIpName)?Constant.NO_NAME:floatingIpName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -546,7 +561,8 @@ public class NetworkController {
 			String oldName = neworkManager.getFloatingIp(form.getRegion(), form.getFloatingIpId()).getName();
 			neworkManager.editFloatingIp(form.getRegion(), form.getFloatingIpId(), form.getName());
 			//保存编辑公网IP操作
-			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, oldName==null?Constant.NO_NAME:oldName+"=-"+form.getName());
+			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, 
+					MessageFormat.format(Constant.STYLE_OPERATE_2, StringUtils.isEmpty(oldName)?Constant.NO_NAME:oldName, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

@@ -152,7 +152,12 @@ public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>
         Map<String, Object> paras = new HashMap<String, Object>();
         paras.put("tenantId", tenantId);
         paras.put("region", region);
-        return cloudvmVolumeDao.selectByMapCountSize(paras);
+        Integer countSize = cloudvmVolumeDao.selectByMapCountSize(paras);
+        if (countSize != null) {
+            return countSize;
+        } else {
+            return 0;
+        }
     }
 
 }

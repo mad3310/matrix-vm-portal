@@ -1720,7 +1720,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 }
 
                 AttachInterfaceApi attachInterfaceApi = novaApi.getAttachInterfaceApi(region).get();
-                if (attachInterfaceApi.list(vmId).toList().isEmpty()) {
+                List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
+                if (interfaceAttachments.isEmpty()) {
                     throw new UserOperationException("Vm is not in any network.", "虚拟机不属于任何一个网络，不能绑定公网IP。");
                 }
 

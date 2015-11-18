@@ -79,16 +79,16 @@
 	<div class="modal-container hide">
 		<div class="modal">
 			<div class="modal-top">
-				<div class="modal-title"><span>充值完成前请不要关闭此窗口</span>
+				<div class="modal-title"><span>支付完成前请不要关闭此窗口</span>
 				<span class="iconfont icon-add"></span>
 				<span class="clearfix"></span>
 				</div>
 			</div>
 			<div class="modal-content">
-				<div>请在新开充值页面上完成付款后，再继续支付。</div>
+				<div>请在新开页面上完成付款后，再继续操作。</div>
 				<div class="buttons clearfix text-center">
-					<div class="col-md-offset-2 col-md-4"><button class="btn btn-le-blue paybtn">充值完成</buttom></div>
-					<div class="col-md-4"><button class="btn btn-le-red paybtn">充值遇到问题</buttom></div>
+					<div class="col-md-offset-2 col-md-4"><button class="btn btn-le-blue paybtn">支付完成</buttom></div>
+					<div class="col-md-4"><button class="btn btn-le-red paybtn">支付遇到问题</buttom></div>
 				</div>
 			</div>
 		</div>

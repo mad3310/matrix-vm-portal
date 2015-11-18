@@ -1,7 +1,10 @@
 package com.letv.portal.controller.cloudvm;
 
+import java.text.MessageFormat;
+
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -146,7 +149,7 @@ public class VolumeController {
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			volumeManager.deleteSync(region, volumeResource);
 			//保存硬盘删除操作
-			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, volumeResource.getName()==null?Constant.NO_NAME:volumeResource.getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, StringUtils.isEmpty(volumeResource.getName())?Constant.NO_NAME:volumeResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -173,7 +176,8 @@ public class VolumeController {
 		}
 		localVolumeService.updateNameAndDesc(userId, userId, form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
 		//保存编辑云硬盘操作
-		this.recentOperateService.saveInfo(Constant.EDIT_VOLUME, volumeName==null?Constant.NO_NAME:volumeName+"=-"+form.getName());
+		this.recentOperateService.saveInfo(Constant.EDIT_VOLUME, 
+				MessageFormat.format(Constant.STYLE_OPERATE_2, StringUtils.isEmpty(volumeName)?Constant.NO_NAME:volumeName, form.getName()));
 		return result;
 	}
 
@@ -221,8 +225,8 @@ public class VolumeController {
 			volumeManage.createVolumeSnapshot(form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
 			String volumeResourceName = volumeManage.get(form.getRegion(), form.getVolumeId()).getName();
 			//保存创建云硬盘快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, form.getName()+"=="+
-					volumeResourceName==null?Constant.NO_NAME:volumeResourceName);
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, 
+					MessageFormat.format(Constant.STYLE_OPERATE_1, form.getName(), StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

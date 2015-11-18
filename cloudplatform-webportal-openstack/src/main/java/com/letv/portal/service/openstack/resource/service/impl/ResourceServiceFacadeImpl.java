@@ -135,4 +135,13 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         CinderApi cinderApi = getCinderApi();
         return resourceService.listVm(novaApi, neutronApi, cinderApi, userVoUserId, region, name, currentPage, recordsPerPage);
     }
+
+    @Override
+    public void bindFloatingIp(String region, String vmId, String floatingIpId) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+
+        resourceService.bindFloatingIp(novaApi, neutronApi, region, vmId, floatingIpId, openStackUser.getEmail(), openStackUser.getUserName());
+    }
 }

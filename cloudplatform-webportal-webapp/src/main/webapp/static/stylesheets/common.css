@@ -1214,3 +1214,9 @@ le-select .le-select-menu li a{
 /*end le-modal style*/
 /*禁止选中*/
 .unselectable{-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;}
+
+/*begin le-break-word style*/
+.le-break-word{
+    overflow-wrap: break-word;
+}
+/*end le-break-word style*/
