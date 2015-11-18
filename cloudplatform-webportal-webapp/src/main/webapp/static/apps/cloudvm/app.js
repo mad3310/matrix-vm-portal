@@ -32,6 +32,10 @@ define([
     $httpProvider.defaults.headers.post['Accept-Language'] ='zh-CN,zh;q=0.8,en;q=0.6';
     $httpProvider.defaults.headers.post['X-Requested-With'] ='XMLHttpRequest';
     $httpProvider.defaults.headers.get['X-Requested-With'] ='XMLHttpRequest';
+    //disable IE ajax request caching  http://stackoverflow.com/questions/16098430/angular-ie-caching-issue-for-http
+    $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     $httpProvider.defaults.transformRequest = function(data){
       if (data === undefined) {
         return data;

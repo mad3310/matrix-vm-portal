@@ -31,4 +31,6 @@ public interface ResourceServiceFacade {
     void deleteKeyPair(String region, String name) throws OpenStackException;
 
     Page listVm(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
+
+    void bindFloatingIp(String region, String vmId, String floatingIpId) throws OpenStackException;
 }
