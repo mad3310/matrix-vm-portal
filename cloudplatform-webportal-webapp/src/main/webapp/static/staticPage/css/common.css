@@ -16,11 +16,11 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .btn-le-yellow:hover{color:#fff;background:rgb(234,176,15);}
 .btn-le-red:hover{color:#fff;background:#E41E19}
 .btn-le-blue>*,.btn-le-blueGreen>*,.btn-le-green>*,.btn-le-yellow>*,.btn-le-red>*{line-height:30px;}
-.btn-le-blue{background-color:#088ac2;color:#fff;}
-.btn-le-blueGreen {background-color:#08aec2;color:#fff;}
-.btn-le-green {background-color:#08c2b3;color:#fff;}
-.btn-le-yellow {background-color:#f5c131;color:#fff;}
-.btn-le-red {background-color:#ff3c37;color: #fff;}
+.btn-le-blue,.btn-le-blue[disabled]:hover{background-color:#088ac2;color:#fff;}
+.btn-le-blueGreen,.btn-le-blueGreen[disabled]:hover {background-color:#08aec2;color:#fff;}
+.btn-le-green,.btn-le-green[disabled]:hover {background-color:#08c2b3;color:#fff;}
+.btn-le-yellow,.btn-le-yellow[disabled]:hover {background-color:#f5c131;color:#fff;}
+.btn-le-red,.btn-le-red[disabled]:hover {background-color:#ff3c37;color: #fff;}
 .text-left{text-align:left;}
 .text-center{text-align:center;}
 .text-right{text-align:right;}

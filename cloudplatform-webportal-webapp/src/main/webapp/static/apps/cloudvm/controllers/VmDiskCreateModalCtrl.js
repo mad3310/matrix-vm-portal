@@ -52,9 +52,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-    $scope.$watch('diskVolume', function (value) {
-      if (value != null) {
-        delaySliderModelHandlerOfDiskVolume(value,updateDiskVolumeOfCalculatePrice);
+    $scope.$watch('diskVolume', function (newValue) {
+      if (newValue != null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= 2048 && newValue >= 10) {
+        delaySliderModelHandlerOfDiskVolume(newValue,updateDiskVolumeOfCalculatePrice);
+      }
+      else {
+        $scope.diskVolume = 10;
       }
     });
 

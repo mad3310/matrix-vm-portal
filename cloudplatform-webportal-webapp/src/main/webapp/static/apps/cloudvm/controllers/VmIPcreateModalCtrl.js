@@ -47,9 +47,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-    $scope.$watch('networkBandWidth', function (value) {
-      if (value != null) {
-        delaySliderModelHandlerOfNetworkBandWidth(value,updateNetworkBandWidthOfCalculatePrice);
+    $scope.$watch('networkBandWidth', function (newValue) {
+      if (newValue != null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= 50 && newValue >= 1) {
+        delaySliderModelHandlerOfNetworkBandWidth(newValue,updateNetworkBandWidthOfCalculatePrice);
+      }
+      else {
+        $scope.networkBandWidth = 2;
       }
     });
 

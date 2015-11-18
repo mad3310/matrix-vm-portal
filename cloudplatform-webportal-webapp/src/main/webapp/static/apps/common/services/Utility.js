@@ -33,22 +33,27 @@ define(['./common.service'],function (serviceModule) {
           var otheraffect=productInfo.other;
           var operaArraytemp=productInfo.operations;
           var operationArraycopy=[];
-          var othertemp=1;
+          var othertemp=1,statetemp='';//暂存数据
           for(var i in objList){
             operationArry[i]=[];
             if(objList[i].checked){
               var objtemp=objList[i];
+              statetemp=objtemp[state]?objtemp[state]:'default';
               for(var j in operaArraytemp){
                 if(otheraffect.length>0){//其他影响因素
                   for(var k in otheraffect){
-                    if(objtemp[otheraffect[k]].length>0){
-                      operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
+                    if(objtemp[otheraffect[k]]){
+                      if(objtemp[otheraffect[k]].length>0){
+                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
+                      }else{
+                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                      }
                     }else{
-                      operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
-                    }
+                      operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                    } 
                   }
                 }else{//无其他因素影响
-                  operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]];
+                  operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]];
                 }
                 // operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];
                 operationArraycopy[j]=1;
@@ -63,6 +68,10 @@ define(['./common.service'],function (serviceModule) {
             }
           }
           return operationArraycopy
+      };
+
+      service.isInt=function (input) {
+        return Number(input) % 1 === 0;
       };
       return service;
     }]);
