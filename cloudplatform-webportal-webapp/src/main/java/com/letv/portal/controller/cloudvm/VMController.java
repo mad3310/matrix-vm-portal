@@ -382,8 +382,8 @@ public class VMController {
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			vmManager.attachVolume(vmResource, volumeResource);
 			//保存绑定云硬盘操作
-			this.recentOperateService.saveInfo(Constant.ATTACH_VOLUME_OPENSTACK, 
-				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResource.getName())?Constant.NO_NAME:volumeResource.getName(), vmResource.getName()));
+			this.recentOperateService.saveInfo(Constant.ATTACH_VOLUME_OPENSTACK, volumeResource.getName()==null?Constant.NO_NAME:volumeResource.getName()
+						+"=="+vmResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -404,9 +404,9 @@ public class VMController {
 			VMResource vmResource =  vmManager.get(region, vmId);
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			vmManager.detachVolume(vmResource, volumeResource);
-			//保存解挂云硬盘操作
-			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK, 
-				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResource.getName())?Constant.NO_NAME:volumeResource.getName(), vmResource.getName()));
+			//保存卸载云硬盘操作
+			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK, volumeResource.getName()==null?Constant.NO_NAME:volumeResource.getName()
+					+"=="+vmResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -448,11 +448,11 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
-			resourceServiceFacade.bindFloatingIp(region, vmId, floatingIpId);
+			vmManager.bindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机绑定公网IP操作
-			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK, 
-				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
+			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK, firName==null?Constant.NO_NAME:firName
+					+"=="+vmManager.get(region, vmId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -472,8 +472,8 @@ public class VMController {
 			vmManager.unbindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机解绑公网IP操作
-			this.recentOperateService.saveInfo(Constant.UNBINDED_FLOATINGIP_OPENSTACK, 
-				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
+			this.recentOperateService.saveInfo(Constant.UNBINDED_FLOATINGIP_OPENSTACK, firName==null?Constant.NO_NAME:firName
+					+"=="+vmManager.get(region, vmId).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -540,8 +540,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			vmManager.createImageFromVm(createConf);
 			//保存创建快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, form.getName(), vmManager.get(form.getRegion(), form.getVmId()).getName()));
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK, form.getName()+"=="+vmManager.get(form.getRegion(), form.getVmId()).getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -630,7 +629,7 @@ public class VMController {
         }
         //保存私有网络绑定云主机操作
 		this.recentOperateService.saveInfo(Constant.SUBNET_ATTACH_VM
-				, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetName._2
+				, MessageFormat.format("子网{0}添加虚拟机{1}", vmNamesAndSubnetName._2
 				, StringUtils.join(vmNamesAndSubnetName._1, ","))
 				, this.sessionService.getSession().getUserId(), null);
 		return result;
@@ -656,7 +655,7 @@ public class VMController {
         }
 		//保存私有网络解绑云主机操作
 		this.recentOperateService.saveInfo(Constant.SUBNET_DETACH_VM
-				, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetName._2
+				, MessageFormat.format("子网{0}移除虚拟机{1}", vmNamesAndSubnetName._2
 				, StringUtils.join(vmNamesAndSubnetName._1, ","))
 				, this.sessionService.getSession().getUserId(), null);
         return result;

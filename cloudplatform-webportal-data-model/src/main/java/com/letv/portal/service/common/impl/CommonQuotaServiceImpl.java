@@ -85,6 +85,38 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
     }
 
     @Override
+    public CommonQuota insertDefaultAndGet(long tenantId, String region, CommonQuotaModule module, CommonQuotaType type) {
+        if (StringUtils.isEmpty(region)) {
+            throw new ValidateException("地域不能为空");
+        }
+        if (module == null) {
+            throw new ValidateException("模块不能为空");
+        }
+        if (type == null) {
+            throw new ValidateException("类型不能为空");
+        }
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("region", region);
+        paras.put("module", module);
+        paras.put("type", type);
+        List<CommonQuota> commonQuotas = commonQuotaDao.selectByMap(paras);
+        if (!commonQuotas.isEmpty()) {
+            return commonQuotas.get(0);
+        } else {
+            CommonQuota commonQuota = new CommonQuota();
+            commonQuota.setRegion(region);
+            commonQuota.setTenantId(tenantId);
+            commonQuota.setCreateUser(tenantId);
+            commonQuota.setModule(module);
+            commonQuota.setType(type);
+            commonQuota.setValue(type.getDefaultQuota());
+            insert(commonQuota);
+            return commonQuota;
+        }
+    }
+
+    @Override
     public List<CommonQuota> insertDefaultAndSelectByRegion(long tenantId, String region) {
         List<CommonQuota> commonQuotas = selectByRegion(tenantId, region);
         Map<CommonQuotaType, CommonQuota> typeToQuota = new HashMap<CommonQuotaType, CommonQuota>();

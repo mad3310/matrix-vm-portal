@@ -118,7 +118,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       buildDisplayData=function(){
         var data=[];
         data.push(['类型',$scope.selectedDiskType.name].join('/:'));
-        data.push(['容量',$scope.diskVolume+'Mbps'].join('/:'));
+        data.push(['容量',$scope.diskVolume+'GB'].join('/:'));
         return data.join('/;');
       },
       updateDiskVolumeOfCalculatePrice=function(value) {
