@@ -90,28 +90,28 @@ define(['controllers/app.controller'], function (controllerModule) {
           return;
         }
         if(checkedDisks[0].status !=='in-use'){
-          WidgetService.notifyWarning('云硬盘当前状态不可解挂');
+          WidgetService.notifyWarning('云硬盘当前状态不可卸载');
           return;
         }
         var data={
           vmId: checkedDisks[0].attachments[0].vmId,
           volumeId: checkedDisks[0].id,
         };
-        var modalInstance = WidgetService.openConfirmModal('解挂云硬盘','确定要从云主机（'+(checkedDisks[0].attachments[0] && checkedDisks[0].attachments[0].vmName)+'）解挂云硬盘（'+checkedDisks[0].name+'）吗？');
+        var modalInstance = WidgetService.openConfirmModal('卸载云硬盘','确定要从云主机（'+(checkedDisks[0].attachments[0] && checkedDisks[0].attachments[0].vmName)+'）卸载云硬盘（'+checkedDisks[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云硬盘解挂执行中...');
+          WidgetService.notifyInfo('云硬盘卸载执行中...');
           checkedDisks[0].status='detaching';
           HttpService.doPost(Config.urls.disk_detach.replace('{region}', checkedDisks[0].region), data).success(function (data, status, headers, config) {
             if(data.result===1){
               modalInstance.close(data);
               checkedDisks[0].status='available';
-              WidgetService.notifySuccess('解挂云硬盘成功');
+              WidgetService.notifySuccess('卸载云硬盘成功');
               refreshDiskList();
             }
             else{
               checkedDisks[0].status=originalStatus;
-              WidgetService.notifyError(data.msgs[0]||'解挂云硬盘失败');
+              WidgetService.notifyError(data.msgs[0]||'卸载云硬盘失败');
             }
           });
         }, function () {
@@ -270,6 +270,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'disk',
           'state':'status',
+          'other':[],
           'operations':['create','createsnap','attachdisk','edit','detachdisk','delete']
         }
         $scope.$watch(function(){

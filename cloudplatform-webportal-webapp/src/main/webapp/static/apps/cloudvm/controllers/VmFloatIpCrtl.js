@@ -227,6 +227,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'floatIp',
           'state':'status',
+          'other':[],
           'operations':['bindVm','edit','detach','delete']
         }
         $scope.$watch(function(){
@@ -294,12 +295,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.floatIP_edit,data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('修改公网IP成功');
+          WidgetService.notifySuccess('编辑公网IP成功');
           // $window.location.href = '/payment/'+data.data;
         }
         else{
           $scope.isFormSubmiting=false;
-          WidgetService.notifyError(data.msgs[0]||'修改公网IP失败');
+          WidgetService.notifyError(data.msgs[0]||'编辑公网IP失败');
         }
       });
     };

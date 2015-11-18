@@ -2,14 +2,16 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VmRouterCtrl', ['$scope','$interval','$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
-    function ($scope,$interval,$modal, Config, HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VmRouterCtrl', ['$scope','$interval','$modal', 'Config','Utility', 'HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval,$modal, Config,Utility, HttpService,WidgetService,CurrentContext) {
 
       $scope.routerList = [];
 
       $scope.currentPage = 1;
       $scope.totalItems = 0;
       $scope.pageSize = 10;
+      $scope.operationBtn={};
+      var operationArry=[];
       $scope.onPageChange = function () {
         refreshRouterList();
       };
@@ -61,7 +63,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       };
       $scope.checkRouter = function (router) {
-        router.checked = router.checked === true ? false : true;
+        router.checked = router.checked === true ? false : true; 
       };
 
       $scope.editRouter = function(){
@@ -145,6 +147,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
 
       var refreshRouterList = function () {
+        operationArry=[];
             var queryParams = {
               name: $scope.searchRouterName,
               currentPage: $scope.currentPage,
@@ -229,8 +232,27 @@ define(['controllers/app.controller'], function (controllerModule) {
             }, function () {
             });
           };
-
+        var watchStateChange=function(){
+          var productInfo={
+            'type':'router',
+            'state':'status',
+            'other':['subnets'],
+            'operations':['create','bindsubnet','edit','removesubnet','delete']
+          }
+          $scope.$watch(function(){
+            return $scope.routerList.map(function(obj) {
+              return obj.checked;
+            }).join(";");
+          },function(){
+            var operationArraycopy=Utility.setOperationBtns($scope,$scope.routerList,productInfo,operationArry,Config);
+            var operaArraytemp=productInfo.operations;
+            for(var k in operaArraytemp){
+              $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
+            }
+          });
+        }
       refreshRouterList();
+      watchStateChange();
     }
   ]);
 
