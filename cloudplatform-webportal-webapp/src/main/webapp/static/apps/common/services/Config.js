@@ -151,7 +151,9 @@ define(['./common.service'], function (serviceModule) {
         "spawning":{"create":0,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
                   "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0}, 
         "deleted":{"create":1,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
-                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},           
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
+        "default":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},           
       },
       "disk":{
         "creating":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
@@ -162,11 +164,13 @@ define(['./common.service'], function (serviceModule) {
         "error":{"create":1,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
         //前端自定义
         "deleted":{"create":1,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
-        "detaching":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0}
+        "detaching":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
+        "default":{"create":1,"createsnap":1,"attachdisk":1,"detachdisk":1,"expandVolume":1,"delete":1,"edit":1}
       },
       "floatIp":{
         "AVAILABLE":{"bindVm":1,"bindRouter":1,"bindBalance":1,"changeBandwidth":1,"detach":0,"bindalarm":1,"edit":1,"delete":1},
-        "BINDED":{"bindVm":0,"bindRouter":0,"bindBalance":0,"changeBandwidth":0,"detach":1,"bindalarm":1,"edit":1,"delete":0}
+        "BINDED":{"bindVm":0,"bindRouter":0,"bindBalance":0,"changeBandwidth":0,"detach":1,"bindalarm":1,"edit":1,"delete":0},
+        "default":{"bindVm":1,"bindRouter":1,"bindBalance":1,"changeBandwidth":1,"detach":1,"bindalarm":1,"edit":1,"delete":1}
       },
       "router":{
         "ACTIVE":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":1,"edit":1,"bindalarm":1,"delete":1},
@@ -175,7 +179,15 @@ define(['./common.service'], function (serviceModule) {
         "ERROR":{"create":1,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
         "UNRECOGNIZED":{"create":1,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
         "subnets":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":0,"removesubnet":1,"edit":1,"bindalarm":1,"delete":0},
-        "subnetsnull":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":0,"edit":1,"bindalarm":1,"delete":1}
+        "subnetsnull":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":0,"edit":1,"bindalarm":1,"delete":1},
+        "default":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":1,"edit":1,"bindalarm":1,"delete":1}
+      },
+      "subnet":{
+        "vm":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1},
+        "vmnull":{"create":1,"bindvm":1,"unbindvm":0,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1},
+        "router":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1},
+        "routernull":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":0,"edit":1,"delete":1},
+        "default":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1}
       }
     }
     return config;

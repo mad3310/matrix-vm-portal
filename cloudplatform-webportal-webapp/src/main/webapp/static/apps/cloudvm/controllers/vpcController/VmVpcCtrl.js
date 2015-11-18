@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-    controllerModule.controller('VmVpcCtrl', ['$scope', '$interval', '$modal', 'Config', 'HttpService', 'WidgetService', 'CurrentContext',
-        function ($scope, $interval, $modal, Config, HttpService, WidgetService, CurrentContext) {
+    controllerModule.controller('VmVpcCtrl', ['$scope', '$interval', '$modal', 'Config','Utility', 'HttpService', 'WidgetService', 'CurrentContext',
+        function ($scope, $interval, $modal, Config,Utility, HttpService, WidgetService, CurrentContext) {
             $scope.tabShow='vpc';
             $scope.vpcList = [];
             $scope.subnetList = [];
@@ -12,6 +12,8 @@ define(['controllers/app.controller'], function (controllerModule) {
                 totalItems: 0,
                 pageSize: 10
             };
+            $scope.operationBtn={};
+            var operationArry=[];
             $scope.vpc.onPageChange = function(){
                 refreshVpcList();
             }
@@ -261,6 +263,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.switchTabToSubnet=function(){
                 $scope.tabShow='subnet';
                 refreshSubnetList();
+                watchStateChange();
             }
             $scope.switchTabToVpc=function(){
                 $scope.tabShow='vpc';
@@ -342,6 +345,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                     });
                 },
                 refreshSubnetList = function () {
+                    operationArry=[];
                     var queryParams = {
                         region: CurrentContext.regionId,
                         name: '',
@@ -450,6 +454,25 @@ define(['controllers/app.controller'], function (controllerModule) {
                     }, function () {
                     });
                 };
+                var watchStateChange=function(){
+                    var productInfo={
+                      'type':'subnet',
+                      'state':'',
+                      'other':['router'],
+                      'operations':['create','bindvm','bindrouter','unbindvm','unbindrouter','edit','delete']
+                    }
+                    $scope.$watch(function(){
+                      return $scope.subnetList.map(function(obj) {
+                        return obj.checked;
+                      }).join(';');
+                    },function(){
+                      var operationArraycopy=Utility.setOperationBtns($scope,$scope.subnetList,productInfo,operationArry,Config);
+                      var operaArraytemp=productInfo.operations;
+                      for(var k in operaArraytemp){
+                        $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
+                      }
+                    });
+                  }
             refreshVpcList();
         }
     ]);

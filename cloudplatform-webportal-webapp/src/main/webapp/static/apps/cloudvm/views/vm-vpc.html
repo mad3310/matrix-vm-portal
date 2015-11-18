@@ -58,18 +58,18 @@
     <div ng-show="tabShow === 'subnet'">
         <div class="le-row operate-panel">
             <div class="le-col-6 le-btn-group">
-                <button class="btn btn-le-blue" ng-click="openSubnetCreateModal('500')"><span>创建子网</span></button>
-                <button class="btn btn-le-blueGreen" ng-click="openSubnetAssociateVmModal('500')"><span>添加云主机</span></button>
-                <button class="btn btn-le-green" ng-click="associateRouter()"><span>绑定路由</span></button>
+                <button class="btn btn-le-blue" ng-click="openSubnetCreateModal('500')" ng-disabled="operationBtn.create==0"><span>创建子网</span></button>
+                <button class="btn btn-le-blueGreen" ng-click="openSubnetAssociateVmModal('500')" ng-disabled="operationBtn.bindvm==0"><span>添加云主机</span></button>
+                <button class="btn btn-le-green" ng-click="associateRouter()" ng-disabled="operationBtn.bindrouter==0"><span>绑定路由</span></button>
                 <div dropdown class="more-operation-dropdown">
                     <a href class="btn btn-le-yellow" dropdown-toggle>
                         更多操作
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                        <li><button class="btn dropdown-btn" ng-click="openSubnetDetachVmModal('500')">移除云主机</button></li>
-                        <li><button class="btn dropdown-btn" ng-click="unbundRouter()">解绑路由</button></li>
-                        <li><button class="btn dropdown-btn" ng-click="editSubnet()">编辑子网</button></li>
-                        <li><button class="btn dropdown-btn" ng-click="deleteSubnet()">删除子网</button></li>
+                        <li><button class="btn dropdown-btn" ng-click="openSubnetDetachVmModal('500')" ng-disabled="operationBtn.unbindvm==0">移除云主机</button></li>
+                        <li><button class="btn dropdown-btn" ng-click="unbundRouter()" ng-disabled="operationBtn.unbindrouter==0">解绑路由</button></li>
+                        <li><button class="btn dropdown-btn" ng-click="editSubnet()" ng-disabled="operationBtn.edit==0">编辑子网</button></li>
+                        <li><button class="btn dropdown-btn" ng-click="deleteSubnet()" ng-disabled="operationBtn.delete==0">删除子网</button></li>
                     </ul>
                 </div>
             </div>
