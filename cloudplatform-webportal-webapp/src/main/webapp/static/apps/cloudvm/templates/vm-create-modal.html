@@ -125,10 +125,7 @@
                         </div>
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-offset-2">
-                                <rzslider rz-slider-model="dataDiskVolume" rz-slider-floor="0" rz-slider-ceil="2048" rz-slider-step="10" rz-slider-always-show-bar="true">
-                                </rzslider>
-                                <input class="disk-volume" ng-model="dataDiskVolume" />
-                                <span class="disk-volume-unit">GB</span>
+                                <le-slider le-slider-model="dataDiskVolume" le-slider-min="0" le-slider-max="2048" le-slider-step="10" le-slider-unit="GB"></le-slider>
                             </div>
                         </div>
                         <div class="inputs-item row clearfix">
@@ -178,10 +175,7 @@
                         <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkPublicIpModel==='now' && vmNetworkType==='primary'">
                             <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
                             <div class="col-sm-10">
-                                <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="1" rz-slider-ceil="50" rz-slider-step="1" rz-slider-always-show-bar="true">
-                                </rzslider>
-                                <input class="network-bandwidth" ng-model="networkBandWidth" />
-                                <span class="network-bandwidth-unit">Mbps</span>
+                                <le-slider le-slider-model="networkBandWidth" le-slider-min="1" le-slider-max="50" le-slider-step="1" le-slider-unit="Mbps"></le-slider>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkType=='private'">

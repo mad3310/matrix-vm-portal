@@ -201,18 +201,32 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
-    directiveModule.directive('leSlider', function () {
+    directiveModule.directive('leSlider', function (Utility) {
         return {
             restrict: 'AE',
             scope: {
-                model: '=leSliderModel',
-                step:'=leSliderStep',
-                min:'=leSliderMin',
-                max:'=leSliderMax',
+                externalModel: '=leSliderModel',
+                step:'@leSliderStep',
+                min:'@leSliderMin',
+                max:'@leSliderMax',
                 unit:'@leSliderUnit',
             },
             link: function (scope, element, attrs) {
-                //scope.modelData=10;
+                var delayQueueModelHandler = Utility.delayQueueModel();
+                scope.model = scope.externalModel;
+                var max =Number(scope.max),
+                  min=Number(scope.min);
+                scope.$watch('model', function (newValue) {
+                    if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= max && newValue >= min) {
+                        delayQueueModelHandler(newValue, function(value) {
+                            scope.model = value;
+                            scope.externalModel = scope.model;
+                        });
+                    }
+                    else {
+                        scope.model = min;
+                    }
+                });
             },
             templateUrl: '/static/apps/common/directives/le-slider/template.html'
         };
