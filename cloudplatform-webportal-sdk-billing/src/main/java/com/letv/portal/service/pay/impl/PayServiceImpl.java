@@ -286,7 +286,7 @@ public class PayServiceImpl implements IPayService {
 		}
 
 		if (Constants.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝支付
-			params.put("defaultbank", defaultBank);
+			//params.put("defaultbank", defaultBank);
 			return Constants.PAY_URL;
 		}
 		if (Constants.WX_PAY_PATTERN.equals(pattern)) {// 微信支付

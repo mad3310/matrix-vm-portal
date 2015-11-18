@@ -267,17 +267,17 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		return false;
 	}
 	protected boolean validateOrderTime(Map<String, Object> map) {
-		if(map.get("order_time")==null || !ValidateUtil.isNumeric((String)map.get("order_num")) || Double.parseDouble((String)map.get("order_time"))<1 
-				|| (Double.parseDouble((String)map.get("order_time"))>9 && Double.parseDouble((String)map.get("order_time"))!=12 && 
-				Double.parseDouble((String)map.get("order_time"))!=24 && Double.parseDouble((String)map.get("order_time"))!=36)) {
-			logger.info("validateData, map order_time standard is :"+map.get("order_time")+", standard not within range");
+		if(map.get("orderTime")==null || !ValidateUtil.isNumeric((String)map.get("orderTime")) || Double.parseDouble((String)map.get("orderTime"))<1 
+				|| (Double.parseDouble((String)map.get("orderTime"))>9 && Double.parseDouble((String)map.get("orderTime"))!=12 && 
+				Double.parseDouble((String)map.get("orderTime"))!=24 && Double.parseDouble((String)map.get("orderTime"))!=36)) {
+			logger.info("validateData, map order_time standard is :"+map.get("orderTime")+", standard not within range");
 			return false;
 		} else {
-			if(Double.parseDouble((String)map.get("order_time"))==12) {//一年按10个月
+			if(Double.parseDouble((String)map.get("orderTime"))==12) {//一年按10个月
 				map.put("order_time", "10");
-			} else if(Double.parseDouble((String)map.get("order_time"))==24) {//2年按20个月
+			} else if(Double.parseDouble((String)map.get("orderTime"))==24) {//2年按20个月
 				map.put("order_time", "20");
-			} else if(Double.parseDouble((String)map.get("order_time"))==36) {//3年按30个月
+			} else if(Double.parseDouble((String)map.get("orderTime"))==36) {//3年按30个月
 				map.put("order_time", "30");
 			}
 		}
