@@ -15,6 +15,8 @@ public interface ICommonQuotaService extends IBaseService<CommonQuota> {
 
     CommonQuota get(long tenantId, String region, CommonQuotaModule module, CommonQuotaType type);
 
+    CommonQuota insertDefaultAndGet(long tenantId, String region, CommonQuotaModule module, CommonQuotaType type);
+
     List<CommonQuota> insertDefaultAndSelectByRegion(long tenantId, String region);
 
     Map<String,Long> insertDefaultAndSelectMapByRegion(long tenantId, String region);
