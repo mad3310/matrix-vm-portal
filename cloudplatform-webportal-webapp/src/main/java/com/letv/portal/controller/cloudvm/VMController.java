@@ -404,7 +404,7 @@ public class VMController {
 			VMResource vmResource =  vmManager.get(region, vmId);
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			vmManager.detachVolume(vmResource, volumeResource);
-			//保存解挂云硬盘操作
+			//保存卸载云硬盘操作
 			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK, volumeResource.getName()==null?Constant.NO_NAME:volumeResource.getName()
 					+"=="+vmResource.getName());
 		} catch (UserOperationException e) {
