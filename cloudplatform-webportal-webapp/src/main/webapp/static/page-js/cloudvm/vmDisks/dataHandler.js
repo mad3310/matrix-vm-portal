@@ -53,7 +53,7 @@ define(function(require,exports,module){
                             		'<input type="hidden" class="field-region" value="'+array[i].region+'" />'+
                              	"</td>");
                     tdList.push('<td class="text-right hidden-xs">'+
-                    		'<a class="disk-operation disk-detach" href="javascript:void(0);">解挂</a>'+
+                    		'<a class="disk-operation disk-detach" href="javascript:void(0);">卸载</a>'+
                     	'</td>');
                     tdList.unshift("<tr class='data-tr'>");
                     tdList.push("</tr>");
@@ -94,8 +94,8 @@ define(function(require,exports,module){
 			}
     		switch(operationType){
         		case 'disk-detach':
-        			text='您确定要解挂该云盘吗？';
-        			operatingTip="云盘解挂执行中...";
+        			text='您确定要卸载该云盘吗？';
+        			operatingTip="云盘卸载执行中...";
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-detach-volume';
         			operationCallback=function(data){
         				asyncData();

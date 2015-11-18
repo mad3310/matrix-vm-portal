@@ -2,13 +2,15 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VmFloatIpCrtl', ['$scope','$interval','Config','$modal','HttpService','WidgetService','CurrentContext',
-    function ($scope,$interval, Config,$modal,HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VmFloatIpCrtl', ['$scope','$interval','Config','Utility','$modal','HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval, Config,Utility,$modal,HttpService,WidgetService,CurrentContext) {
       $scope.searchIpName='';
       $scope.floatIpList = [];
       $scope.currentPage = 1;
       $scope.totalItems = 0;
       $scope.pageSize = 10;
+      $scope.operationBtn={};
+      var operationArry=[];
       $scope.onPageChange = function () {
         refreshFloatIpList();
       };
@@ -202,6 +204,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
       var refreshFloatIpList = function () {
+        operationArry=[];
           var queryParams = {
             region:CurrentContext.regionId,
             name:$scope.searchIpName,
@@ -220,7 +223,27 @@ define(['controllers/app.controller'], function (controllerModule) {
           return item.checked===true;
         });
       };
+      var watchStateChange=function(){
+        var productInfo={
+          'type':'floatIp',
+          'state':'status',
+          'operations':['bindVm','edit','detach','delete']
+        }
+        $scope.$watch(function(){
+          return $scope.floatIpList.map(function(obj) {
+            return obj.checked;
+          }).join(';');
+        },function(){
+          var operationArraycopy=Utility.setOperationBtns($scope,$scope.floatIpList,productInfo,operationArry,Config);
+          var operaArraytemp=productInfo.operations;
+          for(var k in operaArraytemp){
+            $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
+          }
+          console.log($scope.operationBtn)
+        });
+      }
       refreshFloatIpList();
+      watchStateChange();
     }
   ]);
 
@@ -271,12 +294,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.floatIP_edit,data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('修改公网IP成功');
+          WidgetService.notifySuccess('编辑公网IP成功');
           // $window.location.href = '/payment/'+data.data;
         }
         else{
           $scope.isFormSubmiting=false;
-          WidgetService.notifyError(data.msgs[0]||'修改公网IP失败');
+          WidgetService.notifyError(data.msgs[0]||'编辑公网IP失败');
         }
       });
     };

@@ -60,7 +60,7 @@ public class Constant {
 	public static final String MODIFY_PWD_OPENSTACK = "云主机修改密码";
 	//绑定云硬盘
 	public static final String ATTACH_VOLUME_OPENSTACK = "绑定云硬盘";
-	public static final String DETACH_VOLUME_OPENSTACK = "解挂云硬盘";
+	public static final String DETACH_VOLUME_OPENSTACK = "卸载云硬盘";
 	//创建快照
 	public static final String SNAPSHOT_CREATE_OPENSTACK = "创建云主机快照";
 	//删除云主机
@@ -111,5 +111,9 @@ public class Constant {
 	
 	//无名称云产品统一为“未设置”
 	public static final String NO_NAME = "未设置";
+	//最近操作样式一
+	public static final String STYLE_OPERATE_1 = "{0}=={1}";
+	//最近操作样式二
+	public static final String STYLE_OPERATE_2 = "{0}=-{1}";
 
 }

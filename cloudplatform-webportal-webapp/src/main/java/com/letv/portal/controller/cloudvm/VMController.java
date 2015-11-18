@@ -404,7 +404,7 @@ public class VMController {
 			VMResource vmResource =  vmManager.get(region, vmId);
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			vmManager.detachVolume(vmResource, volumeResource);
-			//保存解挂云硬盘操作
+			//保存卸载云硬盘操作
 			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK, volumeResource.getName()==null?Constant.NO_NAME:volumeResource.getName()
 					+"=="+vmResource.getName());
 		} catch (UserOperationException e) {
@@ -448,7 +448,7 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
-			resourceServiceFacade.bindFloatingIp(region, vmId, floatingIpId);
+			vmManager.bindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机绑定公网IP操作
 			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK, firName==null?Constant.NO_NAME:firName

@@ -27,12 +27,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.router_edit, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close({result:1});
-          WidgetService.notifySuccess(data.msgs[0]||'修改路由器完成');
+          WidgetService.notifySuccess(data.msgs[0]||'编辑路由器完成');
         }
         else{
           $scope.isFormSubmiting=false;
           $modalInstance.dismiss('cancel');
-          WidgetService.notifyError(data.msgs[0]||'修改路由器失败');
+          WidgetService.notifyError(data.msgs[0]||'编辑路由器失败');
         }
       });
     };

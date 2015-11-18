@@ -54,6 +54,8 @@ public class CalculateController {
 	  * @date 2015年10月13日 下午3:29:17
 	  */
 	private void transferParams(Map<String, Object> params, Long id) {
+		//多个验证会修改order_time值
+		params.put("orderTime", params.get("order_time"));
 		if(id==Constants.PRODUCT_VM) {//云主机参数转换
 			params.put("os_cpu_ram", params.get("cpu_ram"));
 			params.put("os_cpu_ram_type", params.get("cpu_ram"));
@@ -80,7 +82,7 @@ public class CalculateController {
 		}
 		
 		transferParams(map, id);
-		
+			
 		if(id==Constants.PRODUCT_VM) {//云主机走自己的验证和计算
 			if(hostProductService.validateData(Constants.PRODUCT_VM, map) && hostProductService.validateData(Constants.PRODUCT_VOLUME, map) 
 					&& hostProductService.validateData(Constants.PRODUCT_FLOATINGIP, map)) {
