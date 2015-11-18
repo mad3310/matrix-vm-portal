@@ -93,6 +93,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 	}
 	
 	private void transferParamsDateToCalculate(Map<String, Object> params, Long id, Map<String, Object> billingParams) {
+		billingParams.put("orderTime", params.get("order_time")+"");
 		if(id==Constants.PRODUCT_VM) {//云主机参数转换
 			FlavorResource flavor = resourceQueryService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
 			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));

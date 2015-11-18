@@ -94,6 +94,7 @@ public class RenewController {
 		}
 		map.put("region", subDetails.get(0).getSubscription().getBaseRegionId()+"");
 		map.put("order_num", "1");
+		map.put("orderTime", map.get("order_time"));
 		
 		transferParams(map, subDetails);
 		
@@ -148,6 +149,7 @@ public class RenewController {
 		transferParams(map, subDetails);
 
 		String orderTime = (String)map.get("order_time");
+		map.put("orderTime", orderTime);
 		
 		if(validateData(productId, map)) {//验证参数合法性
 			List<OrderSub> orderSubs = this.orderSubService.selectOrderSubBySubscriptionId(subscriptionId);

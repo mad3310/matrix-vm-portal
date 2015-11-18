@@ -111,5 +111,9 @@ public class Constant {
 	
 	//无名称云产品统一为“未设置”
 	public static final String NO_NAME = "未设置";
+	//最近操作样式一
+	public static final String STYLE_OPERATE_1 = "{0}=={1}";
+	//最近操作样式二
+	public static final String STYLE_OPERATE_2 = "{0}=-{1}";
 
 }
