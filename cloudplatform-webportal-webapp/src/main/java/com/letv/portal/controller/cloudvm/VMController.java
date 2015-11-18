@@ -3,6 +3,7 @@ package com.letv.portal.controller.cloudvm;
 import javax.validation.Valid;
 
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
+import com.letv.portal.vo.cloudvm.form.vm.RenameVmForm;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -768,4 +769,24 @@ public class VMController {
 		this.recentOperateService.saveInfo(Constant.DELETE_KEYPAIR, name);
 		return result;
 	}
+
+    @RequestMapping(value = "/vm/rename", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResultObject renameVm(@Valid RenameVmForm form, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResultObject(bindingResult.getAllErrors());
+        }
+        ResultObject result = new ResultObject();
+        try {
+            resourceServiceFacade.renameVm(form.getRegion(), form.getVmId(), form.getName());
+        } catch (UserOperationException e) {
+            result.addMsg(e.getUserMessage());
+            result.setResult(0);
+        } catch (OpenStackException e) {
+            throw e.matrixException();
+        }
+        return result;
+    }
+
 }

@@ -38,4 +38,6 @@ public interface ResourceService {
     Page listVm(NovaApi novaApi, NeutronApi neutronApi, CinderApi cinderApi, long userVoUserId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 
     void bindFloatingIp(NovaApi novaApi, NeutronApi neutronApi, String region, String vmId, String floatingIpId, String email, String userName) throws OpenStackException;
+
+    void renameVm(NovaApi novaApi, String region, String vmId, String name) throws OpenStackException;
 }

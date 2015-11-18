@@ -144,4 +144,11 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         resourceService.bindFloatingIp(novaApi, neutronApi, region, vmId, floatingIpId, openStackUser.getEmail(), openStackUser.getUserName());
     }
+
+    @Override
+    public void renameVm(String region, String vmId, String name) throws OpenStackException {
+        NovaApi novaApi = getNovaApi();
+
+        resourceService.renameVm(novaApi, region, vmId, name);
+    }
 }
