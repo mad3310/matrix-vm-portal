@@ -475,6 +475,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'virtualMachine',
           'state':'vmState',
+          'other':[],
           'operations':['create','start','stop','delete','restart','createsnap','attachdisk','detachdisk']
         }
         $scope.$watch(function(){
