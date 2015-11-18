@@ -2,15 +2,15 @@
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openIPcreateModal(500)"><span>创建公网IP</span></button>
-            <button class="btn btn-le-blueGreen" ng-click="bindVm(500)"><span>绑定云主机</span></button>
-            <button class="btn btn-le-green" ng-click="editIp(500)"><span>编辑公网IP</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="bindVm(500)" ng-disabled="operationBtn.bindVm==0"><span>绑定云主机</span></button>
+            <button class="btn btn-le-green" ng-click="editIp(500)" ng-disabled="operationBtn.edit==0"><span>编辑公网IP</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                    <li><a href="javascript:void(0);" ng-click="unbindVm(400)">解绑云主机</a></li>
-                    <li><a href="javascript:void(0);" ng-click="deleteIp(400)">删除公网IP</a></li>
+                    <li><button class="btn dropdown-btn" ng-click="unbindVm(400)" ng-disabled="operationBtn.detach==0">解绑云主机</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="deleteIp(400)" ng-disabled="operationBtn.delete==0">删除公网IP</button></li>
                 </ul>
             </div>
         </div>

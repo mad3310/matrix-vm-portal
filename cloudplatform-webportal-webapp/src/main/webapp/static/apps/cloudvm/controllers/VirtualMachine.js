@@ -438,6 +438,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       var refreshVmList = function () {
+        operationArry=[];
           var queryParams = {
             name: $scope.searchVmName,
             currentPage: $scope.currentPage,
