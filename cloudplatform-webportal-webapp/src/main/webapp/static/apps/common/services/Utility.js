@@ -50,6 +50,10 @@ define(['./common.service'],function (serviceModule) {
           }
           return operationArraycopy
       };
+
+      service.isInt=function (input) {
+        return Number(input) % 1 === 0;
+      };
       return service;
     }]);
 });

@@ -641,8 +641,8 @@ width:150px;height:40px;
     top: -3px;
     width: 250px;
 }
-.col-slider .slider-number,
-.col-slider .slider-unit {
+.le-modal-body .col-slider .slider-number,
+.le-modal-body .col-slider .slider-unit {
     display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;
 }
 .col-slider .slider-number{

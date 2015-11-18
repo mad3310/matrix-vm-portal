@@ -201,6 +201,23 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
+    directiveModule.directive('leSlider', function () {
+        return {
+            restrict: 'AE',
+            scope: {
+                model: '=leSliderModel',
+                step:'=leSliderStep',
+                min:'=leSliderMin',
+                max:'=leSliderMax',
+                unit:'@leSliderUnit',
+            },
+            link: function (scope, element, attrs) {
+                //scope.modelData=10;
+            },
+            templateUrl: '/static/apps/common/directives/le-slider/template.html'
+        };
+    });
+
     directiveModule.directive('buyPeriodSelector', function () {
         return {
             restrict: 'AE',
