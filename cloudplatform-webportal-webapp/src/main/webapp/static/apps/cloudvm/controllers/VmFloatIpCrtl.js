@@ -227,6 +227,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'floatIp',
           'state':'status',
+          'other':[],
           'operations':['bindVm','edit','detach','delete']
         }
         $scope.$watch(function(){
@@ -239,7 +240,6 @@ define(['controllers/app.controller'], function (controllerModule) {
           for(var k in operaArraytemp){
             $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
           }
-          console.log($scope.operationBtn)
         });
       }
       refreshFloatIpList();

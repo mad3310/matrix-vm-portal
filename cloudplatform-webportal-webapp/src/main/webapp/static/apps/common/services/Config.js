@@ -157,7 +157,7 @@ define(['./common.service'], function (serviceModule) {
         "creating":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
         "available":{"create":1,"createsnap":1,"attachdisk":1,"detachdisk":0,"expandVolume":1,"delete":1,"edit":1},
         "attaching":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
-        "in-use":{"create":1,"createsnap":1,"attachdisk":0,"detachdisk":1,"expandVolume":0,"delete":1,"edit":1},
+        "in-use":{"create":1,"createsnap":1,"attachdisk":0,"detachdisk":1,"expandVolume":0,"delete":0,"edit":1},
         "deleting":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
         "error":{"create":1,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
         //前端自定义
@@ -167,9 +167,17 @@ define(['./common.service'], function (serviceModule) {
       "floatIp":{
         "AVAILABLE":{"bindVm":1,"bindRouter":1,"bindBalance":1,"changeBandwidth":1,"detach":0,"bindalarm":1,"edit":1,"delete":1},
         "BINDED":{"bindVm":0,"bindRouter":0,"bindBalance":0,"changeBandwidth":0,"detach":1,"bindalarm":1,"edit":1,"delete":0}
+      },
+      "router":{
+        "ACTIVE":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":1,"edit":1,"bindalarm":1,"delete":1},
+        "DOWN":{"create":1,"bindIp":0,"unbindIp":1,"bindsubnet":0,"removesubnet":1,"edit":1,"bindalarm":1,"delete":1},
+        "BUILD":{"create":0,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
+        "ERROR":{"create":1,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
+        "UNRECOGNIZED":{"create":1,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
+        "subnets":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":0,"removesubnet":1,"edit":1,"bindalarm":1,"delete":0},
+        "subnetsnull":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":0,"edit":1,"bindalarm":1,"delete":1}
       }
     }
-
     return config;
   }]);
 });

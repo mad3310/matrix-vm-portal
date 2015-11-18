@@ -30,17 +30,31 @@ define(['./common.service'],function (serviceModule) {
       service.setOperationBtns=function($scope,objList,productInfo,operationArry,Config){
           var type=productInfo.type;
           var state=productInfo.state;
+          var otheraffect=productInfo.other;
           var operaArraytemp=productInfo.operations;
           var operationArraycopy=[];
+          var othertemp=1;
           for(var i in objList){
             operationArry[i]=[];
             if(objList[i].checked){
+              var objtemp=objList[i];
               for(var j in operaArraytemp){
-                operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];
+                if(otheraffect.length>0){//其他影响因素
+                  for(var k in otheraffect){
+                    if(objtemp[otheraffect[k]].length>0){
+                      operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
+                    }else{
+                      operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                    }
+                  }
+                }else{//无其他因素影响
+                  operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]];
+                }
+                // operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];
                 operationArraycopy[j]=1;
               }
             }else{
-              operationArry[i]=[1,1,1,1,1,1,1,1]
+              operationArry[i]=[1,1,1,1,1,1,1,1,1,1,1,1]
             }   
           }
           for(var i in operationArry){//多记录状态叠加
