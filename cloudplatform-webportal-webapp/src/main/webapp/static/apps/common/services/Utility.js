@@ -42,7 +42,6 @@ define(['./common.service'],function (serviceModule) {
                 if(otheraffect.length>0){//其他影响因素
                   for(var k in otheraffect){
                     if(objtemp[otheraffect[k]].length>0){
-                      console.log(Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]])
                       operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
                     }else{
                       operationArry[i][j]=Config.statusOperations[type][objtemp[state]][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
@@ -58,7 +57,6 @@ define(['./common.service'],function (serviceModule) {
               operationArry[i]=[1,1,1,1,1,1,1,1,1,1,1,1]
             }   
           }
-          console.log(operationArry)
           for(var i in operationArry){//多记录状态叠加
             for(var j in operationArry[i]){
               operationArraycopy[j]=operationArraycopy[j]*operationArry[i][j];

@@ -240,7 +240,6 @@ define(['controllers/app.controller'], function (controllerModule) {
           for(var k in operaArraytemp){
             $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
           }
-          console.log($scope.operationBtn)
         });
       }
       refreshFloatIpList();
