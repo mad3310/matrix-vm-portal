@@ -108,7 +108,7 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
             commonQuota.setRegion(region);
             commonQuota.setTenantId(tenantId);
             commonQuota.setCreateUser(tenantId);
-            commonQuota.setModule(type.getModule());
+            commonQuota.setModule(module);
             commonQuota.setType(type);
             commonQuota.setValue(type.getDefaultQuota());
             insert(commonQuota);
