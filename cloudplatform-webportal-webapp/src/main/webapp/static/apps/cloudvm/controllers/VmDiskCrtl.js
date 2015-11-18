@@ -247,6 +247,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       var refreshDiskList = function () {
+        operationArry=[]
           var queryParams = {
             name: $scope.searchName,
             currentPage: $scope.currentPage,
