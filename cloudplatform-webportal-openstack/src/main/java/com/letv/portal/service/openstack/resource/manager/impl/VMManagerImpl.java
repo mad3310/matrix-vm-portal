@@ -1209,6 +1209,9 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 if (server.getStatus() != Status.ACTIVE) {
                     throw new UserOperationException("server.status!=ACTIVE", "虚拟机的状态不能修改密码");
                 }
+                if (vmResource.getTaskState() != null) {
+                    throw new TaskNotFinishedException();
+                }
                 ServerApi serverApi = novaApi.getServerApi(vmResource.getRegion());
                 serverApi.changeAdminPass(vmResource.getId(), adminPass);
                 return null;
