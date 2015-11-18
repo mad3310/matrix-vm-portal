@@ -47,19 +47,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-    $scope.$watch('networkBandWidth', function (newValue) {
-      if (newValue != null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= 50 && newValue >= 1) {
-        delaySliderModelHandlerOfNetworkBandWidth(newValue,updateNetworkBandWidthOfCalculatePrice);
-      }
-      else {
-        $scope.networkBandWidth = 2;
-      }
-    });
-
     $scope.$watch(function(){
       return [
         $scope.ipCount,
-        networkBandWidthOfCalculatePrice,
+        $scope.networkBandWidth,
         $scope.floatipBuyPeriod].join('_');
     }, function (value) {
       if ($scope.ipCount && $scope.networkBandWidth && $scope.floatipBuyPeriod) {
@@ -67,8 +58,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     });
 
-    var networkBandWidthOfCalculatePrice= 0,
-      delaySliderModelHandlerOfNetworkBandWidth=Utility.delaySliderModel();
 
     var setFloatipPrice=function(){
       var data={
@@ -90,9 +79,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         var data=[];
         data.push(['带宽',$scope.networkBandWidth+'Mbps'].join('/:'));
         return data.join('/;');
-      },
-      updateNetworkBandWidthOfCalculatePrice=function(value) {
-        networkBandWidthOfCalculatePrice = value;
       };
 
 

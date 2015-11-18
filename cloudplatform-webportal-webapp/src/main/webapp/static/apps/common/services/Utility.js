@@ -13,7 +13,7 @@ define(['./common.service'],function (serviceModule) {
          };
       };
 
-      service.delaySliderModel = function () {
+      service.delayQueueModel = function () {
         var delayQueue = [],
           timeoutPromise = null;
         return function (value, onTimeout) {

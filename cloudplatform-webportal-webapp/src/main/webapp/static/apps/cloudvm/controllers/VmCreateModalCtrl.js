@@ -152,24 +152,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     });
 
-    $scope.$watch('dataDiskVolume', function (newValue) {
-      if (newValue != null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= 2048 && newValue >= 0) {
-        delaySliderModelHandlerOfDiskVolume(newValue,updateDiskVolumeOfCalculatePrice);
-      }
-      else {
-        $scope.dataDiskVolume = 10;
-      }
-    });
-
-    $scope.$watch('networkBandWidth', function (newValue) {
-      if (newValue != null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= 50 && newValue >= 1) {
-        delaySliderModelHandlerOfNetworkBandWidth(newValue,updateNetworkBandWidthOfCalculatePrice);
-      }
-      else {
-        $scope.networkBandWidth = 2;
-      }
-    });
-
     $scope.$watch(function(){
       return [$scope.vmNetworkType,$scope.vmNetworkPublicIpModel].join('_');
     }, function () {
@@ -185,8 +167,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       return [$scope.selectedVmCpu,
         $scope.selectedVmRam,
         ($scope.selectedVmDiskType &&  $scope.selectedVmDiskType.name) || '',
-        diskVolumeOfCalculatePrice,
-        networkBandWidthOfCalculatePrice,
+        $scope.dataDiskVolume,
+        $scope.networkBandWidth,
         $scope.vmCount,
         $scope.vmBuyPeriod].join('_');
     }, function (value) {
@@ -198,11 +180,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     var flavorGroupData = null,
       selectedVmFlavor = null,
       selectedVmSharedNetwork=null,
-      calculatePriceData= null,
-      diskVolumeOfCalculatePrice= 0,
-      delaySliderModelHandlerOfDiskVolume=Utility.delaySliderModel(),
-      networkBandWidthOfCalculatePrice= 0,
-      delaySliderModelHandlerOfNetworkBandWidth=Utility.delaySliderModel();
+      calculatePriceData= null;
     var initComponents = function () {
         initVmImageSelector();
         initVmSnapshotSelector();
@@ -323,13 +301,8 @@ define(['controllers/app.controller'], function (controllerModule) {
           part3.push('带宽/:'+$scope.networkBandWidth+'Mbps');
         }
         return [part1.join('/;'),part2.join('/;'),part3.join('/;')].join(';;');
-      },
-      updateDiskVolumeOfCalculatePrice=function(value) {
-        diskVolumeOfCalculatePrice = value;
-      },
-      updateNetworkBandWidthOfCalculatePrice=function(value) {
-        networkBandWidthOfCalculatePrice = value;
       };
+
     initComponents();
   });
 
