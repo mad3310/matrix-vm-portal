@@ -1,10 +1,8 @@
 package com.letv.portal.controller.cloudvm;
 
-import java.text.MessageFormat;
-import java.util.List;
-
 import javax.validation.Valid;
 
+import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +27,7 @@ import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
-import com.letv.portal.service.openstack.local.service.LocalVolumeService;
+import com.letv.portal.service.openstack.resource.FloatingIpResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
@@ -38,12 +36,13 @@ import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.HttpUtil;
-import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.vo.cloudvm.form.keypair.CreateKeyPairForm;
 import com.letv.portal.vo.cloudvm.form.vm.ChangeAdminPassForm;
-import com.letv.portal.vo.cloudvm.form.vm.RenameVmForm;
 import com.letv.portal.vo.cloudvm.form.vm_snapshot.VmSnapshotCreateForm;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 @Controller
 @RequestMapping("/ecs")
@@ -66,9 +65,6 @@ public class VMController {
 
 	@Autowired
 	private LocalKeyPairService localKeyPairService;
-	
-	@Autowired
-	private LocalVolumeService localVolumeService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -385,10 +381,9 @@ public class VMController {
 			VMResource vmResource = vmManager.get(region, vmId);
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			vmManager.attachVolume(vmResource, volumeResource);
-			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
 			//保存绑定云硬盘操作
-			this.recentOperateService.saveInfo(Constant.ATTACH_VOLUME_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName, vmResource.getName()));
+			this.recentOperateService.saveInfo(Constant.ATTACH_VOLUME_OPENSTACK, volumeResource.getName()==null?Constant.NO_NAME:volumeResource.getName()
+						+"=="+vmResource.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -408,11 +403,10 @@ public class VMController {
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			VMResource vmResource =  vmManager.get(region, vmId);
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
-			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
 			vmManager.detachVolume(vmResource, volumeResource);
 			//保存卸载云硬盘操作
-			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName, vmResource.getName()));
+			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK,
+				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResource.getName())?Constant.NO_NAME:volumeResource.getName(), vmResource.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -454,11 +448,11 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
-			vmManager.bindFloatingIp(region, vmId, floatingIpId);
+			resourceServiceFacade.bindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机绑定公网IP操作
-			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
+			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK,
+				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -478,8 +472,8 @@ public class VMController {
 			vmManager.unbindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机解绑公网IP操作
-			this.recentOperateService.saveInfo(Constant.UNBINDED_FLOATINGIP_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
+			this.recentOperateService.saveInfo(Constant.UNBINDED_FLOATINGIP_OPENSTACK,
+				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -546,7 +540,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			vmManager.createImageFromVm(createConf);
 			//保存创建快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK, 
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK,
 					MessageFormat.format(Constant.STYLE_OPERATE_1, form.getName(), vmManager.get(form.getRegion(), form.getVmId()).getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
@@ -775,24 +769,4 @@ public class VMController {
 		this.recentOperateService.saveInfo(Constant.DELETE_KEYPAIR, name);
 		return result;
 	}
-
-    @RequestMapping(value = "/vm/rename", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResultObject renameVm(@Valid RenameVmForm form, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new ResultObject(bindingResult.getAllErrors());
-        }
-        ResultObject result = new ResultObject();
-        try {
-            resourceServiceFacade.renameVm(form.getRegion(), form.getVmId(), form.getName());
-        } catch (UserOperationException e) {
-            result.addMsg(e.getUserMessage());
-            result.setResult(0);
-        } catch (OpenStackException e) {
-            throw e.matrixException();
-        }
-        return result;
-    }
-
 }
