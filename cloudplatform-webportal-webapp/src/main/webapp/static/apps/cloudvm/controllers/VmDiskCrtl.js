@@ -258,7 +258,18 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.isListLoading=false;
             $scope.diskList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
-
+            $scope.diskList.filter(function(disk){return disk.status=='creating'}).forEach(function(disk) {
+              var diskDetailUrl = Config.urls.disk_detail.replace('{region}', CurrentContext.regionId).replace('{volumeId}', disk.id);
+              var buildStatusInterval = $interval(function () {
+                HttpService.doGet(diskDetailUrl).success(function (data, status, headers, config) {
+                  if (data.result === 1 && data.data.status != 'creating') {
+                    disk.status = data.data.status;
+                    $interval.cancel(buildStatusInterval);
+                    refreshDiskList();
+                  }
+                });
+              }, 5000);
+            });
           });
       },
         getCheckedDisk=function(){
