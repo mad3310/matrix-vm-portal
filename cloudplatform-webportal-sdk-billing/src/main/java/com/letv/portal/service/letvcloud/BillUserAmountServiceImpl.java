@@ -2,6 +2,7 @@ package com.letv.portal.service.letvcloud;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.exception.CommonException;
+import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.dao.letvcloud.BillRechargeRecordMapper;
@@ -258,7 +260,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				return true;
 			} else {
 				logger.error("账户可用余额小于需要转移金额,用户id:"+userId+",金额："+price);
-				return false;
+				throw new MatrixException("账户可用余额小于需要转移金额,用户id:"+userId+",金额："+price);
 			}
 		}
 	}
@@ -277,7 +279,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				ret = true;
 			} else {
 				logger.error("账户冻结余额小于需要转移金额,用户id:"+userId+",金额："+price);
-				return ret;
+				throw new MatrixException("账户冻结余额小于需要转移金额,用户id:"+userId+",金额："+price);
 			}
 		}
 		//服务创建失败后保存回退金额消息通知
@@ -321,8 +323,8 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				logger.info("扣除可用余额成功,用户id:"+userId+",金额："+price);
 				ret = true;
 			} else {
-				logger.error("账户可用余额小于可用金额,用户id:"+userId+",金额："+price);
-				return ret;
+				logger.error("账户可用余额小于扣除金额,用户id:"+userId+",金额："+price);
+				throw new MatrixException("账户可用余额小于扣除金额,用户id:"+userId+",金额："+price);
 			}
 		}
 		
@@ -368,7 +370,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				ret = true;
 			} else {
 				logger.error("冻结金额小于需要扣除金额,用户id:"+userId+",金额："+price);
-				return ret;
+				throw new MatrixException("冻结金额小于需要扣除金额,用户id:"+userId+",金额："+price);
 			}
 		}
 		//服务创建成功后保存扣减金额消息通知
@@ -415,7 +417,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 				ret = true;
 			} else {
 				logger.error("冻结金额小于需要处理金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
-				return ret;
+				throw new MatrixException(MessageFormat.format("冻结金额小于需要处理金额,用户id:{1},成功金额：{2},失败金额：{3}", userId, succPrice, failPrice));
 			}
 		}
 		

@@ -670,10 +670,11 @@ public class PayServiceImpl implements IPayService {
 			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(successCount));
 			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(failCount));
 			
-			//更新订阅订单起始时间
-			updateSubscriptionAndOrderTime(orderSubs);
 			//处理冻结金额(减少成功个数冻结余额，转移失败个数冻结金额到可用余额)
 			billUserAmountService.dealFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice, failPrice, (String)serviceParams.get("name"), productType);
+			
+			//更新订阅订单起始时间
+			updateSubscriptionAndOrderTime(orderSubs);
 			
 			//有成功的
 			if(succPrice.compareTo(new BigDecimal(0))==1) {
