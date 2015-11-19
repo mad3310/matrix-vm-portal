@@ -34,9 +34,13 @@ import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.StringUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
 
+import com.mchange.lang.ByteUtils;
+import org.apache.commons.codec.Charsets;
+import org.apache.commons.lang3.CharSet;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -1050,7 +1054,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 });
 
                 if (serverApi.get(vmId) == null) {
-                    recordVmDeleted(region, vm.getId(), ((FlavorResourceImpl)vm.getFlavor()).flavor);
+                    recordVmDeleted(region, vm.getId(), ((FlavorResourceImpl) vm.getFlavor()).flavor);
                 }
 
                 return null;
@@ -1822,7 +1826,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
                 .checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_VM_SNAPSHOT, vmSnapshotCount + 1);
 
-        String imageId = serverApi.createImageFromServer("", vmId);
+        String imageId = serverApi.createImageFromServer(StringUtil.getPrefix(name, 128), vmId);
 
         ImageApi imageApi = glanceApi.getImageApi(region);
         ImageDetails image = imageApi.get(imageId);
