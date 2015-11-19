@@ -634,7 +634,7 @@ width:150px;height:40px;
 
 /*begin le-col-name style*/
 .le-col-name {
-    max-width: 100px;
+    max-width: 150px;
 }
 .le-col-name > span{
     overflow-wrap: break-word;

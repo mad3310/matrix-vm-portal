@@ -57,7 +57,7 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm,$index)"></span>
                     </td>
-                    <td><span>{{vm.name}}</span></td>
+                    <td class="le-col-name"><span>{{vm.name}}</span></td>
                     <td>
                         <span ng-show="vm.ipAddresses.private.length || vm.ipAddresses.shared.length">
                             <div class="vm-address-private" ng-repeat="privateAddress in vm.ipAddresses.private">
