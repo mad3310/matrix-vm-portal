@@ -246,11 +246,16 @@ function alloptionsHandle(){
         if(_alloption.length>1){
             _paybtn.removeAttr('disabled');
         }else{
-            if(remainpay==orderPaynum){
-                _paybtn.removeAttr('disabled'); 
-            }else{
-                _paybtn.attr('disabled','true');
-            } 
+            if(_alloption.hasClass('self-checkbox')){
+                if(remainpay==orderPaynum){
+                    _paybtn.removeAttr('disabled'); 
+                }else{
+                    _paybtn.attr('disabled','true');
+                }
+            }else{//单种支付
+                _paybtn.removeAttr('disabled');
+            }
+             
         }
     }else{//未选择支付方式
         _paybtn.attr('disabled','true');
