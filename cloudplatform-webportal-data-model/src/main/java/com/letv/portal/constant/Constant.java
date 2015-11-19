@@ -103,8 +103,8 @@ public class Constant {
 	public static final String EDIT_SUBNET = "编辑子网";
 	public static final String DELETE_SUBNET = "删除子网";
 	
-	public static final String CREATE_KEYPAIR = "创建秘钥";
-	public static final String DELETE_KEYPAIR = "删除秘钥";
+	public static final String CREATE_KEYPAIR = "创建密钥";
+	public static final String DELETE_KEYPAIR = "删除密钥";
 	
 	public static final String SUBNET_ATTACH_VM = "私有网络添加云主机";
 	public static final String SUBNET_DETACH_VM = "私有网络移除云主机";

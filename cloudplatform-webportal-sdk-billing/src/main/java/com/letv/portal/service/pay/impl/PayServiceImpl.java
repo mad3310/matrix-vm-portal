@@ -34,6 +34,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.model.UserVo;
@@ -141,8 +142,9 @@ public class PayServiceImpl implements IPayService {
 		} else {
 			String userMoney = (String)map.get("accountMoney");
 			BigDecimal price = getValidOrderPrice(orderSubs);
+			BigDecimal accountMoney = null;
 			if(userMoney!=null && Double.parseDouble(userMoney)>0) {
-				BigDecimal accountMoney = new BigDecimal(userMoney);
+				accountMoney = new BigDecimal(userMoney);
 				//验证账户金额>=accountaccountMoney
 				BillUserAmount userAmount = this.billUserAmountService.getUserAmount(this.sessionService.getSession().getUserId());
 				if(userAmount.getAvailableAmount().compareTo(accountMoney)==-1) {
@@ -153,17 +155,12 @@ public class PayServiceImpl implements IPayService {
 				if(price.doubleValue()<0) {
 					throw new ValidateException("传入金额不合法!");
 				}
-				//更新使用账户余额到订单表
-				Order account = new Order();
-				account.setId(orderSubs.get(0).getOrderId());
-				account.setAccountPrice(accountMoney);
-				this.orderService.updateBySelective(account);
 			}
 			
 			if (price.doubleValue() == 0) {
 				if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
 					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));
-					updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2);
+					updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, accountMoney);
 					try {
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 					} catch (IOException e) {
@@ -177,7 +174,7 @@ public class PayServiceImpl implements IPayService {
 					return ret;
 				}
 				//3代表订单支付金额为0或订单金额全部使用账户余额支付时流水编号自己生成
-				if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2)) {
+				if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, accountMoney)) {
 					//创建应用实例
 					createInstance(orderSubs);
 					try {
@@ -206,6 +203,13 @@ public class PayServiceImpl implements IPayService {
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
 
 			if (Constants.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝方法
+				if(accountMoney!=null) {
+					//更新使用账户余额到订单表
+					Order account = new Order();
+					account.setId(orderSubs.get(0).getOrderId());
+					account.setAccountPrice(accountMoney);
+					this.orderService.updateBySelective(account);
+				}
 				logger.info("去支付宝支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
 				try {
 					response.sendRedirect(getPayUrl(url, params));
@@ -217,7 +221,7 @@ public class PayServiceImpl implements IPayService {
 				String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
 				ret = transResult(str);
 				if(getValidOrderPrice(orderSubs).subtract(order.getAccountPrice()).compareTo(new BigDecimal((String) ret.get("price")))==0) {
-					if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null, null)) {
+					if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null, null, accountMoney)) {
 						ret.put("alert", "微信方式支付异常");
 					}
 				} else {
@@ -237,7 +241,7 @@ public class PayServiceImpl implements IPayService {
 	    Date d = new Date();
 		
 		//扣除用户余额
-		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price, productName==null?"未命名":productName, 
+		this.billUserAmountService.reduceAvailableAmount(orderSubs.get(0).getCreateUser(), price, org.apache.commons.lang3.StringUtils.isEmpty(productName)?Constant.NO_NAME:productName, 
 				productType, sdf.format(d));
 		
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
@@ -251,7 +255,7 @@ public class PayServiceImpl implements IPayService {
 		mailMessageModel.put("userName", user.getUsername());
 		mailMessageModel.put("time", sdf.format(d));
 		mailMessageModel.put("productType", productType);
-		mailMessageModel.put("productName", productName==null?Constant.NO_NAME:productName);
+		mailMessageModel.put("productName", org.apache.commons.lang3.StringUtils.isEmpty(productName)?Constant.NO_NAME:productName);
 	    
 		
 		MailMessage mailMessage = new MailMessage(productType+"续费成功",user.getEmail(),productType+"续费成功",
@@ -350,7 +354,7 @@ public class PayServiceImpl implements IPayService {
 				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).doubleValue()+"");
 		if (sign != null && sign.equals(map.get("sign"))) {
 			
-			if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), CalendarUtil.parseCalendar((String)map.get("paytime")).getTime(), 2)) {
+			if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), CalendarUtil.parseCalendar((String)map.get("paytime")).getTime(), 2, null)) {
 				
 				//更改用户充值信息
 				//this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
@@ -403,13 +407,16 @@ public class PayServiceImpl implements IPayService {
 		return price;
 	}
 
-	private boolean updateOrderPayInfo(long orderId, String orderNumber, Date payTime, Integer status) {
+	private boolean updateOrderPayInfo(long orderId, String orderNumber, Date payTime, Integer status, BigDecimal accountMoney) {
 		Order o = new Order();
 		o.setId(orderId);
 		o.setStatus(status);
 		o.setUpdateTime(new Timestamp(new Date().getTime()));
 		o.setPayNumber(orderNumber);
 		o.setPayTime(payTime);
+		if(accountMoney!=null) {
+			o.setAccountPrice(accountMoney);
+		}
 		this.orderService.updateBySelective(o);
 		return true;
 	}
