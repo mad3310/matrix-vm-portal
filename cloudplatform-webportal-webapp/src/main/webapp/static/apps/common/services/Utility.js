@@ -42,15 +42,20 @@ define(['./common.service'],function (serviceModule) {
               for(var j in operaArraytemp){
                 if(otheraffect.length>0){//其他影响因素
                   for(var k in otheraffect){
-                    if(objtemp[otheraffect[k]]){
-                      if(objtemp[otheraffect[k]].length>0){
+                    var otheraffecttemp=objtemp[otheraffect[k]]
+                    if(otheraffecttemp instanceof Array){
+                      if(otheraffecttemp.length>0){
                         operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
                       }else{
                         operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
                       }
                     }else{
-                      operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
-                    } 
+                      if(otheraffecttemp){
+                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
+                      }else{
+                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                      }
+                    }    
                   }
                 }else{//无其他因素影响
                   operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]];

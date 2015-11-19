@@ -87,8 +87,8 @@
 			<div class="modal-content">
 				<div>请在新开页面上完成付款后，再继续操作。</div>
 				<div class="buttons clearfix text-center">
-					<div class="col-md-offset-2 col-md-4"><button class="btn btn-le-blue paybtn">支付完成</buttom></div>
-					<div class="col-md-4"><button class="btn btn-le-red paybtn">支付遇到问题</buttom></div>
+					<div class="col-md-offset-2 col-md-4"><button class="btn btn-le-blue paybtn">支付完成</button></div>
+					<div class="col-md-4"><button class="btn btn-le-red paybtn">支付遇到问题</button></div>
 				</div>
 			</div>
 		</div>

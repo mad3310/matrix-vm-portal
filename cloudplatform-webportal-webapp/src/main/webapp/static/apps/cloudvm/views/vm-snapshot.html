@@ -15,7 +15,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>
+                        <th class="unselectable">
                             <span class="iconfont icon-righticon"  ng-class="{checked:isAllSnapshotChecked()}" ng-click="checkAllSnapshot()"></span>
                         </th>
                         <th><span>名称</span></th>
@@ -27,7 +27,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="snapshot in vmSnapshotList">
-                        <td>
+                        <td class="unselectable">
                             <span class="iconfont icon-checkiconfill" ng-class="{checked:snapshot.checked}" ng-click="checkSnapshot(snapshot)"></span>
                         </td>
                         <td><span>{{snapshot.name|| '未设置'}}</span></td>
@@ -67,7 +67,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>
+                        <th class="unselectable">
                             <span class="iconfont icon-righticon"  ng-class="{checked:isAllSnapshotChecked()}" ng-click="checkAllSnapshot()"></span>
                         </th>
                         <th><span>名称</span></th>
@@ -80,7 +80,7 @@
                     </thead>
                     <tbody id="tby">
                     <tr ng-repeat="snapshot in diskSnapshotList">
-                        <td>
+                        <td class="unselectable">
                             <span class="iconfont icon-checkiconfill" ng-class="{checked:snapshot.checked}" ng-click="checkSnapshot(snapshot)"></span>
                         </td>
                         <td><span>{{snapshot.name|| '未设置'}}</span></td>
