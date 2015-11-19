@@ -29,6 +29,7 @@ import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.local.service.LocalVmService;
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
@@ -65,6 +66,9 @@ public class VMController {
 
 	@Autowired
 	private LocalKeyPairService localKeyPairService;
+	
+	@Autowired
+	private LocalVolumeService localVolumeService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -381,9 +385,10 @@ public class VMController {
 			VMResource vmResource = vmManager.get(region, vmId);
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			vmManager.attachVolume(vmResource, volumeResource);
+			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
 			//保存绑定云硬盘操作
 			this.recentOperateService.saveInfo(Constant.ATTACH_VOLUME_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResource.getName())?Constant.NO_NAME:volumeResource.getName(), vmResource.getName()));
+					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName, vmResource.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -403,10 +408,11 @@ public class VMController {
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			VMResource vmResource =  vmManager.get(region, vmId);
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
+			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
 			vmManager.detachVolume(vmResource, volumeResource);
 			//保存卸载云硬盘操作
 			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResource.getName())?Constant.NO_NAME:volumeResource.getName(), vmResource.getName()));
+					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName, vmResource.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
