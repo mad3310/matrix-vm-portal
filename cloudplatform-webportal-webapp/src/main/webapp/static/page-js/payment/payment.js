@@ -57,11 +57,12 @@ function moneyInputVali(){
                             _errordesc.text('支付金额有问题！');
                             _paybtn.attr('disabled', 'true');
                         }else{
-                            if(money==compare){
-                                _paybtn.addAttr('disabled');
-                            }else{
-                                _paybtn.removeAttr('disabled');
-                            }
+                            // if(money==compare){
+                            //     _paybtn.addAttr('disabled');
+                            // }else{
+                            //     _paybtn.removeAttr('disabled');
+                            // }
+                            $('.payoption:eq(0)').addClass('active');
                             _target.removeClass('has-error');
                             _errordesc.addClass('hide');
                             
@@ -139,6 +140,7 @@ function userInfo(){
     var remainurl="/userAccount/balance/"+userid;
     $.ajax({
         url:payurl,
+        cache:false,
         type: 'get',
         success:function(data){
             var _data=data.data;
@@ -150,6 +152,7 @@ function userInfo(){
     });
     return $.ajax({
         url:remainurl,
+        cache:false,
         type: 'get',
         success:function(data){
             var _data=data.data;
@@ -166,6 +169,7 @@ function orderDetail(){
     var orderurl='/order/'+orderNum
     return $.ajax({
     url:orderurl,
+    cache:false,
     type: 'get',
     success:function(data){
          if(data.result==0){//error
@@ -234,10 +238,25 @@ function orderDetail(){
 //支付按钮状态
 function alloptionsHandle(){
     var _paybtn=$('#pay');
+    var orderPaynum=Number($('#orderpay').text().substring(1));
+    var remainpay=$('.remainPay').val();
     // 检查当前的支付方式
     var _alloption=$('.alloption.active');
     if(_alloption.length>0){
-        _paybtn.removeAttr('disabled');
+        if(_alloption.length>1){
+            _paybtn.removeAttr('disabled');
+        }else{
+            if(_alloption.hasClass('self-checkbox')){
+                if(remainpay==orderPaynum){
+                    _paybtn.removeAttr('disabled'); 
+                }else{
+                    _paybtn.attr('disabled','true');
+                }
+            }else{//单种支付
+                _paybtn.removeAttr('disabled');
+            }
+             
+        }
     }else{//未选择支付方式
         _paybtn.attr('disabled','true');
     }
@@ -266,6 +285,7 @@ function goPay(){
             if(_alloption.length>0){
                 $.ajax({
                     url: '/order/pay/'+orderNum,
+                    cache:false,
                     type: 'get',
                     success:function(data){
                         var height=document.body.scrollHeight;
@@ -300,6 +320,7 @@ function goPay(){
     $('.paybtn').unbind('click').click(function(event) {//隐藏窗口
         $.ajax({
             url: '/order/pay/'+orderNum,
+            cache:false,
             type: 'get',
             success:function(data){
                 var url='/cvm/#/vm';
@@ -331,6 +352,7 @@ function queryStatus(){
     var _tiphtml='';
     return $.ajax({
         url: '/order/pay/'+ordernum,
+        cache:false,
         type: 'get',
         success:function(data){
             _tip.html('');

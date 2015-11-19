@@ -890,7 +890,7 @@ public class ResourceServiceImpl implements ResourceService {
             }
         });
 
-        if(!isInSharedNetworkRef.get()) {
+        if (!isInSharedNetworkRef.get()) {
             if (findedRouterIds.isEmpty()) {
                 throw new UserOperationException("Subnet is not associated with router.", "虚拟机所在的私有子网没有关联到路由");
             }
@@ -937,6 +937,23 @@ public class ResourceServiceImpl implements ResourceService {
                 "cloudvm/bindFloatingIp.ftl", params);
         mailMessage.setHtml(true);
         emailSender.sendMessage(mailMessage);
+    }
+
+    @Override
+    public void renameVm(NovaApi novaApi, String region, String vmId, String name) throws OpenStackException {
+        checkRegion(region, novaApi);
+
+        if (StringUtils.isEmpty(name)) {
+            throw new UserOperationException("vm name is empty", "虚拟机名称为空");
+        }
+
+        ServerApi serverApi = novaApi.getServerApi(region);
+        Server server = getVm(serverApi, vmId);
+
+        serverApi.rename(vmId, name);
+
+        server = getVm(serverApi, vmId);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region, server);
     }
 
 }

@@ -26,11 +26,11 @@
 .operation-title .title{padding-left:20px;font-size:14px;}
 .operation-title .more{color:#088ac2;float:right;}
 .operation-title .more:hover{cursor:pointer;text-decoration:none;}
-.body-operation .operation-items{height:170px;margin:10px 0 0 0;border:1px solid #ededed;overflow:hidden;}
+.body-operation .operation-items{height:160px;margin:15px 0 0 0;padding:1px 0;border:1px solid #ededed;overflow:hidden;}
 .body-operation .operation-items.operation-noitems{font-size:16px;line-height:168px;text-align:center;color:#888;}
 .operation-items.operation-noitems i{font-size:32px;}
-.body-operation .operation-items li{padding:8px 15px 8px 20px;list-style:none;border-bottom:1px solid #ededed;}
-.body-operation .operation-items li.last{border-bottom:0;padding-bottom: 9px;}
+.body-operation .operation-items li{padding:7px 15px 6px 20px;list-style:none;border-bottom:1px solid #ededed;}
+.body-operation .operation-items li.last{border-bottom:0;}
 .body-operation .operation-items li.third{border-bottom:0;}
 .body-operation.zhankai .operation-items li.third{border-bottom:1px solid #ededed;}
 .body-operation .operation-items li.gotop{display:none;}
@@ -39,11 +39,11 @@
 /*.operation-items li.last .items-desc{margin-top:6px;}*/
 
 /* 最近操作交互样式 by yk*/
-.le-expander{overflow: hidden;height:615px;}
+.le-expander{overflow: hidden;height:620px;}
 .le-expander .operation-expander{overflow-y:auto; }
 
 /*.buyed*/
-.body-buyed{height:385px;margin-top:30px;}
+.body-buyed{margin-top:30px;}
 .body-buyed .buyed-products{margin-top:15px;}
 .buyed-products .product{width:40%;height:175px;padding:25px 0 15px 0;text-align:center;color:#fff;background:#088ac2;float:left;display: block;text-decoration: none;}
 .product .iconfont{font-size:45px;display:block;}

@@ -152,18 +152,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     });
 
-    $scope.$watch('dataDiskVolume', function (value) {
-      if (value != null) {
-        delaySliderModelHandlerOfDiskVolume(value,updateDiskVolumeOfCalculatePrice);
-      }
-    });
-
-    $scope.$watch('networkBandWidth', function (value) {
-      if (value != null) {
-        delaySliderModelHandlerOfNetworkBandWidth(value,updateNetworkBandWidthOfCalculatePrice);
-      }
-    });
-
     $scope.$watch(function(){
       return [$scope.vmNetworkType,$scope.vmNetworkPublicIpModel].join('_');
     }, function () {
@@ -179,8 +167,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       return [$scope.selectedVmCpu,
         $scope.selectedVmRam,
         ($scope.selectedVmDiskType &&  $scope.selectedVmDiskType.name) || '',
-        diskVolumeOfCalculatePrice,
-        networkBandWidthOfCalculatePrice,
+        $scope.dataDiskVolume,
+        $scope.networkBandWidth,
         $scope.vmCount,
         $scope.vmBuyPeriod].join('_');
     }, function (value) {
@@ -192,11 +180,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     var flavorGroupData = null,
       selectedVmFlavor = null,
       selectedVmSharedNetwork=null,
-      calculatePriceData= null,
-      diskVolumeOfCalculatePrice= 0,
-      delaySliderModelHandlerOfDiskVolume=Utility.delaySliderModel(),
-      networkBandWidthOfCalculatePrice= 0,
-      delaySliderModelHandlerOfNetworkBandWidth=Utility.delaySliderModel();
+      calculatePriceData= null;
     var initComponents = function () {
         initVmImageSelector();
         initVmSnapshotSelector();
@@ -317,13 +301,8 @@ define(['controllers/app.controller'], function (controllerModule) {
           part3.push('带宽/:'+$scope.networkBandWidth+'Mbps');
         }
         return [part1.join('/;'),part2.join('/;'),part3.join('/;')].join(';;');
-      },
-      updateDiskVolumeOfCalculatePrice=function(value) {
-        diskVolumeOfCalculatePrice = value;
-      },
-      updateNetworkBandWidthOfCalculatePrice=function(value) {
-        networkBandWidthOfCalculatePrice = value;
       };
+
     initComponents();
   });
 

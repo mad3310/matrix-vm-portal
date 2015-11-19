@@ -17,11 +17,11 @@ define(['directives/app.directive'],function (directiveModule) {
             		var item = element.find(".operation-items");
             		if(scope.layout == 'top-expander'){
                         item.addClass("operation-expander");
-                        item.height(item.height()+415);
+                        item.height(item.height()+420);
                         item.css('transition', 'height .5s ease-in-out');
             		}else if(scope.layout == 'top-shrink'){
                         item.removeClass("operation-expander");
-                        item.height(item.height()-415);
+                        item.height(item.height()-420);
                         item.css('transition', 'height .5s ease-in');
             		}
             	});

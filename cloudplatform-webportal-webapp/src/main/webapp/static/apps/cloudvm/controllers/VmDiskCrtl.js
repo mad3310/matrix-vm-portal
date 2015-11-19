@@ -126,7 +126,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           return;
         }
         if(checkedDisks[0].status!=='available' && checkedDisks[0].status!=='error'){
-          WidgetService.notifyWarning('云硬盘当前状态不可删除');
+          WidgetService.notifyWarning('卸载云硬盘后执行删除操作');
           return;
         }
         var data={
@@ -270,6 +270,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'disk',
           'state':'status',
+          'other':[],
           'operations':['create','createsnap','attachdisk','edit','detachdisk','delete']
         }
         $scope.$watch(function(){

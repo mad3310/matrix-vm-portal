@@ -52,17 +52,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-    $scope.$watch('diskVolume', function (value) {
-      if (value != null) {
-        delaySliderModelHandlerOfDiskVolume(value,updateDiskVolumeOfCalculatePrice);
-      }
-    });
-
     $scope.$watch(function(){
       return [
         ($scope.selectedDiskType &&  $scope.selectedDiskType.name) || '',
         $scope.diskCount,
-        diskVolumeOfCalculatePrice,
+        $scope.diskVolume,
         $scope.diskBuyPeriod].join('_');
     }, function (value) {
       if ($scope.selectedDiskType && $scope.diskVolume && $scope.diskCount && $scope.diskBuyPeriod) {
@@ -70,8 +64,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     });
 
-    var diskVolumeOfCalculatePrice= 0,
-      delaySliderModelHandlerOfDiskVolume=Utility.delaySliderModel();
     var initComponents = function () {
         initDiskTypeSelector();
         initSnapshotTypeSelector();
@@ -118,11 +110,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       buildDisplayData=function(){
         var data=[];
         data.push(['类型',$scope.selectedDiskType.name].join('/:'));
-        data.push(['容量',$scope.diskVolume+'Mbps'].join('/:'));
+        data.push(['容量',$scope.diskVolume+'GB'].join('/:'));
         return data.join('/;');
-      },
-      updateDiskVolumeOfCalculatePrice=function(value) {
-        diskVolumeOfCalculatePrice = value;
       };
 
     initComponents();

@@ -22,10 +22,7 @@
                     <span class="letv-control-label">带宽：</span>
                 </div>
                 <div class="le-col-9 col-control col-slider">
-                    <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="1" rz-slider-ceil="50" rz-slider-step="1" rz-slider-always-show-bar="true">
-                    </rzslider>
-                    <span class="slider-number">{{networkBandWidth}}</span>
-                    <span class="slider-unit">Mbps</span>
+                    <le-slider le-slider-model="networkBandWidth" le-slider-min="1" le-slider-max="50" le-slider-step="1" le-slider-unit="Mbps"></le-slider>
                 </div>
             </div>
             <div class="le-row">

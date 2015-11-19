@@ -46,11 +46,8 @@
                     <div class="le-col-3 col-label">
                         <span class="letv-control-label">容量：</span>
                     </div>
-                    <div class="le-col-9 col-control col-slider">
-                        <rzslider rz-slider-model="diskVolume" rz-slider-floor="10" rz-slider-ceil="2048" rz-slider-step="10" rz-slider-always-show-bar="true">
-                        </rzslider>
-                        <span class="slider-number">{{diskVolume}}</span>
-                        <span class="slider-unit">GB</span>
+                    <div class="le-col-9 col-control">
+                        <le-slider le-slider-model="diskVolume" le-slider-step="10" le-slider-min="10" le-slider-max="2048" le-slider-unit="GB"></le-slider>
                     </div>
                 </div>
                 <div class="le-row">

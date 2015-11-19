@@ -13,7 +13,7 @@ define(['./common.service'],function (serviceModule) {
          };
       };
 
-      service.delaySliderModel = function () {
+      service.delayQueueModel = function () {
         var delayQueue = [],
           timeoutPromise = null;
         return function (value, onTimeout) {
@@ -30,17 +30,36 @@ define(['./common.service'],function (serviceModule) {
       service.setOperationBtns=function($scope,objList,productInfo,operationArry,Config){
           var type=productInfo.type;
           var state=productInfo.state;
+          var otheraffect=productInfo.other;
           var operaArraytemp=productInfo.operations;
           var operationArraycopy=[];
+          var othertemp=1,statetemp='';//暂存数据
           for(var i in objList){
             operationArry[i]=[];
             if(objList[i].checked){
+              var objtemp=objList[i];
+              statetemp=objtemp[state]?objtemp[state]:'default';
               for(var j in operaArraytemp){
-                operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];
+                if(otheraffect.length>0){//其他影响因素
+                  for(var k in otheraffect){
+                    if(objtemp[otheraffect[k]]){
+                      if(objtemp[otheraffect[k]].length>0){
+                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
+                      }else{
+                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                      }
+                    }else{
+                      operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                    } 
+                  }
+                }else{//无其他因素影响
+                  operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]];
+                }
+                // operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];
                 operationArraycopy[j]=1;
               }
             }else{
-              operationArry[i]=[1,1,1,1,1,1,1,1]
+              operationArry[i]=[1,1,1,1,1,1,1,1,1,1,1,1]
             }   
           }
           for(var i in operationArry){//多记录状态叠加
@@ -49,6 +68,10 @@ define(['./common.service'],function (serviceModule) {
             }
           }
           return operationArraycopy
+      };
+
+      service.isInt=function (input) {
+        return Number(input) % 1 === 0;
       };
       return service;
     }]);

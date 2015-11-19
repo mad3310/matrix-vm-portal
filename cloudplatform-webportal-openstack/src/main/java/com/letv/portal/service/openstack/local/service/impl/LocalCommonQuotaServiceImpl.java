@@ -21,7 +21,7 @@ public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
 
     @Override
     public void checkQuota(long userVoUserId, String region, CommonQuotaType type, int value) throws OpenStackException {
-        CommonQuota commonQuota = commonQuotaService.get(userVoUserId, region, type.getModule(), type);
+        CommonQuota commonQuota = commonQuotaService.insertDefaultAndGet(userVoUserId, region, type.getModule(), type);
         if (commonQuota == null) {
             throw new OpenStackException("User quota is not exists.", MessageFormat.format("用户的{0}配额不可用", type.getName()));
         }
