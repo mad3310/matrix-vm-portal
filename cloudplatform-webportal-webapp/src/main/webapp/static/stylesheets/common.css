@@ -632,6 +632,16 @@ width:150px;height:40px;
   }
 /*end col style*/
 
+/*begin le-col-name style*/
+.le-col-name {
+    max-width: 100px;
+}
+.le-col-name > span{
+    overflow-wrap: break-word;
+    line-height: 20px !important;
+}
+/*end le-col-name style*/
+
 /*begin le-slider style*/
 le-slider{
     height: 30px;

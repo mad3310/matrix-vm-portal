@@ -36,6 +36,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         description:'',
         volumeTypeId:$scope.selectedDiskType.id,
         size: $scope.diskVolume,
+        volumeSnapshotId:$scope.selectedSnapshot.value,
         count:$scope.diskCount,
         order_time: $scope.diskBuyPeriod.toString()
       };
