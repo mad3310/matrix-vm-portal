@@ -605,13 +605,13 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			createVolumeOptions.volumeType(volumeType.getId());
 		}
 
-		if (volumeCreateConf.getName() != null) {
+		if (StringUtils.isNotEmpty(volumeCreateConf.getName())) {
 			createVolumeOptions.name(volumeCreateConf.getName());
 		}
-		if (volumeCreateConf.getDescription() != null) {
+		if (StringUtils.isNotEmpty(volumeCreateConf.getDescription())) {
 			createVolumeOptions.description(volumeCreateConf.getDescription());
 		}
-		if (volumeCreateConf.getVolumeSnapshotId() != null) {
+		if (StringUtils.isNotEmpty(volumeCreateConf.getVolumeSnapshotId())) {
 			Snapshot snapshot = cinderApi.getSnapshotApi(volumeCreateConf.getRegion()).get(volumeCreateConf.getVolumeSnapshotId());
 			if (snapshot == null) {
 				throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeCreateConf.getVolumeSnapshotId());

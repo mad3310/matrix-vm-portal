@@ -1822,7 +1822,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
                 .checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_VM_SNAPSHOT, vmSnapshotCount + 1);
 
-        String imageId = serverApi.createImageFromServer(name, vmId);
+        String imageId = serverApi.createImageFromServer("", vmId);
 
         ImageApi imageApi = glanceApi.getImageApi(region);
         ImageDetails image = imageApi.get(imageId);

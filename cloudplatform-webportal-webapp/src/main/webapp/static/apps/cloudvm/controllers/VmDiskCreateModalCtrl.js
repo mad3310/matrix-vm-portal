@@ -36,6 +36,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         description:'',
         volumeTypeId:$scope.selectedDiskType.id,
         size: $scope.diskVolume,
+        volumeSnapshotId:$scope.selectedSnapshot.value,
         count:$scope.diskCount,
         order_time: $scope.diskBuyPeriod.toString()
       };
@@ -52,20 +53,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-    $scope.$watch('diskVolume', function (newValue) {
-      if (newValue != null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= 2048 && newValue >= 10) {
-        delaySliderModelHandlerOfDiskVolume(newValue,updateDiskVolumeOfCalculatePrice);
-      }
-      else {
-        $scope.diskVolume = 10;
-      }
-    });
-
     $scope.$watch(function(){
       return [
         ($scope.selectedDiskType &&  $scope.selectedDiskType.name) || '',
         $scope.diskCount,
-        diskVolumeOfCalculatePrice,
+        $scope.diskVolume,
         $scope.diskBuyPeriod].join('_');
     }, function (value) {
       if ($scope.selectedDiskType && $scope.diskVolume && $scope.diskCount && $scope.diskBuyPeriod) {
@@ -73,8 +65,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     });
 
-    var diskVolumeOfCalculatePrice= 0,
-      delaySliderModelHandlerOfDiskVolume=Utility.delaySliderModel();
     var initComponents = function () {
         initDiskTypeSelector();
         initSnapshotTypeSelector();
@@ -123,9 +113,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         data.push(['类型',$scope.selectedDiskType.name].join('/:'));
         data.push(['容量',$scope.diskVolume+'GB'].join('/:'));
         return data.join('/;');
-      },
-      updateDiskVolumeOfCalculatePrice=function(value) {
-        diskVolumeOfCalculatePrice = value;
       };
 
     initComponents();
