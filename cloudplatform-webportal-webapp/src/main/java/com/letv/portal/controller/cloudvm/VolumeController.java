@@ -147,9 +147,10 @@ public class VolumeController {
 			VolumeManager volumeManager = Util.session(sessionService)
 					.getVolumeManager();
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
+			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
 			volumeManager.deleteSync(region, volumeResource);
 			//保存硬盘删除操作
-			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, StringUtils.isEmpty(volumeResource.getName())?Constant.NO_NAME:volumeResource.getName());
+			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -170,7 +171,7 @@ public class VolumeController {
 		long userId = Util.userId(sessionService);
 		String volumeName;
 		try {
-			volumeName = Util.session(sessionService).getVolumeManager().get(form.getRegion(), form.getVolumeId()).getName();
+			volumeName = localVolumeService.get(this.sessionService.getSession().getUserId(),form.getRegion(), form.getVolumeId()).getName();
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -223,7 +224,7 @@ public class VolumeController {
 		try {
 			VolumeManager volumeManage = Util.session(sessionService).getVolumeManager();
 			volumeManage.createVolumeSnapshot(form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
-			String volumeResourceName = volumeManage.get(form.getRegion(), form.getVolumeId()).getName();
+			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),form.getRegion(), form.getVolumeId()).getName();
 			//保存创建云硬盘快照操作
 			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, 
 					MessageFormat.format(Constant.STYLE_OPERATE_1, form.getName(), StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName));
