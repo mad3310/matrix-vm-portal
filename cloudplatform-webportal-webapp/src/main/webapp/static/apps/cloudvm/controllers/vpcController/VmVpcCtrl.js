@@ -457,7 +457,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                 var watchStateChange=function(){
                     var productInfo={
                       'type':'subnet',
-                      'state':'',
+                      'state':'default',
                       'other':['router'],
                       'operations':['create','bindvm','bindrouter','unbindvm','unbindrouter','edit','delete']
                     }
