@@ -40,8 +40,14 @@
 				</div>
 				<div class="pay-item payoptions">
 					<span class="item-title">支付方式：</span>
-					<button class="payoption alloption" self-payoption='1'><img src="/static/staticPage/img/zhifubao.png"></button>
-					<button class="payoption alloption" self-payoption='2'><img src="/static/staticPage/img/wechat.png"></button>
+					<div class="payoption alloption" self-payoption='1'>
+						<img src="/static/staticPage/img/zhifubao.png">
+						<i class="iconfont icon-checkroundfillicon"></i>
+					</div>
+					<div class="payoption alloption" self-payoption='2'>
+						<img src="/static/staticPage/img/wechat.png">
+						<i class="iconfont icon-checkroundfillicon"></i>
+					</div>
 				</div>
 				
 				<div class="pay-item">

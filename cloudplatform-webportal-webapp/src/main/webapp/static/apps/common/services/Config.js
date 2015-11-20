@@ -133,6 +133,10 @@ define(['./common.service'], function (serviceModule) {
       {"text": "无", "value": "NIL"},
     ];
     config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
+    config.serverName={
+      uc:"uc.letvcloud.com",
+      matrix:"matrix.letvclond.com"
+    };
     config.statusOperations={
       "virtualMachine":{
         "active":{"create":1,"start":0,"stop":1,"restart":1,"createsnap":1,"changeconfig":0,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
