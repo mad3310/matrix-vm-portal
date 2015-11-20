@@ -86,7 +86,7 @@ define(['./common.service'], function (serviceModule) {
       'building':'创建中',
       'paused':'已暂停',
       'suspended':'已挂起',
-      'stopped':'已停止',
+      'stopped':'已关机',
       'error':'异常',
       //前端添加
       'deleted':'已删除',
@@ -95,7 +95,7 @@ define(['./common.service'], function (serviceModule) {
     config.vmTaskStatuses = {
       'building':'创建中',
       'deleting':'删除中',
-      'stopping':'停止中',
+      'stopping':'关机中',
       'starting':'启动中',
       'rebooting':'重启中',
       'spawning':'创建中'

@@ -518,11 +518,11 @@ define(['controllers/app.controller'], function (controllerModule) {
             HttpService.doPost(Config.urls.subnet_attach_vm, data).success(function (data, status, headers, config) {
                 if(data.result===1){
                     $modalInstance.close({result:1});
-                    WidgetService.notifySuccess(data.msgs[0]||'关联云主机完成');
+                    WidgetService.notifySuccess(data.msgs[0]||'添加云主机成功');
                 }
                 else{
                     $scope.isFormSubmiting=false;
-                    WidgetService.notifyError(data.msgs[0]||'关联云主机失败');
+                    WidgetService.notifyError(data.msgs[0]||'添加云主机失败');
                 }
             });
         };
@@ -580,7 +580,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             HttpService.doPost(Config.urls.subnet_detach_vm, data).success(function (data, status, headers, config) {
                 if(data.result===1){
                     $modalInstance.close({result:1});
-                    WidgetService.notifySuccess(data.msgs[0]||'移除云主机完成');
+                    WidgetService.notifySuccess(data.msgs[0]||'移除云主机成功');
                 }
                 else{
                     $scope.isFormSubmiting=false;
