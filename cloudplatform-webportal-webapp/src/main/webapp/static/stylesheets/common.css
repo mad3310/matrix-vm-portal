@@ -1236,4 +1236,5 @@ le-select .le-select-menu li a{
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
