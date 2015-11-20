@@ -250,4 +250,15 @@ define(['./common.directive'],function (directiveModule) {
             templateUrl: '/static/apps/common/directives/buy-period-selector/template.html'
         };
     });
+
+    directiveModule.directive('leAutoFocus', function ($timeout) {
+        return {
+            restrict: 'AE',
+            link: function (scope, element, attrs) {
+                if (element && element[0]) {
+                    $timeout( function () { element[0].focus(); } );
+                }
+            }
+        };
+    });
 });
