@@ -46,7 +46,7 @@
                     <td class="le-col-name"><span>{{fIp.name|| '未设置'}}</span></td>
                     <td><span>{{fIp.ipAddress}}</span></td>
                     <td><span>{{fIp.status | vmFloatIpFilter}}</span></td>
-                    <td><span>{{fIp.bindResource.name||'-'}}</span></td>
+                    <td class="le-col-name"><span>{{fIp.bindResource.name||'-'}}</span></td>
                     <td><span>{{fIp.bandWidth}}</span></td>
                     <td><span>{{fIp.carrier.name}}</span></td>
                     <td><span>{{fIp.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
@@ -83,7 +83,7 @@
                         <span class="letv-control-label">名称：</span>
                     </div>
                     <div class="le-col-7 col-control">
-                        <span class="letv-control-label le-break-word">{{floatIpName}}</span>
+                        <span class="letv-control-label label-name">{{floatIpName}}</span>
                     </div>
                 </div>
                 <div class="le-row">

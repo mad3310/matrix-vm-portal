@@ -634,10 +634,12 @@ width:150px;height:40px;
 
 /*begin le-col-name style*/
 .le-col-name {
-    max-width: 150px;
+
 }
 .le-col-name > span{
-    overflow-wrap: break-word;
+    max-width: 250px;
+    display: inline-block;
+    word-wrap: break-word;
     line-height: 20px !important;
 }
 /*end le-col-name style*/
@@ -820,7 +822,7 @@ le-slider .slider-number{
     vertical-align: middle;
     line-height: 30px;
     width: 280px;
-    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .le-confirm .confirm-content i{
@@ -1214,6 +1216,11 @@ le-select .le-select-menu li a{
     padding: 0;
     line-height: 30px;
 }
+.le-modal-body .col-control > span.label-name{
+    max-width: 300px;
+    display: inline-block;
+    word-wrap: break-word;
+}
 .le-modal-body .col-control > input{
     display: inline-block;
 }
@@ -1224,9 +1231,3 @@ le-select .le-select-menu li a{
 /*end le-modal style*/
 /*禁止选中*/
 .unselectable{-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;}
-
-/*begin le-break-word style*/
-.le-break-word{
-    overflow-wrap: break-word;
-}
-/*end le-break-word style*/
