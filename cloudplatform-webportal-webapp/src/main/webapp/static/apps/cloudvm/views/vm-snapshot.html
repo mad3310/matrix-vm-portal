@@ -30,8 +30,8 @@
                         <td class="unselectable">
                             <span class="iconfont icon-checkiconfill" ng-class="{checked:snapshot.checked}" ng-click="checkSnapshot(snapshot)"></span>
                         </td>
-                        <td><span>{{snapshot.name|| '未设置'}}</span></td>
-                        <td><span>{{snapshot.vmName|| '未设置'}}</span></td>
+                        <td class="le-col-name"><span>{{snapshot.name|| '未设置'}}</span></td>
+                        <td class="le-col-name"><span>{{snapshot.vmName|| '未设置'}}</span></td>
                         <td>
                             <span>{{snapshot.status | vmImageStatusFilter}}</span>
                             <span ng-show="['SAVING','QUEUED','PENDING_DELETE'].indexOf(snapshot.status)>-1" class="status-loading"></span>
@@ -83,8 +83,8 @@
                         <td class="unselectable">
                             <span class="iconfont icon-checkiconfill" ng-class="{checked:snapshot.checked}" ng-click="checkSnapshot(snapshot)"></span>
                         </td>
-                        <td><span>{{snapshot.name|| '未设置'}}</span></td>
-                        <td><span>{{snapshot.volumeName|| '未设置'}}</span></td>
+                        <td class="le-col-name"><span>{{snapshot.name|| '未设置'}}</span></td>
+                        <td class="le-col-name"><span>{{snapshot.volumeName|| '未设置'}}</span></td>
                         <td><span>数据盘</span></td>
                         <td>
                             <span>{{snapshot.status | diskStatusFilter}}</span>

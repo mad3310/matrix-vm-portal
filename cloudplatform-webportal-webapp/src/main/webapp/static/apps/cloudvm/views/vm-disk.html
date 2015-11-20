@@ -43,14 +43,14 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:disk.checked}" ng-click="checkDisk(disk)"></span>
                     </td>
-                    <td><span>{{disk.name|| '未设置'}}</span></td>
+                    <td class="le-col-name"><span>{{disk.name|| '未设置'}}</span></td>
                     <td><span>{{disk.volumeType}}</span></td>
                     <td><span>{{disk.size}}GB</span></td>
                     <td>
                         <span>{{disk.status | diskStatusFilter}}</span>
                         <span ng-if="['creating','attaching','deleting','detaching'].indexOf(disk.status)>-1" class="status-loading"></span>
                     </td>
-                    <td><span>{{(disk.attachments[0] && disk.attachments[0].vmName)|| '未挂载'}}</span></td>
+                    <td class="le-col-name"><span>{{(disk.attachments[0] && disk.attachments[0].vmName)|| '未挂载'}}</span></td>
                     <td><span>{{disk.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
                 </tr>
                 <tr ng-if="diskList.length==0">
@@ -116,7 +116,7 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-name" ng-model="diskName" name="disk_name" name-input-restrict />
+                            <input type="text" class="le-form-control input-disk-name" ng-model="diskName" name="disk_name" le-auto-focus name-input-restrict />
                             <span ng-show="(vm_disk_edit_form.$submitted || vm_disk_edit_form.disk_name.$touched) && vm_disk_edit_form.disk_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
                                 <i class="iconfont icon-icon1"></i>
                             </span>

@@ -139,8 +139,8 @@ define(['./common.filter'], function (filterModule) {
       var totalVolumeSize = 0;
       if(vm.volumes && vm.volumes.length){
         if(vm.volumes.length>1){
-          totalVolumeSize =  vm.volumes.reduce(function (x, y) {
-            return x.size + y.size;
+          totalVolumeSize =  vm.volumes.map(function(volume){return volume.size;}).reduce(function (x, y) {
+            return x + y;
           });
         }
         else{

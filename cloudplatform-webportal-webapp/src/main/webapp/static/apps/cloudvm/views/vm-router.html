@@ -10,7 +10,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
                     <li><button class="btn dropdown-btn" ng-click="removeSubnet()" ng-disabled="operationBtn.removesubnet==0">解除关联子网</button></li>
-                    <li><button class="btn dropdown-btn" ng-click="deleteRouter()" ng-disabled="operationBtn.delete==0">删除路由</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="deleteRouter()" ng-disabled="operationBtn.delete==0">删除路由器</button></li>
                 </ul>
             </div>
         </div>
@@ -41,7 +41,7 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:router.checked}" ng-click="checkRouter(router)"></span>
                     </td>
-                    <td><span>{{router.name|| '未设置'}}</span></td>
+                    <td class="le-col-name"><span>{{router.name|| '未设置'}}</span></td>
                     <td><span>{{router.status|routerStatusFilter}}</span></td>
                     <td><span>{{router.gatewayIp}}</span></td>
                     <td><span>{{router.subnets | routerSubnetFilter}}</span></td>
@@ -80,7 +80,7 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" name-input-restrict/>
+                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" le-auto-focus name-input-restrict/>
                             <span ng-show="(vm_router_create_form.$submitted || vm_router_create_form.router_name.$touched) && vm_router_create_form.router_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
                                 <i class="iconfont icon-icon1"></i>
                             </span>
@@ -141,7 +141,7 @@
                     <span class="letv-control-label">名称：</span>
                 </div>
                 <div class="le-col-9 col-control">
-                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" name-input-restrict />
+                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" le-auto-focus name-input-restrict />
                     <span ng-show="(vm_router_edit_form.$submitted || vm_router_edit_form.edit_router_name.$touched) && vm_router_edit_form.edit_router_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
                         名称不符合规则
                     </span>
@@ -188,7 +188,7 @@
                         <span class="letv-control-label">名称：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <span class="letv-control-label">{{associateRouterName}}</span>
+                        <span class="letv-control-label label-name">{{associateRouterName}}</span>
                     </div>
                 </div>
                 <div class="le-row">
@@ -225,7 +225,7 @@
                         <span class="letv-control-label">名称：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <span class="letv-control-label">{{routerName}}</span>
+                        <span class="letv-control-label label-name">{{routerName}}</span>
                     </div>
                 </div>
                 <div class="le-row">

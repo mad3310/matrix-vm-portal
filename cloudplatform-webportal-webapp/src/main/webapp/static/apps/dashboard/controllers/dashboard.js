@@ -137,7 +137,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 							$scope.quotas.CLOUDVM_BAND_WIDTH=data.data.CLOUDVM_BAND_WIDTH;
 							$scope.quotas.bandwidthStyle={width:$scope.service.bandWidth/$scope.quotas.CLOUDVM_BAND_WIDTH*100+"%"}
 							$scope.quotas.CLOUDVM_CPU=data.data.CLOUDVM_CPU;
-							$scope.quotas.cupStyle={width:$scope.service.cpu/$scope.quotas.CLOUDVM_CPU*100+"%"}
+							$scope.quotas.cpuStyle={width:$scope.service.cpu/$scope.quotas.CLOUDVM_CPU*100+"%"}
 							$scope.quotas.CLOUDVM_FLOATING_IP=data.data.CLOUDVM_FLOATING_IP;
 							$scope.quotas.floatIpStyle={width:$scope.service.floatingIp/$scope.quotas.CLOUDVM_FLOATING_IP*100+"%"}
 							$scope.quotas.CLOUDVM_KEY_PAIR=data.data.CLOUDVM_KEY_PAIR;

@@ -8,6 +8,7 @@ define(['./common.service'], function (serviceModule) {
       vm_regions: '/ecs/regions/',
       region_list:'/ecs/region/list',
       vm_list: '/ecs/region/{region}',
+      vm_detail:'/ecs/region/{region}/vm/{vmId}',
       not_in_any_network_vm_list:'/ecs/vm/notInAnyNetwork/list',
       could_attach_subnet_list:'/ecs/vm/couldAttachSubnet/list',
       vm_attach_subnet_list:"/ecs/vm/attached/subnet/list",
@@ -19,6 +20,7 @@ define(['./common.service'], function (serviceModule) {
       disk_buy: '/billing/buy/3',
       floatip_buy: '/billing/buy/4',
       router_buy: '/billing/buy/5',
+      vm_rename: '/ecs/vm/rename',
       vm_start: '/ecs/region/{region}/vm-start',
       vm_stop: '/ecs/region/{region}/vm-stop',
       vm_reboot: '/ecs/vm/reboot',
@@ -30,8 +32,8 @@ define(['./common.service'], function (serviceModule) {
       disk_calculate_price:'/billing/calculate/price/3',
       floatip_calculate_price:'/billing/calculate/price/4',
       route_calculate_price:'/billing/calculate/price/5',
-      vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
+      disk_detail:'/osv/region/{region}/volume/{volumeId}',
       disk_create:'/osv/region/{region}/volume-create',
       disk_delete:'/osv/region/{region}/volume-delete',
       disk_attach:'/ecs/region/{region}/vm-attach-volume',
@@ -85,7 +87,7 @@ define(['./common.service'], function (serviceModule) {
       'building':'创建中',
       'paused':'已暂停',
       'suspended':'已挂起',
-      'stopped':'已停止',
+      'stopped':'已关机',
       'error':'异常',
       //前端添加
       'deleted':'已删除',
@@ -94,7 +96,7 @@ define(['./common.service'], function (serviceModule) {
     config.vmTaskStatuses = {
       'building':'创建中',
       'deleting':'删除中',
-      'stopping':'停止中',
+      'stopping':'关机中',
       'starting':'启动中',
       'rebooting':'重启中',
       'spawning':'创建中'
@@ -132,6 +134,10 @@ define(['./common.service'], function (serviceModule) {
       {"text": "无", "value": "NIL"},
     ];
     config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
+    config.serverName={
+      uc:"uc.letvcloud.com",
+      matrix:"matrix.letvclond.com"
+    };
     config.statusOperations={
       "virtualMachine":{
         "active":{"create":1,"start":0,"stop":1,"restart":1,"createsnap":1,"changeconfig":0,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,

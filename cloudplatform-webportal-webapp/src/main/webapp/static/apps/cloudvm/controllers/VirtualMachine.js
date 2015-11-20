@@ -36,7 +36,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var data={
           vmId: checkedVms[0].id
         };
-        var modalInstance = WidgetService.openConfirmModal('启动云主机','确定要启动云主机（'+checkedVms[0].name+'）吗？');
+        var modalInstance = WidgetService.openConfirmModal('启动云主机','确定要云主机（'+checkedVms[0].name+'）启动吗？');
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
@@ -70,17 +70,17 @@ define(['controllers/app.controller'], function (controllerModule) {
           return;
         }
         if(originalTaskState || originalVmState!=='active'){
-          WidgetService.notifyWarning('云主机当前状态不可停止');
+          WidgetService.notifyWarning('云主机当前状态不可关机');
           return;
         }
         var data={
           vmId: checkedVms[0].id
         };
-        var modalInstance = WidgetService.openConfirmModal('停止云主机','确定要停止云主机（'+checkedVms[0].name+'）吗？');
+        var modalInstance = WidgetService.openConfirmModal('云主机关机','确定要云主机（'+checkedVms[0].name+'）关机吗？');
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云主机停止执行中...');
+          WidgetService.notifyInfo('云主机关机执行中...');
           checkedVms[0].vmState=null;
           checkedVms[0].taskState='stopping';
           HttpService.doPost(Config.urls.vm_stop.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
@@ -88,13 +88,13 @@ define(['controllers/app.controller'], function (controllerModule) {
               checkedVms[0].vmState='stopped';
               checkedVms[0].taskState=null;
               modalInstance.close(data);
-              WidgetService.notifySuccess('停止云主机成功');
+              WidgetService.notifySuccess('云主机关机成功');
               refreshVmList();
             }
             else{
               checkedVms[0].vmState=originalVmState;
               checkedVms[0].taskState=originalTaskState;
-              WidgetService.notifyError(data.msgs[0]||'停止云主机失败');
+              WidgetService.notifyError(data.msgs[0]||'云主机关机失败');
             }
           });
         }, function () {
@@ -202,6 +202,41 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
       $scope.checkVm = function (vm,index) {
         vm.checked = vm.checked === true ? false : true;
+      };
+
+      $scope.openDiskEditModal = function (size) {
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+/*        if(checkedVms[0].taskState || (checkedVms[0].vmState!=='active' && checkedVms[0].vmState !=='stopped')){
+          WidgetService.notifyWarning('云主机当前状态不可挂载云硬盘');
+          return;
+        }*/
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'VmEditModalTpl',
+          controller: 'VmEditModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            vm: function () {
+              return checkedVms[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            refreshVmList();
+          }
+        }, function () {
+        });
       };
 
       $scope.openDiskAttachModal = function (size) {
@@ -697,6 +732,36 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
+
+  });
+
+  controllerModule.controller('VmEditModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+
+    $scope.vmName=vm.name;
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.editVm = function () {
+      var data = {
+        region:region,
+        vmId:vm.id,
+        name:$scope.vmName
+      };
+      $scope.isFormSubmiting=true;
+      HttpService.doPost(Config.urls.vm_rename, data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('云主机编辑成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'云主机编辑失败');
+          $scope.isFormSubmiting=false;
+        }
+      });
+    };
+
 
   });
 

@@ -43,10 +43,10 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:fIp.checked}" ng-click="checkFip(fIp)"></span>
                     </td>
-                    <td><span>{{fIp.name|| '未设置'}}</span></td>
+                    <td class="le-col-name"><span>{{fIp.name|| '未设置'}}</span></td>
                     <td><span>{{fIp.ipAddress}}</span></td>
                     <td><span>{{fIp.status | vmFloatIpFilter}}</span></td>
-                    <td><span>{{fIp.bindResource.name||'-'}}</span></td>
+                    <td class="le-col-name"><span>{{fIp.bindResource.name||'-'}}</span></td>
                     <td><span>{{fIp.bandWidth}}</span></td>
                     <td><span>{{fIp.carrier.name}}</span></td>
                     <td><span>{{fIp.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
@@ -83,7 +83,7 @@
                         <span class="letv-control-label">名称：</span>
                     </div>
                     <div class="le-col-7 col-control">
-                        <span class="letv-control-label le-break-word">{{floatIpName}}</span>
+                        <span class="letv-control-label label-name">{{floatIpName}}</span>
                     </div>
                 </div>
                 <div class="le-row">
@@ -128,7 +128,7 @@
                         <span class="letv-control-label">名称：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <input type="text" name="ip_name" class="le-form-control" ng-model="ipName" placeholder="请输入公网IP名称" name-input-restrict />
+                        <input type="text" name="ip_name" class="le-form-control" ng-model="ipName" placeholder="请输入公网IP名称" le-auto-focus name-input-restrict />
                         <span ng-show="(vm_ip_edit_form.$submitted || vm_ip_edit_form.ip_name.$touched) && vm_ip_edit_form.ip_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
                             <i class="iconfont icon-icon1"></i>
                         </span>

@@ -39,7 +39,7 @@
                         <div class="inputs-item clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">主机名称：</span></div>
                             <div class="col-sm-10">
-                                <input type="text" name="vm_name" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" name-input-restrict />
+                                <input type="text" name="vm_name" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" le-auto-focus name-input-restrict />
                                 <span ng-show="(vm_create_form.$submitted || vm_create_form.vm_name.$touched) && vm_create_form.vm_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
                                     <i class="iconfont icon-icon1"></i>
                                 </span>
@@ -94,7 +94,7 @@
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">CPU：</span></div>
                             <div class="col-sm-10">
-                                <div class="letv-mutiCheck check-cpu" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
+                                <div class="letv-mutiCheck check-cpu" ng-repeat="vmCpu in vmCpuList | orderBy" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
                                     <span>{{vmCpu}}核</span>
                                     <i class="iconfont icon-checkroundfillicon"></i>
                                 </div>
@@ -103,7 +103,7 @@
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">内存：</span></div>
                             <div class="col-sm-10">
-                                <div class="letv-mutiCheck check-ram" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
+                                <div class="letv-mutiCheck check-ram" ng-repeat="vmRam in vmRamList | orderBy" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
                                     <span>{{vmRam/1024 | number:0}}G</span>
                                     <i class="iconfont icon-checkroundfillicon"></i>
                                 </div>

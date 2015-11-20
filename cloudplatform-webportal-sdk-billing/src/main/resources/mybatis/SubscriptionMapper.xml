@@ -197,7 +197,12 @@
 	        <include refid="Base_Column_List" />
 	    from
 	        MATRIX_BILLING_SUBSCRIPTION subscription
+	   	left join 
+		    MATRIX_BILLING_ORDER_SUB mbos on subscription.ID=mbos.SUBSCRIPTION_ID
+	    left join
+	    	MATRIX_BILLING_ORDER mbo on mbo.ID=mbos.ORDER_ID
 	        <include refid="Common_Where_Clause" />
+	        and mbo.STATUS=2
 	        <if test="date != null and date != '' ">
 	            and subscription.START_TIME &lt; #{date} and subscription.END_TIME &gt;= #{date}
 	        </if>

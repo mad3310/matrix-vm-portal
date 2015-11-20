@@ -217,11 +217,20 @@ define(['./common.directive'],function (directiveModule) {
                 var max =Number(scope.max),
                   min=Number(scope.min);
                 scope.$watch('model', function (newValue) {
-                    if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue) && newValue <= max && newValue >= min) {
-                        delayQueueModelHandler(newValue, function(value) {
-                            scope.model = Number(value);
-                            scope.externalModel = scope.model;
-                        });
+                    if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue)) {
+                        if( newValue <= max && newValue >= min){
+                            delayQueueModelHandler(newValue, function(value) {
+                                scope.model = Number(value);
+                                scope.externalModel = scope.model;
+                            });
+                        }
+                        else if(newValue > max){
+                            scope.model = max;
+                        }
+                        else if(newValue < min){
+                            scope.model = min;
+                        }
+                        else{}
                     }
                     else {
                         scope.model = min;
@@ -248,6 +257,17 @@ define(['./common.directive'],function (directiveModule) {
                 };
             },
             templateUrl: '/static/apps/common/directives/buy-period-selector/template.html'
+        };
+    });
+
+    directiveModule.directive('leAutoFocus', function ($timeout) {
+        return {
+            restrict: 'AE',
+            link: function (scope, element, attrs) {
+                if (element && element[0]) {
+                    $timeout( function () { element[0].focus(); } );
+                }
+            }
         };
     });
 });

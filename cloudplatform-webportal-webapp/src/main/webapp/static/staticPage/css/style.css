@@ -366,11 +366,11 @@ ul.menu-sub li{padding:10px 10px 10px 40px;}
 .order-pay .pay-item{margin-bottom:10px;min-height:20px;}
 .pay-item .item-title{width:75px;text-align:right;display:inline-block;}
 .pay-item .item-desc{padding-left:25px;font-size:1.4rem;font-size:14px\9;}
-.item-desc .desc-input{position:relative;top:0;left:0;}
-.desc-input .input-china{position:absolute;top:0;left:5px}
+.item-desc .desc-input{margin-right:10px;position:relative;top:0;left:0;}
+.desc-input .input-china{position:absolute;top:2px;left:5px}
 .item-recharge{margin-left:50px;}
 .item-pay{width:180px;margin-top:35px;}
-.remainPay{width:120px;height:30px;padding:6px 12px;font-size:1.4rem;font-size:14px\9;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #d2d2d2;}
+.remainPay{width:120px;height:35px;padding:6px 14px;font-size:1.4rem;font-size:14px\9;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #d2d2d2;}
 .price-table.ordertable{margin-top:20px;background:#fbfbfb;color:#666;display:block;}
 .ordertable.opacity{opacity:1;}
 .price-table.ordertable thead{border:1px solid #ededed;color:#666;background:none;}
@@ -381,10 +381,12 @@ ul.menu-sub li{padding:10px 10px 10px 40px;}
 .payitems .payitem{margin-bottom:15px;}
 .payitem .payitem-desc{padding-left:10px;text-align:left;}
 .payitem div{width:50%;float:left;}
-.payoption{width:105px;height:40px;margin-left:25px;padding:5px;border:1px solid #e3e3e3;border-radius:2px;background:#fff;}
-.payoption:hover{cursor:pointer;border-color:#088ac2;}
+.payoption{width:120px;height:40px;margin-left:25px;padding:8px 5px;border:1px solid #e3e3e3;border-radius:2px;text-align:center;background:#fff;display:inline-block;position:relative;}
+.payoption:hover{cursor:pointer;}
 .payoption img{height:23px;}
+.payoption .iconfont{position:absolute;bottom:0;right:0;font-size:16px;color:transparent;}
 .payoption.active{border-color:#088ac2;}
+.payoption.active .iconfont{color:#088ac2}
 .paycomplete{text-align:center;font-size:1.4rem;font-size:14px\9;color:#333;}
 .paycomplete .icon-roundcheckfill{font-size:40px;}
 .paycomplete .paytitle{height:120px;padding:26px 0;font-size:2.4rem;font-size:24px\9;background:#f6f7f9;}

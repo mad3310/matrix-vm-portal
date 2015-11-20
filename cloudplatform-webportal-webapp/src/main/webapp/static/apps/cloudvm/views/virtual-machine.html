@@ -17,6 +17,7 @@
                     <li><a href="javascript:void(0);" ng-click="openVmPasswordChangeModal('500')">修改密码</a></li>
                     <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li> -->
                     <li><button class="btn dropdown-btn" ng-click="rebootVm('400')" ng-disabled="operationBtn.restart==0">重启云主机</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openDiskEditModal('500')">编辑云主机</button></li>
                     <li><button class="btn dropdown-btn" ng-click="openVmSnapshotCreateModal('500')" ng-disabled="operationBtn.createsnap==0">创建快照</button></li>
                     <li><button class="btn dropdown-btn" ng-click="openDiskAttachModal('500')" ng-disabled="operationBtn.attachdisk==0">挂载云硬盘</button></li>
                     <li><button class="btn dropdown-btn" ng-click="openDiskDetachModal('500')" ng-disabled="operationBtn.detachdisk==0">卸载云硬盘</button></li>
@@ -57,7 +58,7 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm,$index)"></span>
                     </td>
-                    <td><span>{{vm.name}}</span></td>
+                    <td class="le-col-name"><span>{{vm.name}}</span></td>
                     <td>
                         <span ng-show="vm.ipAddresses.private.length || vm.ipAddresses.shared.length">
                             <div class="vm-address-private" ng-repeat="privateAddress in vm.ipAddresses.private">
@@ -98,6 +99,39 @@
     <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-top-right'}">
     </toaster-container>
 
+    <script type="text/ng-template" id="VmEditModalTpl">
+        <div class="modal-vm-edit">
+            <form novalidate class="form-vm-edit" name="vm_edit_form">
+                <div class="le-modal-header">
+                    <span class="header-title">编辑云主机</span>
+                    <a class="close" ng-click="closeModal()">
+                        <i class="iconfont icon-add"></i>
+                    </a>
+                </div>
+                <div class="le-modal-body">
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">名称：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control input-vm-name" ng-model="vmName" name="vm_name" le-auto-focus name-input-restrict />
+                            <span ng-show="(vm_edit_form.$submitted || vm_edit_form.vm_name.$touched) && vm_edit_form.vm_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
+                                <i class="iconfont icon-icon1"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-blue" ng-click="vm_edit_form.$valid && !isFormSubmiting && editVm()" ng-disabled="isFormSubmiting">
+                                <span ng-if="!isFormSubmiting">编辑</span>
+                                <span ng-if="isFormSubmiting">编辑执行中...</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
     <script type="text/ng-template" id="DiskAttachModalTpl">
         <div class="modal-vm-disk-attach">
             <div class="le-modal-header">

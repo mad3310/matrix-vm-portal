@@ -50,11 +50,13 @@ function moneyInputVali(){
                     if(money<0){
                         _target.addClass('has-error');
                         _errordesc.text('输入不合法数字！请输入两位小数');
+                        _errordesc.removeClass('hide');
                         _paybtn.attr('disabled', 'true');
                     }else{
                         if(money>compare){
                             _target.addClass('has-error');
                             _errordesc.text('支付金额有问题！');
+                            _errordesc.removeClass('hide');
                             _paybtn.attr('disabled', 'true');
                         }else{
                             // if(money==compare){
@@ -65,19 +67,21 @@ function moneyInputVali(){
                             $('.payoption:eq(0)').addClass('active');
                             _target.removeClass('has-error');
                             _errordesc.addClass('hide');
-                            
+                            _paybtn.removeAttr('disabled');
                             flag=true;
                         }
                     }
                 }else{//不是数字
                     _target.addClass('has-error');
                     _errordesc.text('输入不合法数字！请输入两位小数');
+                    _errordesc.removeClass('hide');
                     _paybtn.attr('disabled', 'true');
                 }
             }else{
                 if($('.self-checkbox').hasClass('active')){
                     _target.addClass('has-error');
                     _errordesc.text('输入不合法数字！请输入两位小数');
+                    _errordesc.removeClass('hide');
                     _paybtn.attr('disabled', 'true'); 
                 }else{
                     flag=true;

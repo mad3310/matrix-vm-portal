@@ -23,12 +23,13 @@
 .body-operation{font-size:12px;color:#333;}
 .body-operation .operation-title{}
 .operation-title .operation-column{/*height:17px;border:3px solid #088ac2;border-top:0;border-bottom:0;border-radius:2px;*/font-size:18px;color:#088ac2;}
-.operation-title .title{padding-left:20px;font-size:14px;}
+.operation-title .title{padding-left:0px;font-size:14px;}
 .operation-title .more{color:#088ac2;float:right;}
 .operation-title .more:hover{cursor:pointer;text-decoration:none;}
 .body-operation .operation-items{height:160px;margin:15px 0 0 0;padding:1px 0;border:1px solid #ededed;overflow:hidden;}
-.body-operation .operation-items.operation-noitems{font-size:16px;line-height:168px;text-align:center;color:#888;}
-.operation-items.operation-noitems i{font-size:32px;}
+.body-operation .operation-items.operation-noitems{font-size:16px;line-height:158px;text-align:center;color:#888;}
+.operation-items.operation-noitems i{display:block;float:left;padding-left:50%;margin-left:-69px;font-size:32px;}
+.operation-items.operation-noitems span{padding-left:5px;display:block;float:left;}
 .body-operation .operation-items li{padding:7px 15px 6px 20px;list-style:none;border-bottom:1px solid #ededed;}
 .body-operation .operation-items li.last{border-bottom:0;}
 .body-operation .operation-items li.third{border-bottom:0;}
