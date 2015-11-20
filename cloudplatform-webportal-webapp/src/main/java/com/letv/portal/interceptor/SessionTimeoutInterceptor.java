@@ -205,9 +205,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			res.setContentType("text/html;charset=UTF-8");
 			out = res.getWriter();
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.error("PrintWriter.getWriter() had error : ", e1);
 		}
-		ResultObject resultObject = new ResultObject(0);
+		ResultObject resultObject = new ResultObject(2);
 		resultObject.addMsg(message);
 		out.append(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
 		out.flush();
