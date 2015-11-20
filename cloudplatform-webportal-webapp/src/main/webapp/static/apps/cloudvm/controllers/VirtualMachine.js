@@ -70,17 +70,17 @@ define(['controllers/app.controller'], function (controllerModule) {
           return;
         }
         if(originalTaskState || originalVmState!=='active'){
-          WidgetService.notifyWarning('云主机当前状态不可停止');
+          WidgetService.notifyWarning('云主机当前状态不可关机');
           return;
         }
         var data={
           vmId: checkedVms[0].id
         };
-        var modalInstance = WidgetService.openConfirmModal('停止云主机','确定要停止云主机（'+checkedVms[0].name+'）吗？');
+        var modalInstance = WidgetService.openConfirmModal('云主机关机','确定要云主机（'+checkedVms[0].name+'）关机吗？');
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云主机停止执行中...');
+          WidgetService.notifyInfo('云主机关机执行中...');
           checkedVms[0].vmState=null;
           checkedVms[0].taskState='stopping';
           HttpService.doPost(Config.urls.vm_stop.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
@@ -88,13 +88,13 @@ define(['controllers/app.controller'], function (controllerModule) {
               checkedVms[0].vmState='stopped';
               checkedVms[0].taskState=null;
               modalInstance.close(data);
-              WidgetService.notifySuccess('停止云主机成功');
+              WidgetService.notifySuccess('云主机关机成功');
               refreshVmList();
             }
             else{
               checkedVms[0].vmState=originalVmState;
               checkedVms[0].taskState=originalTaskState;
-              WidgetService.notifyError(data.msgs[0]||'停止云主机失败');
+              WidgetService.notifyError(data.msgs[0]||'云主机关机失败');
             }
           });
         }, function () {
