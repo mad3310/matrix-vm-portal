@@ -36,7 +36,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var data={
           vmId: checkedVms[0].id
         };
-        var modalInstance = WidgetService.openConfirmModal('启动云主机','确定要启动云主机（'+checkedVms[0].name+'）吗？');
+        var modalInstance = WidgetService.openConfirmModal('启动云主机','确定要云主机（'+checkedVms[0].name+'）启动吗？');
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
