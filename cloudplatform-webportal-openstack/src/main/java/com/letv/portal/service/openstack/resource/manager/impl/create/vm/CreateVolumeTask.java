@@ -67,7 +67,7 @@ public class CreateVolumeTask extends VmsCreateSubTask {
 					.getVolumeApi()
 					.create(context.getVmCreateConf().getVolumeSize(),
 							new CreateVolumeOptions().volumeType(context
-									.getVolumeType().getId()));
+									.getVolumeType().getId()).name(vmCreateContext.getResourceName()));
 			vmCreateContext.setVolume(volume);
 			OpenStackServiceImpl.getOpenStackServiceGroup()
 					.getLocalVolumeService()
