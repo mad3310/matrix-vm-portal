@@ -12,6 +12,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImp
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.RetryUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
 
@@ -165,25 +166,32 @@ public class VMCreate {
                 public Void apply() {
                     for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
                         try {
-                            if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > i) {
-                                VmCreateContext vmCreateContext = context.getVmCreateContexts().get(i);
-                                if (vmCreateContext.getServerCreated() == null) {
-                                    context.getVmCreateListener().vmCreateFailed(
-                                            new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
-                                } else {
-                                    VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), i, context.getListenerUserData());
-                                    if (vmCreateContext.getVolume() != null) {
-                                        vmCreateEvent.setVolumeId(vmCreateContext.getVolume().getId());
+                            final int vmIndex = i;
+                            RetryUtil.retry(new Function<Boolean>() {
+                                @Override
+                                public Boolean apply() throws Exception {
+                                    if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > vmIndex) {
+                                        VmCreateContext vmCreateContext = context.getVmCreateContexts().get(vmIndex);
+                                        if (vmCreateContext.getServerCreated() == null) {
+                                            context.getVmCreateListener().vmCreateFailed(
+                                                    new VmCreateFailEvent(context.getVmCreateConf().getRegion(), vmIndex, reason, context.getListenerUserData()));
+                                        } else {
+                                            VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), vmIndex, context.getListenerUserData());
+                                            if (vmCreateContext.getVolume() != null) {
+                                                vmCreateEvent.setVolumeId(vmCreateContext.getVolume().getId());
+                                            }
+                                            if (vmCreateContext.getFloatingIp() != null) {
+                                                vmCreateEvent.setFloatingIpId(vmCreateContext.getFloatingIp().getId());
+                                            }
+                                            context.getVmCreateListener().vmCreated(vmCreateEvent);
+                                        }
+                                    } else {
+                                        context.getVmCreateListener().vmCreateFailed(
+                                                new VmCreateFailEvent(context.getVmCreateConf().getRegion(), vmIndex, reason, context.getListenerUserData()));
                                     }
-                                    if (vmCreateContext.getFloatingIp() != null) {
-                                        vmCreateEvent.setFloatingIpId(vmCreateContext.getFloatingIp().getId());
-                                    }
-                                    context.getVmCreateListener().vmCreated(vmCreateEvent);
+                                    return true;
                                 }
-                            } else {
-                                context.getVmCreateListener().vmCreateFailed(
-                                        new VmCreateFailEvent(context.getVmCreateConf().getRegion(), i, reason, context.getListenerUserData()));
-                            }
+                            }, 3, "监听器实现方错误：重试超过3次");
                         } catch (Exception ex) {
                             ExceptionUtil.processBillingException(ex);
                         }

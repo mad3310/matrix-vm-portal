@@ -57,8 +57,8 @@ public class TestNova {
         builder = builder.endpoint("http://10.58.241.211:5000/v2.0/");
         time = printTimeCost("builder.endpoint ", time);
 
-//        builder = builder.credentials(identity, credential);
-//        time = printTimeCost("builder.credentials ", time);
+        builder = builder.credentials(identity, credential);
+        time = printTimeCost("builder.credentials ", time);
 
         builder = builder.modules(modules);
         time = printTimeCost("builder.modules ", time);
