@@ -10,7 +10,7 @@ define(['./common.service'], function (serviceModule) {
           if(data.result == 0){
             WidgetService.notifyError(data.msgs[0]||'获取数据失败');
           }else if(data.result == 2){
-            $window.location.reload();
+            window.location.reload();
           }
           return;
         })
