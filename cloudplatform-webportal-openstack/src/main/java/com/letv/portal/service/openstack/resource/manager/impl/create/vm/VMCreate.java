@@ -191,7 +191,7 @@ public class VMCreate {
                                     }
                                     return true;
                                 }
-                            }, 3, "监听器实现方错误：重试超过3次");
+                            }, 3, "虚拟机监听器实现方错误：重试超过3次");
                         } catch (Exception ex) {
                             ExceptionUtil.processBillingException(ex);
                         }
