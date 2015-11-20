@@ -20,6 +20,7 @@ define(['./common.service'], function (serviceModule) {
       disk_buy: '/billing/buy/3',
       floatip_buy: '/billing/buy/4',
       router_buy: '/billing/buy/5',
+      vm_rename: '/ecs/vm/rename',
       vm_start: '/ecs/region/{region}/vm-start',
       vm_stop: '/ecs/region/{region}/vm-stop',
       vm_reboot: '/ecs/vm/reboot',
