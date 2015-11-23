@@ -157,6 +157,7 @@ a:hover{cursor:pointer;}
 .footer a{color:#fff;}
 .footer a:hover,.footer a:active{color:#088ac2;}
 .footer .footer-linkTitle{font-size:1.4rem;font-size:14px\9;text-align:center\9;}
+.footer .footer-qrcode img{width:80px;height:80px;}
 .footer .footer-right{border-left:1px solid #9aa9af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .footer-right .right-logo img{width:50px;width:100%;min-width:50px;width:70px\9;}
 .footer-right .right-logo,.right-logo div{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -336,6 +337,7 @@ a:hover{cursor:pointer;}
 .menu-parent{margin-top:20px;padding-left: 20px;}
 .menu-parent i{margin-right:5px;color:#818181;display:inline-block;}
 ul.menu-sub{padding-top:15px;border-bottom:none;}
+ul.menu-sub a{color:inherit;}
 ul.menu-sub li{padding:10px 10px 10px 40px;}
 .menu-sub .active{border-left:5px solid #088ac2;padding-left:35px;padding-right:10px;background-color:#fff;}
 .helpcenter-center{padding:70px 30px 0 30px;background-color:#fff;}
