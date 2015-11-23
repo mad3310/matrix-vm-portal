@@ -20,6 +20,7 @@ define(['./common.service'], function (serviceModule) {
       disk_buy: '/billing/buy/3',
       floatip_buy: '/billing/buy/4',
       router_buy: '/billing/buy/5',
+      vm_rename: '/ecs/vm/rename',
       vm_start: '/ecs/region/{region}/vm-start',
       vm_stop: '/ecs/region/{region}/vm-stop',
       vm_reboot: '/ecs/vm/reboot',
@@ -183,7 +184,7 @@ define(['./common.service'], function (serviceModule) {
         "BUILD":{"create":0,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
         "ERROR":{"create":1,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
         "UNRECOGNIZED":{"create":1,"bindIp":0,"unbindIp":0,"bindsubnet":0,"removesubnet":0,"edit":0,"bindalarm":0,"delete":0},
-        "subnets":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":0,"removesubnet":1,"edit":1,"bindalarm":1,"delete":0},
+        "subnets":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":1,"edit":1,"bindalarm":1,"delete":0},
         "subnetsnull":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":0,"edit":1,"bindalarm":1,"delete":1},
         "default":{"create":1,"bindIp":1,"unbindIp":1,"bindsubnet":1,"removesubnet":1,"edit":1,"bindalarm":1,"delete":1}
       },
