@@ -208,6 +208,7 @@ define(['./common.directive'],function (directiveModule) {
                 externalModel: '=leSliderModel',
                 step:'@leSliderStep',
                 min:'=leSliderMin',
+                isMinChangeable:'@isSliderMinChangeable',
                 max:'@leSliderMax',
                 unit:'@leSliderUnit',
             },
@@ -215,16 +216,13 @@ define(['./common.directive'],function (directiveModule) {
                 var delayQueueModelHandler = Utility.delayQueueModel();
                 scope.model = scope.externalModel;
                 var max = Number(scope.max),
-                  min = Number(scope.min),
-                  isInitinal = true;
-                scope.$watch('min', function (newValue) {
-                    if (isInitinal) {//防止model默认值被重置为min
-                        isInitinal = false;
-                        return;
-                    }
-                    min = Number(newValue);
-                    scope.model = min;
-                });
+                  min = Number(scope.min);
+                if(scope.isMinChangeable === 'true'){
+                    scope.$watch('min', function (newValue) {
+                        min = Number(newValue);
+                        scope.model = min;
+                    });
+                }
                 scope.$watch('model', function (newValue) {
                     if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue)) {
                         if (newValue <= max && newValue >= min) {
