@@ -100,6 +100,11 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
 
     @Override
     public CloudvmVolume create(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException {
+        return create(userId, tenantId, region, volume, initStatus, null);
+    }
+
+    @Override
+    public CloudvmVolume create(long userId, long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus, String vmId) throws OpenStackException {
         CloudvmVolume cloudvmVolume = new CloudvmVolume();
         cloudvmVolume.setCreateUser(userId);
         cloudvmVolume.setTenantId(tenantId);
@@ -112,6 +117,9 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
         copyProperties(volume, cloudvmVolume);
         if (initStatus != null) {
             cloudvmVolume.setStatus(initStatus);
+        }
+        if (vmId != null) {
+            cloudvmVolume.setServerId(vmId);
         }
         cloudvmVolumeService.insert(cloudvmVolume);
         return cloudvmVolume;
@@ -135,6 +143,16 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
                 cloudvmVolume.setUpdateUser(userId);
                 cloudvmVolumeService.update(cloudvmVolume);
             }
+        }
+    }
+
+    @Override
+    public void updateVmId(long userId, long tenantId, String region, String volumeId, String vmId) throws OpenStackException {
+        CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volumeId);
+        if (cloudvmVolume != null) {
+            cloudvmVolume.setServerId(vmId);
+            cloudvmVolume.setUpdateUser(userId);
+            cloudvmVolumeService.update(cloudvmVolume);
         }
     }
 

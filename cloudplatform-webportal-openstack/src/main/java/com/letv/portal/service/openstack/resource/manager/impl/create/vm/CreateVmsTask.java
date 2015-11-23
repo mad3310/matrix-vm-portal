@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.jclouds.openstack.nova.v2_0.domain.Network;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
@@ -52,7 +54,16 @@ public class CreateVmsTask extends VmsCreateSubTask {
 		vmContext.setServer(context.getApiCache().getServerApi().get(serverCreated.getId()));
 
 		context.getVmManager().recordVmCreated(context.getUserId(), context.getVmCreateConf().getRegion(), vmContext.getServer(), context.getFlavor());
-	}
+
+        if (vmContext.getVolume() != null) {
+            LocalVolumeService localVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService();
+            localVolumeService.updateVmId(context.getUserId()
+					, context.getUserId()
+					, context.getVmCreateConf().getRegion()
+					, vmContext.getVolume().getId()
+					, vmContext.getServer().getId());
+        }
+    }
 
 	@Override
 	public void rollback(MultiVmCreateContext context)

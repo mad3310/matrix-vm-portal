@@ -19,9 +19,13 @@ public interface LocalVolumeService {
 
     CloudvmVolume create(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException;
 
+    CloudvmVolume create(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus, String vmId) throws OpenStackException;
+
     CloudvmVolume createIfNotExists(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException;
 
     void update(long userId, long tenantId, String region, Volume volume) throws OpenStackException;
+
+    void updateVmId(long userId, long tenantId, String region, String volumeId, String vmId) throws OpenStackException;
 
     void updateStatus(long userId, long tenantId, String region, String volumeId, CloudvmVolumeStatus status) throws OpenStackException;
 
