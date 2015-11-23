@@ -383,16 +383,16 @@ function helpInite(){
 		}
 	});
 	//子菜单点击
-	$('.menu-sub').unbind('click').click(function(event) {
-		var _target=$(event.target||event.srcElement).closest('li');
-		if(_target.hasClass('active')){
+	// $('.menu-sub').unbind('click').click(function(event) {
+	// 	var _target=$(event.target||event.srcElement).closest('li');
+	// 	if(_target.hasClass('active')){
 
-		}else{
-			_target.addClass('active').siblings().removeClass('active')
-		}
-		var _targetPage=_target.attr('self-menu-detailPage');
-		$('.helpcenter-center').load(_targetPage+'.html');
-	});	
+	// 	}else{
+	// 		_target.addClass('active').siblings().removeClass('active')
+	// 	}
+	// 	var _targetPage=_target.attr('self-menu-detailPage');
+	// 	$('.helpcenter-center').load(_targetPage+'.html');
+	// });	
 }
 //index:canvas
 function clock(){
