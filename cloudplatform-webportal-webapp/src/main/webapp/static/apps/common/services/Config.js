@@ -191,7 +191,7 @@ define(['./common.service'], function (serviceModule) {
       "subnet":{
         "vm":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1},
         "vmnull":{"create":1,"bindvm":1,"unbindvm":0,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1},
-        "router":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1},
+        "router":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":0,"unbindrouter":1,"edit":1,"delete":1},
         "routernull":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":0,"edit":1,"delete":1},
         "default":{"create":1,"bindvm":1,"unbindvm":1,"bindrouter":1,"unbindrouter":1,"edit":1,"delete":1}
       }
