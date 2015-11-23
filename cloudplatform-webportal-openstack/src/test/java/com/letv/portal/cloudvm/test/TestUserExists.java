@@ -31,6 +31,7 @@ public class TestUserExists {
         for (Tuple3<String, String, String> tuple : MultiUser.getUserNameAndPassList()) {
             TestUserExists testUserExists = new TestUserExists("http://10.58.241.211:5000/v2.0/", tuple._1, tuple._2, tuple._3);
             testUserExists.run();
+            System.out.println(testUserExists.getTenantId());
         }
     }
 

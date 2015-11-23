@@ -24,7 +24,9 @@ import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.RetryUtil;
 import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
+import com.letv.portal.service.openstack.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -1598,7 +1600,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		notifyRouterCreateListener(routerCreateConf, successCreatedRouters, null, listener, listenerUserData);
 	}
 
-	private void notifyRouterCreateListener(RouterCreateConf routerCreateConf,List<Router> successCreatedRouters,Exception exception,RouterCreateListener listener, Object listenerUserData){
+	private void notifyRouterCreateListener(final RouterCreateConf routerCreateConf, final List<Router> successCreatedRouters,Exception exception, final RouterCreateListener listener, final Object listenerUserData){
 		if(listener != null) {
 			int successCreatedRoutersCount = successCreatedRouters.size();
 			int routersCount = 1;
@@ -1606,16 +1608,30 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 			for (; routerIndex < successCreatedRoutersCount; routerIndex++) {
 				try {
-					listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), successCreatedRouters.get(routerIndex).getId(), routerIndex, listenerUserData));
+					final int routerIndexRef = routerIndex;
+					RetryUtil.retry(new Function<Boolean>() {
+						@Override
+						public Boolean apply() throws Exception {
+							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), successCreatedRouters.get(routerIndexRef).getId(), routerIndexRef, listenerUserData));
+							return true;
+						}
+					}, 3, "路由器监听器实现方错误：重试超过3次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
 			}
 
-			String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
+			final String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
 			for (; routerIndex < routersCount; routerIndex++) {
 				try {
-					listener.routerCreateFailed(new RouterCreateFailEvent(routerCreateConf.getRegion(), routerIndex, reason, listenerUserData));
+					final int routerIndexRef = routerIndex;
+					RetryUtil.retry(new Function<Boolean>() {
+						@Override
+						public Boolean apply() throws Exception {
+							listener.routerCreateFailed(new RouterCreateFailEvent(routerCreateConf.getRegion(), routerIndexRef, reason, listenerUserData));
+							return true;
+						}
+					}, 3, "路由器监听器实现方错误：重试超过3次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -2837,7 +2853,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,null,listener,listenerUserData);
 	}
 
-	private void notifyFloatingIpCreateListener(FloatingIpCreateConf createConf, List<FloatingIP> successCreatedFloatingIps, Exception exception, FloatingIpCreateListener listener, Object listenerUserData){
+	private void notifyFloatingIpCreateListener(final FloatingIpCreateConf createConf, final List<FloatingIP> successCreatedFloatingIps, Exception exception, final FloatingIpCreateListener listener, final Object listenerUserData){
 		if (listener != null) {
 			int successCreatedFloatingIpsCount = successCreatedFloatingIps.size();
 			int floatingIpCount = createConf.getCount();
@@ -2845,16 +2861,30 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 			for (; floatingIpIndex < successCreatedFloatingIpsCount; floatingIpIndex++) {
 				try {
-					listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), successCreatedFloatingIps.get(floatingIpIndex).getId(), floatingIpIndex, listenerUserData));
+					final int floatingIpIndexRef = floatingIpIndex;
+					RetryUtil.retry(new Function<Boolean>() {
+						@Override
+						public Boolean apply() throws Exception {
+							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), successCreatedFloatingIps.get(floatingIpIndexRef).getId(), floatingIpIndexRef, listenerUserData));
+							return true;
+						}
+					}, 3, "公网IP监听器实现方错误：重试超过3次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
 			}
 
-			String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
+			final String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
 			for (; floatingIpIndex < floatingIpCount; floatingIpIndex++) {
 				try {
-					listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndex, reason, listenerUserData));
+					final int floatingIpIndexRef = floatingIpIndex;
+					RetryUtil.retry(new Function<Boolean>() {
+						@Override
+						public Boolean apply() throws Exception {
+							listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndexRef, reason, listenerUserData));
+							return true;
+						}
+					}, 3, "公网IP监听器实现方错误：重试超过3次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}

@@ -26,6 +26,7 @@ import com.letv.portal.service.openstack.resource.impl.VolumeAttachmentResourceI
 import com.letv.portal.service.openstack.resource.impl.VolumeSnapshotResourceImpl;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.Ref;
+import com.letv.portal.service.openstack.util.RetryUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
@@ -701,7 +702,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,null,listener,listenerUserData);
 	}
 
-	private void notifyVolumeCreateListener(VolumeCreateConf volumeCreateConf, List<Volume> successCreatedVolumes, Exception exception, VolumeCreateListener listener, Object listenerUserData) {
+	private void notifyVolumeCreateListener(final VolumeCreateConf volumeCreateConf, final List<Volume> successCreatedVolumes, Exception exception, final VolumeCreateListener listener, final Object listenerUserData) {
 		if (listener != null) {
 			int successCreatedVolumesCount = successCreatedVolumes.size();
 			int volumesCount = volumeCreateConf.getCount();
@@ -709,16 +710,30 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 			for (; volumeIndex < successCreatedVolumesCount; volumeIndex++) {
 				try {
-					listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), successCreatedVolumes.get(volumeIndex).getId(), volumeIndex, listenerUserData));
+					final int volumeIndexRef = volumeIndex;
+					RetryUtil.retry(new Function<Boolean>() {
+						@Override
+						public Boolean apply() throws Exception {
+							listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), successCreatedVolumes.get(volumeIndexRef).getId(), volumeIndexRef, listenerUserData));
+							return true;
+						}
+					}, 3, "云硬盘监听器实现方错误：重试超过3次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
 			}
 
-			String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
+			final String reason = exception != null ? ExceptionUtil.getUserMessage(exception) : "后台错误";
 			for (; volumeIndex < volumesCount; volumeIndex++) {
 				try {
-					listener.volumeCreateFailed(new VolumeCreateFailEvent(volumeCreateConf.getRegion(), volumeIndex, reason, listenerUserData));
+					final int volumeIndexRef = volumeIndex;
+					RetryUtil.retry(new Function<Boolean>() {
+						@Override
+						public Boolean apply() throws Exception {
+							listener.volumeCreateFailed(new VolumeCreateFailEvent(volumeCreateConf.getRegion(), volumeIndexRef, reason, listenerUserData));
+							return true;
+						}
+					}, 3, "云硬盘监听器实现方错误：重试超过3次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}

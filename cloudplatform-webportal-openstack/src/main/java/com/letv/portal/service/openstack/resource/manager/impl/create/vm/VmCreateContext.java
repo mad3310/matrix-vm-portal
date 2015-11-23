@@ -16,6 +16,7 @@ public class VmCreateContext {
 	private ServerCreated serverCreated;
 	private Server server;
 	private Date floatingIpBindDate;
+	private String resourceName;
 
 	public void setServer(Server server) {
 		this.server = server;
@@ -63,5 +64,13 @@ public class VmCreateContext {
 
 	public void setFloatingIpBindDate(Date floatingIpBindDate) {
 		this.floatingIpBindDate = floatingIpBindDate;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
+
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
 	}
 }

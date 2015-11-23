@@ -78,7 +78,8 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
                                     .fipQos(NetworkManagerImpl
                                             .createFipQos(context
                                                     .getVmCreateConf()
-                                                    .getBandWidth())).build()));
+                                                    .getBandWidth()))
+									.name(vmCreateContext.getResourceName()).build()));
 			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
 			localRcCountService.incRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH
 					, context.getVmCreateConf().getBandWidth());
