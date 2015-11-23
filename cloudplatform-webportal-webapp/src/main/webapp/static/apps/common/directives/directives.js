@@ -207,7 +207,7 @@ define(['./common.directive'],function (directiveModule) {
             scope: {
                 externalModel: '=leSliderModel',
                 step:'@leSliderStep',
-                min:'@leSliderMin',
+                min:'=leSliderMin',
                 max:'@leSliderMax',
                 unit:'@leSliderUnit',
             },
@@ -216,6 +216,10 @@ define(['./common.directive'],function (directiveModule) {
                 scope.model = scope.externalModel;
                 var max =Number(scope.max),
                   min=Number(scope.min);
+                scope.$watch('min', function (newValue) {
+                    min=Number(newValue);
+                    scope.model = min;
+                });
                 scope.$watch('model', function (newValue) {
                     if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue)) {
                         if( newValue <= max && newValue >= min){
