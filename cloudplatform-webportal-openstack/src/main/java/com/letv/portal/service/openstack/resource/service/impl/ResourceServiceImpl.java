@@ -900,7 +900,7 @@ public class ResourceServiceImpl implements ResourceService {
                 ExternalGatewayInfo gatewayInfo = router.getExternalGatewayInfo();
                 if (gatewayInfo == null || gatewayInfo.getNetworkId() == null) {
 //                    isEnableGateway = false;
-                    throw new UserOperationException("Router gateway is not enabled.", "虚拟机所在的私有子网关联的路由没有开启网关");
+                    throw new UserOperationException("Router gateway is not enabled.", "虚拟机所在的私有子网关联的路由没有都开启网关");
 //                    break;
                 }
             }
