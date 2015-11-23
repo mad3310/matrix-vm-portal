@@ -59,12 +59,11 @@ function moneyInputVali(){
                             _errordesc.removeClass('hide');
                             _paybtn.attr('disabled', 'true');
                         }else{
-                            // if(money==compare){
-                            //     _paybtn.addAttr('disabled');
-                            // }else{
-                            //     _paybtn.removeAttr('disabled');
-                            // }
-                            $('.payoption:eq(0)').addClass('active');
+                            if(money==compare&&money==orderPaynum){//fit
+                                $('.payoption').removeClass('active');
+                            }else{
+                                $('.payoption:eq(0)').addClass('active'); 
+                            }
                             _target.removeClass('has-error');
                             _errordesc.addClass('hide');
                             _paybtn.removeAttr('disabled');
