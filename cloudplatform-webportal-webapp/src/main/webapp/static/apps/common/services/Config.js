@@ -99,7 +99,8 @@ define(['./common.service'], function (serviceModule) {
       'stopping':'关机中',
       'starting':'启动中',
       'rebooting':'重启中',
-      'spawning':'创建中'
+      'spawning':'创建中',
+      'block_device_mapping':'创建中'
     };
     config.vmDiskStatuses = [
       {"text": "创建中", "value": "creating"},

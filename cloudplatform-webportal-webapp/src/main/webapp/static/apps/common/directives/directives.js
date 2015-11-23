@@ -214,27 +214,33 @@ define(['./common.directive'],function (directiveModule) {
             link: function (scope, element, attrs) {
                 var delayQueueModelHandler = Utility.delayQueueModel();
                 scope.model = scope.externalModel;
-                var max =Number(scope.max),
-                  min=Number(scope.min);
+                var max = Number(scope.max),
+                  min = Number(scope.min),
+                  isInitinal = true;
                 scope.$watch('min', function (newValue) {
-                    min=Number(newValue);
+                    if (isInitinal) {//防止model默认值被重置为min
+                        isInitinal = false;
+                        return;
+                    }
+                    min = Number(newValue);
                     scope.model = min;
                 });
                 scope.$watch('model', function (newValue) {
                     if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue)) {
-                        if( newValue <= max && newValue >= min){
-                            delayQueueModelHandler(newValue, function(value) {
+                        if (newValue <= max && newValue >= min) {
+                            delayQueueModelHandler(newValue, function (value) {
                                 scope.model = Number(value);
                                 scope.externalModel = scope.model;
                             });
                         }
-                        else if(newValue > max){
+                        else if (newValue > max) {
                             scope.model = max;
                         }
-                        else if(newValue < min){
+                        else if (newValue < min) {
                             scope.model = min;
                         }
-                        else{}
+                        else {
+                        }
                     }
                     else {
                         scope.model = min;
