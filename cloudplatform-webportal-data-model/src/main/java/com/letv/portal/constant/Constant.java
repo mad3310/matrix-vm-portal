@@ -106,8 +106,8 @@ public class Constant {
 	public static final String CREATE_KEYPAIR = "创建密钥";
 	public static final String DELETE_KEYPAIR = "删除密钥";
 	
-	public static final String SUBNET_ATTACH_VM = "私有网络添加云主机";
-	public static final String SUBNET_DETACH_VM = "私有网络移除云主机";
+	public static final String SUBNET_ATTACH_VM = "子网添加云主机";
+	public static final String SUBNET_DETACH_VM = "子网移除云主机";
 	
 	//无名称云产品统一为“未设置”
 	public static final String NO_NAME = "未设置";
