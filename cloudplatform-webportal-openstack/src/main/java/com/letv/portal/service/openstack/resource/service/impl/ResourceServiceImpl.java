@@ -894,18 +894,19 @@ public class ResourceServiceImpl implements ResourceService {
             if (findedRouterIds.isEmpty()) {
                 throw new UserOperationException("Subnet is not associated with router.", "虚拟机所在的私有子网没有关联到路由");
             }
-            boolean isEnableGateway = false;
+//            boolean isEnableGateway = true;
             for (String routerId : findedRouterIds) {
                 Router router = idToRouter.get(routerId);
                 ExternalGatewayInfo gatewayInfo = router.getExternalGatewayInfo();
-                if (gatewayInfo != null && gatewayInfo.getNetworkId() != null) {
-                    isEnableGateway = true;
-                    break;
+                if (gatewayInfo == null || gatewayInfo.getNetworkId() == null) {
+//                    isEnableGateway = false;
+                    throw new UserOperationException("Router gateway is not enabled.", "虚拟机所在的私有子网关联的路由没有开启网关");
+//                    break;
                 }
             }
-            if (!isEnableGateway) {
-                throw new UserOperationException("Router gateway is not enabled.", "虚拟机所在的私有子网关联的路由没有开启网关");
-            }
+//            if (!isEnableGateway) {
+//                throw new UserOperationException("Router gateway is not enabled.", "虚拟机所在的私有子网关联的路由没有开启网关");
+//            }
         }
 
         floatingIPApi.addToServer(floatingIP.getIp(), vmId);
