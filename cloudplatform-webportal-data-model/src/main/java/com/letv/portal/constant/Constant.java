@@ -55,7 +55,7 @@ public class Constant {
 	//启动云主机
 	public static final String START_OPENSTACK = "启动云主机";
 	//停止云主机
-	public static final String STOP_OPENSTACK = "停止云主机";
+	public static final String STOP_OPENSTACK = "关机云主机";
 	public static final String REBOOT_OPENSTACK = "重启云主机";
 	public static final String MODIFY_PWD_OPENSTACK = "云主机修改密码";
 	//绑定云硬盘

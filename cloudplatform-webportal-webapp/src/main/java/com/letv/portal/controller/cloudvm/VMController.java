@@ -541,8 +541,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			vmManager.createImageFromVm(createConf);
 			//保存创建快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK,
-					MessageFormat.format(Constant.STYLE_OPERATE_1, form.getName(), vmManager.get(form.getRegion(), form.getVmId()).getName()));
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_OPENSTACK, form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

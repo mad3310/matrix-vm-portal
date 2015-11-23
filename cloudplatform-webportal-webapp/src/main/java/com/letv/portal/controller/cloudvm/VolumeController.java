@@ -224,10 +224,8 @@ public class VolumeController {
 		try {
 			VolumeManager volumeManage = Util.session(sessionService).getVolumeManager();
 			volumeManage.createVolumeSnapshot(form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
-			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),form.getRegion(), form.getVolumeId()).getName();
 			//保存创建云硬盘快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, form.getName(), StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName));
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_CREATE_VOLUME, form.getName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
