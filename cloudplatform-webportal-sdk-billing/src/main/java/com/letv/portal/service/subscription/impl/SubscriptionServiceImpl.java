@@ -1,14 +1,15 @@
 package com.letv.portal.service.subscription.impl;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import com.letv.portal.dao.subscription.ISubscriptionDao;
 import com.letv.portal.dao.subscription.ISubscriptionDetailDao;
 import com.letv.portal.enumeration.ProductType;
 import com.letv.portal.model.UserVo;
+import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.message.Message;
 import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.model.subscription.Subscription;
@@ -91,8 +93,55 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 
 
 	@Override
-	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime) {
-		return createSubscription(id, map, productInfoRecordId, date, orderTime, sessionService.getSession().getUserId(), 0);
+	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime, List<BaseStandard> baseStandards) {
+		return createSubscription(id, map, productInfoRecordId, date, orderTime, sessionService.getSession().getUserId(), 0, baseStandards);
+	}
+	
+	private Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime, Long userId, Integer buyType, List<BaseStandard> baseStandards) {
+		Subscription sub = new Subscription();
+		sub.setSubscriptionNumber(SerialNumberUtil.getNumber(1));
+		sub.setProductId(id);
+		sub.setBaseRegionId(Long.parseLong((String)map.get("region")));
+		sub.setChargeType(map.get("chargeType")==null?0:Integer.parseInt((String)map.get("chargeType")));
+		sub.setBuyType(buyType);//0-新购,1-续费
+		sub.setProductInfoRecordId(productInfoRecordId);
+		Integer t = Integer.parseInt(orderTime);
+		sub.setOrderTime(t);
+		sub.setStartTime(date);
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(date.getTime());
+		cal.add(Calendar.MONTH, t);
+		sub.setEndTime(cal.getTime());
+		sub.setValid(1);
+		sub.setUserId(userId);
+		sub.setCreateUser(userId);
+		sub.setDeleted(false);
+		this.subscriptionDao.insert(sub);
+		//存放元素，保存订阅详情时不能有重复元素
+		Set<String> elementNames = new HashSet<String>();
+		for (BaseStandard baseStandard : baseStandards) {
+			String key = baseStandard.getBaseElement().getName();
+			if("region".equals(key) || key.endsWith("_type") 
+					|| "order_num".equals(key) || "order_time".equals(key) || elementNames.contains(key)) {
+				continue;
+			}
+			elementNames.add(key);
+			SubscriptionDetail detail = new SubscriptionDetail();
+			detail.setSubscriptionId(sub.getId());
+			detail.setElementName(key);
+			detail.setStandardType((String)map.get(key+"_type"));
+			detail.setStandardValue((String)map.get(key));
+			detail.setOrderTime(t);
+			detail.setStartTime(date);
+			detail.setEndTime(cal.getTime());
+			detail.setUserId(userId);
+			detail.setCreateUser(userId);
+			detail.setDeleted(false);
+			detail.setValid(true);
+			this.subscriptionDetailDao.insert(detail);
+			sub.addSubscriptionDetail(detail);
+		}
+		return sub;
 	}
 	
 	@Override

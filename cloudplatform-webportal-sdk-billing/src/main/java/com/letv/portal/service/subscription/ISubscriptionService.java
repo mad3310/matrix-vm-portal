@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.service.IBaseService;
 
@@ -24,7 +25,7 @@ public interface ISubscriptionService extends IBaseService<Subscription> {
 	  * @author lisuxiao
 	  * @date 2015年9月6日 下午3:58:11
 	  */
-	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date d, String orderTime);
+	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date d, String orderTime, List<BaseStandard> baseStandards);
 	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date d, String orderTime, Long userId, Integer buyType);
 	/**
 	  * @Title: selectValidSubscription

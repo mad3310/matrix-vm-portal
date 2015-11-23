@@ -1,6 +1,7 @@
 package com.letv.portal.controller.billing;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.util.DataFormat;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.constant.Constants;
+import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.product.IHostProductService;
@@ -84,14 +86,18 @@ public class CalculateController {
 		transferParams(map, id);
 			
 		if(id==Constants.PRODUCT_VM) {//云主机走自己的验证和计算
-			if(hostProductService.validateData(Constants.PRODUCT_VM, map) && hostProductService.validateData(Constants.PRODUCT_VOLUME, map) 
-					&& hostProductService.validateData(Constants.PRODUCT_FLOATINGIP, map)) {
-				ret =  hostCalculateService.calculatePrice(Constants.PRODUCT_VM, map).add(hostCalculateService.calculatePrice(Constants.PRODUCT_VOLUME, map))
-						.add(hostCalculateService.calculatePrice(Constants.PRODUCT_FLOATINGIP, map));
+			List<BaseStandard> vmBaseStandards = this.productService.selectBaseStandardByProductId(Constants.PRODUCT_VM);
+			List<BaseStandard> volumeBaseStandards = this.productService.selectBaseStandardByProductId(Constants.PRODUCT_VOLUME);
+			List<BaseStandard> flatingIpBaseStandards = this.productService.selectBaseStandardByProductId(Constants.PRODUCT_FLOATINGIP);
+			if(hostProductService.validateData(Constants.PRODUCT_VM, map, vmBaseStandards) && hostProductService.validateData(Constants.PRODUCT_VOLUME, map, volumeBaseStandards) 
+					&& hostProductService.validateData(Constants.PRODUCT_FLOATINGIP, map, flatingIpBaseStandards)) {
+				ret =  hostCalculateService.calculatePrice(Constants.PRODUCT_VM, map, vmBaseStandards).add(hostCalculateService.calculatePrice(Constants.PRODUCT_VOLUME, map, volumeBaseStandards))
+						.add(hostCalculateService.calculatePrice(Constants.PRODUCT_FLOATINGIP, map, flatingIpBaseStandards));
 			}
 		} else if(id==Constants.PRODUCT_FLOATINGIP || id==Constants.PRODUCT_VOLUME || id==Constants.PRODUCT_ROUTER) {
-			if(hostProductService.validateData(id, map)) {
-				ret =  hostCalculateService.calculatePrice(id, map);
+			List<BaseStandard> baseStandards = this.productService.selectBaseStandardByProductId(id);
+			if(hostProductService.validateData(id, map, baseStandards)) {
+				ret =  hostCalculateService.calculatePrice(id, map, baseStandards);
 			}
 		} else {
 			if(productService.validateData(id, map)) {//规划的通用逻辑

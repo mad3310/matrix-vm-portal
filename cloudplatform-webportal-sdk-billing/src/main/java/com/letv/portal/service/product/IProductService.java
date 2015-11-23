@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.product.Product;
 import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.service.IBaseService;
@@ -38,6 +39,18 @@ public interface IProductService extends IBaseService<Product> {
 	  * @date 2015年9月6日 下午5:00:37
 	  */
 	boolean validateData(Long id, Map<String,Object> map);
+	/**
+	  * @Title: validateData
+	  * @Description: 验证产品是否合法
+	  * @param id 产品id
+	  * @param map 产品参数
+	  * @param baseStandards 该产品所含元素的所有规格
+	  * @return boolean   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月20日 下午2:26:28
+	  */
+	boolean validateData(Long id, Map<String,Object> map, List<BaseStandard> baseStandards);
 	
 	/**
 	  * @Title: selectByProductIdWithBaseElement
@@ -49,6 +62,16 @@ public interface IProductService extends IBaseService<Product> {
 	  * @date 2015年11月11日 下午3:35:45
 	  */
 	List<ProductElement> selectByProductIdWithBaseElement(Long productId);
+	/**
+	  * @Title: selectBaseStandardByProductId
+	  * @Description: 根据产品id获取该产品元素的所有规格
+	  * @param productId
+	  * @return List<BaseStandard>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月20日 上午11:00:50
+	  */
+	List<BaseStandard> selectBaseStandardByProductId(Long productId);
 	/**
 	  * @Title: dailyConsume
 	  * @Description: 获取该用户下各产品每日消费情况

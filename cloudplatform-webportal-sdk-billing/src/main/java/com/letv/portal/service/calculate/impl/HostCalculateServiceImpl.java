@@ -77,9 +77,16 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 	
 	@Override
 	public BigDecimal calculatePrice(Long productId, Map<String, Object> map) {
+		return calculatePrice(productId, map, null);
+	}
+	
+	@Override
+	public BigDecimal calculatePrice(Long productId, Map<String, Object> map, List<BaseStandard> baseStandards) {
 		BigDecimal price = new BigDecimal(0);
 		
-		List<BaseStandard> baseStandards = super.getBaseStandard(productId);
+		if(baseStandards==null) {//传入的参数为空，自己根据产品id进行计算
+			baseStandards = super.getBaseStandard(productId);
+		}
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		//记录计算过的standard
@@ -91,7 +98,7 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 		params.put("date", new Date());
 		String across = null;//交界值
 		for (BaseStandard baseStandard : baseStandards) {
-			if("3".equals(baseStandard.getBasePrice().getType())) {//3-云主机双线性
+			if(baseStandard.getBasePrice()!=null && "3".equals(baseStandard.getBasePrice().getType())) {//3-云主机双线性
 				if(across==null) {
 					across = baseStandard.getValue();
 				} else {
@@ -102,8 +109,10 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 			}
 		}
 		for (BaseStandard baseStandard : baseStandards) {
-			//当该元素已经计算或者计算参数中没有该元素时
-			if(set.contains(baseStandard.getBaseElement().getName()) || map.get(baseStandard.getBaseElement().getName())==null) {
+			//当该元素已经计算或该元素不计费
+			if(set.contains(baseStandard.getBaseElement().getName())  
+					|| baseStandard.getBasePrice()==null 
+					|| baseStandard.getBasePrice().getPrice()==null) {
 				continue;
 			}
 			params.put("basePriceId", baseStandard.getBasePrice().getId());
@@ -126,14 +135,23 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 		price = price.multiply(new BigDecimal((String)map.get("order_num")));
 		return price;
 	}
-
+	
 	@Override
 	public BigDecimal calculateStandardPrice(Long productId, Long baseRegionId,
 			String standardName, String standardValue, Integer orderNum,
 			Integer orderTime, String standardType) {
+		return calculateStandardPrice(productId, baseRegionId, standardName, standardValue, orderNum, orderTime, standardType, null);
+	}
+
+	@Override
+	public BigDecimal calculateStandardPrice(Long productId, Long baseRegionId,
+			String standardName, String standardValue, Integer orderNum,
+			Integer orderTime, String standardType, List<BaseStandard> baseStandards) {
 		BigDecimal price = new BigDecimal(0);
 		
-		List<BaseStandard> baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByElementName(standardName);
+		if(baseStandards==null) {
+			baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByElementName(standardName);
+		}
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("productId", productId);
@@ -156,7 +174,7 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 			}
 		}
 		for (BaseStandard baseStandard : baseStandards) {
-			if(set.contains(baseStandard.getStandard())) {
+			if(set.contains(baseStandard.getBaseElement().getName())) {
 				break;
 			}
 			params.put("basePriceId", baseStandard.getBasePrice().getId());

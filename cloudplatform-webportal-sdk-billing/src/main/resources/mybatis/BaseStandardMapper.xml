@@ -103,6 +103,22 @@
 	        <include refid="Common_Where_Clause" />
 	</select>
 	
+	<select id="selectBaseStandardByProductId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />, price.ID PRICE_ID, price.TYPE CHARGE_TYPE, price.AMOUNT, price.PRICE,
+	        element.ID ELEMENT_ID, element.NAME
+	    from
+	        MATRIX_BILLING_BASE_STANDARD standard
+	    left join 
+	    	MATRIX_BILLING_BASE_PRICE price on standard.ID=price.BASE_STANDARD_ID
+	    left join 
+	    	MATRIX_BILLING_BASE_ELEMENT element on standard.BASE_ELEMENT_ID=element.ID
+	    left join 
+	    	MATRIX_BILLING_PRODUCT_ELEMENT productElement ON productElement.BASE_ELEMENT_ID=element.ID
+	    where
+	    	productElement.PRODUCT_ID=#{productId}
+	</select>
+	
 	<select id="selectStadardInfoWithFatherId" resultType="java.util.Map" parameterType="java.util.Map">
 	    select
 	        standard.STANDARD standard,count(standard.STANDARD) count

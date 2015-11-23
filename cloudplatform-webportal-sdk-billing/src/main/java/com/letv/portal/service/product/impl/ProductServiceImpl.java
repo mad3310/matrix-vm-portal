@@ -226,6 +226,38 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		}
 	}
 	
+	/**
+	  * @Title: getStandardsInfoByProductElements
+	  * @Description: 获取该产品下元素的规格及相应的计费类型(优化后)
+	  * @param map 商品参数
+	  * @param standards 
+	  * @param chargeTypes 
+	  * @param baseStandards 产品下所有元素的所有规格  
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月20日 下午2:31:20
+	  */
+	protected void getStandardsInfoByProductElements(Map<String, Object> map, 
+			Map<String, List<Map<String,String>>> standards, Map<String, String> chargeTypes, List<BaseStandard> baseStandards) {
+		for (BaseStandard baseStandard : baseStandards) {
+			List<Map<String, String>> list = null;
+			Map<String, String> typeAndValue = new HashMap<String, String>();
+			typeAndValue.put("type", baseStandard.getType());
+			typeAndValue.put("value", baseStandard.getValue());
+			if(standards.containsKey(baseStandard.getBaseElement().getName())) {
+				list = standards.get(baseStandard.getBaseElement().getName());
+				list.add(typeAndValue);
+			} else {
+				list = new ArrayList<Map<String, String>>();
+				list.add(typeAndValue);
+				standards.put(baseStandard.getBaseElement().getName(), list);
+			}
+		}
+		if(baseStandards!=null && baseStandards.size()!=0 && baseStandards.get(0).getBasePrice()!=null) {
+			chargeTypes.put(baseStandards.get(0).getBaseElement().getName(), baseStandards.get(0).getBasePrice().getType());
+		}
+	}
+	
 	protected boolean validateChargeTypeZero(Map<String, Object> map, String element, Map<String, List<Map<String, String>>> elements) {
 		if(map.get(element)!=null) {
 			List<Map<String, String>> ls = elements.get(element);
@@ -284,6 +316,11 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		return true;
 	}
 	
+	@Override
+	public boolean validateData(Long id, Map<String, Object> map) {
+		return validateData(id, map, null);
+	}
+	
 	/**
 	  * @Title: validateData
 	  * @Description: 验证产品元素值是否合法
@@ -295,7 +332,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	  * @date 2015年9月1日 下午4:23:04
 	  */
 	@Override
-	public boolean validateData(Long id, Map<String, Object> map) {
+	public boolean validateData(Long id, Map<String, Object> map, List<BaseStandard> baseStandards) {
 		//**********验证产品在该地域是否存在start******************
 		if(!validateRegion(id, map)) {
 			return false;
@@ -304,7 +341,13 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		
 		Map<String, List<Map<String, String>>> elements = new HashMap<String, List<Map<String, String>>>();
 		Map<String, String> chargeTypes = new HashMap<String, String>();
-		getStandardsInfoByProductElements(id, map, elements, chargeTypes);
+		
+		if(baseStandards==null || baseStandards.size()==0) {
+			getStandardsInfoByProductElements(id, map, elements, chargeTypes);
+		} else {
+			getStandardsInfoByProductElements(map, elements, chargeTypes, baseStandards);
+		}
+		
 		
 		for (String standard : elements.keySet()) {
 			if(chargeTypes.get(standard)==null) {
@@ -328,6 +371,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		//**********验证购买产品数量和时长是否在规定范围内end******************
 		return true;
 	}
+	
+	
 
 	@Override
 	public Long getRegionIdByCode(String regionCode) {
@@ -388,6 +433,11 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		for (Product product : products) {
 			Constants.productInfo.put(product.getId(), product.getName());
 		}
+	}
+
+	@Override
+	public List<BaseStandard> selectBaseStandardByProductId(Long productId) {
+		return this.baseStandardDao.selectBaseStandardByProductId(productId);
 	}
 
 }

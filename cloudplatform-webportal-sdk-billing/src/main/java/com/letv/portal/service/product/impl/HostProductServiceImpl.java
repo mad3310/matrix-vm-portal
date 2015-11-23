@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductElementDao;
+import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.service.product.IHostProductService;
 
 @Service("hostProductService")
@@ -23,6 +24,11 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	@Autowired
 	private IBaseStandardDao baseStandardDao;
 	
+	@Override
+	public boolean validateData(Long id, Map<String, Object> map) {
+		return validateData(id, map, null);
+	}
+	
 	/**
 	  * @Title: validateData
 	  * @Description: 通用逻辑调用父类验证,云主机独有逻辑自己验证
@@ -34,7 +40,7 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	  * @date 2015年9月1日 下午4:23:04
 	  */
 	@Override
-	public boolean validateData(Long id, Map<String, Object> map) {
+	public boolean validateData(Long id, Map<String, Object> map, List<BaseStandard> baseStandards) {
 		//**********验证产品在该地域是否存在start******************
 		if(!super.validateRegion(id, map)) {
 			return false;
@@ -44,7 +50,11 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 		Map<String, List<Map<String, String>>> elements = new HashMap<String, List<Map<String, String>>>();
 		Map<String, String> chargeTypes = new HashMap<String, String>();
 		
-		super.getStandardsInfoByProductElements(id, map, elements, chargeTypes);
+		if(baseStandards==null || baseStandards.size()==0) {
+			super.getStandardsInfoByProductElements(id, map, elements, chargeTypes);
+		} else {
+			super.getStandardsInfoByProductElements(map, elements, chargeTypes, baseStandards);
+		}
 		
 		for (String element : elements.keySet()) {
 			if(chargeTypes.get(element)==null) {

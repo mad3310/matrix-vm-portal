@@ -201,7 +201,10 @@
 		    MATRIX_BILLING_ORDER_SUB mbos on subscription.ID=mbos.SUBSCRIPTION_ID
 	    left join
 	    	MATRIX_BILLING_ORDER mbo on mbo.ID=mbos.ORDER_ID
+	   	left join
+	    	MATRIX_PRODUCT_INFO_RECORD record on subscription.PRODUCT_INFO_RECORD_ID=record.ID
 	        <include refid="Common_Where_Clause" />
+	        and record.INSTANCE_ID is not null
 	        and mbo.STATUS=2
 	        <if test="date != null and date != '' ">
 	            and subscription.START_TIME &lt; #{date} and subscription.END_TIME &gt;= #{date}
