@@ -1,0 +1,24 @@
+{
+  "code": "200",
+  "data": {
+    "baseInfo": {
+      "dbInstanceId": "实例ID",
+      "dbInstanceName": "实例名",
+      "dbInstanceStatus": "实例状态",
+      "dbInstanceClass": "数据库类型",
+      "regionName": "地域",
+      "availableAreaName": "可用区",
+      "dbInstanceConnections": "最大链接数",
+      "ioRequestTimes": "最大IOPS",
+      "dbInstanceMemory": "内存",
+      "dbInstanceStorage": "存储大小",
+      "dbInstanceSize":"使用空间",
+      "engine": "MySQL",
+      "port": "端口",
+      "dbInstanceAvailability": "实例可用性%",
+      "createTime":"创建时间"
+    },
+    "message": "successful",
+    "success": true
+  }
+}

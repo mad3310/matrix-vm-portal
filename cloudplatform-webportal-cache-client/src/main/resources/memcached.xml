@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<memcached>
+    <client name="mclient" compressEnable="true" defaultEncoding="UTF-8" socketpool="pool">
+        <errorHandler>com.letv.mms.cache.handler.impl.LetvCbaseErrorHandler</errorHandler>
+    </client>
+    <socketpool name="pool" failover="true" initConn="5" minConn="5" maxConn="250" maintSleep="0"
+        nagle="false" socketTO="3000" aliveCheck="true">
+        <servers>10.154.28.163:11211</servers>
+    </socketpool> 
+    <cluster name="cluster1">
+        <memCachedClients>mclient</memCachedClients>
+    </cluster>
+</memcached>

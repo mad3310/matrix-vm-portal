@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/layouts/">
+	<excludes>
+		<pattern>/static/*</pattern>
+		<pattern>/account/login*</pattern>
+		
+		<!-- 异步请求 -->
+		<pattern>/mcluster</pattern>
+		<pattern>/mcluster*</pattern>
+		<pattern>/mcluster/*</pattern>
+		
+		<pattern>/container</pattern>
+		<pattern>/container*</pattern>
+		<pattern>/container/*</pattern>
+		
+		<pattern>/db</pattern>
+		<pattern>/db*</pattern>
+		<pattern>/db/*</pattern>
+		
+		<pattern>/dbUser</pattern>
+		<pattern>/dbUser*</pattern>
+		<pattern>/dbUser/*</pattern>
+		
+		<pattern>/build</pattern>
+		<pattern>/build*</pattern>
+		<pattern>/build/*</pattern>
+		
+		<pattern>/hcluster</pattern>
+		<pattern>/hcluster*</pattern>
+		<pattern>/hcluster/*</pattern>
+		
+		<pattern>/host</pattern>
+		<pattern>/host*</pattern>
+		<pattern>/host/*</pattern>
+		
+		<pattern>/monitor</pattern>
+		<pattern>/monitor*</pattern>
+		<pattern>/monitor/*</pattern>
+		
+		<pattern>/timingTask</pattern>
+		<pattern>/timingTask*</pattern>
+		<pattern>/timingTask/*</pattern>
+		
+		<pattern>/zk</pattern>
+		<pattern>/zk*</pattern>
+		<pattern>/zk/*</pattern>
+		
+		<pattern>/gce</pattern>
+		<pattern>/gce*</pattern>
+		<pattern>/gce/*</pattern>
+		
+		<pattern>/task</pattern>
+		<pattern>/task*</pattern>
+		<pattern>/task/*</pattern>
+		
+		
+		<pattern>/dashboard/*</pattern>
+		<pattern>/403</pattern>
+		
+		<pattern>/user</pattern>
+		<pattern>/user*</pattern>
+		<pattern>/user/*</pattern>
+	</excludes>
+	
+	<decorator name="default" page="default.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+</decorators>
+ 

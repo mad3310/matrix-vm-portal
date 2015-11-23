@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letv.portal.dao.letvcloud.BillUserAmountMapper" >
+
+    <update id="reduceAmount" parameterType="com.letv.portal.model.letvcloud.BillDeduction">
+        update bill_user_amount
+        <set>
+            <if test ="arrearageTime != null">arrearageTime = NOW(),</if>
+            availableAmount = availableAmount - #{fee},
+            lastUpdateTime = NOW()
+        </set>
+        where userId = #{userId} and lastUpdateTime = #{lastUpdateTime}
+    </update>
+
+    <update id="updateUserAmountFromAvailableToFreeze" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
+        update bill_user_amount
+        <set>
+            availableAmount = #{availableAmount},
+            freezeAmount = #{freezeAmount},
+            lastUpdateTime = NOW()
+        </set>
+        where userId = #{userId}
+    </update>
+    
+    <update id="reduceFreezeAmount" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
+        update bill_user_amount
+        <set>
+            freezeAmount = #{freezeAmount},
+            lastUpdateTime = NOW()
+        </set>
+        where userId = #{userId}
+    </update>
+    <update id="reduceAvailableAmount" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
+        update bill_user_amount
+        <set>
+            availableAmount = #{availableAmount},
+            lastUpdateTime = NOW()
+        </set>
+        where userId = #{userId}
+    </update>
+    <update id="addAmount" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
+        update bill_user_amount
+        <set>
+            availableAmount = #{availableAmount},
+            lastUpdateTime = NOW()
+        </set>
+        where userId = #{userId} and lastUpdateTime = #{lastUpdateTime}
+    </update>
+    <update id="updateArrearageTime" parameterType="java.lang.Long">
+        update bill_user_amount
+        <set>
+            arrearageTime = NULL,
+            lastUpdateTime = NOW()
+        </set>
+        where userId = #{userId}
+    </update>
+    <select id="getUserAmout" resultType="com.letv.portal.model.letvcloud.BillUserAmount">
+        select userId,availableAmount,freezeAmount,lastUpdateTime,arrearageTime
+        from bill_user_amount
+        where userId = #{userId}
+    </select>
+    <select id="getUserArrears" parameterType="java.lang.Long" resultType="com.letv.portal.model.letvcloud.BillUserAmount">
+        select userId,arrearageTime
+        from bill_user_amount
+        where userId = #{userId} and arrearageTime is not NULL
+    </select>
+    <select id="getLastUpdateTime" parameterType="java.lang.Long" resultType="java.util.Date">
+        select lastUpdateTime from bill_user_amount where userId = #{userId}
+    </select>
+    <insert id="insertUserAmountDefault" parameterType="java.lang.Long">
+        insert into bill_user_amount(
+          userId,
+          availableAmount,
+          freezeAmount,
+          createdTime,
+          lastUpdateTime
+        )
+        values(
+          #{userId},
+          0,
+          0,
+          NOW(),
+          NOW()
+        )
+    </insert>
+
+</mapper>

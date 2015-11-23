@@ -1,0 +1,5 @@
+/cloudplatform-webportal-webadmin/src/main/webapp/WEB-INF/views/clouddb/*.tmp
+.idea
+.project
+.settings
+*.iml

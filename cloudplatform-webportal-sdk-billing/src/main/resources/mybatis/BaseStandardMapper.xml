@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.base.IBaseStandardDao">
+	
+	<resultMap id="BaseResultMap" type="BaseStandard">
+	    <result column="ID" property="id" />
+	    <result column="BASE_ELEMENT_ID" property="baseElementId" />
+	    <result column="FATHER_ID" property="fatherId" />
+	    <result column="STANDARD" property="standard" />
+	    <result column="TYPE" property="type" />
+	    <result column="VALUE" property="value" />
+	    <result column="UNIT" property="unit" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	    
+	    <association property="basePrice" javaType="BasePrice">
+			<result column="PRICE_ID" property="id" />
+			<result column="CHARGE_TYPE" property="type" />
+			<result column="PRICE" property="price" />
+			<result column="AMOUNT" property="amount" />
+		</association>
+		
+		<association property="baseElement" javaType="BaseElement">
+			<result column="ELEMENT_ID" property="id" />
+			<result column="NAME" property="name" />
+		</association>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    standard.ID,standard.BASE_ELEMENT_ID,standard.FATHER_ID,standard.STANDARD,standard.TYPE,
+	    standard.VALUE,standard.UNIT,standard.DELETED,standard.CREATE_TIME,standard.UPDATE_TIME,
+	    standard.CREATE_USER,standard.UPDATE_USER,standard.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="BaseStandard" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_BASE_STANDARD 
+	        (BASE_ELEMENT_ID,FATHER_ID,STANDARD,TYPE,VALUE,UNIT,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{baseElementId},#{fatherId},#{standard},#{type},#{value},#{unit},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and standard.ID=#{id}
+	        </if>
+	        <if test="baseElementId != null ">
+	            and standard.BASE_ELEMENT_ID=#{baseElementId}
+	        </if>
+	        <if test="fatherId != null ">
+	            and standard.FATHER_ID=#{fatherId}
+	        </if>
+	        <if test="standard != null ">
+	            and standard.STANDARD=#{standard}
+	        </if>
+	        <if test="type != null ">
+	            and standard.TYPE=#{type}
+	        </if>
+	        <if test="value != null ">
+	            and standard.VALUE=#{value}
+	        </if>
+	        <if test="unit != null ">
+	            and standard.UNIT=#{unit}
+	        </if>
+	        <if test="deleted != null ">
+	            and standard.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and standard.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and standard.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and standard.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and standard.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and standard.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />, price.ID PRICE_ID, price.TYPE CHARGE_TYPE, price.AMOUNT, price.PRICE,
+	        element.ID ELEMENT_ID, element.NAME
+	    from
+	        MATRIX_BILLING_BASE_STANDARD standard
+	    left join 
+	    	MATRIX_BILLING_BASE_PRICE price on standard.ID=price.BASE_STANDARD_ID
+	    left join 
+	    	MATRIX_BILLING_BASE_ELEMENT element on standard.BASE_ELEMENT_ID=element.ID
+	        <include refid="Common_Where_Clause" />
+	</select>
+	
+	<select id="selectBaseStandardByProductId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />, price.ID PRICE_ID, price.TYPE CHARGE_TYPE, price.AMOUNT, price.PRICE,
+	        element.ID ELEMENT_ID, element.NAME
+	    from
+	        MATRIX_BILLING_BASE_STANDARD standard
+	    left join 
+	    	MATRIX_BILLING_BASE_PRICE price on standard.ID=price.BASE_STANDARD_ID
+	    left join 
+	    	MATRIX_BILLING_BASE_ELEMENT element on standard.BASE_ELEMENT_ID=element.ID
+	    left join 
+	    	MATRIX_BILLING_PRODUCT_ELEMENT productElement ON productElement.BASE_ELEMENT_ID=element.ID
+	    where
+	    	productElement.PRODUCT_ID=#{productId}
+	</select>
+	
+	<select id="selectStadardInfoWithFatherId" resultType="java.util.Map" parameterType="java.util.Map">
+	    select
+	        standard.STANDARD standard,count(standard.STANDARD) count
+	    from
+	        MATRIX_BILLING_BASE_STANDARD standard
+	        <include refid="Common_Where_Clause" />
+	    group by 
+	    	standard.STANDARD
+	</select>
+	
+	<select id="selectBaseStandardWithPrice" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />, price.ID PRICE_ID, price.TYPE CHARGE_TYPE, price.AMOUNT, price.PRICE,
+	        element.ID ELEMENT_ID, element.NAME
+	    from
+	        MATRIX_BILLING_BASE_STANDARD standard
+	    join 
+	    	MATRIX_BILLING_BASE_PRICE price on standard.ID=price.BASE_STANDARD_ID
+	    left join 
+	    	MATRIX_BILLING_BASE_ELEMENT element on standard.BASE_ELEMENT_ID=element.ID
+	    where
+	    	standard.BASE_ELEMENT_ID=#{baseElementId}
+	</select>
+	
+	<select id="selectBaseStandardWithPriceByElementName" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />, price.ID PRICE_ID, price.TYPE CHARGE_TYPE, price.AMOUNT, price.PRICE,
+	        element.ID ELEMENT_ID, element.NAME
+	    from
+	        MATRIX_BILLING_BASE_STANDARD standard
+	    join 
+	    	MATRIX_BILLING_BASE_PRICE price on standard.ID=price.BASE_STANDARD_ID
+	    left join 
+	    	MATRIX_BILLING_BASE_ELEMENT element on standard.BASE_ELEMENT_ID=element.ID
+	    where
+	    	element.NAME=#{elementName}
+	</select>
+
+
+</mapper>   

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmImageDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmImage">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="IMAGE_ID" property="imageId"/>
+		<result column="NAME" property="name" />
+		<result column="SIZE" property="size"/>
+		<result column="MIN_DISK" property="minDisk"/>
+		<result column="MIN_RAM" property="minRam"/>
+		<result column="STATUS" property="status"/>
+		<result column="TENANT_ID" property="tenantId"/>
+		<result column="IMAGE_TYPE" property="imageType"/>
+		<result column="PLATFORM" property="platform"/>
+		<result column="TYPE" property="type"/>
+		<result column="SERVER_ID" property="serverId"/>
+		<result column="SERVER_NAME" property="serverName"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_IMAGE table all fields -->
+	<sql id="Base_Column_List">
+		i.ID,
+		i.REGION,i.IMAGE_ID,i.NAME,i.SIZE,i.MIN_DISK,i.MIN_RAM,
+		i.STATUS,i.TENANT_ID,i.IMAGE_TYPE,i.PLATFORM,i.TYPE,i.SERVER_ID,i.SERVER_NAME,
+		i.DELETED,i.CREATE_TIME,i.CREATE_USER,i.UPDATE_TIME,i.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and i.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and i.REGION=#{region}
+			</if>
+			<if test="imageId != null ">
+				and i.IMAGE_ID=#{imageId}
+			</if>
+			<if test="name != null  and name != ''  and name != 'null'">
+				and i.NAME like CONCAT('%',#{name},'%') escape '^'
+			</if>
+			<if test="tenantId != null ">
+				and i.TENANT_ID=#{tenantId}
+			</if>
+			<if test="imageType != null ">
+				and i.IMAGE_TYPE=#{imageType}
+			</if>
+			<if test="serverId != null ">
+				and i.SERVER_ID=#{serverId}
+			</if>
+			<if test="deleted != null  ">
+				and i.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and i.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and i.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and i.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and i.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmImage" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_IMAGE(REGION,IMAGE_ID,`NAME`,SIZE,MIN_DISK,MIN_RAM,
+		STATUS,TENANT_ID,IMAGE_TYPE,PLATFORM,`TYPE`,SERVER_ID,SERVER_NAME,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{imageId},#{name},#{size},#{minDisk},#{minRam},
+		#{status},#{tenantId},#{imageType},#{platform},#{type},#{serverId},#{serverName},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmImage">
+		update WEBPORTAL_CLOUDVM_IMAGE
+		set
+		ID=#{id},
+		REGION=#{region},
+		IMAGE_ID=#{imageId},
+		`NAME`=#{name},
+		`SIZE`=#{size},
+		MIN_DISK=#{minDisk},
+		MIN_RAM=#{minRam},
+		STATUS=#{status},
+		TENANT_ID=#{tenantId},
+		IMAGE_TYPE=#{imageType},
+		PLATFORM=#{platform},
+		`TYPE`=#{type},
+		SERVER_ID=#{serverId},
+		SERVER_NAME=#{serverName},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE i
+		<include refid="Example_Where_Clause" />
+		ORDER BY i.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmImage">
+		delete from WEBPORTAL_CLOUDVM_IMAGE where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE i
+		where  i.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_CLOUDVM_IMAGE i
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<select id="selectByMapForSync" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE i
+		<if test="id != null">
+			where i.ID > #{id}
+		</if>
+		ORDER BY i.ID ASC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<select id="selectAllImageOrVmSnapshot" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE i
+		where i.REGION = #{region} and (i.TENANT_ID = #{tenantId} or i.IMAGE_TYPE = #{imageType})
+	</select>
+</mapper>

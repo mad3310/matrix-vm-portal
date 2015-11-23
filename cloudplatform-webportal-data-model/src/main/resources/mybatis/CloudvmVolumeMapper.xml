@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmVolumeDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmVolume">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="VOLUME_ID" property="volumeId"/>
+		<result column="STATUS" property="status" />
+		<result column="SIZE" property="size"/>
+		<result column="VOLUME_TYPE" property="volumeType"/>
+		<result column="SNAPSHOT_ID" property="snapshotId"/>
+		<result column="NAME" property="name"/>
+		<result column="DESCRIPTION" property="description"/>
+		<result column="SERVER_ID" property="serverId"/>
+		<result column="SERVER_NAME" property="serverName"/>
+		<result column="TENANT_ID" property="tenantId"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+
+		<!--<association property="server" javaType="CloudvmServer">-->
+			<!--<result column="SERVER_NAME" property="name" />-->
+		<!--</association>-->
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_VOLUME table all fields -->
+	<!-- server.NAME as SERVER_NAME, -->
+	<sql id="Base_Column_List">
+		v.ID,v.REGION,v.VOLUME_ID,v.STATUS,v.SIZE,v.VOLUME_TYPE,
+		v.SNAPSHOT_ID,v.NAME,v.DESCRIPTION,v.SERVER_ID,v.SERVER_NAME,v.TENANT_ID,
+		v.DELETED,v.CREATE_TIME,v.CREATE_USER,v.UPDATE_TIME,v.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and v.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and v.REGION=#{region}
+			</if>
+			<if test="regions != null ">
+				and v.REGION in <foreach item="item" index="index" collection="regions"
+											open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			</if>
+			<if test="volumeId != null ">
+				and v.VOLUME_ID=#{volumeId}
+			</if>
+			<if test="volumeIds != null ">
+				and v.VOLUME_ID in <foreach item="item" index="index" collection="volumeIds"
+									 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			</if>
+			<if test="name != null  and name != ''  and name != 'null'">
+				and v.NAME like CONCAT('%',#{name},'%') escape '^'
+			</if>
+			<if test="serverId != null ">
+				and v.SERVER_ID=#{serverId}
+			</if>
+			<if test="tenantId != null ">
+				and v.TENANT_ID=#{tenantId}
+			</if>
+			<if test="status != null ">
+				and v.STATUS=#{status}
+			</if>
+			<if test="deleted != null  ">
+				and v.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and v.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and v.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and v.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and v.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmVolume" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_VOLUME(REGION,VOLUME_ID,STATUS,`SIZE`,VOLUME_TYPE,
+		SNAPSHOT_ID,`NAME`,DESCRIPTION,SERVER_ID,SERVER_NAME,TENANT_ID,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{volumeId},#{status},#{size},#{volumeType},
+		#{snapshotId},#{name},#{description},#{serverId},#{serverName},#{tenantId},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmVolume">
+		update WEBPORTAL_CLOUDVM_VOLUME
+		set
+		ID=#{id},
+		REGION=#{region},
+		VOLUME_ID=#{volumeId},
+		STATUS=#{status},
+		`SIZE`=#{size},
+		VOLUME_TYPE=#{volumeType},
+		SNAPSHOT_ID=#{snapshotId},
+		`NAME`=#{name},
+		DESCRIPTION=#{description},
+		SERVER_ID=#{serverId},
+		SERVER_NAME=#{serverName},
+		TENANT_ID=#{tenantId},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_VOLUME v
+		left join WEBPORTAL_CLOUDVM_SERVER server
+		on v.SERVER_ID = server.SERVER_ID and v.REGION = server.REGION
+		<include refid="Example_Where_Clause" />
+		ORDER BY v.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<select id="selectByMapForSync" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_VOLUME v
+		<if test="id != null">
+			where v.ID > #{id}
+		</if>
+		ORDER BY v.ID ASC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmVolume">
+		delete from WEBPORTAL_CLOUDVM_VOLUME where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_VOLUME v
+		left join WEBPORTAL_CLOUDVM_SERVER server
+		on v.SERVER_ID = server.SERVER_ID and v.REGION = server.REGION
+		where  v.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_CLOUDVM_VOLUME v
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 统计大小 -->
+	<select id="selectByMapCountSize" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select sum(v.SIZE)
+		from WEBPORTAL_CLOUDVM_VOLUME v
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

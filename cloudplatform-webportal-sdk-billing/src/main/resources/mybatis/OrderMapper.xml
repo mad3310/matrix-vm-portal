@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.order.IOrderDao">
+
+	<resultMap id="BaseResultMap" type="Order">
+	    <result column="ID" property="id" />
+	    <result column="ORDER_NUMBER" property="orderNumber" />
+	    <result column="STATUS" property="status" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	    <result column="PAY_NUMBER" property="payNumber" />
+	    <result column="PAY_TIME" property="payTime" />
+	    <result column="ACCOUNT_PRICE" property="accountPrice" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    od.ID,od.ORDER_NUMBER,od.STATUS,
+	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN,od.PAY_NUMBER,od.PAY_TIME,od.ACCOUNT_PRICE
+	</sql>
+	
+	<insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_ORDER 
+	        (ORDER_NUMBER,STATUS,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PAY_NUMBER,PAY_TIME) 
+	    values
+	        (#{orderNumber},#{status},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn},#{payNumber},#{payTime})
+	</insert>
+	
+	<!--根据id，有选择的修改记录 -->
+	<update id="updateBySelective" parameterType="Order">
+		update MATRIX_BILLING_ORDER
+		<set>
+			<if test="orderNumber != null ">
+	            ORDER_NUMBER=#{orderNumber},
+	        </if>
+	        <if test="status != null ">
+	            STATUS=#{status},
+	        </if>
+	        <if test="deleted != null ">
+	            DELETED=#{deleted},
+	        </if>
+	        <if test="createTime != null ">
+	            CREATE_TIME=#{createTime},
+	        </if>
+	        <if test="updateTime != null ">
+	            UPDATE_TIME=#{updateTime},
+	        </if>
+	        <if test="createUser != null ">
+	            CREATE_USER=#{createUser},
+	        </if>
+	        <if test="updateUser != null ">
+	            UPDATE_USER=#{updateUser},
+	        </if>
+	        <if test="descn != null ">
+	            DESCN=#{descn},
+	        </if>
+	        <if test="payNumber != null ">
+	            PAY_NUMBER=#{payNumber},
+	        </if>
+	        <if test="payTime != null ">
+	            PAY_TIME=#{payTime},
+	        </if>
+	        <if test="accountPrice != null ">
+	            ACCOUNT_PRICE=#{accountPrice}
+	        </if>
+		</set>
+		where ID=#{id}
+	</update>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and od.ID=#{id}
+	        </if>
+	        <if test="orderNumber != null ">
+	            and od.ORDER_NUMBER like CONCAT('%','${orderNumber}','%') escape '^' 
+	        </if>
+	        <if test="status != null ">
+	            and od.STATUS=#{status}
+	        </if>
+	        <if test="deleted != null ">
+	            and od.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and od.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and od.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and od.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and od.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and od.DESCN=#{descn}
+	        </if>
+	        <if test="payNumber != null ">
+	            and od.PAY_NUMBER=#{payNumber}
+	        </if>
+	        <if test="accountPrice != null ">
+	            and od.ACCOUNT_PRICE=#{accountPrice}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_ORDER od
+	        <include refid="Common_Where_Clause" />
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+			count(1) 
+		from 
+			MATRIX_BILLING_ORDER od
+			<include refid="Common_Where_Clause" />
+	</select>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			MATRIX_BILLING_ORDER od
+			<include refid="Common_Where_Clause" />
+		ORDER BY od.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+
+</mapper>   

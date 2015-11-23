@@ -1,0 +1,40 @@
+{
+  "code": "200",
+  "message": "successful",
+  "status": {
+    "allowAccess": true,
+    "allowAccessPMA": false,
+    "allowCreateBackup": true,
+    "allowModifyNetType": false,
+    "allowModifyNetTypeMaxTimes": 20,
+    "allowModifyNetTypeTimes": 0,
+    "allowOperation": true,
+    "allowRenew": true,
+    "allowRestart": true,
+    "allowUpgrade": true,
+    "allowUpgradeEngineVersion": true,
+    "connectionString": "rdsenn6ryenn6ry.mysql.rds.aliyuncs.com",
+    "dbInstanceNetType": 1,
+    "dbInstanceStatus": 1,
+    "dbInstanceStatusName": "运行中",
+    "description": "",
+    "lockStatus": false,
+    "port": "3306"
+  },
+  "success": true,
+  "tasks": {
+    "code": "200",
+    "data": {
+      "dbInstanceID": "232851",
+      "endTime": "2014-12-15 23:59",
+      "instanceName": "rdsenn6ryenn6ry",
+      "maxRecordsPerPage": 30,
+      "pageNumbers": 1,
+      "startTime": "2014-12-08 00:00",
+      "tasks": [],
+      "totalRecords": "0"
+    },
+    "message": "successful",
+    "success": true
+  }
+}

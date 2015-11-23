@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.product.IProductInfoRecordDao">
+
+	<resultMap id="BaseResultMap" type="ProductInfoRecord">
+	    <result column="ID" property="id" />
+	    <result column="PARAMS" property="params" />
+	    <result column="PRODUCT_ID" property="productId" />
+	    <result column="BATCH" property="batch" />
+	    <result column="INVOKE_TYPE" property="invokeType" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	    <result column="INSTANCE_ID" property="instanceId" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    record.ID,record.PARAMS,record.PRODUCT_ID,record.BATCH,record.INVOKE_TYPE,record.DELETED,record.CREATE_TIME,
+	    record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN,record.INSTANCE_ID
+	</sql>
+	
+	<insert id="insert" parameterType="ProductInfoRecord" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_PRODUCT_INFO_RECORD 
+	        (PARAMS,PRODUCT_ID,BATCH,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,INSTANCE_ID) 
+	    values
+	        (#{params},#{productId},#{batch},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{instanceId})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and record.ID=#{id}
+	        </if>
+	        <if test="params != null ">
+	            and record.PARAMS=#{params}
+	        </if>
+	        <if test="productId != null ">
+	            and record.PRODUCT_ID=#{productId}
+	        </if>
+	        <if test="batch != null ">
+	            and record.BATCH=#{batch}
+	        </if>
+	        <if test="invokeType != null ">
+	            and record.INVOKE_TYPE=#{invokeType}
+	        </if>
+	        <if test="deleted != null ">
+	            and record.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and record.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and record.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and record.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and record.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and record.DESCN=#{descn}
+	        </if>
+	        <if test="instanceId != null ">
+	            and record.INSTANCE_ID=#{instanceId}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_PRODUCT_INFO_RECORD record
+	        <include refid="Common_Where_Clause" />
+	</select>
+	
+	<!--根据id，有选择的修改记录 -->
+	<update id="updateBySelective" parameterType="ProductInfoRecord">
+		update MATRIX_PRODUCT_INFO_RECORD
+		<set>
+			<if test="params != null ">
+	            PARAMS=#{params},
+	        </if>
+	        <if test="productId != null ">
+	            PRODUCT_ID=#{productId},
+	        </if>
+	        <if test="batch != null ">
+	            BATCH=#{batch},
+	        </if>
+	        <if test="invokeType != null ">
+	            INVOKE_TYPE=#{invokeType},
+	        </if>
+	        <if test="deleted != null ">
+	            DELETED=#{deleted},
+	        </if>
+	        <if test="createTime != null ">
+	            CREATE_TIME=#{createTime},
+	        </if>
+	        <if test="updateTime != null ">
+	            UPDATE_TIME=#{updateTime},
+	        </if>
+	        <if test="createUser != null ">
+	            CREATE_USER=#{createUser},
+	        </if>
+	        <if test="updateUser != null ">
+	            UPDATE_USER=#{updateUser},
+	        </if>
+	        <if test="descn != null ">
+	            DESCN=#{descn},
+	        </if>
+	        <if test="instanceId != null ">
+	            INSTANCE_ID=#{instanceId}
+	        </if>
+		</set>
+		where ID=#{id}
+	</update>
+
+
+
+</mapper>   

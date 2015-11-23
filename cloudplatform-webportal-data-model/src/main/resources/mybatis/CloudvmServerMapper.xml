@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmServerDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmServer">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="SERVER_ID" property="serverId"/>
+		<result column="FLAVOR_ID" property="flavorId" />
+		<result column="NAME" property="name"/>
+		<result column="TENANT_ID" property="tenantId"/>
+		<result column="STATUS" property="status"/>
+		<result column="IMAGE_ID" property="imageId"/>
+		<result column="EXTENDED_STATUS_TASK_STATE" property="extendedStatusTaskState"/>
+		<result column="EXTENDED_STATUS_VM_STATE" property="extendedStatusVmState"/>
+		<result column="EXTENDED_STATUS_POWER_STATE" property="extendedPowerState"/>
+		<result column="PUBLIC_IP" property="publicIp"/>
+		<result column="PRIVATE_IP" property="privateIp"/>
+		<result column="SUBNET_ID" property="subnetId"/>
+		<result column="NETWORK_ID" property="networkId"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_SERVER table all fields -->
+	<sql id="Base_Column_List">
+		s.ID,s.REGION,s.SERVER_ID,s.FLAVOR_ID,s.NAME,s.TENANT_ID,
+		s.STATUS,s.IMAGE_ID,
+		s.EXTENDED_STATUS_TASK_STATE,s.EXTENDED_STATUS_VM_STATE,s.EXTENDED_STATUS_POWER_STATE,
+		s.PUBLIC_IP,s.PRIVATE_IP,s.SUBNET_ID,s.NETWORK_ID,
+		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and s.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and s.REGION=#{region}
+			</if>
+			<if test="serverId != null ">
+				and s.SERVER_ID=#{serverId}
+			</if>
+			<if test="flavorId != null ">
+				and s.FLAVOR_ID=#{flavorId}
+			</if>
+			<if test="name != null  and name != ''  and name != 'null'">
+				and s.NAME like CONCAT('%',#{name},'%') escape '^'
+			</if>
+			<if test="tenantId != null ">
+				and s.TENANT_ID=#{tenantId}
+			</if>
+			<if test="imageId != null ">
+				and s.IMAGE_ID=#{imageId}
+			</if>
+			<if test="subnetId != null ">
+				and s.SUBNET_ID=#{subnetId}
+			</if>
+			<if test="networkId != null ">
+				and s.NETWORK_ID=#{networkId}
+			</if>
+			<if test="deleted != null  ">
+				and s.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and s.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and s.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and s.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and s.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmServer" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_SERVER(REGION,SERVER_ID,FLAVOR_ID,`NAME`,TENANT_ID,
+		STATUS,IMAGE_ID,
+		EXTENDED_STATUS_TASK_STATE,EXTENDED_STATUS_VM_STATE,EXTENDED_STATUS_POWER_STATE,
+		PUBLIC_IP,PRIVATE_IP,SUBNET_ID,NETWORK_ID,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{serverId},#{flavorId},#{name},#{tenantId},
+		#{status},#{imageId},
+		#{extendedStatusTaskState},#{extendedStatusVmState},#{extendedPowerState},
+		#{publicIp},#{privateIp},#{subnetId},#{networkId},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmServer">
+		update WEBPORTAL_CLOUDVM_SERVER
+		set
+		ID=#{id},
+		REGION=#{region},
+		SERVER_ID=#{serverId},
+		FLAVOR_ID=#{flavorId},
+		`NAME`=#{name},
+		TENANT_ID=#{tenantId},
+		STATUS=#{status},
+		IMAGE_ID=#{imageId},
+		EXTENDED_STATUS_TASK_STATE=#{extendedStatusTaskState},
+		EXTENDED_STATUS_VM_STATE=#{extendedStatusVmState},
+		EXTENDED_STATUS_POWER_STATE=#{extendedPowerState},
+		PUBLIC_IP=#{publicIp},
+		PRIVATE_IP=#{privateIp},
+		SUBNET_ID=#{subnetId},
+		NETWORK_ID=#{networkId},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<include refid="Example_Where_Clause" />
+		ORDER BY s.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<select id="selectByMapForSync" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<if test="id != null">
+			where s.ID > #{id}
+		</if>
+		ORDER BY s.ID ASC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmServer">
+		delete from WEBPORTAL_CLOUDVM_SERVER where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		where  s.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

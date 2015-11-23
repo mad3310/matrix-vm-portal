@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmRcCountDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmRcCount">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="TYPE" property="type"/>
+		<result column="TENANT_ID" property="tenantId"/>
+		<result column="COUNT" property="count"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_RC_COUNT table all fields -->
+	<sql id="Base_Column_List">
+		c.ID,c.REGION,c.TYPE,c.TENANT_ID,c.COUNT,
+		c.DELETED,c.CREATE_TIME,c.CREATE_USER,c.UPDATE_TIME,c.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and c.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and c.REGION=#{region}
+			</if>
+			<if test="type != null ">
+				and c.TYPE=#{type}
+			</if>
+			<if test="tenantId != null ">
+				and c.TENANT_ID=#{tenantId}
+			</if>
+			<if test="deleted != null  ">
+				and c.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and c.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and c.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and c.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and c.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmRcCount" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_RC_COUNT(REGION,`TYPE`,`TENANT_ID`,`COUNT`,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{type},#{tenantId},#{count},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmRcCount">
+		update WEBPORTAL_CLOUDVM_RC_COUNT
+		set
+		ID=#{id},
+		REGION=#{region},
+		`TYPE`=#{type},
+		TENANT_ID=#{tenantId},
+		`COUNT`=#{count},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_RC_COUNT c
+		<include refid="Example_Where_Clause" />
+		ORDER BY c.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmRcCount">
+		delete from WEBPORTAL_CLOUDVM_RC_COUNT where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_RC_COUNT c
+		where  c.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_CLOUDVM_RC_COUNT c
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

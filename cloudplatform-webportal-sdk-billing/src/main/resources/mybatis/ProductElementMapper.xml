@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.product.IProductElementDao">
+
+	<resultMap id="BaseResultMap" type="ProductElement">
+	    <result column="ID" property="id" />
+	    <result column="PRODUCT_ID" property="productId" />
+	    <result column="BASE_ELEMENT_ID" property="baseElementId" />
+	    <result column="DESCN" property="descn" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    
+	    <association property="baseElement" javaType="BaseElement">
+			<result column="ELEMENT_ID" property="id" />
+			<result column="NAME" property="name" />
+		</association>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    productElement.ID,productElement.PRODUCT_ID,productElement.BASE_ELEMENT_ID,productElement.DESCN,
+	    productElement.DELETED,productElement.CREATE_TIME,productElement.UPDATE_TIME,productElement.CREATE_USER,
+	    productElement.UPDATE_USER
+	</sql>
+	
+	<insert id="insert" parameterType="ProductElement" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_PRODUCT_ELEMENT 
+	        (PRODUCT_ID,BASE_ELEMENT_ID,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
+	    values
+	        (#{productId},#{baseElementId},#{descn},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and productElement.ID=#{id}
+	        </if>
+	        <if test="productId != null ">
+	            and productElement.PRODUCT_ID=#{productId}
+	        </if>
+	        <if test="baseElementId != null ">
+	            and productElement.BASE_ELEMENT_ID=#{baseElementId}
+	        </if>
+	        <if test="descn != null ">
+	            and productElement.DESCN=#{descn}
+	        </if>
+	        <if test="deleted != null ">
+	            and productElement.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and productElement.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and productElement.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and productElement.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and productElement.UPDATE_USER=#{updateUser}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_PRODUCT_ELEMENT productElement
+	        <include refid="Common_Where_Clause" />
+	</select>
+	
+	<select id="selectByProductIdWithBaseElement" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />,baseElement.NAME,baseElement.ID ELEMENT_ID
+	    from
+	        MATRIX_BILLING_PRODUCT_ELEMENT productElement
+	   	left join
+	   		MATRIX_BILLING_BASE_ELEMENT baseElement on baseElement.ID=productElement.BASE_ELEMENT_ID
+	    where 
+	    	productElement.PRODUCT_ID=#{productId}
+	</select>
+
+</mapper>   

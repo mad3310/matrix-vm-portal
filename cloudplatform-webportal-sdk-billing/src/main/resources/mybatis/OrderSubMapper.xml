@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.order.IOrderSubDao">
+
+	<resultMap id="BaseResultMap" type="OrderSub">
+	    <result column="ID" property="id" />
+	    <result column="ORDER_ID" property="orderId" />
+	    <result column="SUBSCRIPTION_ID" property="subscriptionId" />
+	    <result column="START_TIME" property="startTime" />
+    	<result column="END_TIME" property="endTime" />
+	    <result column="PRICE" property="price" />
+	    <result column="DISCOUNT_PRICE" property="discountPrice" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	    
+	    <association property="subscription" javaType="Subscription">
+	    	<result column="INNER_SUBSCRIPTION_ID" property="id" />
+			<result column="PRODUCT_ID" property="productId" />
+		    <result column="BASE_REGION_ID" property="baseRegionId" />
+		    <result column="CHARGE_TYPE" property="chargeType" />
+		    <result column="ORDER_TIME" property="orderTime" />
+		    <result column="VALID" property="valid" />
+		    <result column="PRODUCT_INFO_RECORD_ID" property="productInfoRecordId" />
+		    <result column="PRODUCT_NAME" property="productName" />
+		    <result column="PRODUCT_DESCN" property="productDescn" />
+		    <result column="BASE_REGION_NAME" property="baseRegionName" />
+		    <result column="DATE_NUM" property="dateNum" />
+		    <result column="SUB_START_TIME" property="startTime" />
+	   	 	<result column="SUB_END_TIME" property="endTime" />
+	   	 	<result column="BUY_TYPE" property="buyType" />
+		</association>
+		
+		<association property="order" javaType="Order">
+			<result column="ORDER_NUMBER" property="orderNumber" />
+		    <result column="STATUS" property="status" />
+		    <result column="PAY_NUMBER" property="payNumber" />
+		    <result column="PAY_TIME" property="payTime" />
+		    <result column="ORDER_DESCN" property="descn" />
+		    <result column="ACCOUNT_PRICE" property="accountPrice" />
+		    <result column="ORDER_CREATE_TIME" property="createTime" />
+		</association>
+		
+		<association property="productInfoRecord" javaType="ProductInfoRecord">
+			<result column="RECORD_ID" property="id" />
+			<result column="PARAMS" property="params" />
+		    <result column="RECORD_PRODUCT_ID" property="productId" />
+		    <result column="BATCH" property="batch" />
+		    <result column="INVOKE_TYPE" property="invokeType" />
+		    <result column="INSTANCE_ID" property="instanceId" />
+		    <result column="RECORD_DESCN" property="descn" />
+		</association>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		orderSub.ID,orderSub.ORDER_ID,orderSub.SUBSCRIPTION_ID,orderSub.START_TIME,
+		orderSub.END_TIME,orderSub.PRICE,orderSub.DISCOUNT_PRICE,orderSub.DELETED,
+		orderSub.CREATE_TIME,orderSub.UPDATE_TIME,orderSub.CREATE_USER,orderSub.UPDATE_USER,orderSub.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="OrderSub" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_ORDER_SUB 
+	        (ORDER_ID,SUBSCRIPTION_ID,START_TIME,END_TIME,PRICE,DISCOUNT_PRICE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{orderId},#{subscriptionId},#{startTime},#{endTime},#{price},#{discountPrice},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<!--根据id，有选择的修改记录 -->
+	<update id="updateBySelective" parameterType="OrderSub">
+		update MATRIX_BILLING_ORDER_SUB
+		<set>
+			<if test="orderId != null ">
+	            ORDER_ID=#{orderId},
+	        </if>
+			<if test="subscriptionId != null ">
+	            SUBSCRIPTION_ID=#{subscriptionId},
+	        </if>
+	        <if test="startTime != null ">
+	            START_TIME=#{startTime},
+	        </if>
+	        <if test="endTime != null ">
+	            END_TIME=#{endTime},
+	        </if>
+	        <if test="price != null ">
+	            PRICE=#{price},
+	        </if>
+	        <if test="deleted != null ">
+	            DELETED=#{deleted},
+	        </if>
+	        <if test="createTime != null ">
+	            CREATE_TIME=#{createTime},
+	        </if>
+	        <if test="updateTime != null ">
+	            UPDATE_TIME=#{updateTime},
+	        </if>
+	        <if test="createUser != null ">
+	            CREATE_USER=#{createUser},
+	        </if>
+	        <if test="updateUser != null ">
+	            UPDATE_USER=#{updateUser},
+	        </if>
+	        <if test="descn != null ">
+	            DESCN=#{descn}
+	        </if>
+		</set>
+		where ID=#{id}
+	</update>
+	<!--根据id，修改折扣价 -->
+	<update id="modifyPriceById" parameterType="java.util.Map">
+		update MATRIX_BILLING_ORDER_SUB
+		<set>
+	        <if test="discountPrice != null ">
+	            DISCOUNT_PRICE=#{discountPrice},
+	        </if>
+	        UPDATE_TIME=now(),
+	        <if test="updateUser != null ">
+	            UPDATE_USER=#{updateUser}
+	        </if>
+		</set>
+		where ID=#{orderId}
+	</update>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and orderSub.ID=#{id}
+	        </if>
+	        <if test="orderId != null ">
+	            and orderSub.ORDER_ID=#{orderId}
+	        </if>
+	        <if test="subscriptionId != null ">
+	            and orderSub.SUBSCRIPTION_ID=#{subscriptionId}
+	        </if>
+	        <if test="startTime != null ">
+	            and orderSub.START_TIME=#{startTime}
+	        </if>
+	        <if test="endTime != null ">
+	            and orderSub.END_TIME=#{endTime}
+	        </if>
+	        <if test="price != null ">
+	            and orderSub.PRICE=#{price}
+	        </if>
+	        <if test="discountPrice != null ">
+	            and orderSub.DISCOUNT_PRICE=#{discountPrice}
+	        </if>
+	        <if test="deleted != null ">
+	            and orderSub.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and orderSub.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and orderSub.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and orderSub.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and orderSub.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and orderSub.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,sub.BUY_TYPE,
+	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,region.NAME BASE_REGION_NAME,
+	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.PAY_TIME,od.DESCN ORDER_DESCN,od.CREATE_TIME ORDER_CREATE_TIME,
+	        record.PARAMS,record.PRODUCT_ID RECORD_PRODUCT_ID,record.INVOKE_TYPE,
+	        record.ID RECORD_ID,record.INSTANCE_ID,record.DESCN RECORD_DESCN,record.BATCH,od.ACCOUNT_PRICE
+	    from
+	        MATRIX_BILLING_ORDER_SUB orderSub
+	    left join
+	        MATRIX_BILLING_ORDER od on orderSub.ORDER_ID=od.ID
+	    left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
+	    left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+	    left join
+	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
+	    left join
+	    	MATRIX_PRODUCT_INFO_RECORD record on sub.PRODUCT_INFO_RECORD_ID=record.ID
+	        <include refid="Common_Where_Clause" />
+			<if test="orderNumber != null  and orderNumber != ''">
+				and od.ORDER_NUMBER = #{orderNumber}
+			</if>
+	        <if test="userId != null  and userId != ''">
+				and sub.USER_ID = #{userId}
+			</if>
+	</select>
+	<select id="selectOrderSubBySubscriptionId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />,od.DESCN ORDER_DESCN,od.STATUS
+	    from
+	        MATRIX_BILLING_ORDER_SUB orderSub
+	    left join
+	    	MATRIX_BILLING_ORDER od on orderSub.ORDER_ID=od.ID
+	   	where
+	   		orderSub.SUBSCRIPTION_ID=#{subscriptionId}
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+			count(1) 
+		from 
+			MATRIX_BILLING_ORDER_SUB orderSub
+		left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
+		left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+		left join
+	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
+			<include refid="Common_Where_Clause" />
+	</select>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,
+	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,
+	        product.NAME PRODUCT_NAME,region.NAME BASE_REGION_NAME
+		from 
+			MATRIX_BILLING_ORDER_SUB orderSub
+		left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
+		left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+		left join
+	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
+			<include refid="Common_Where_Clause" />
+		ORDER BY od.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+	
+	<select id="selectDetailBySubscriptionId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+			record.DESCN ORDER_DESCN,record.CREATE_TIME,
+			sub.ID INNER_SUBSCRIPTION_ID,sub.PRODUCT_ID,sub.START_TIME SUB_START_TIME,sub.END_TIME SUB_END_TIME,DATEDIFF(sub.END_TIME, NOW()) AS DATE_NUM,
+			product.NAME PRODUCT_NAME,
+			region.NAME BASE_REGION_NAME
+		from 
+			MATRIX_BILLING_ORDER_SUB orderSub
+		left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
+		left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+		left join
+	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
+	    left join
+	    	MATRIX_PRODUCT_INFO_RECORD record on sub.PRODUCT_INFO_RECORD_ID=record.ID
+	    	<include refid="Common_Where_Clause" />
+	    	<if test="userId != null  and userId != ''">
+				and sub.USER_ID = #{userId}
+			</if>
+	</select>
+
+</mapper>   

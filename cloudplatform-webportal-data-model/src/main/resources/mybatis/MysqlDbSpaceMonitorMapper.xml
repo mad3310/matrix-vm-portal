@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.monitor.mysql.IMysqlDbSpaceMonitorDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="mysqlDbSpaceMonitor">
+		<result column="ID" property="id" />
+		<result column="HOST_IP" property="hostIp" />
+		<result column="HOST_TAG" property="hostTag" />
+		<result column="NAME" property="name" />
+		<result column="SIZE" property="size" />
+		<result column="DESCN" property="descn" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="UPDATE_TIME" property="updateTime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		dbspace.ID,dbspace.HOST_IP,dbspace.HOST_TAG,
+		dbspace.NAME,dbspace.SIZE,
+		dbspace.DESCN,dbspace.CREATE_TIME,dbspace.UPDATE_TIME
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="MysqlDbSpaceMonitor" useGeneratedKeys="true" keyProperty="id">
+		insert into WEBPORTAL_MONITOR_MYSQL_DB_SPACE 
+			(HOST_IP,HOST_TAG,NAME,SIZE,DESCN,CREATE_TIME,UPDATE_TIME) 
+		values 
+			(#{hostIp},#{hostTag},#{name},#{size},#{descn},#{createTime},#{updateTime});
+	</insert>
+
+	<!-- 更新记录 -->
+	<update id="update" parameterType="MysqlDbSpaceMonitor">
+		update WEBPORTAL_MONITOR_MYSQL_DB_SPACE 
+		<set>
+		    <if test="id != null and id != '' ">
+		        ID=#{id},
+		    </if>
+		    <if test="hostIp != null and hostIp != '' ">
+		        HOST_IP=#{hostIp},
+		    </if>
+		    <if test="hostTag != null and hostTag != '' ">
+		        HOST_TAG=#{hostTag},
+		    </if>
+		    <if test="name != null and name != '' ">
+		        NAME=#{name},
+		    </if>
+		    <if test="size != null ">
+		        SIZE=#{size},
+		    </if>
+		    <if test="descn != null and descn != '' ">
+		        DESCN=#{descn},
+		    </if>
+		    <if test="createTime != null and createTime != '' ">
+		        CREATE_TIME=#{createTime},
+		    </if>
+		    <if test="updateTime != null and updateTime != '' ">
+		        UPDATE_TIME=#{updateTime},
+		    </if>
+		</set>
+		where HOST_TAG=#{hostTag} and NAME = #{name};
+	</update>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select 
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace
+		where
+			dbspace.HOST_TAG = #{hostTag} and
+			dbspace.NAME = #{name}
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="com.letv.common.dao.QueryParam">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace
+			<include refid="List_Page_Where_Clause" />
+	</select>
+	
+	
+	<sql id="List_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and dbspace.ID=#{params.id}
+			</if>
+			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
+				and dbspace.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+			</if>
+			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
+				and dbspace.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+			</if>
+			
+			<if test="params != null and params.descn != null and params.descn != ''  ">
+				and dbspace.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and dbspace.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and dbspace.UPDATE_TIME=#{params.updateTime}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace
+			<include refid="List_Page_Where_Clause" />
+		ORDER BY 
+			<if test="params != null and params.order != null and params.order != '' ">
+				dbspace.${params.order} 
+			</if>
+			<if test="params == null or params.order == null or params.order == '' ">
+				dbspace.CREATE_TIME
+			</if>
+			<if test="params != null and params.orderArg != null and params.orderArg != '' ">
+				${params.orderArg}
+			</if>
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+</mapper>   

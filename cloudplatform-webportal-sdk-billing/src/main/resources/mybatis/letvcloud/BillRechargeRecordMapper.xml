@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letv.portal.dao.letvcloud.BillRechargeRecordMapper" >
+    <insert id="insert" parameterType="com.letv.portal.model.letvcloud.BillRechargeRecord">
+      insert into bill_recharge_record(
+        tradeNum,
+        userId,
+        amount,
+        rechargeType,
+        createdTime,
+        lastUpdateTime,
+        orderCode
+      )values(
+        #{tradeNum},
+        #{userId},
+        #{amount},
+        #{rechargeType},
+        NOW(),
+        NOW(),
+        #{orderCode}
+      )
+    </insert>
+    <update id="updateSuc" parameterType="java.util.HashMap">
+        update bill_recharge_record
+        <set>
+            orderNum = #{orderNum},
+            amount = #{amount},
+            success = 1,
+            lastUpdateTime=NOW()
+        </set>
+        where tradeNum= #{tradeNum}
+    </update>
+    <update id="updateSucByOrderCode" parameterType="java.util.HashMap">
+        update bill_recharge_record
+        <set>
+            orderNum = #{orderNum},
+            amount = #{amount},
+            success = 1,
+            lastUpdateTime=NOW()
+        </set>
+        where orderCode= #{orderCode}
+    </update>
+    <update id="updateAmount" parameterType="java.util.HashMap">
+        update bill_recharge_record
+        <set>
+            amount = #{amount},
+            lastUpdateTime=NOW()
+        </set>
+        where orderCode= #{orderCode}
+    </update>
+    <select id="getAmount" parameterType="java.lang.String" resultType="com.letv.portal.model.letvcloud.BillRechargeRecord">
+        select
+        userId,amount,rechargeType,orderNum,success
+        from bill_recharge_record
+        where tradeNum = #{tradeNum}
+    </select>
+    <select id="getAmountByOrderCode" parameterType="java.lang.String" resultType="com.letv.portal.model.letvcloud.BillRechargeRecord">
+        select
+        userId,amount,rechargeType,orderNum,success
+        from bill_recharge_record
+        where orderCode = #{orderCode}
+    </select>
+    <select id="getUserAmountRecord" resultType="com.letv.portal.model.letvcloud.BillRechargeRecord">
+        select createdTime,rechargeType,amount,success from bill_recharge_record
+        where userId = #{userId}  ORDER BY createdTime DESC limit #{offset},#{rows}
+    </select>
+    <select id="getAddRecordCnt" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(1) from bill_recharge_record where userId=#{userId}
+    </select>
+ </mapper>

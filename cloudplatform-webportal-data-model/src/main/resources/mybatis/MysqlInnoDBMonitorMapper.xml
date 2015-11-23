@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.monitor.mysql.IMysqlInnoDBMonitorDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="mysqlInnoDBMonitor">
+		<result column="ID" property="id" />
+		<result column="HOST_IP" property="hostIp" />
+		<result column="HOST_TAG" property="hostTag" />
+		<result column="INNODB_BUFFER_POOL_SIZE" property="innodbBufferPoolSize" />
+		<result column="INNODB_BUFFER_READ_HITS" property="innodbBufferReadHits" />
+		<result column="INNODB_ROWS_READ" property="innodbRowsRead" />
+		<result column="INNODB_ROWS_INSERT" property="innodbRowsInsert" />
+		<result column="INNODB_ROWS_UPDATE" property="innodbRowsUpdate" />
+		<result column="INNODB_ROWS_DELETE" property="innodbRowsDelete" />
+		<result column="DESCN" property="descn" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="UPDATE_TIME" property="updateTime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		innodb.ID,innodb.HOST_IP,innodb.HOST_TAG,
+		innodb.INNODB_BUFFER_POOL_SIZE,innodb.INNODB_ROWS_READ,innodb.INNODB_ROWS_INSERT,innodb.INNODB_ROWS_UPDATE,innodb.INNODB_ROWS_DELETE,
+		innodb.DESCN,innodb.CREATE_TIME,innodb.UPDATE_TIME,innodb.INNODB_BUFFER_READ_HITS
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="MysqlInnoDBMonitor" useGeneratedKeys="true" keyProperty="id">
+		insert into WEBPORTAL_MONITOR_MYSQL_INNODB 
+			(HOST_IP,HOST_TAG,INNODB_BUFFER_POOL_SIZE,INNODB_ROWS_READ,INNODB_ROWS_INSERT,INNODB_ROWS_UPDATE,INNODB_ROWS_DELETE,DESCN,CREATE_TIME,UPDATE_TIME,INNODB_BUFFER_READ_HITS) 
+		values 
+			(#{hostIp},#{hostTag},#{innodbBufferPoolSize},#{innodbRowsRead},#{innodbRowsInsert},#{innodbRowsUpdate},#{innodbRowsDelete},#{descn},#{createTime},#{updateTime},#{innodbBufferReadHits});
+	</insert>
+
+	<!-- 更新记录 -->
+	<update id="update" parameterType="MysqlInnoDBMonitor">
+		update WEBPORTAL_MONITOR_MYSQL_INNODB 
+		<set>
+		    <if test="id != null and id != '' ">
+		        ID=#{id},
+		    </if>
+		    <if test="hostIp != null and hostIp != '' ">
+		        HOST_IP=#{hostIp},
+		    </if>
+		    <if test="hostTag != null and hostTag != '' ">
+		        HOST_TAG=#{hostTag},
+		    </if>
+		    <if test="innodbBufferPoolSize != null ">
+		        INNODB_BUFFER_POOL_SIZE=#{innodbBufferPoolSize},
+		    </if>
+		    <if test="innodbRowsRead != null ">
+		        INNODB_ROWS_READ=#{innodbRowsRead},
+		    </if>
+		    <if test="innodbRowsInsert != null ">
+		        INNODB_ROWS_INSERT=#{innodbRowsInsert},
+		    </if>
+		    <if test="innodbRowsUpdate != null ">
+		        INNODB_ROWS_UPDATE=#{innodbRowsUpdate},
+		    </if>
+		    <if test="innodbRowsDelete != null ">
+		        INNODB_ROWS_DELETE=#{innodbRowsDelete},
+		    </if>
+		    <if test="descn != null and descn != '' ">
+		        DESCN=#{descn},
+		    </if>
+		    <if test="createTime != null and createTime != '' ">
+		        CREATE_TIME=#{createTime},
+		    </if>
+		    <if test="updateTime != null and updateTime != '' ">
+		        UPDATE_TIME=#{updateTime},
+		    </if>
+		    <if test="innodbBufferReadHits != null ">
+		        INNODB_BUFFER_READ_HITS=#{innodbBufferReadHits},
+		    </if>
+		</set>
+		where HOST_IP=#{hostIp};
+	</update>
+	
+	<select id="selectByHostIp" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_INNODB innodb
+		where
+			innodb.HOST_IP = #{hostIp}
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="com.letv.common.dao.QueryParam">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_INNODB innodb
+			<include refid="List_Page_Where_Clause" />
+	</select>
+	
+	
+	<sql id="List_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and innodb.ID=#{params.id}
+			</if>
+			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
+				and innodb.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+			</if>
+			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
+				and innodb.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+			</if>
+			
+			<if test="params != null and params.descn != null and params.descn != ''  ">
+				and innodb.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and innodb.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and innodb.UPDATE_TIME=#{params.updateTime}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_MONITOR_MYSQL_INNODB innodb
+			<include refid="List_Page_Where_Clause" />
+		ORDER BY 
+			<if test="params != null and params.order != null and params.order != '' ">
+				innodb.${params.order} 
+			</if>
+			<if test="params == null or params.order == null or params.order == '' ">
+				innodb.CREATE_TIME
+			</if>
+			<if test="params != null and params.orderArg != null and params.orderArg != '' ">
+				${params.orderArg}
+			</if>
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+</mapper>   

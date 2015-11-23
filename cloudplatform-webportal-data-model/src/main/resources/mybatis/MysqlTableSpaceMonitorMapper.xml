@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.monitor.mysql.IMysqlTableSpaceMonitorDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="mysqlTableSpaceMonitor">
+		<result column="ID" property="id" />
+		<result column="HOST_IP" property="hostIp" />
+		<result column="HOST_TAG" property="hostTag" />
+		<result column="DB_SPACE_ID" property="dbSpaceId" />
+		<result column="NAME" property="name" />
+		<result column="SIZE" property="size" />
+		<result column="DESCN" property="descn" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="UPDATE_TIME" property="updateTime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		tablespace.ID,
+		tablespace.NAME,tablespace.SIZE,tablespace.DB_SPACE_ID,
+		tablespace.DESCN,tablespace.CREATE_TIME,tablespace.UPDATE_TIME
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Select_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null and id != '' ">
+		        and tablespace.ID=#{id}
+		    </if>
+		    <if test="dbSpaceId != null and dbSpaceId != '' ">
+		        and tablespace.DB_SPACE_ID=#{dbSpaceId}
+		    </if>
+		    <if test="name != null and name != '' ">
+		        and tablespace.NAME=#{name}
+		    </if>
+		    <if test="size != null ">
+		        and tablespace.SIZE=#{size}
+		    </if>
+		    <if test="descn != null and descn != '' ">
+		        and tablespace.DESCN=#{descn}
+		    </if>
+		    <if test="createTime != null and createTime != '' ">
+		        and tablespace.CREATE_TIME=#{createTime}
+		    </if>
+		    <if test="updateTime != null and updateTime != '' ">
+		        and tablespace.UPDATE_TIME=#{updateTime}
+		    </if>
+		</trim>
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="MysqlTableSpaceMonitor" useGeneratedKeys="true" keyProperty="id">
+		insert into WEBPORTAL_MONITOR_MYSQL_TABLE_SPACE 
+			(DB_SPACE_ID,NAME,SIZE,DESCN,CREATE_TIME,UPDATE_TIME) 
+		values 
+			(#{dbSpaceId},#{name},#{size},#{descn},#{createTime},#{updateTime});
+	</insert>
+
+	<!-- 更新记录 -->
+	<update id="update" parameterType="MysqlTableSpaceMonitor">
+		update WEBPORTAL_MONITOR_MYSQL_TABLE_SPACE 
+		<set>
+		    <if test="id != null and id != '' ">
+		        ID=#{id},
+		    </if>
+		    <if test="dbSpaceId != null and dbSpaceId != '' ">
+		        DB_SPACE_ID=#{dbSpaceId},
+		    </if>
+		    <if test="name != null and name != '' ">
+		        NAME=#{name},
+		    </if>
+		    <if test="size != null ">
+		        SIZE=#{size},
+		    </if>
+		    <if test="descn != null ">
+		        DESCN=#{descn},
+		    </if>
+		    <if test="createTime != null ">
+		        CREATE_TIME=#{createTime},
+		    </if>
+		    <if test="updateTime != null ">
+		        UPDATE_TIME=#{updateTime},
+		    </if>
+		</set>
+		where DB_SPACE_ID=#{dbSpaceId} and NAME=#{name};
+	</update>
+	
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_MONITOR_MYSQL_TABLE_SPACE tablespace
+			<include refid="Select_Where_Clause" />
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="com.letv.common.dao.QueryParam">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_TABLE_SPACE tablespace
+			left join WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace on tablespace.DB_SPACE_ID=dbspace.ID
+			<include refid="List_Page_Where_Clause" />
+			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
+				and dbspace.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+			</if>
+			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
+				and dbspace.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+			</if>
+	</select>
+	
+	
+	<sql id="List_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and tablespace.ID=#{params.id}
+			</if>
+			<if test="params != null and params.dbSpaceId != null and params.dbSpaceId != '' ">
+		        and tablespace.DB_SPACE_ID=#{params.dbSpaceId}
+		    </if>
+			
+			<if test="params != null and params.descn != null and params.descn != ''  ">
+				and tablespace.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and tablespace.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and tablespace.UPDATE_TIME=#{params.updateTime}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />,dbspace.HOST_IP,dbspace.HOST_TAG
+		from 
+			WEBPORTAL_MONITOR_MYSQL_TABLE_SPACE tablespace
+			left join WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace on tablespace.DB_SPACE_ID=dbspace.ID
+			<include refid="List_Page_Where_Clause" />
+			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
+				and dbspace.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+			</if>
+			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
+				and dbspace.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+			</if>
+		ORDER BY 
+			<if test="params != null and params.order != null and params.order != '' ">
+				tablespace.${params.order} 
+			</if>
+			<if test="params == null or params.order == null or params.order == '' ">
+				tablespace.CREATE_TIME
+			</if>
+			<if test="params != null and params.orderArg != null and params.orderArg != '' ">
+				${params.orderArg}
+			</if>
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+</mapper>   
