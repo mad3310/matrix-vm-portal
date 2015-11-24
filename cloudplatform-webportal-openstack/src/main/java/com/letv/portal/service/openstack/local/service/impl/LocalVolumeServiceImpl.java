@@ -179,11 +179,13 @@ public class LocalVolumeServiceImpl implements LocalVolumeService {
     }
 
     @Override
-    public void delete(long tenantId, String region, String volumeId) {
+    public boolean delete(long tenantId, String region, String volumeId) {
         CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volumeId);
         if (cloudvmVolume != null) {
             cloudvmVolumeService.delete(cloudvmVolume);
+            return true;
         }
+        return false;
     }
 
     @Override

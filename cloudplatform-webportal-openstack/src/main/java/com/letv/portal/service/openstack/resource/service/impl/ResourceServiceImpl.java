@@ -8,10 +8,13 @@ import com.letv.common.email.impl.DefaultEmailSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
+import com.letv.portal.service.openstack.billing.ResourceLocator;
+import com.letv.portal.service.openstack.billing.event.service.EventPublishService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
@@ -20,6 +23,7 @@ import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.local.service.LocalRegionService;
+import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.IPAddresses;
 import com.letv.portal.service.openstack.resource.SubnetIp;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -27,6 +31,7 @@ import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
@@ -38,6 +43,9 @@ import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.cinder.v1.domain.*;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.*;
@@ -86,10 +94,16 @@ public class ResourceServiceImpl implements ResourceService {
     private ICloudvmVolumeService cloudvmVolumeService;
 
     @Autowired
+    private LocalVolumeService localVolumeService;
+
+    @Autowired
     private ICloudvmRegionService cloudvmRegionService;
 
     @Autowired
     private ITemplateMessageSender emailSender;
+
+    @Autowired
+    private EventPublishService eventPublishService;
 
     private void checkRegion(NovaApi novaApi, String region) throws RegionNotFoundException {
         if (!novaApi.getConfiguredRegions().contains(region)) {
@@ -494,7 +508,15 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         final KeyPairApi keyPairApi = getKeyPairApi(novaApi, region);
-        getKeyPair(keyPairApi, name);
+        try {
+            getKeyPair(keyPairApi, name);
+        } catch (ResourceNotFoundException ex) {
+            if (localKeyPairService.delete(userVoUserId, region, name)) {
+                return;
+            } else {
+                throw ex;
+            }
+        }
 
         boolean isSuccess = keyPairApi.delete(name);
         if (!isSuccess) {
@@ -960,4 +982,74 @@ public class ResourceServiceImpl implements ResourceService {
         vmSyncService.onVmRenamed(userVoUserId, region, server.getId(), server.getName());
     }
 
+    private Volume getVolume(VolumeApi volumeApi, String volumeId) throws ResourceNotFoundException {
+        Volume volume = volumeApi.get(volumeId);
+        if (volume == null) {
+            throw new ResourceNotFoundException("Volume", "云硬盘", volumeId);
+        }
+        return volume;
+    }
+
+    @Override
+    public void deleteVolume(CinderApi cinderApi, long tenantId, String region, final String volumeId) throws OpenStackException {
+        checkRegion(region, cinderApi);
+
+        final VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+        Volume volume;
+        try {
+            volume = getVolume(volumeApi, volumeId);
+        } catch (ResourceNotFoundException ex) {
+            if (localVolumeService.delete(tenantId, region, volumeId)) {
+                return;
+            } else {
+                throw ex;
+            }
+        }
+
+        checkVolumeOperational(tenantId, region, volumeId);
+
+        Volume.Status status = volume.getStatus();
+        if (status != Volume.Status.AVAILABLE && status != Volume.Status.ERROR) {
+            throw new UserOperationException(
+                    "Volume is not removable.", "云硬盘不是可删除的状态。");
+        }
+
+        List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(region).list().toList();
+        for (Snapshot snapshot : snapshots) {
+            if (org.apache.commons.lang3.StringUtils.equals(snapshot.getVolumeId(), volumeId)) {
+                throw new UserOperationException("There is a snapshot of the volume.", "云硬盘有快照，请先把云硬盘的快照删掉，再删除云硬盘。");
+            }
+        }
+
+        boolean isSuccess = volumeApi.delete(volumeId);
+        if (!isSuccess) {
+            throw new OpenStackException(MessageFormat.format(
+                    "Volume \"{0}\" delete failed.",
+                    volumeId), MessageFormat.format(
+                    "云硬盘“{0}”删除失败。", volumeId));
+        }
+
+        eventPublishService.onDelete(new ResourceLocator().region(region).id(volumeId).type(VolumeResource.class));
+
+        ThreadUtil.waiting(new Function<Boolean>() {
+            @Override
+            public Boolean apply() throws Exception {
+                return volumeApi.get(volumeId) != null;
+            }
+        }, new Timeout().time(60L).unit(TimeUnit.MINUTES));
+
+        localVolumeService.delete(tenantId, region, volumeId);
+    }
+
+    @Override
+    public void checkVolumeOperational(long tenantId, String region, String volumeId) throws OpenStackException {
+        CloudvmVolume cloudvmVolume = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmVolumeService().selectByVolumeId(tenantId, region, volumeId);
+        if (cloudvmVolume == null) {
+            throw new ResourceNotFoundException("Volume", "云硬盘", volumeId);
+        } else {
+            if (cloudvmVolume.getStatus() == CloudvmVolumeStatus.WAITING_ATTACHING) {
+                throw new UserOperationException("volume.status==WAITING_ATTACHING", "云硬盘正在挂载中，请稍后操作");
+            }
+        }
+    }
 }

@@ -563,10 +563,12 @@ public class VMController {
 	ResultObject deleteVmSnapshot(@RequestParam String region, @RequestParam String vmSnapshotId) {
 		ResultObject result = new ResultObject();
 		try {
+			long userId = sessionService.getSession().getUserId();
+			String vmSnapshotName = localImageService.getVmSnapshot(userId, region, vmSnapshotId).getName();
 			ImageManager imageManager = Util.session(sessionService).getImageManager();
-			//保存删除快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_DELETE_OPENSTACK, imageManager.get(region, vmSnapshotId).getName());
 			imageManager.delete(region, vmSnapshotId);
+			//保存删除快照操作
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_DELETE_OPENSTACK, vmSnapshotName);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -787,14 +789,14 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			resourceServiceFacade.deleteKeyPair(region, name);
+			//删除密钥创建操作
+			this.recentOperateService.saveInfo(Constant.DELETE_KEYPAIR, name);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
-		//删除密钥创建操作
-		this.recentOperateService.saveInfo(Constant.DELETE_KEYPAIR, name);
 		return result;
 	}
 }

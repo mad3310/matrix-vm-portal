@@ -129,11 +129,13 @@ public class LocalImageServiceImpl implements LocalImageService {
     }
 
     @Override
-    public void deleteVmSnapshot(long tenantId, String region, String vmSnapshotId) {
+    public boolean deleteVmSnapshot(long tenantId, String region, String vmSnapshotId) {
         CloudvmImage cloudvmImage = cloudvmImageService.selectVmSnapshotByVmSnapshotId(tenantId, region, vmSnapshotId);
         if (cloudvmImage != null) {
             cloudvmImageService.delete(cloudvmImage);
+            return true;
         }
+        return false;
     }
 
     @Override

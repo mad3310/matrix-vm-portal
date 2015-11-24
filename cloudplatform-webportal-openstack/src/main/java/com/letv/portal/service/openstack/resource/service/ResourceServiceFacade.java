@@ -35,4 +35,6 @@ public interface ResourceServiceFacade {
     void bindFloatingIp(String region, String vmId, String floatingIpId) throws OpenStackException;
 
     void renameVm(String region, String vmId, String name) throws OpenStackException;
+
+    void deleteVolume(String region, String volumeId) throws OpenStackException;
 }

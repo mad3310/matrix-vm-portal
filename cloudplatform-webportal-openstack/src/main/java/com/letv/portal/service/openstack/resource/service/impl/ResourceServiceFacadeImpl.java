@@ -154,4 +154,14 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         resourceService.renameVm(novaApi, userVoUserId, region, vmId, name);
     }
+
+    @Override
+    public void deleteVolume(String region, String volumeId) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+
+        CinderApi cinderApi = getCinderApi();
+
+        resourceService.deleteVolume(cinderApi, userVoUserId, region, volumeId);
+    }
 }

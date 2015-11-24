@@ -175,11 +175,23 @@ public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> impleme
 		runWithApi(new ApiRunnable<GlanceApi, Void>() {
 			@Override
 			public Void run(GlanceApi glanceApi) throws Exception {
+				long userVoUserId = openStackUser.getUserVoUserId();
+				LocalImageService localImageService = OpenStackServiceImpl
+						.getOpenStackServiceGroup().getLocalImageService();
+
 				checkRegion(region);
 
 				ImageApi imageApi = glanceApi.getImageApi(region);
 				ImageDetails image = imageApi.get(imageId);
-				if (image == null || image.isPublic()) {
+				if (image == null) {
+					if (localImageService
+							.deleteVmSnapshot(userVoUserId, region, imageId)) {
+						return null;
+					} else {
+						throw new ResourceNotFoundException("Image", "虚拟机快照", imageId);
+					}
+				}
+				if(image.isPublic()) {
 					throw new ResourceNotFoundException("Image", "虚拟机快照", imageId);
 				}
 				if (image.getStatus() == Image.Status.PENDING_DELETE) {
@@ -194,9 +206,6 @@ public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> impleme
 							"虚拟机快照“{0}”删除失败。", imageId));
 				}
 
-				long userVoUserId = openStackUser.getUserVoUserId();
-				LocalImageService localImageService = OpenStackServiceImpl
-						.getOpenStackServiceGroup().getLocalImageService();
 				localImageService.updateVmSnapshotStatus(userVoUserId, userVoUserId, region, imageId, CloudvmImageStatus.PENDING_DELETE);
 
 				waitingImage(imageApi, imageId, new Checker<ImageDetails>() {

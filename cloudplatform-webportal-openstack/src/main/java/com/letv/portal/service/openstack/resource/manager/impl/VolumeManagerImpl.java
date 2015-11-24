@@ -106,14 +106,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	}
 
 	public void checkVolumeOperational(long tenantId,String region,String volumeId) throws OpenStackException {
-		CloudvmVolume cloudvmVolume=OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmVolumeService().selectByVolumeId(tenantId, region, volumeId);
-		if(cloudvmVolume==null){
-			throw new ResourceNotFoundException("Volume","云硬盘",volumeId);
-		}else{
-			if(cloudvmVolume.getStatus()== CloudvmVolumeStatus.WAITING_ATTACHING){
-				throw new UserOperationException("volume.status==WAITING_ATTACHING","云硬盘正在挂载中，请稍后操作");
-			}
-		}
+		OpenStackServiceImpl.getOpenStackServiceGroup().getResourceService().checkVolumeOperational(tenantId, region, volumeId);
 	}
 
 	@Override
@@ -741,63 +734,63 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		}
 	}
 
-	@Override
-	public void delete(final String region, final VolumeResource volumeResource)
-			throws OpenStackException {
-		checkVolumeOperational(openStackUser.getUserVoUserId(),region,volumeResource.getId());
-		runWithApi(new ApiRunnable<CinderApi, Void>() {
+//	@Override
+//	public void delete(final String region, final VolumeResource volumeResource)
+//			throws OpenStackException {
+//		checkVolumeOperational(openStackUser.getUserVoUserId(),region,volumeResource.getId());
+//		runWithApi(new ApiRunnable<CinderApi, Void>() {
+//
+//			@Override
+//			public Void run(CinderApi cinderApi) throws Exception {
+//				checkRegion(region);
+//
+//				Status status = ((VolumeResourceImpl) volumeResource).volume
+//						.getStatus();
+//				if (status != Status.AVAILABLE && status != Status.ERROR) {
+//					throw new UserOperationException(
+//							"Volume is not removable.", "云硬盘不是可删除的状态。");
+//				}
+//
+//				List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(region).list().toList();
+//				for (Snapshot snapshot : snapshots) {
+//					if (StringUtils.equals(snapshot.getVolumeId(), volumeResource.getId())) {
+//						throw new UserOperationException("There is a snapshot of the volume.", "云硬盘有快照，请先把云硬盘的快照删掉，再删除云硬盘。");
+//					}
+//				}
+//
+//				VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+//				boolean isSuccess = volumeApi.delete(volumeResource.getId());
+//				if (!isSuccess) {
+//					throw new OpenStackException(MessageFormat.format(
+//							"Volume \"{0}\" delete failed.",
+//							volumeResource.getId()), MessageFormat.format(
+//							"云硬盘“{0}”删除失败。", volumeResource.getId()));
+//				}
+//
+//				OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
+//						.onDelete(new ResourceLocator().region(region).id(volumeResource.getId()).type(VolumeResource.class));
+//
+//				return null;
+//			}
+//
+//		});
+//	}
 
-			@Override
-			public Void run(CinderApi cinderApi) throws Exception {
-				checkRegion(region);
-
-				Status status = ((VolumeResourceImpl) volumeResource).volume
-						.getStatus();
-				if (status != Status.AVAILABLE && status != Status.ERROR) {
-					throw new UserOperationException(
-							"Volume is not removable.", "云硬盘不是可删除的状态。");
-				}
-
-				List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(region).list().toList();
-				for (Snapshot snapshot : snapshots) {
-					if (StringUtils.equals(snapshot.getVolumeId(), volumeResource.getId())) {
-						throw new UserOperationException("There is a snapshot of the volume.", "云硬盘有快照，请先把云硬盘的快照删掉，再删除云硬盘。");
-					}
-				}
-
-				VolumeApi volumeApi = cinderApi.getVolumeApi(region);
-				boolean isSuccess = volumeApi.delete(volumeResource.getId());
-				if (!isSuccess) {
-					throw new OpenStackException(MessageFormat.format(
-							"Volume \"{0}\" delete failed.",
-							volumeResource.getId()), MessageFormat.format(
-							"云硬盘“{0}”删除失败。", volumeResource.getId()));
-				}
-
-				OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
-						.onDelete(new ResourceLocator().region(region).id(volumeResource.getId()).type(VolumeResource.class));
-
-				return null;
-			}
-
-		});
-	}
-
-	@Override
-	public void deleteSync(final String region, final VolumeResource volumeResource)
-			throws OpenStackException {
-		delete(region, volumeResource);
-
-		waitingVolume(region, volumeResource.getId(), new VolumeChecker() {
-
-			@Override
-			public boolean check(Volume volume) {
-				return volume == null;
-			}
-		});
-
-		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService().delete(openStackUser.getUserVoUserId(),region,volumeResource.getId());
-	}
+//	@Override
+//	public void deleteSync(final String region, final VolumeResource volumeResource)
+//			throws OpenStackException {
+//		delete(region, volumeResource);
+//
+//		waitingVolume(region, volumeResource.getId(), new VolumeChecker() {
+//
+//			@Override
+//			public boolean check(Volume volume) {
+//				return volume == null;
+//			}
+//		});
+//
+//		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService().delete(openStackUser.getUserVoUserId(),region,volumeResource.getId());
+//	}
 
 	public void waitingVolume(final String region, final String volumeId,
 			final VolumeChecker checker) throws OpenStackException {

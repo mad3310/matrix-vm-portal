@@ -24,7 +24,7 @@ public interface LocalImageService {
 
     void updateVmSnapshotStatus(long userId,long tenantId,String region,String imageId, CloudvmImageStatus status);
 
-    void deleteVmSnapshot(long tenantId, String region, String imageId);
+    boolean deleteVmSnapshot(long tenantId, String region, String imageId);
 
     ImageResource getImageOrVmSnapshot(String region, String imageId);
 

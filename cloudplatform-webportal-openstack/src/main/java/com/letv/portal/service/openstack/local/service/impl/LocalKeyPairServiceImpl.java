@@ -68,11 +68,13 @@ public class LocalKeyPairServiceImpl implements LocalKeyPairService {
     }
 
     @Override
-    public void delete(long tenantId, String region, String name) {
+    public boolean delete(long tenantId, String region, String name) {
         CloudvmKeyPair cloudvmKeyPair = cloudvmKeyPairService.getByName(tenantId, region, name);
         if (cloudvmKeyPair != null) {
             cloudvmKeyPairService.delete(cloudvmKeyPair);
+            return true;
         }
+        return false;
     }
 
     @Override

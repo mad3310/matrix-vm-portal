@@ -21,6 +21,7 @@ import com.letv.portal.service.openstack.local.service.LocalImageService;
 import com.letv.portal.service.openstack.local.service.LocalNetworkService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
+import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.CollectionUtil;
 import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
@@ -162,6 +163,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private LocalNetworkService localNetworkService;
 
+    @Autowired
+    private ResourceService resourceService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -205,6 +209,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setEventPublishService(eventPublishService);
 		openStackServiceGroup.setLocalCommonQuotaSerivce(localCommonQuotaSerivce);
 		openStackServiceGroup.setLocalNetworkService(localNetworkService);
+        openStackServiceGroup.setResourceService(resourceService);
 	}
 
 	@Override

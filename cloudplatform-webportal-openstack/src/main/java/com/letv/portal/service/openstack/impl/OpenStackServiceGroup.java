@@ -13,6 +13,7 @@ import com.letv.portal.service.openstack.local.service.LocalNetworkService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 
+import com.letv.portal.service.openstack.resource.service.ResourceService;
 import org.springframework.scheduling.SchedulingTaskExecutor;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -42,6 +43,7 @@ public class OpenStackServiceGroup {
 	private EventPublishService eventPublishService;
 	private LocalCommonQuotaSerivce localCommonQuotaSerivce;
 	private LocalNetworkService localNetworkService;
+	private ResourceService resourceService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -216,5 +218,13 @@ public class OpenStackServiceGroup {
 	
 	public LocalNetworkService getLocalNetworkService() {
 		return localNetworkService;
+	}
+
+	public void setResourceService(ResourceService resourceService) {
+		this.resourceService = resourceService;
+	}
+
+	public ResourceService getResourceService() {
+		return resourceService;
 	}
 }

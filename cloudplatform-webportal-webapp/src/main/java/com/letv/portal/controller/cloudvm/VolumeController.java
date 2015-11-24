@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import javax.validation.Valid;
 
+import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,9 @@ public class VolumeController {
 	private LocalVolumeTypeService localVolumeTypeService;
 	@Autowired
 	private IRecentOperateService recentOperateService;
+
+	@Autowired
+	private ResourceServiceFacade resourceServiceFacade;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -144,11 +148,11 @@ public class VolumeController {
 			@RequestParam String volumeId) {
 		ResultObject result = new ResultObject();
 		try {
-			VolumeManager volumeManager = Util.session(sessionService)
-					.getVolumeManager();
-			VolumeResource volumeResource = volumeManager.get(region, volumeId);
+//			VolumeManager volumeManager = Util.session(sessionService)
+//					.getVolumeManager();
+//			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
-			volumeManager.deleteSync(region, volumeResource);
+			resourceServiceFacade.deleteVolume(region, volumeId);
 			//保存硬盘删除操作
 			this.recentOperateService.saveInfo(Constant.DELETE_VOLUME, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName);
 		} catch (UserOperationException e) {

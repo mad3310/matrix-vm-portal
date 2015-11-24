@@ -40,4 +40,8 @@ public interface ResourceService {
     void bindFloatingIp(NovaApi novaApi, NeutronApi neutronApi, String region, String vmId, String floatingIpId, String email, String userName) throws OpenStackException;
 
     void renameVm(NovaApi novaApi, long userVoUserId, String region, String vmId, String name) throws OpenStackException;
+
+    void deleteVolume(CinderApi cinderApi, long tenantId, String region, String volumeId) throws OpenStackException;
+
+    void checkVolumeOperational(long tenantId, String region, String volumeId) throws OpenStackException;
 }
