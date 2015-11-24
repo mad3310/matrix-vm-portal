@@ -34,7 +34,7 @@
                               ng-click="checkVpc(vpc)"></span>
                         </td>
                         <td class="le-col-name"><span>{{vpc.name|| '未设置'}}</span></td>
-                        <td><span>{{vpc.subnets | vpcSubnetsFilter}}</span></td>
+                        <td class="le-col-name"><span>{{vpc.subnets | vpcSubnetsFilter}}</span></td>
                         <td>
                             <span>{{vpc.status | vpcStatusFilter}}</span>
                         </td>
