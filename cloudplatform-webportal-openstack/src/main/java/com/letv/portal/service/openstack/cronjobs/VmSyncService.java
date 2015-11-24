@@ -18,4 +18,6 @@ public interface VmSyncService {
     void delete(String region, String vmId);
 
     void recordVmDeleted(long userId, String region, String vmId, Flavor flavor) throws OpenStackException;
+
+    void onVmRenamed(long tenantId, String region, String vmId, String name);
 }

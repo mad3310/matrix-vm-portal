@@ -57,11 +57,12 @@ public class CreateVmsTask extends VmsCreateSubTask {
 
         if (vmContext.getVolume() != null) {
             LocalVolumeService localVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService();
-            localVolumeService.updateVmId(context.getUserId()
+            localVolumeService.updateVmIdAndVmName(context.getUserId()
 					, context.getUserId()
 					, context.getVmCreateConf().getRegion()
 					, vmContext.getVolume().getId()
-					, vmContext.getServer().getId());
+					, vmContext.getServer().getId()
+			        , vmContext.getServer().getName());
         }
     }
 

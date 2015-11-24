@@ -147,8 +147,11 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
     @Override
     public void renameVm(String region, String vmId, String name) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+
         NovaApi novaApi = getNovaApi();
 
-        resourceService.renameVm(novaApi, region, vmId, name);
+        resourceService.renameVm(novaApi, userVoUserId, region, vmId, name);
     }
 }

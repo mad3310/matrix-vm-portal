@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.cloudvm.*;
+import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
@@ -18,10 +19,6 @@ import org.springframework.stereotype.Service;
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.IUserService;
-import com.letv.portal.service.cloudvm.ICloudvmServerAddressService;
-import com.letv.portal.service.cloudvm.ICloudvmServerLinkService;
-import com.letv.portal.service.cloudvm.ICloudvmServerMetadataService;
-import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
@@ -44,6 +41,12 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
 
     @Autowired
     private ICloudvmServerLinkService cloudvmServerLinkService;
+
+    @Autowired
+    private ICloudvmVolumeService cloudvmVolumeService;
+
+    @Autowired
+    private ICloudvmImageService cloudvmImageService;
 
     @Autowired
     private IUserService userService;
@@ -323,6 +326,20 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
         openStackServiceGroup.getVolumeSyncService()
                 .syncStatusAfterServerDeleted(userVoUserId, region, vmId);
         openStackServiceGroup.getImageSyncService().cleanServerIdAfterServerDeleted(userVoUserId, region, vmId);
+    }
+
+    @Override
+    public void onVmRenamed(long tenantId, String region, String vmId, String name) {
+        List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByServerIdAndStatus(tenantId, region, vmId, null);
+        for (CloudvmVolume cloudvmVolume : cloudvmVolumes) {
+            cloudvmVolume.setServerName(name);
+            cloudvmVolumeService.update(cloudvmVolume);
+        }
+        List<CloudvmImage> cloudvmImages = cloudvmImageService.selectVmSnapshotByServerId(tenantId, region, vmId);
+        for (CloudvmImage cloudvmImage : cloudvmImages) {
+            cloudvmImage.setServerName(name);
+            cloudvmImageService.update(cloudvmImage);
+        }
     }
 
     @SuppressWarnings("unused")

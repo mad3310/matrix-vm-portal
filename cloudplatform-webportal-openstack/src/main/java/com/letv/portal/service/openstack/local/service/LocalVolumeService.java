@@ -25,7 +25,7 @@ public interface LocalVolumeService {
 
     void update(long userId, long tenantId, String region, Volume volume) throws OpenStackException;
 
-    void updateVmId(long userId, long tenantId, String region, String volumeId, String vmId) throws OpenStackException;
+    void updateVmIdAndVmName(long userId, long tenantId, String region, String volumeId, String vmId, String vmName) throws OpenStackException;
 
     void updateStatus(long userId, long tenantId, String region, String volumeId, CloudvmVolumeStatus status) throws OpenStackException;
 

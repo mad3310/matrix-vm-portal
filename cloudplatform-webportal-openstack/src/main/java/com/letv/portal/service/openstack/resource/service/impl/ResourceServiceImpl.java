@@ -12,6 +12,7 @@ import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
+import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.local.resource.LocalImageResource;
@@ -941,7 +942,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void renameVm(NovaApi novaApi, String region, String vmId, String name) throws OpenStackException {
+    public void renameVm(NovaApi novaApi, long userVoUserId, String region, String vmId, String name) throws OpenStackException {
         checkRegion(region, novaApi);
 
         if (StringUtils.isEmpty(name)) {
@@ -954,7 +955,9 @@ public class ResourceServiceImpl implements ResourceService {
         serverApi.rename(vmId, name);
 
         server = getVm(serverApi, vmId);
-        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region, server);
+        VmSyncService vmSyncService = OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService();
+        vmSyncService.update(region, server);
+        vmSyncService.onVmRenamed(userVoUserId, region, server.getId(), server.getName());
     }
 
 }
