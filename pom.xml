@@ -125,7 +125,7 @@
                 
                 <!-- 支付回调callBack地址 -->
                 <pay.callback>http://10.154.255.50/pay/callback</pay.callback>
-                <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
+                <pay.success>http://10.154.255.50/payment/success</pay.success>
                 <!-- 用户中心及oauth配置 -->
                 <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
                 <uc.auth.api.http>http://uc.letvcloud.com/uc-http-api</uc.auth.api.http>
