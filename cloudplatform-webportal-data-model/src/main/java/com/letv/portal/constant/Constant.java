@@ -63,6 +63,7 @@ public class Constant {
 	public static final String DETACH_VOLUME_OPENSTACK = "卸载云硬盘";
 	//创建快照
 	public static final String SNAPSHOT_CREATE_OPENSTACK = "创建云主机快照";
+	public static final String SNAPSHOT_DELETE_OPENSTACK = "删除云主机快照";
 	//删除云主机
 	public static final String DELETE_OPENSTACK = "删除云主机";
 	//云主机绑定公网IP
@@ -76,6 +77,7 @@ public class Constant {
 	public static final String DELETE_VOLUME = "删除云硬盘";
 	//创建快照
 	public static final String SNAPSHOT_CREATE_VOLUME = "创建云硬盘快照";
+	public static final String SNAPSHOT_DELETE_VOLUME = "删除云硬盘快照";
 	public static final String EDIT_VOLUME = "编辑云硬盘";
 	
 	//创建公网IP

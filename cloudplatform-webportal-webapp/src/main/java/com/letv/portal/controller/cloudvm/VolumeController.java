@@ -241,8 +241,10 @@ public class VolumeController {
 	ResultObject deleteVolumeSnapshot(@RequestParam String region, @RequestParam String snapshotId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getVolumeManager()
-					.deleteVolumeSnapshot(region, snapshotId);
+			VolumeManager volumeManager = Util.session(sessionService).getVolumeManager();
+			//保存删除云硬盘快照操作
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_DELETE_VOLUME, volumeManager.get(region, snapshotId).getName());
+			volumeManager.deleteVolumeSnapshot(region, snapshotId);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

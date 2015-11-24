@@ -81,6 +81,16 @@ public class ProductController {
 	}
 	
 
+	/**
+	  * @Title: serviceWarn
+	  * @Description: 服务提醒
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年11月24日 上午9:50:51
+	  */
 	@RequestMapping(value="/service/warn",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject serviceWarn(HttpServletRequest request,ResultObject obj) {
 		this.subscriptionService.serviceWarn();

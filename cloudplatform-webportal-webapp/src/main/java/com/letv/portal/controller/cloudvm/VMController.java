@@ -32,6 +32,7 @@ import com.letv.portal.service.openstack.local.service.LocalVmService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
@@ -562,7 +563,10 @@ public class VMController {
 	ResultObject deleteVmSnapshot(@RequestParam String region, @RequestParam String vmSnapshotId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getImageManager().delete(region, vmSnapshotId);
+			ImageManager imageManager = Util.session(sessionService).getImageManager();
+			//保存删除快照操作
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_DELETE_OPENSTACK, imageManager.get(region, vmSnapshotId).getName());
+			imageManager.delete(region, vmSnapshotId);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
