@@ -12,6 +12,8 @@
 /*begin virtual-machine-view style*/
 .view-virtual-machine .list-common .table .vm-address-private{
     line-height: 20px;
+    max-width: 200px;
+    word-wrap: break-word;
 }
 
 .vm-create-form .disk-volume,
