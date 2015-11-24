@@ -47,6 +47,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.jclouds.http.HttpResponseException;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -1217,7 +1218,15 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     throw new TaskNotFinishedException();
                 }
                 ServerApi serverApi = novaApi.getServerApi(vmResource.getRegion());
-                serverApi.changeAdminPass(vmResource.getId(), adminPass);
+                try {
+                    serverApi.changeAdminPass(vmResource.getId(), adminPass);
+                } catch (HttpResponseException ex) {
+                    if (StringUtils.contains(ex.getMessage(), "InstancePasswordSetFailed_Remote: Failed to set admin password on ")) {
+                        throw new UserOperationException("Failed to set admin password", "暂时无法进行该操作，请稍后再试");
+                    } else {
+                        throw ex;
+                    }
+                }
                 return null;
             }
         });
