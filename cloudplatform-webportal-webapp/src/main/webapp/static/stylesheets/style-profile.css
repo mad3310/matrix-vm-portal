@@ -39,7 +39,7 @@
 .body-operation .operation-items li.gotop{display:none;}
 .body-operation.zhankai .operation-items li.gotop{display:block;}
 .operation-items .items-desc{margin-top:5px;}
-.items-desc span{word-wrap:break-word;}
+.items-desc span{word-break:break-all;}
 /*.operation-items li.last .items-desc{margin-top:6px;}*/
 
 /* 最近操作交互样式 by yk*/
