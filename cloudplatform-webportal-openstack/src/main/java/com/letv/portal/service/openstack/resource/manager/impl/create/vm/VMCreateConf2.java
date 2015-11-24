@@ -80,9 +80,9 @@ public class VMCreateConf2 {
 		this.flavorId = flavorId;
 	}
 
-    @Divisible(10)
     @Min(0)
-    @Max(2048)
+    @Max(2000)
+	@Divisible(10)
 	public int getVolumeSize() {
 		return volumeSize;
 	}

@@ -35,7 +35,7 @@ public class VolumeCreateConf {
 
     @NotNull
     @Min(10)
-    @Max(2048)
+    @Max(2000)
     @Divisible(10)
     public Integer getSize() {
         return size;
