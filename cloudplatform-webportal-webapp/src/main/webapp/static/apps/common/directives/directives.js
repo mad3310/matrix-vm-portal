@@ -224,8 +224,14 @@ define(['./common.directive'],function (directiveModule) {
                     });
                 }
                 scope.$watch('model', function (newValue) {
-                    if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue)) {
+                    if (newValue !== null && !isNaN(newValue)) {
+                        if(!Utility.isInt(newValue)){
+                            newValue = Math.floor(newValue);
+                        }
                         if (newValue <= max && newValue >= min) {
+                            if(newValue % scope.step!==0) {
+                                newValue = Math.ceil(newValue/scope.step) * scope.step;
+                            }
                             delayQueueModelHandler(newValue, function (value) {
                                 scope.model = Number(value);
                                 scope.externalModel = scope.model;
