@@ -1420,7 +1420,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 if (vmStatus != Status.SHUTOFF && vmStatus != Server.Status.ACTIVE) {
                     throw new UserOperationException(
                             "The current status of the virtual machine can not attach volume.",
-                            "虚拟机当前的状态不能附加云硬盘。");
+                            "虚拟机当前状态不允许挂载云硬盘");
                 }
 
                 Volume.Status volumeStatus = ((VolumeResourceImpl) volumeResource).volume
