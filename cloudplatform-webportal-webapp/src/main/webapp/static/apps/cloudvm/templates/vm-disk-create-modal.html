@@ -20,6 +20,14 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-3 col-label">
+                        <span class="letv-control-label">快照：</span>
+                    </div>
+                    <div class="le-col-9 col-control">
+                        <le-select select-model="selectedSnapshot" select-options="snapshotListSelectorData"></le-select>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
                         <span class="letv-control-label">类型：</span>
                     </div>
                     <div class="le-col-9 col-control">
@@ -32,14 +40,6 @@
                 <div class="le-row row-disk-index">
                     <div class="le-col-offset-3 col-control">
                         <span>吞吐量：{{selectedDiskType.throughput}}Mb/s&nbsp;&nbsp;&nbsp;IOPS：{{selectedDiskType.iops}}&nbsp;&nbsp;&nbsp;容量：10-{{selectedDiskType.capacity}}GB</span>
-                    </div>
-                </div>
-                <div class="le-row">
-                    <div class="le-col-3 col-label">
-                        <span class="letv-control-label">快照：</span>
-                    </div>
-                    <div class="le-col-9 col-control">
-                        <le-select select-model="selectedSnapshot" select-options="snapshotListSelectorData"></le-select>
                     </div>
                 </div>
                 <div class="le-row">
