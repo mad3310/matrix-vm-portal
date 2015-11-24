@@ -7,7 +7,7 @@
 					<img class="userimg" src="{{userimg}}">
 				</div>
 				<div class="le-col-5">
-					<div>早上好：<span class="text-blue">{{username}}&nbsp;</span>先生/女士</div>
+					<div class="messagetitle">您好：<span class="text-blue">{{username}}&nbsp;</span></div>
 					<ul>
 						<li><i class="iconfont icon-icon" ng-class="{1:'', 'undefined':'text-gray'}[mobileStatus]"></i></li>
 						<li><i class="iconfont icon-xinfeng" ng-class="{1:'', 'undefined':'text-gray'}[emailStatus]"></i></li>
@@ -16,12 +16,12 @@
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-6">
-						<div>消息中心</div>
-						<div class="message"><span class="message-num">{{message}}</span><span class="text-gray">条</span></div>
+						<div class="messagetitle">消息中心</div>
+						<div class="message"><a href="http://uc.letvcloud.com/messageView/msgCenterView.do"><span class="message-num">{{message || '0'}}</span></a><span class="text-gray">条</span></div>
 					</div>
 					<div class="le-col-6">
-						<div>我的账单</div>
-						<div class="message"><span class="message-num">{{billMes}}</span><span class="text-gray">条</span></div>
+						<div class="messagetitle">我的账单</div>
+						<div class="message"><a href="http://uc.letvcloud.com/uc/bill/getMonthBillView.do"><span class="message-num">{{billMes || '0'}}</span></a><span class="text-gray">条</span></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -29,7 +29,7 @@
 			<div class="clearfix">
 				<div class="le-col-offset-2 le-col-5">
 					<div>账户余额：&nbsp;&nbsp;<span class="remain">¥{{remain}}</span></div>
-					<div style="margin-top:10px;"><span class="text-gray">预估：</span>&nbsp;&nbsp;¥0.000&nbsp;&nbsp;<span class="text-gray">元/天</span></div>
+					<div style="margin-top:10px;"><span class="text-gray">预估：</span>&nbsp;&nbsp;¥{{consume.total || '0.00'}}&nbsp;&nbsp;<span class="text-gray">元/天</span></div>
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-offset-6 le-col-6">
@@ -60,7 +60,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥{{ecsconsume || '0'}}</span>
+								<span>¥{{consume.ecsconsume || '0.00'}}</span>
 							</div>
 							<!-- <div class="row">
 								<span class="le-col-6">运行{{ecs || '0'}}个</span>
@@ -79,7 +79,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥{{diskconsume || '0'}}</span>
+								<span>¥{{consume.diskconsume || '0.00'}}</span>
 							</div>
 							<!-- <div class="row">
 								<span class="le-col-6">运行{{disk || '0'}}个</span>
@@ -99,7 +99,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥{{floatipconsume || '0'}}</span>
+								<span>¥{{consume.floatipconsume || '0.00'}}</span>
 							</div>
 							<!-- <div class="row">
 								<span class="le-col-6">运行{{floatIp || '0'}}个</span>
@@ -118,7 +118,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥{{routeconsume || '0'}}</span>
+								<span>¥{{consume.routeconsume || '0.00'}}</span>
 							</div>
 							<!-- <div class="row">
 								<span class="le-col-6">运行{{router || '0'}}个</span>

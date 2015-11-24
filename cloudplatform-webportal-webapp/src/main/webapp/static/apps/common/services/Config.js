@@ -158,6 +158,8 @@ define(['./common.service'], function (serviceModule) {
                   "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0}, 
         "deleted":{"create":1,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
                   "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
+        "error":{"create":1,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
+                  "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":0},
         "default":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
                   "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},           
       },

@@ -11,10 +11,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.billMes='';
 			$scope.expander='';		
 			$scope.expander.layout= "normal";
-			$scope.ecsconsume="";
-			$scope.diskconsume="";
-			$scope.floatipconsume="";
-			$scope.routeconsume="";
+			$scope.consume={};
 			$scope.service={}
 			$scope.quotas={};
 			$scope.expanderToggle = function(element){
@@ -119,10 +116,12 @@ define(['controllers/app.controller'], function (controllerModule) {
 					if(data.result==0){//error
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
-						$scope.ecsconsume=data.data["2"];
-						$scope.diskconsume=data.data["3"];
-						$scope.floatipconsume=data.data["4"];
-						$scope.routeconsume=data.data["5"];
+						var total=data.data["2"]+data.data["3"]+data.data["4"]+data.data["5"]
+						$scope.consume.total=total.toFixed(2);
+						$scope.consume.ecsconsume=data.data["2"].toFixed(2);
+						$scope.consume.diskconsume=data.data["3"].toFixed(2);
+						$scope.consume.floatipconsume=data.data["4"].toFixed(2);
+						$scope.consume.routeconsume=data.data["5"].toFixed(2);
 					}
 				});
 			}
