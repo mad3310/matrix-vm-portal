@@ -118,9 +118,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="inputs-item nomargin row clearfix row-disk-index">
+                        <div class="inputs-item nomargin row clearfix row-item-description">
                             <div class="col-sm-offset-2">
-                                <span>吞吐量：{{selectedVmDiskType.throughput}}Mb/s&nbsp;&nbsp;&nbsp;IOPS：{{selectedVmDiskType.iops}}&nbsp;&nbsp;&nbsp;容量：10-{{selectedVmDiskType.capacity}}GB</span>
+                                <span>吞吐量：{{selectedVmDiskType.throughput}}Mb/s&nbsp;&nbsp;&nbsp;IOPS：{{selectedVmDiskType.iops}}&nbsp;&nbsp;&nbsp;容量：0-{{selectedVmDiskType.capacity}}GB</span>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix">
@@ -170,6 +170,11 @@
                                     <span>稍后设置</span>
                                     <i class="iconfont icon-checkroundfillicon"></i>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="inputs-item nomargin row clearfix row-item-description" ng-show="vmNetworkPublicIpModel==='now' && vmNetworkType==='primary'">
+                            <div class="col-sm-offset-2">
+                                <span>带宽：1-50Mbps</span>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkPublicIpModel==='now' && vmNetworkType==='primary'">
