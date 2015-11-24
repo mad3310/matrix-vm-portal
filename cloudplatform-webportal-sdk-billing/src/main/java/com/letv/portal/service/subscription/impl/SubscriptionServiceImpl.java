@@ -204,8 +204,8 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	@Override
 	public void serviceWarn() {
 		//订单到期前30天、15天、7天、3天、1天的9:00，分别进行通知
-		//欠费后第1、2、3、5天的9:00，根据通知时间的不同，剩余天数分别为5、3、2、1、0
-		//欠费后第7天的9:00释放
+		//欠费后第1、2、3天的9:00，根据通知时间的不同，剩余天数分别为3、2、1、0
+		//欠费后第4天的9:00释放
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("valid", 1);
