@@ -254,14 +254,14 @@ define(['controllers/app.controller'], function (controllerModule) {
             recordsPerPage: $scope.pageSize
           };
           $scope.isListLoading=true;
-          HttpService.doGet(Config.urls.disk_list.replace('{region}', CurrentContext.regionId), queryParams).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.disk_list.replace('{region}', CurrentContext.regionId), queryParams).then(function (data, status, headers, config) {
             $scope.isListLoading=false;
             $scope.diskList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
             $scope.diskList.filter(function(disk){return disk.status=='creating'}).forEach(function(disk) {
               var diskDetailUrl = Config.urls.disk_detail.replace('{region}', CurrentContext.regionId).replace('{volumeId}', disk.id);
               var buildStatusInterval = $interval(function () {
-                HttpService.doGet(diskDetailUrl).success(function (data, status, headers, config) {
+                HttpService.doGet(diskDetailUrl).then(function (data, status, headers, config) {
                   if (data.result === 1 && data.data.status != 'creating') {
                     disk.status = data.data.status;
                     $interval.cancel(buildStatusInterval);
@@ -337,7 +337,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         initVmSelector();
       },
       initVmSelector = function () {
-        HttpService.doGet(Config.urls.vm_list.replace('{region}',region),{name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.vm_list.replace('{region}',region),{name: '', currentPage:'', recordsPerPage: ''}).then(function (data, status, headers, config) {
           $scope.vmList = data.data.data;
           $scope.vmListSelectorData=$scope.vmList.map(function(vm){
             return new ModelService.SelectModel(vm.name,vm.id);

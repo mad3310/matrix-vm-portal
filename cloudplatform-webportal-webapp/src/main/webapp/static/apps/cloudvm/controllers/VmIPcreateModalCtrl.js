@@ -13,7 +13,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.allFloatipBuyPeriods = Config.allBuyPeriods;
     $scope.floatipBuyPeriod = $scope.allFloatipBuyPeriods[0];
     $scope.totalPrice='';
-    HttpService.doGet('/osn/network/public/list',{'region':region}).success(function(data) {
+    HttpService.doGet('/osn/network/public/list',{'region':region}).then(function(data) {
       $scope.carrierList=data.data;
     });
     $scope.closeModal=function(){

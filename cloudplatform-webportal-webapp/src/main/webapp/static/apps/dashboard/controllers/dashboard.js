@@ -50,7 +50,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				quotas(quotaurl,serviceurl)
 			}
 			function userinfo(usinfourl){
-				HttpService.doGet(usinfourl).success(function(data){
+				HttpService.doGet(usinfourl).then(function(data){
 						if(data.result==0){//error
 						WidgetService.notifyError('获取用户信息失败！')
 					}else{
@@ -70,7 +70,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				})
 			}
 			function unreadMes(messageurl){
-				HttpService.doGet(messageurl).success(function(data){
+				HttpService.doGet(messageurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取消息失败！')
 					}else{
@@ -79,7 +79,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				});
 			}
 			function remain(remainurl){
-				HttpService.doGet(remainurl).success(function(data){
+				HttpService.doGet(remainurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取账户余额失败！')
 					}else{
@@ -88,7 +88,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				});
 			}
 			function billing(billMesurl){
-				HttpService.doGet(billMesurl).success(function(data){
+				HttpService.doGet(billMesurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取账单信息失败！')
 					}else{
@@ -97,7 +97,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				});
 			}
 			function operation(operationurl){
-				HttpService.doGet(operationurl).success(function(data){
+				HttpService.doGet(operationurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取操作信息失败！')
 					}else{
@@ -106,7 +106,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				});
 			}
 			function service(serviceurl){
-				return HttpService.doGet(serviceurl).success(function(data){
+				return HttpService.doGet(serviceurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
@@ -115,7 +115,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				});
 			}
 			function consume(consumeurl){
-				HttpService.doGet(consumeurl).success(function(data){
+				HttpService.doGet(consumeurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
@@ -130,7 +130,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				var serviceTemp=service(serviceurl);
 				// console.log()
 				serviceTemp.then(function(data){
-					HttpService.doGet(quotaurl).success(function(data){
+					HttpService.doGet(quotaurl).then(function(data){
 						if(data.result==0){//error
 							WidgetService.notifyError('获取配额信息失败！')
 						}else{
