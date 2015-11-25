@@ -42,7 +42,7 @@ public class AddVolumeTask extends VmsCreateSubTask {
                         },500L);
                         Server server = serverApi.get(vmCreateContext.getServerCreated().getId());
                         Volume volume = volumeApi.get(vmCreateContext.getVolume().getId());
-                        if (volume != null && server != null && volume.getStatus() == Volume.Status.AVAILABLE) {
+                        if (volume != null && server != null && volume.getStatus() == Volume.Status.AVAILABLE && server.getStatus() != Server.Status.ERROR) {
                             context.getApiCache()
                                     .getVolumeAttachmentApi()
                                     .attachVolumeToServerAsDevice(
