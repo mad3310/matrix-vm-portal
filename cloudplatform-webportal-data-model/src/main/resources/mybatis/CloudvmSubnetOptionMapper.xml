@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmSubnetOptionDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmSubnetOption">
+		<result column="ID" property="id" />
+		<result column="CIDR" property="cidr"/>
+		<result column="GATEWAY_IP" property="gatewayIp"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_SUBNET_OPTION table all fields -->
+	<sql id="Base_Column_List">
+		o.ID,o.CIDR,o.GATEWAY_IP,
+		o.DELETED,o.CREATE_TIME,o.CREATE_USER,o.UPDATE_TIME,o.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and o.ID=#{id}
+			</if>
+			<if test="deleted != null  ">
+				and o.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and o.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and o.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and o.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and o.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmSubnetOption" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_SUBNET_OPTION(CIDR,GATEWAY_IP,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{cidr},#{gatewayIp},#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmSubnetOption">
+		update WEBPORTAL_CLOUDVM_SUBNET_OPTION
+		set
+		ID=#{id},
+		CIDR=#{cidr},
+		GATEWAY_IP=#{gatewayIp},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SUBNET_OPTION o
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmSubnetOption">
+		delete from WEBPORTAL_CLOUDVM_SUBNET_OPTION where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SUBNET_OPTION o
+		where  o.ID = #{id};
+	</select>
+
+</mapper>

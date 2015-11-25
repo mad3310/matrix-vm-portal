@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import javax.validation.Valid;
 
+import com.letv.portal.service.openstack.local.service.LocalSubnetOptionService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,8 @@ public class NetworkController {
 	private SessionServiceImpl sessionService;
 	@Autowired
 	private IRecentOperateService recentOperateService;
+	@Autowired
+	private LocalSubnetOptionService localSubnetOptionService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -581,6 +584,15 @@ public class NetworkController {
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
+		return result;
+	}
+
+	@RequestMapping(value = "/subnet/option/list", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject listSubnetOption() {
+		ResultObject result = new ResultObject();
+		result.setData(localSubnetOptionService.list());
 		return result;
 	}
 }

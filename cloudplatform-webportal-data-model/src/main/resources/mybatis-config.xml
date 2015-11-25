@@ -88,6 +88,7 @@
         <typeAlias alias="CloudvmVolume" type="com.letv.portal.model.cloudvm.CloudvmVolume"/>
         <typeAlias alias="CloudvmRcCount" type="com.letv.portal.model.cloudvm.CloudvmRcCount"/>
         <typeAlias alias="CloudvmKeyPair" type="com.letv.portal.model.cloudvm.CloudvmKeyPair"/>
+        <typeAlias alias="CloudvmSubnetOption" type="com.letv.portal.model.cloudvm.CloudvmSubnetOption"/>
 
         <typeAlias alias="CommonQuota" type="com.letv.portal.model.common.CommonQuota"/>
     </typeAliases>
