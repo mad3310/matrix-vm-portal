@@ -174,22 +174,20 @@ define(['./common.directive'],function (directiveModule) {
                 options:'=selectOptions'
             },
             link: function (scope, element, attrs) {
-                scope.toggleSelect=function(){
-                    scope.isOpen = true;
-                    $document.bind('click',closeDropdown);
+                scope.toggleSelect=function(e){
+                    if(!scope.isOpen){
+                        scope.isOpen = true;
+                        e.stopPropagation();
+                        $document.bind('click',closeDropdown);
+                    }
                 };
                 scope.selectOption=function(selectedOption){
                     scope.model=selectedOption;
                 };
-                var toggleElement = element.find('.le-select-toggle');
                 var closeDropdown=function( evt ) {
                     if(!scope.isOpen){
                         return;
                     }
-                    if ( evt && toggleElement && toggleElement[0].contains(evt.target) ) {
-                        return;
-                    }
-
                     $document.unbind('click', closeDropdown);
                     scope.isOpen = false;
                     if (!scope.$$phase) {

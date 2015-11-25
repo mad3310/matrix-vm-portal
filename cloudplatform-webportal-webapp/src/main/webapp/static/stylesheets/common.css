@@ -1238,3 +1238,21 @@ le-select .le-select-menu li a{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/*begin row-item-description style*/
+.row-item-description{
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+.le-modal-body .row-item-description .col-control{
+    line-height: 20px;
+}
+
+.le-modal-body .le-row.row-item-description{
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-bottom: -10px;
+}
+/*end row-item-description style*/
