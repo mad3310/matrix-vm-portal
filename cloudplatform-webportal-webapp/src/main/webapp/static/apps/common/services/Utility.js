@@ -21,7 +21,7 @@ define(['./common.service'],function (serviceModule) {
             timeoutPromise = $timeout(function () {
               onTimeout(delayQueue[delayQueue.length - 1]);
               delayQueue.splice(0, delayQueue.length);
-            }, 1500);
+            }, 1000);
           }
           delayQueue.push(value);
         };
