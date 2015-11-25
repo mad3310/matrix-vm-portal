@@ -34,7 +34,7 @@
 					<span class="item-title">余额支付：</span>
 					<span class="item-desc">
 						<span class="desc-input">
-							<span class="input-china">¥</span><input type="text" class="remainPay" maxlength='12'/></span>
+							<span class="input-china">¥</span><input type="text" class="remainPay" maxlength='12' oninput="moneyInput()" onpropertychange="moneyInput()"/></span>
 						<span class="error-desc text-red"></span>
 					</span>
 				</div>
@@ -104,12 +104,11 @@
 <script src="${ctx}/static/page-js/payment/payment.js"></script>
 <script>
 remainChose();//余额支付
-moneyInputVali();//余额输入校验
+// moneyInputVali();//余额输入校验
 payOptionChose();//支付方式选择
 rollup();//展开&收起
 userInfo();//用户名&余额
 goPay();//支付
-// orderDetail();//订单详情
 $(window).resize(function(event) {
 	var width=document.body.scrollWidth;
     var height=document.body.scrollHeight;
