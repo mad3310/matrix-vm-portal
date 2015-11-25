@@ -32,7 +32,7 @@ function remainChose(){
     });
 }
 //余额支付金额校验，非负、不可大于订单金额，不可大于余额金额
-function moneyInputVali(){
+function moneyInputVali(){//老方法
     var flag=false;
     var _target=$('.remainPay');
     var _paybtn=$('#pay');
@@ -92,6 +92,67 @@ function moneyInputVali(){
             return flag;
         });
     })
+}
+function moneyInput(){
+    var flag=false;
+    var _target=$('.remainPay');
+    var _paybtn=$('#pay');
+    var _errordesc=$('.error-desc');
+    var reg=/^([1-9]+(\.[0-9]{1,2})?|0\.[1-9][0-9]|0\.0[1-9]|0\.[1-9]|[1-9]+\d)$/
+    var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+    var remain=$('.remain').text().substring(1);
+    var compare=(orderPaynum>remain)?remain:orderPaynum;
+    var money=_target.val();
+    if(money){
+        if(reg.test(money)){
+            console.log(money)
+            if(money<0){
+                _target.addClass('has-error');
+                _errordesc.text('输入不合法数字！请输入两位小数');
+                _errordesc.removeClass('hide');
+                $('.payoption').removeClass('active');
+                _paybtn.attr('disabled', 'true');
+            }else{
+                if(money>compare){
+                    _target.addClass('has-error');
+                    _errordesc.text('支付金额有问题！');
+                    _errordesc.removeClass('hide');
+                    $('.payoption').removeClass('active');
+                    _paybtn.attr('disabled', 'true');
+                }else{
+                    if(money==compare&&money==orderPaynum){//fit
+                        $('.payoption').removeClass('active');
+                    }else{
+                        $('.payoption:eq(0)').addClass('active'); 
+                    }
+                    _target.removeClass('has-error');
+                    _errordesc.addClass('hide');
+                    _paybtn.removeAttr('disabled');
+                    flag=true;
+                }
+            }
+        }else{//不是数字
+            _target.addClass('has-error');
+            _errordesc.text('输入不合法数字！请输入两位小数');
+            _errordesc.removeClass('hide');
+            $('.payoption').removeClass('active');
+            _paybtn.attr('disabled', 'true');
+        }
+    }else{
+        if($('.self-checkbox').hasClass('active')){
+            _target.addClass('has-error');
+            _errordesc.text('输入不合法数字！请输入两位小数');
+            _errordesc.removeClass('hide');
+            $('.payoption').removeClass('active');
+            _paybtn.attr('disabled', 'true'); 
+        }else{
+            flag=true;
+            _target.removeClass('has-error');
+            _errordesc.addClass('hide');
+            _paybtn.removeAttr('disabled')
+        }
+    } 
+    return flag;
 }
 //支付方式选择
 function payOptionChose(){
