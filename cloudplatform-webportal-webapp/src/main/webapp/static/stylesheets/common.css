@@ -936,6 +936,7 @@ le-select{
     width: 100%;
     position: relative;
     display: block;
+    font-size: 12px;
 }
 le-select .le-select-toggle{
     height: 100%;
