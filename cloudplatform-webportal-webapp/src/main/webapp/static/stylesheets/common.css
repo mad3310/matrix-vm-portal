@@ -977,6 +977,8 @@ le-select .le-select-menu{
     background-color: white;
     border: 1px solid #d2d2d2;
     border-top-width: 0;
+    max-height: 150px;
+    overflow-y: auto;
 }
 le-select .le-select-menu.open{
     display: block;
