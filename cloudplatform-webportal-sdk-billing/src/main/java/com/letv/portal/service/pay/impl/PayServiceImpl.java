@@ -34,7 +34,6 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
-import com.letv.common.util.StringUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.model.UserVo;
@@ -142,7 +141,7 @@ public class PayServiceImpl implements IPayService {
 		} else {
 			String userMoney = (String)map.get("accountMoney");
 			BigDecimal price = getValidOrderPrice(orderSubs);
-			BigDecimal accountMoney = null;
+			BigDecimal accountMoney = new BigDecimal(0);
 			if(userMoney!=null && Double.parseDouble(userMoney)>0) {
 				accountMoney = new BigDecimal(userMoney);
 				//验证账户金额>=accountaccountMoney
@@ -220,7 +219,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
 				String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
 				ret = transResult(str);
-				if(getValidOrderPrice(orderSubs).subtract(order.getAccountPrice()).compareTo(new BigDecimal((String) ret.get("price")))==0) {
+				if(getValidOrderPrice(orderSubs).subtract(accountMoney).compareTo(new BigDecimal((String) ret.get("price")))==0) {
 					if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null, null, accountMoney)) {
 						ret.put("alert", "微信方式支付异常");
 					}

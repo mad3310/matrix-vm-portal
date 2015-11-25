@@ -22,6 +22,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.letv.common.exception.MatrixException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
@@ -133,6 +134,7 @@ public class PayController {
 				outputStream.flush();
 			} catch (Exception e) {
 				logger.error("生产二维码异常:", e);
+				throw new MatrixException("生产二维码异常", e);
 			}
 		} else {
 			logger.info("订单已支付，或数据异常!");
