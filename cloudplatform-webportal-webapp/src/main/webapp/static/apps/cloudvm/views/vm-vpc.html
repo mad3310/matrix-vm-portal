@@ -213,7 +213,7 @@
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control input-disk-name" ng-model="vpcEdit.name"
                                name="edit_vpc_name" le-auto-focus name-input-restrict/>
-                        <input-validation-tooltip ng-show="(vm_vpc_edit_form.$submitted || vm_vpc_edit_form.edit_vpc_name.$touched) && vm_vpc_edit_form.edit_vpc_name.$error.nameInputRestrict"
+                        <input-validation-tooltip ng-show="(vpc_edit_form.$submitted || vpc_edit_form.edit_vpc_name.$touched) && vpc_edit_form.edit_vpc_name.$error.nameInputRestrict"
                                                   validation-message="{{REGEX_MESSAGE.NAME}}">
                         </input-validation-tooltip>
                     </div>
@@ -245,7 +245,7 @@
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control input-disk-name" ng-model="subnetEdit.name"
                                name="edit_subnet_name" le-auto-focus name-input-restrict/>
-                        <input-validation-tooltip ng-show="(vm_subnet_edit_form.$submitted || vm_subnet_edit_form.edit_subnet_name.$touched) && vm_subnet_edit_form.edit_subnet_name.$error.nameInputRestrict"
+                        <input-validation-tooltip ng-show="(subnet_edit_form.$submitted || subnet_edit_form.edit_subnet_name.$touched) && subnet_edit_form.edit_subnet_name.$error.nameInputRestrict"
                                                   validation-message="{{REGEX_MESSAGE.NAME}}">
                         </input-validation-tooltip>
                     </div>
