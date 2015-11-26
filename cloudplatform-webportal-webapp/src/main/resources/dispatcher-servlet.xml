@@ -88,6 +88,34 @@
 	      </property>
 	    </bean>
 	  </mvc:interceptor>
+	  <!-- 邀请码拦截器begin
+	  <mvc:interceptor>
+	    <mvc:mapping path="/**"/>
+	    <bean class="com.letv.portal.interceptor.InviteCodeInterceptor" >
+	    	<property name="allowUrls">
+	        <list>
+	          <value>/oauth/callback</value>
+	          <value>/static</value>
+	          <value>/logout</value>
+	          <value>/toLogin</value>
+	          <value>/home</value>
+	          <value>/user</value>
+	          
+	          <value>/pay/callback</value>
+	          
+	          <value>/jettyMonitor</value>
+	          <value>/dbMonitor</value>
+	          
+	          <value>/order/detail</value>
+	          
+	          <value>/subscription/renew</value>
+	          <value>/billing/renew</value>
+	          
+	        </list>
+	      </property>
+	    </bean>
+	  </mvc:interceptor>
+	  	邀请码拦截器end -->
 	 <mvc:interceptor>
 		 <mvc:mapping path="/**"/>
 		 <bean class="com.letv.portal.interceptor.CloudvmInterceptor">
