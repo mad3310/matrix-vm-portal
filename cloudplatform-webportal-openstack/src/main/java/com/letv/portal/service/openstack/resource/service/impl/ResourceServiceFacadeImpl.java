@@ -164,4 +164,12 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         resourceService.deleteVolume(cinderApi, userVoUserId, region, volumeId);
     }
+
+    @Override
+    public void editRouter(String region, String routerId, String name, boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException {
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+
+        resourceService.editRouter(novaApi, neutronApi, region, routerId, name, enablePublicNetworkGateway, publicNetworkId);
+    }
 }

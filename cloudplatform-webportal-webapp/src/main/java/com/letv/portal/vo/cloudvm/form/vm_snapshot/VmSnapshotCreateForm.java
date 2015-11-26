@@ -32,7 +32,7 @@ public class VmSnapshotCreateForm {
         this.vmId = vmId;
     }
 
-    @Pattern(regexp = ValidationRegex.vmSnapshotName, message = ValidationRegex.vmSnapshotNameMessage)
+    @Pattern(regexp = ValidationRegex.name, message = ValidationRegex.nameMessage)
     @NotBlank
     public String getName() {
         return name;

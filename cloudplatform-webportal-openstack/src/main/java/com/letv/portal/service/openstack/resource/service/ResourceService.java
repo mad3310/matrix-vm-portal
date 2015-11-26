@@ -8,6 +8,7 @@ import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 
 import java.io.Closeable;
 import java.util.List;
@@ -44,4 +45,6 @@ public interface ResourceService {
     void deleteVolume(CinderApi cinderApi, long tenantId, String region, String volumeId) throws OpenStackException;
 
     void checkVolumeOperational(long tenantId, String region, String volumeId) throws OpenStackException;
+
+    void editRouter(NovaApi novaApi, NeutronApi neutronApi, String region, String routerId, String name, boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException;
 }

@@ -1052,4 +1052,138 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
     }
+
+    private RouterApi getRouterApi(NeutronApi neutronApi, String region) throws APINotAvailableException {
+        Optional<RouterApi> routerApiOptional = neutronApi
+                .getRouterApi(region);
+        if (!routerApiOptional.isPresent()) {
+            throw new APINotAvailableException(RouterApi.class);
+        }
+        return routerApiOptional.get();
+    }
+
+    private Router getRouter(RouterApi routerApi, String routerId) throws ResourceNotFoundException {
+        Router router = routerApi.get(routerId);
+        if (router == null) {
+            throw new ResourceNotFoundException("Router", "路由",
+                    routerId);
+        }
+        return router;
+    }
+
+    public Network getPublicNetwork(NetworkApi networkApi, String networkId) throws ResourceNotFoundException {
+        Network network = networkApi.get(networkId);
+        if (network == null || !network.getExternal()) {
+            throw new ResourceNotFoundException("Public Network",
+                    "线路", networkId);
+        }
+        return network;
+    }
+
+    @Override
+    public void editRouter(NovaApi novaApi, NeutronApi neutronApi, String region, String routerId, String name, boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException {
+        checkRegion(region, neutronApi);
+
+        RouterApi routerApi = getRouterApi(neutronApi, region);
+
+        Router router = getRouter(routerApi, routerId);
+
+        Router.UpdateBuilder updateBuilder = Router.updateBuilder()
+                .name(name);
+        if (enablePublicNetworkGateway
+                && (router.getExternalGatewayInfo() == null || router
+                .getExternalGatewayInfo().getNetworkId() == null)) {
+            NetworkApi networkApi = neutronApi.getNetworkApi(region);
+            getPublicNetwork(networkApi, publicNetworkId);
+            updateBuilder.externalGatewayInfo(ExternalGatewayInfo
+                    .builder().networkId(publicNetworkId).build());
+        } else if (!enablePublicNetworkGateway
+                && (router.getExternalGatewayInfo() != null && router
+                .getExternalGatewayInfo().getNetworkId() != null)) {
+            checkRouterDisableGateway(novaApi, neutronApi, region, routerId);
+            updateBuilder.externalGatewayInfo(ExternalGatewayInfo
+                    .builder().build());
+        } else if (enablePublicNetworkGateway
+                && (router.getExternalGatewayInfo() != null && router
+                .getExternalGatewayInfo().getNetworkId() != null)
+                && !router.getExternalGatewayInfo().getNetworkId()
+                .equals(publicNetworkId)) {
+            routerApi.update(
+                    routerId,
+                    Router.updateBuilder()
+                            .externalGatewayInfo(
+                                    ExternalGatewayInfo.builder()
+                                            .build()).build());
+            routerApi.update(
+                    routerId,
+                    Router.updateBuilder()
+                            .externalGatewayInfo(
+                                    ExternalGatewayInfo.builder()
+                                            .networkId(publicNetworkId)
+                                            .build()).build());
+        }
+        routerApi.update(routerId, updateBuilder.build());
+    }
+
+    private void checkRouterDisableGateway(NovaApi novaApi, NeutronApi neutronApi, String region, String routerId) throws OpenStackException {
+        final FloatingIPApi floatingIPApi = getNovaFloatingIPApi(novaApi, region);
+        final PortApi portApi = neutronApi.getPortApi(region);
+
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                return portApi.list().concat().toList();
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                return floatingIPApi.list().toList();
+            }
+        });
+
+        final List<Port> portList = (List<Port>) objListRefList.get(0).get();
+        final List<FloatingIP> floatingIPList = (List<FloatingIP>) objListRefList.get(1).get();
+
+        Set<String> routerSubnetIds = new HashSet<String>();
+        for (Port port : portList) {
+            if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE.equals(port.getDeviceOwner()) && routerId.equals(port.getDeviceId())) {
+                ImmutableSet<IP> fixedIps = port.getFixedIps();
+                if (fixedIps != null) {
+                    for (IP fixedIP : fixedIps) {
+                        String subnetId = fixedIP.getSubnetId();
+                        if (subnetId != null) {
+                            routerSubnetIds.add(subnetId);
+                        }
+                    }
+                }
+            }
+        }
+
+        Set<String> subnetServerIds = new HashSet<String>();
+        for (Port port : portList) {
+            if (OpenStackConstants.PORT_DEVICE_OWNER_COMPUTE_NONE.equals(port.getDeviceOwner())) {
+                String deviceId = port.getDeviceId();
+                if (deviceId != null) {
+                    ImmutableSet<IP> fixedIps = port.getFixedIps();
+                    if (fixedIps != null) {
+                        for (IP fixedIP : fixedIps) {
+                            String subnetId = fixedIP.getSubnetId();
+                            if (subnetId != null) {
+                                if (routerSubnetIds.contains(subnetId)) {
+                                    subnetServerIds.add(deviceId);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (FloatingIP floatingIP : floatingIPList) {
+            String instanceId = floatingIP.getInstanceId();
+            if (instanceId != null && subnetServerIds.contains(instanceId)) {
+                throw new UserOperationException("Can not disable gateway of router.", "路由关联的子网下有虚拟机绑定了公网IP，不能关闭网关");
+            }
+        }
+    }
 }

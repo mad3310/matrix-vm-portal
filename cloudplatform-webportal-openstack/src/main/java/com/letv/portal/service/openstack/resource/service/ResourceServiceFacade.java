@@ -37,4 +37,7 @@ public interface ResourceServiceFacade {
     void renameVm(String region, String vmId, String name) throws OpenStackException;
 
     void deleteVolume(String region, String volumeId) throws OpenStackException;
+
+    void editRouter(String region, String routerId, String name, boolean enablePublicNetworkGateway,
+                    String publicNetworkId) throws OpenStackException;
 }

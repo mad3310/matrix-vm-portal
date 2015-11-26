@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import javax.validation.Valid;
 
 import com.letv.portal.service.openstack.local.service.LocalSubnetOptionService;
+import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,8 @@ public class NetworkController {
 	private IRecentOperateService recentOperateService;
 	@Autowired
 	private LocalSubnetOptionService localSubnetOptionService;
+	@Autowired
+	private ResourceServiceFacade resourceServiceFacade;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -383,8 +386,10 @@ public class NetworkController {
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			String oldName= neworkManager.getRouter(form.getRegion(), form.getRouterId()).getName();
-			neworkManager.editRouter(form.getRegion(), form.getRouterId(), form.getName(),
-							form.getEnablePublicNetworkGateway(), form.getPublicNetworkId());
+//			neworkManager.editRouter(form.getRegion(), form.getRouterId(), form.getName(),
+//							form.getEnablePublicNetworkGateway(), form.getPublicNetworkId());
+			resourceServiceFacade.editRouter(form.getRegion(), form.getRouterId(), form.getName(),
+					form.getEnablePublicNetworkGateway(), form.getPublicNetworkId());
 			//保存编辑路由操作
 			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, 
 					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, form.getName()));
