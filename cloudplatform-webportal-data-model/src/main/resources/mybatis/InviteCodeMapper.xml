@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.invitecode.IInviteCodeDao">
+	<resultMap id="BaseResultMap" type="InviteCode">
+	    <result column="ID" property="id" />
+	    <result column="USER_ID" property="userId" />
+	    <result column="INVITE_CODE" property="inviteCode" />
+	    <result column="USED" property="used" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    invite.ID,invite.USER_ID,invite.INVITE_CODE,invite.USED,invite.CREATE_TIME,invite.UPDATE_TIME,
+	    invite.CREATE_USER,invite.UPDATE_USER,invite.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="InviteCode" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_INVITE_CODE 
+	        (USER_ID,INVITE_CODE,USED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{userId},#{inviteCode},#{used},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and invite.ID=#{id}
+	        </if>
+	        <if test="userId != null ">
+	            and invite.USER_ID=#{userId}
+	        </if>
+	        <if test="inviteCode != null ">
+	            and invite.INVITE_CODE=#{inviteCode}
+	        </if>
+	        <if test="used != null ">
+	            and invite.USED=#{used}
+	        </if>
+	        <if test="createTime != null ">
+	            and invite.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and invite.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and invite.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and invite.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and invite.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_INVITE_CODE invite
+	        <include refid="Common_Where_Clause" />
+	</select>
+	
+	<!-- 更新记录 -->
+	<update id="update" parameterType="InviteCode">
+		update 
+			MATRIX_INVITE_CODE
+		set
+			USER_ID=#{userId},
+			USED=#{used},
+			UPDATE_USER=#{userId},
+			UPDATE_TIME=now()
+		where ID=#{id}
+	</update>
+	
+</mapper>   
