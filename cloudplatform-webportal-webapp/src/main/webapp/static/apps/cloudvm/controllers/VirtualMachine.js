@@ -22,12 +22,13 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.startVm=function(size){
-        var checkedVms=getCheckedVm(),
-          originalVmState=checkedVms[0].vmState,
-          originalTaskState=checkedVms[0].taskState;
+        var checkedVms=getCheckedVm(),originalVmState='',originalTaskState='';
         if(checkedVms.length !==1){
           WidgetService.notifyWarning('请选中一个云主机');
           return;
+        }else{
+          originalVmState=checkedVms[0].vmState,
+          originalTaskState=checkedVms[0].taskState;
         }
         if(originalTaskState || originalVmState!=='stopped'){
           WidgetService.notifyWarning('云主机当前状态不可启动');
@@ -62,12 +63,13 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.stopVm=function(size){
-        var checkedVms=getCheckedVm(),
-          originalVmState=checkedVms[0].vmState,
-          originalTaskState=checkedVms[0].taskState;
+        var checkedVms=getCheckedVm(),originalVmState='',originalTaskState='';
         if(checkedVms.length !==1){
           WidgetService.notifyWarning('请选中一个云主机');
           return;
+        }else{
+          originalVmState=checkedVms[0].vmState,
+          originalTaskState=checkedVms[0].taskState;
         }
         if(originalTaskState || originalVmState!=='active'){
           WidgetService.notifyWarning('云主机当前状态不可关机');
@@ -102,12 +104,13 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.deleteVm=function(size){
-        var checkedVms=getCheckedVm(),
-          originalVmState=checkedVms[0].vmState,
-          originalTaskState=checkedVms[0].taskState;
+        var checkedVms=getCheckedVm(),originalVmState='',originalTaskState='';
         if(checkedVms.length !==1){
           WidgetService.notifyWarning('请选中一个云主机');
           return;
+        }else{
+          originalVmState=checkedVms[0].vmState,
+          originalTaskState=checkedVms[0].taskState;
         }
         if(originalTaskState || (originalVmState!=='active' && originalVmState !=='stopped')){
           WidgetService.notifyWarning('云主机当前状态不可删除');
@@ -141,12 +144,13 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.rebootVm=function(size){
-        var checkedVms=getCheckedVm(),
-          originalVmState=checkedVms[0].vmState,
-          originalTaskState=checkedVms[0].taskState;
+        var checkedVms=getCheckedVm(),originalVmState='',originalTaskState='';
         if(checkedVms.length !==1){
           WidgetService.notifyWarning('请选中一个云主机');
           return;
+        }else{
+          originalVmState=checkedVms[0].vmState,
+          originalTaskState=checkedVms[0].taskState;
         }
         if(originalTaskState || originalVmState!=='active'){
           WidgetService.notifyWarning('云主机当前状态不可重启');
