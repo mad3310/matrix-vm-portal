@@ -220,65 +220,6 @@
                 <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 <task.executor.size>30</task.executor.size>
-                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
-                <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>abcdefg12345</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>REGISTER</openstack.keystone.user.register.token>
-                <openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
-                <openstack.keystone.basic.user.name>MATRIX_BASIC_USER</openstack.keystone.basic.user.name>
-            </properties>
-        </profile>
-        <profile>
-            <id>production</id>
-            <properties>
-                <!-- db配置 -->
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
-
-                <!-- 支付回调callBack地址 -->
-                <pay.callback>http://10.176.127.39/pay/callback</pay.callback>
-                <pay.success>http://10.176.127.39/payment/success</pay.success>
-                <!-- 用户中心及oauth配置 -->
-                <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
-                <uc.auth.api.http>http://uc.letvcloud.com/uc-http-api</uc.auth.api.http>
-                <webportal.local.http>http://matrix.letvcloud.com</webportal.local.http>
-
-                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
-
-                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
-                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
-                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;sunweiwei1@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
-
-                <start.timing.jobs>N</start.timing.jobs>
-                <webportal.log.path>/var/log</webportal.log.path>
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>zabbix</zabbix.pwd>
-                <zabbix.template.normal>10108</zabbix.template.normal>
-                <zabbix.template.vip>10452</zabbix.template.vip>
-                <zabbix.host.groupid>9,10</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
-                <task.executor.size>30</task.executor.size>
                 <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
                 <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
                 <openstack.keystone.version>2.0</openstack.keystone.version>
