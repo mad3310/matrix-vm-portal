@@ -148,20 +148,20 @@ body {
     margin: 100px auto;
 }
 
-.modal-400 {
+.modal-content{
+    border-radius: 2px;
+}
+
+.modal-small {
     width: 400px;
 }
 
-.modal-720 {
+.modal-large {
     width: 720px;
 }
 
-.modal-500 {
-    width: 500px;
-}
-
-.modal-content{
-    border-radius: 2px;
+.modal-medium {
+    width: 550px;
 }
 
 .pagination{
@@ -182,8 +182,11 @@ body {
     border-color: #088ac2;
 }
 
-.tooltip-validate-info{
-    width: 300px;
+.tooltip-inner {
+    background-color: #666;
+}
+.tooltip.right .tooltip-arrow {
+    border-right-color: #666;
 }
 /*end override bootstrap style*/
 
@@ -1259,3 +1262,9 @@ le-select .le-select-menu li a{
     margin-bottom: -10px;
 }
 /*end row-item-description style*/
+
+/*begin tooltip-validate-info style*/
+/*.tooltip-validate-info{
+    background-color: #ebebeb;
+}*/
+/*end tooltip-validate-info style*/

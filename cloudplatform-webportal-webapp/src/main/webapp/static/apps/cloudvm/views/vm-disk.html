@@ -1,15 +1,15 @@
 <div class="view-common view-vm-disk" ng-controller="VmDiskCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-click="openVmDiskCreateModal('500')" ng-disabled="operationBtn.create==0"><span>创建云硬盘</span></button>
-            <button class="btn btn-le-blueGreen" ng-click="openVmDiskSnapshotCreateModal('500')" ng-disabled="operationBtn.createsnap==0"><span>创建快照</span></button>
-            <button class="btn btn-le-green" ng-click="openVmDiskAttachModal('500')" ng-disabled="operationBtn.attachdisk==0"><span>挂载云硬盘</span></button>
+            <button class="btn btn-le-blue" ng-click="openVmDiskCreateModal('medium')" ng-disabled="operationBtn.create==0"><span>创建云硬盘</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="openVmDiskSnapshotCreateModal('medium')" ng-disabled="operationBtn.createsnap==0"><span>创建快照</span></button>
+            <button class="btn btn-le-green" ng-click="openVmDiskAttachModal('medium')" ng-disabled="operationBtn.attachdisk==0"><span>挂载云硬盘</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                    <li><button class="btn dropdown-btn" ng-click="openVmDiskEditModal('500')" ng-disabled="operationBtn.edit==0">编辑云硬盘</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openVmDiskEditModal('medium')" ng-disabled="operationBtn.edit==0">编辑云硬盘</button></li>
                     <li><button class="btn dropdown-btn" ng-click="detachDisk()" ng-disabled="operationBtn.detachdisk==0">卸载云硬盘</button></li>
                     <li><button class="btn dropdown-btn" ng-click="deleteDisk()" ng-disabled="operationBtn.delete==0">删除云硬盘</button></li>
                 </ul>

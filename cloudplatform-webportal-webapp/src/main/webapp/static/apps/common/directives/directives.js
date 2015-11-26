@@ -282,4 +282,16 @@ define(['./common.directive'],function (directiveModule) {
             }
         };
     });
+
+    directiveModule.directive('inputValidationTooltip', function ($timeout) {
+        return {
+            restrict: 'AE',
+            scope: {
+                message: '=validationMessage'
+            },
+            link: function (scope, element, attrs) {
+            },
+            templateUrl: '/static/apps/common/directives/input-validation-tooltip/template.html'
+        };
+    });
 });

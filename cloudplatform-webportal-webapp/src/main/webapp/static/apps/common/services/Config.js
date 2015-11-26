@@ -82,6 +82,11 @@ define(['./common.service'], function (serviceModule) {
       NAME_NO_ZH: /^[a-zA-Z][^\s"@\/:=<>{\[\]}\u4e00-\u9fa5]{1,127}$/,
       PASSWORD: /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*)[a-zA-Z0-9]{8,30}$/,
     };
+    config.REGEX_MESSAGE= {
+      NAME: '名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格',
+      NAME_NO_ZH: '名称须为2-128个字符，以大小写字母开头，不支持字符@/:="<>{[]}和空格以及中文',
+      PASSWORD: '8-30个字符，同时包含大小写字母和数字，不支持特殊符号',
+    };
     config.vmStatuses = {
       'active':'活跃',
       'building':'创建中',
