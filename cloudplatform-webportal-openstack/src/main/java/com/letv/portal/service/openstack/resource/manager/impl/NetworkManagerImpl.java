@@ -2828,8 +2828,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		long userVoUserId = openStackUser.getUserVoUserId();
 		LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 		for (int i = 0; i < count; i++) {
+			final String floatingIpName;
+			if (count > 1) {
+				floatingIpName = MessageFormat.format("{0}({1})", name, i + 1);
+			} else {
+				floatingIpName = name;
+			}
 			FloatingIP floatingIP = floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
-					.name(name).fipQos(createFipQos(bandWidth)).build());
+					.name(floatingIpName).fipQos(createFipQos(bandWidth)).build());
 			if (successCreatedFloatingIps != null) {
 				successCreatedFloatingIps.add(floatingIP);
 			}

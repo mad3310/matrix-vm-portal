@@ -599,8 +599,11 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			createVolumeOptions.volumeType(volumeType.getId());
 		}
 
+		final String name;
 		if (StringUtils.isNotEmpty(volumeCreateConf.getName())) {
-			createVolumeOptions.name(volumeCreateConf.getName());
+			name = volumeCreateConf.getName();
+		} else {
+			name = "";
 		}
 		if (StringUtils.isNotEmpty(volumeCreateConf.getDescription())) {
 			createVolumeOptions.description(volumeCreateConf.getDescription());
@@ -661,6 +664,13 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		}
 
 		for (int i = 0; i < count; i++) {
+			final String volumeName;
+			if (count > 1) {
+				volumeName = MessageFormat.format("{0}({1})", name, i + 1);
+			} else {
+				volumeName = name;
+			}
+			createVolumeOptions.name(volumeName);
 			Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
 			CloudvmVolume cloudvmVolume = OpenStackServiceImpl.getOpenStackServiceGroup()
 					.getLocalVolumeService()
