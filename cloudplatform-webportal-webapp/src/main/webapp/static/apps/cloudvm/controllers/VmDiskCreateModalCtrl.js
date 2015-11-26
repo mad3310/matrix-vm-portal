@@ -58,7 +58,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
     Utility.getRzSliderHack($scope)();
-    $scope.REGEX_MESSAGE=Config.REGEX_MESSAGE;
     $scope.diskName = '';
     $scope.diskTypeList = [];
     $scope.selectedDiskType = null;

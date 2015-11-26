@@ -14,7 +14,7 @@
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control" ng-model="diskName" name="disk_name" le-auto-focus name-input-restrict />
                         <input-validation-tooltip ng-show="(vm_disk_create_form.$submitted || vm_disk_create_form.disk_name.$touched) && vm_disk_create_form.disk_name.$error.nameInputRestrict"
-                                                  validation-message="REGEX_MESSAGE.NAME">
+                                                  validation-message="{{REGEX_MESSAGE.NAME}}">
                         </input-validation-tooltip>
                     </div>
                 </div>

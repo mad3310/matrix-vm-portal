@@ -1264,7 +1264,7 @@ le-select .le-select-menu li a{
 /*end row-item-description style*/
 
 /*begin tooltip-validate-info style*/
-/*.tooltip-validate-info{
-    background-color: #ebebeb;
-}*/
+.tooltip-validate-info{
+    min-width: 100px;
+}
 /*end tooltip-validate-info style*/

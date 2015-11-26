@@ -287,7 +287,7 @@ define(['./common.directive'],function (directiveModule) {
         return {
             restrict: 'AE',
             scope: {
-                message: '=validationMessage'
+                message: '@validationMessage'
             },
             link: function (scope, element, attrs) {
             },

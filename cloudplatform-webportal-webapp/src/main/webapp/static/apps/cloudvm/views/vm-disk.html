@@ -117,9 +117,9 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="diskName" name="disk_name" le-auto-focus name-input-restrict />
-                            <span ng-show="(vm_disk_edit_form.$submitted || vm_disk_edit_form.disk_name.$touched) && vm_disk_edit_form.disk_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                                <i class="iconfont icon-icon1"></i>
-                            </span>
+                            <input-validation-tooltip ng-show="(vm_disk_edit_form.$submitted || vm_disk_edit_form.disk_name.$touched) && vm_disk_edit_form.disk_name.$error.nameInputRestrict"
+                                                      validation-message="{{REGEX_MESSAGE.NAME}}">
+                            </input-validation-tooltip>
                         </div>
                     </div>
                     <div class="le-row">
@@ -150,9 +150,9 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-snapshot-name" ng-model="diskSnapshotName" name="disk_snapshot_name" name-input-restrict />
-                            <span ng-show="(vm_disk_snapshot_create_form.$submitted || vm_disk_snapshot_create_form.disk_snapshot_name.$touched) && vm_disk_snapshot_create_form.disk_snapshot_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                                <i class="iconfont icon-icon1"></i>
-                            </span>
+                            <input-validation-tooltip ng-show="(vm_disk_snapshot_create_form.$submitted || vm_disk_snapshot_create_form.disk_snapshot_name.$touched) && vm_disk_snapshot_create_form.disk_snapshot_name.$error.nameInputRestrict"
+                                                      validation-message="{{REGEX_MESSAGE.NAME}}">
+                            </input-validation-tooltip>
                         </div>
                     </div>
                     <div class="le-row">
