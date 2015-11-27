@@ -456,7 +456,8 @@ public class NetworkController {
 		ResultObject result = new ResultObject();
 		try {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
-			neworkManager.separateSubnetFromRouter(region, routerId, subnetId);
+//			neworkManager.separateSubnetFromRouter(region, routerId, subnetId);
+			resourceServiceFacade.separateSubnetFromRouter(region, routerId, subnetId);
 			//保存路由器解除关联子网操作
 			this.recentOperateService.saveInfo(Constant.UNBINDED_SUBNET_ROUTER, 
 					MessageFormat.format(Constant.STYLE_OPERATE_1, neworkManager.getPrivateSubnet(region, subnetId).getName(), 

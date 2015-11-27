@@ -40,4 +40,7 @@ public interface ResourceServiceFacade {
 
     void editRouter(String region, String routerId, String name, boolean enablePublicNetworkGateway,
                     String publicNetworkId) throws OpenStackException;
+
+    void separateSubnetFromRouter(String region, String routerId,
+                                  String subnetId) throws OpenStackException;
 }

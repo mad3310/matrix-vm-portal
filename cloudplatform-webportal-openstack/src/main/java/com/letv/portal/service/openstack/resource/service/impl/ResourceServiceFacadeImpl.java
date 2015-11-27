@@ -172,4 +172,11 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         resourceService.editRouter(novaApi, neutronApi, region, routerId, name, enablePublicNetworkGateway, publicNetworkId);
     }
+
+    @Override
+    public void separateSubnetFromRouter(String region, String routerId, String subnetId) throws OpenStackException {
+        NeutronApi neutronApi = getNeutronApi();
+
+        resourceService.separateSubnetFromRouter(neutronApi, region, routerId, subnetId);
+    }
 }
