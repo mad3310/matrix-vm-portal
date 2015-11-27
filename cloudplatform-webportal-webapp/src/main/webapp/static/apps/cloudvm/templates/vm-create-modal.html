@@ -40,9 +40,9 @@
                             <div class="col-sm-2"><span class="letv-control-label">主机名称：</span></div>
                             <div class="col-sm-10">
                                 <input type="text" name="vm_name" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" le-auto-focus name-input-restrict />
-                                <span ng-show="(vm_create_form.$submitted || vm_create_form.vm_name.$touched) && vm_create_form.vm_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                                    <i class="iconfont icon-icon1"></i>
-                                </span>
+                                <input-validation-tooltip ng-show="(vm_create_form.$submitted || vm_create_form.vm_name.$touched) && vm_create_form.vm_name.$error.nameInputRestrict"
+                                                          validation-message="{{REGEX_MESSAGE.NAME}}">
+                                </input-validation-tooltip>
                             </div>
                         </div>
                         <div class="inputs-item clearfix">
@@ -118,14 +118,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="inputs-item nomargin row clearfix row-disk-index">
+                        <div class="inputs-item nomargin row clearfix row-item-description">
                             <div class="col-sm-offset-2">
-                                <span>吞吐量：{{selectedVmDiskType.throughput}}Mb/s&nbsp;&nbsp;&nbsp;IOPS：{{selectedVmDiskType.iops}}&nbsp;&nbsp;&nbsp;容量：10-{{selectedVmDiskType.capacity}}GB</span>
+                                <span>吞吐量：{{selectedVmDiskType.throughput}}Mb/s&nbsp;&nbsp;&nbsp;IOPS：{{selectedVmDiskType.iops}}&nbsp;&nbsp;&nbsp;容量：0-{{selectedVmDiskType.capacity}}GB</span>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-offset-2">
-                                <le-slider le-slider-model="dataDiskVolume" le-slider-min="0" le-slider-max="2048" le-slider-step="10" le-slider-unit="GB"></le-slider>
+                                <le-slider le-slider-model="dataDiskVolume" le-slider-min="0" le-slider-max="2000" le-slider-step="10" le-slider-unit="GB" is-slider-min-changeable="false"></le-slider>
                             </div>
                         </div>
                         <div class="inputs-item row clearfix">
@@ -135,7 +135,7 @@
                     </div>
                     <div class="left-button">
                         <div class="col-sm-12">
-                            <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=1"><span>上一步</span></div>
+                            <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=1;hackRzSlider();"><span>上一步</span></div>
                             <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=3;hackRzSlider();"><span>下一步</span></div>
                             <div class="clearfix"></div>
                         </div>
@@ -172,10 +172,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="inputs-item nomargin row clearfix row-item-description" ng-show="vmNetworkPublicIpModel==='now' && vmNetworkType==='primary'">
+                            <div class="col-sm-offset-2">
+                                <span>带宽：1-50Mbps</span>
+                            </div>
+                        </div>
                         <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkPublicIpModel==='now' && vmNetworkType==='primary'">
                             <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
                             <div class="col-sm-10">
-                                <le-slider le-slider-model="networkBandWidth" le-slider-min="1" le-slider-max="50" le-slider-step="1" le-slider-unit="Mbps"></le-slider>
+                                <le-slider le-slider-model="networkBandWidth" le-slider-min="1" le-slider-max="50" le-slider-step="1" le-slider-unit="Mbps" is-slider-min-changeable="false"></le-slider>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix" ng-show="vmNetworkType=='private'">
@@ -188,7 +193,7 @@
                     <div class="left-button">
                         <div class="col-sm-12">
                             <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=2;hackRzSlider();"><span>上一步</span></div>
-                            <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=4"><span>下一步</span></div>
+                            <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=4;hackRzSlider();"><span>下一步</span></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
@@ -218,9 +223,9 @@
                             <div class="col-sm-10">
                                 <input ng-if="vmSecurityType=='keypair'" type="hidden" name='keypair' ng-model="selectedVmSecurityKeypair" required />
                                 <span class="no-keypair-text" ng-show="!vmSecurityKeypairSelectorData.length">没有密钥，<a href="javascript:void(0);" ng-click="openVmKeypairCreateModal('500')">请创建</a></span>
-                                <span ng-if="vmSecurityType=='keypair'" ng-show="vm_create_form.$submitted && vm_create_form.keypair.$error.required" class="le-input-validation" title='请创建密钥'>
-                                    <i class="iconfont icon-icon1"></i>
-                                </span>
+                                <input-validation-tooltip ng-if="vmSecurityType=='keypair'" ng-show="vm_create_form.$submitted && vm_create_form.keypair.$error.required"
+                                                          validation-message="请创建密钥">
+                                </input-validation-tooltip>
                                 <le-select ng-show="vmSecurityKeypairSelectorData.length" select-model="selectedVmSecurityKeypair" select-options="vmSecurityKeypairSelectorData"></le-select>
                             </div>
                         </div>
@@ -228,9 +233,9 @@
                             <div class="col-sm-2"><span class="letv-control-label">密码：</span></div>
                             <div class="col-sm-10">
                                 <input type="password" name='password' class="le-form-control" ng-model="vmSecurityPassword.value" password-restrict />
-                                <span ng-show="(vm_create_form.$submitted || vm_create_form.password.$touched) && vm_create_form.password.$error.passwordRestrict" class="le-input-validation" title='8-30个字符，同时包含大小写字母和数字，不支持特殊符号'>
-                                    <i class="iconfont icon-icon1"></i>
-                                </span>
+                                <input-validation-tooltip ng-show="(vm_create_form.$submitted || vm_create_form.password.$touched) && vm_create_form.password.$error.passwordRestrict"
+                                                          validation-message="{{REGEX_MESSAGE.PASSWORD}}">
+                                </input-validation-tooltip>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix">

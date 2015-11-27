@@ -192,7 +192,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       },
       initVmImageSelector = function () {
         if($scope.isDesignatedVmSnapshot) return;
-        HttpService.doGet(Config.urls.image_list, {region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.image_list, {region:region, name: '', currentPage: '', recordsPerPage: ''}).then(function (data, status, headers, config) {
           $scope.vmImageList = data.data.data;
           $scope.selectedVmImage = $scope.vmImageList[0];
         });
@@ -203,14 +203,14 @@ define(['controllers/app.controller'], function (controllerModule) {
           $scope.selectedVmSnapshot = $scope.vmSnapshotList[0];
         }
         else{
-          HttpService.doGet(Config.urls.snapshot_vm_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.snapshot_vm_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).then(function (data, status, headers, config) {
             $scope.vmSnapshotList = data.data.data;
             $scope.selectedVmSnapshot = $scope.vmSnapshotList[0];
           });
         }
       },
       initVmNetworkSubnetSelector = function () {
-          HttpService.doGet(Config.urls.subnet_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.subnet_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).then(function (data, status, headers, config) {
             $scope.vmNetworkSubnetList = data.data.data;
             $scope.vmNetworkSubnetSelectorData=$scope.vmNetworkSubnetList.map(function(subnet){
               return new ModelService.SelectModel(subnet.name+'('+subnet.network.name+')',subnet.id);
@@ -219,7 +219,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           });
       },
       initVmSecurityKeypairSelector = function () {
-        HttpService.doGet(Config.urls.keypair_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.keypair_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).then(function (data, status, headers, config) {
           $scope.vmSecurityKeypairList = data.data.data;
           $scope.vmSecurityKeypairSelectorData=$scope.vmSecurityKeypairList.map(function(subnet){
             return new ModelService.SelectModel(subnet.name,subnet.name);
@@ -228,7 +228,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       },
       initVmCpuSelector = function () {
-        HttpService.doGet(Config.urls.flavor_group_data.replace('{region}', region)).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.flavor_group_data.replace('{region}', region)).then(function (data, status, headers, config) {
           flavorGroupData = data.data;
           for (var cpu in flavorGroupData) {
             $scope.vmCpuList.push(cpu);
@@ -250,13 +250,13 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       },
       initVmDiskTypeSelector = function () {
-        HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.vm_disk_type,{region:region}).then(function (data, status, headers, config) {
             $scope.vmDiskTypeList=data.data;
           $scope.selectedVmDiskType = $scope.vmDiskTypeList[0];
         });
       },
       setSelectedVmSharedNetworkId = function () {
-        HttpService.doGet(Config.urls.vm_network_shared_list,{region:region}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.vm_network_shared_list,{region:region}).then(function (data, status, headers, config) {
           selectedVmSharedNetwork=data.data[0];
         });
       },

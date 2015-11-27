@@ -46,7 +46,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             recordsPerPage: $scope.pageSize
           };
           $scope.isListLoading=true;
-          HttpService.doGet(Config.urls.image_list, queryParams).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.image_list, queryParams).then(function (data, status, headers, config) {
             $scope.isListLoading=false;
             $scope.imageList = data.data.data;
             $scope.totalItems = data.data.totalRecords;

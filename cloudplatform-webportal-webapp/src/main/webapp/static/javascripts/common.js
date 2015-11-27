@@ -31,8 +31,8 @@ var client=new ClientInfor();
       {url: '/cvm/#/vm-router',title:'路由器',icon:'iconfont icon-cloudroute'},
       {url: '/cvm/#/vm-snapshot',title:'快照',icon:'iconfont icon-cloudsnap'},
       {url: '/cvm/#/vm-image',title:'镜像',icon:'iconfont icon-cloudimage'},
-      {url: '/cvm/#/vm-keypair',title:'密钥',icon:'iconfont icon-cloudkeypair'},
-      {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-cloudrds',isSubmenuFisrt:true}
+      {url: '/cvm/#/vm-keypair',title:'密钥',icon:'iconfont icon-cloudkeypair'}/*,
+      {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-cloudrds',isSubmenuFisrt:true}*/
     ],
     sideMenuItemEl = null,
     sideMenuItemEls = [],
