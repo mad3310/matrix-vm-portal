@@ -1,7 +1,7 @@
 <div class="view-common" ng-controller="VmRouterCtrl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-click="openVmRouterCreateModal('500')"><span>创建路由器</span></button>
+            <button class="btn btn-le-blue" ng-click="openVmRouterCreateModal('medium')"><span>创建路由器</span></button>
             <button class="btn btn-le-blueGreen" ng-click="associateSubnet()" ng-disabled="operationBtn.bindsubnet==0"><span>关联子网</span></button>
             <button class="btn btn-le-green" ng-click="editRouter()" ng-disabled="operationBtn.edit==0"><span>编辑路由器</span></button>
             <div dropdown class="more-operation-dropdown">
@@ -31,7 +31,7 @@
                     </th>
                     <th><span>名称(ID)</span></th>
                     <th><span>状态</span></th>
-                    <th><span>IP地址</span></th>
+                    <th><span>网关状态</span></th>
                     <th><span>关联子网</span></th>
                     <th><span>创建时间</span></th>
                 </tr>
@@ -43,8 +43,8 @@
                     </td>
                     <td class="le-col-name"><span>{{router.name|| '未设置'}}</span></td>
                     <td><span>{{router.status|routerStatusFilter}}</span></td>
-                    <td><span>{{router.gatewayIp}}</span></td>
-                    <td><span>{{router.subnets | routerSubnetFilter}}</span></td>
+                    <td><span>{{router.publicNetworkGatewayEnable|routerGatewayFilter}}</span></td>
+                    <td class="le-col-name"><span>{{router.subnets | routerSubnetFilter}}</span></td>
                     <td><span>{{router.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
                 </tr>
                 <tr ng-if="routerList.length==0">
@@ -81,9 +81,9 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" le-auto-focus name-input-restrict/>
-                            <span ng-show="(vm_router_create_form.$submitted || vm_router_create_form.router_name.$touched) && vm_router_create_form.router_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                                <i class="iconfont icon-icon1"></i>
-                            </span>
+                            <input-validation-tooltip ng-show="(vm_router_create_form.$submitted || vm_router_create_form.router_name.$touched) && vm_router_create_form.router_name.$error.nameInputRestrict"
+                                                      validation-message="{{REGEX_MESSAGE.NAME}}">
+                            </input-validation-tooltip>
                         </div>
                     </div>
                     <div class="le-row">
@@ -142,9 +142,9 @@
                 </div>
                 <div class="le-col-9 col-control">
                     <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" le-auto-focus name-input-restrict />
-                    <span ng-show="(vm_router_edit_form.$submitted || vm_router_edit_form.edit_router_name.$touched) && vm_router_edit_form.edit_router_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                        名称不符合规则
-                    </span>
+                    <input-validation-tooltip ng-show="(vm_router_edit_form.$submitted || vm_router_edit_form.edit_router_name.$touched) && vm_router_edit_form.edit_router_name.$error.nameInputRestrict"
+                                              validation-message="{{REGEX_MESSAGE.NAME}}">
+                    </input-validation-tooltip>
                 </div>
             </div>
             <div class="le-row">

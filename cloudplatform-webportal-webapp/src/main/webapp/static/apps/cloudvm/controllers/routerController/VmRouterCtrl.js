@@ -154,7 +154,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               recordsPerPage: $scope.pageSize
             };
           $scope.isListLoading=true;
-            HttpService.doGet(Config.urls.router_list, queryParams).success(function (data, status, headers, config) {
+            HttpService.doGet(Config.urls.router_list, queryParams).then(function (data, status, headers, config) {
               $scope.isListLoading=false;
               $scope.routerList = data.data.data;
               $scope.totalItems = data.data.totalRecords;

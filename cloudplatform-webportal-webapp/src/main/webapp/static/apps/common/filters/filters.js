@@ -204,6 +204,15 @@ define(['./common.filter'], function (filterModule) {
       }
     }
   }]);
+  filterModule.filter('routerGatewayFilter',[function(){
+    return function (input) {
+      if(input === true){
+        return "开启";
+      }else{
+        return "关闭";
+      }
+    }
+  }]);
   filterModule.filter('routerStatusFilter',[function(){
     return function (input) {
       var out = '';

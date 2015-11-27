@@ -78,9 +78,14 @@ define(['./common.service'], function (serviceModule) {
       keypair_check:'/ecs/keypair/create/check',
     };
     config.REGEX= {
-      NAME: /^[a-zA-Z\u4e00-\u9fa5][^\s"@\/:=<>{\[\]}]{1,127}$/,
-      NAME_NO_ZH: /^[a-zA-Z][^\s"@\/:=<>{\[\]}\u4e00-\u9fa5]{1,127}$/,
+      NAME: /^[a-zA-Z\u4e00-\u9fa5][a-zA-Z\u4e00-\u9fa5\(（_\-\)）]{1,127}$/,
+      NAME_NO_ZH: /^[a-zA-Z][a-zA-Z(（_\-\)）]{1,127}$/,
       PASSWORD: /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*)[a-zA-Z0-9]{8,30}$/,
+    };
+    config.REGEX_MESSAGE= {
+      NAME: '名称须为2-128个字符，支持大小写字母或中文以及()（）_-，以大小写字母或中文开头',
+      NAME_NO_ZH: '名称须为2-128个字符，支持大小写字母以及()（）_-，以大小写字母开头',
+      PASSWORD: '8-30个字符，同时包含大小写字母和数字，不支持特殊符号',
     };
     config.vmStatuses = {
       'active':'活跃',
@@ -99,7 +104,8 @@ define(['./common.service'], function (serviceModule) {
       'stopping':'关机中',
       'starting':'启动中',
       'rebooting':'重启中',
-      'spawning':'创建中'
+      'spawning':'创建中',
+      'block_device_mapping':'创建中'
     };
     config.vmDiskStatuses = [
       {"text": "创建中", "value": "creating"},

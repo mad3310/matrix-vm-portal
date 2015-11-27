@@ -17,7 +17,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         name: $scope.keypairName
       };
       $scope.isFormSubmiting=true;
-      HttpService.doGet(Config.urls.keypair_check, createKeypairData).success(function (data, status, headers, config) {
+      HttpService.doGet(Config.urls.keypair_check, createKeypairData).then(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(createKeypairData);
         }

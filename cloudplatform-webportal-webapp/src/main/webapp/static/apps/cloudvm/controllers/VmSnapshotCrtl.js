@@ -15,7 +15,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           };
           var url= isVmTabActive?Config.urls.snapshot_vm_list:Config.urls.snapshot_disk_list
           $scope.isListLoading=true;
-          HttpService.doGet(url, queryParams).success(function (data, status, headers, config) {
+          HttpService.doGet(url, queryParams).then(function (data, status, headers, config) {
             $scope.isListLoading=false;
             if(isVmTabActive){
               $scope.vmSnapshotList = data.data.data;
@@ -24,7 +24,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                 var vmSnapshotDetailUrl = Config.urls.snapshot_vm_detail,
                   queryData = {region: CurrentContext.regionId, vmSnapshotId: vmSnapshot.id};
                 var pendingStatusInterval = $interval(function () {
-                  HttpService.doGet(vmSnapshotDetailUrl, queryData).success(function (data, status, headers, config) {
+                  HttpService.doGet(vmSnapshotDetailUrl, queryData).then(function (data, status, headers, config) {
                     if (data.result === 1 && data.data.status != 'QUEUED') {
                       vmSnapshot.status = data.data.status;
                       $interval.cancel(pendingStatusInterval);
@@ -133,7 +133,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               }
               else{
                 var deferred = $q.defer();
-                HttpService.doGet(Config.urls.region_list).success(function (data, status, headers, config) {
+                HttpService.doGet(Config.urls.region_list).then(function (data, status, headers, config) {
                   CurrentContext.allRegionData=data.data;
                   deferred.resolve(true);
                 });

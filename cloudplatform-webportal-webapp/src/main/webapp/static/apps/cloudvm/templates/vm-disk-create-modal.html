@@ -13,9 +13,17 @@
                     </div>
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control" ng-model="diskName" name="disk_name" le-auto-focus name-input-restrict />
-                        <span ng-show="(vm_disk_create_form.$submitted || vm_disk_create_form.disk_name.$touched) && vm_disk_create_form.disk_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                            <i class="iconfont icon-icon1"></i>
-                        </span>
+                        <input-validation-tooltip ng-show="(vm_disk_create_form.$submitted || vm_disk_create_form.disk_name.$touched) && vm_disk_create_form.disk_name.$error.nameInputRestrict"
+                                                  validation-message="{{REGEX_MESSAGE.NAME}}">
+                        </input-validation-tooltip>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
+                        <span class="letv-control-label">快照：</span>
+                    </div>
+                    <div class="le-col-9 col-control">
+                        <le-select select-model="selectedSnapshot" select-options="snapshotListSelectorData"></le-select>
                     </div>
                 </div>
                 <div class="le-row">
@@ -36,18 +44,10 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-3 col-label">
-                        <span class="letv-control-label">快照：</span>
-                    </div>
-                    <div class="le-col-9 col-control">
-                        <le-select select-model="selectedSnapshot" select-options="snapshotListSelectorData"></le-select>
-                    </div>
-                </div>
-                <div class="le-row">
-                    <div class="le-col-3 col-label">
                         <span class="letv-control-label">容量：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <le-slider le-slider-model="diskVolume" le-slider-step="10" le-slider-min="diskMinVolume" le-slider-max="2048" le-slider-unit="GB"></le-slider>
+                        <le-slider le-slider-model="diskVolume" le-slider-step="10" le-slider-min="diskMinVolume" le-slider-max="2000" le-slider-unit="GB" is-slider-min-changeable="true"></le-slider>
                     </div>
                 </div>
                 <div class="le-row">

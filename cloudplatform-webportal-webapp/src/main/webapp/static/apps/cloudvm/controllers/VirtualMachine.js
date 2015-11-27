@@ -324,7 +324,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           return;
         }
         if(checkedVms[0].taskState || (checkedVms[0].vmState!=='active' && checkedVms[0].vmState!=='stopped')){
-          WidgetService.notifyWarning('云主机当前状态不可绑定公网ip');
+          WidgetService.notifyWarning('云主机当前状态不可绑定公网IP');
           return;
         }
         var modalInstance = $modal.open({
@@ -373,7 +373,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               }
               else{
                 var deferred = $q.defer();
-                HttpService.doGet(Config.urls.region_list).success(function (data, status, headers, config) {
+                HttpService.doGet(Config.urls.region_list).then(function (data, status, headers, config) {
                   CurrentContext.allRegionData=data.data;
                   deferred.resolve(true);
                 });
@@ -484,7 +484,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             recordsPerPage: $scope.pageSize
           };
           $scope.isListLoading=true;
-          HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), queryParams).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), queryParams).then(function (data, status, headers, config) {
             $scope.isListLoading=false;
             $scope.vmList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
@@ -492,7 +492,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.vmList.filter(function(vm){return vm.taskState=='spawning'}).forEach(function(vm) {
               var vmDetailUrl = Config.urls.vm_detail.replace('{region}', CurrentContext.regionId).replace('{vmId}', vm.id);
               var buildStatusInterval = $interval(function () {
-                HttpService.doGet(vmDetailUrl).success(function (data, status, headers, config) {
+                HttpService.doGet(vmDetailUrl).then(function (data, status, headers, config) {
                   if (data.result === 1 && data.data.taskState != 'spawning') {
                     vm.vmState = data.data.vmState;
                     vm.taskState = data.data.taskState;
@@ -567,7 +567,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         initDiskSelector();
       },
       initDiskSelector = function () {
-        HttpService.doGet(Config.urls.disk_list.replace('{region}',region),{name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.disk_list.replace('{region}',region),{name: '', currentPage:'', recordsPerPage: ''}).then(function (data, status, headers, config) {
           $scope.diskList = data.data.data;
           $scope.diskListSelectorData=$scope.diskList.filter(function(disk){
             return disk.name && disk.status==='available';
@@ -650,11 +650,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.floatIp_bindVm, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('绑定公网ip成功');
+          WidgetService.notifySuccess('绑定公网IP成功');
         }
         else{
           $scope.isFormSubmiting=false;
-          WidgetService.notifyError(data.msgs[0]||'绑定公网ip失败');
+          WidgetService.notifyError(data.msgs[0]||'绑定公网IP失败');
           $scope.isFormSubmiting=false;
         }
       });
@@ -664,7 +664,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         initFloatingIpSelector();
       },
       initFloatingIpSelector = function () {
-        HttpService.doGet(Config.urls.floatIP_list,{region:region,name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.floatIP_list,{region:region,name: '', currentPage:'', recordsPerPage: ''}).then(function (data, status, headers, config) {
           $scope.floatingIpList = data.data.data;
           $scope.floatingIpListSelectorData=$scope.floatingIpList.filter(function(floatingIp){
             return floatingIp.status==='AVAILABLE';

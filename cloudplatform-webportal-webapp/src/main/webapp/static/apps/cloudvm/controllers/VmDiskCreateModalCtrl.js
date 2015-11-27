@@ -11,7 +11,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         initSnapshotTypeSelector();
       },
       initDiskTypeSelector = function () {
-        HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.vm_disk_type,{region:region}).then(function (data, status, headers, config) {
           $scope.diskTypeList=data.data;
           $scope.selectedDiskType = $scope.diskTypeList[0];
         });
@@ -23,7 +23,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
         }
         else{
-          HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '', recordsPerPage: ''}).then(function (data, status, headers, config) {
             $scope.snapshotList = data.data.data;
             $scope.snapshotListSelectorData=$scope.snapshotList.map(function(snapshot){
               return new ModelService.SelectModel(snapshot.name,snapshot.id);
