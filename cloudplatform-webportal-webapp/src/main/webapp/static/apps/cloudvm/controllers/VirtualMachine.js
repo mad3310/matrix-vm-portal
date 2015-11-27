@@ -112,7 +112,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           originalVmState=checkedVms[0].vmState,
           originalTaskState=checkedVms[0].taskState;
         }
-        if(originalTaskState || (originalVmState!=='active' && originalVmState !=='stopped')){
+        if(originalTaskState || (originalVmState!=='active' && originalVmState !=='stopped'&&originalVmState!='error')){
           WidgetService.notifyWarning('云主机当前状态不可删除');
           return;
         }
