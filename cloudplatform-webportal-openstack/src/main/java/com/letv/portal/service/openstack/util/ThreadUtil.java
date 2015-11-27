@@ -66,7 +66,7 @@ public class ThreadUtil {
 //    }
 
     public static <T> List<Ref<T>> concurrentRunAndWait(Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
-        return concurrentRunAndWait(new Timeout().time(30L).unit(TimeUnit.DAYS), currentThreadTask, otherTasks);
+        return concurrentRunAndWait(null, currentThreadTask, otherTasks);
     }
 
     public static <T> List<Ref<T>> concurrentRunAndWait(Timeout timeout, Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
@@ -142,7 +142,7 @@ public class ThreadUtil {
     }
 
     public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter) throws OpenStackException {
-        return concurrentFilter(list, filter, new Timeout().time(30L).unit(TimeUnit.DAYS));
+        return concurrentFilter(list, filter, null);
     }
 
     public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter, Timeout timeout) throws OpenStackException {
@@ -203,7 +203,7 @@ public class ThreadUtil {
 
     public static void waiting(Function<Boolean> checker)
             throws OpenStackException {
-        waiting(checker, new Timeout().time(30L).unit(TimeUnit.DAYS), null);
+        waiting(checker, null, null);
     }
 
     public static void waiting(Function<Boolean> checker, Timeout timeout)
@@ -213,7 +213,7 @@ public class ThreadUtil {
 
     public static void waiting(Function<Boolean> checker, Long sleepTime)
             throws OpenStackException {
-        waiting(checker, new Timeout().time(30L).unit(TimeUnit.DAYS), sleepTime);
+        waiting(checker, null, sleepTime);
     }
 
     public static void waiting(Function<Boolean> checker, Timeout timeout, Long sleepTime)
