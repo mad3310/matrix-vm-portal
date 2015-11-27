@@ -616,10 +616,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				PortApi portApi = neutronApi.getPortApi(region);
 
 				for (Port port : portApi.list().concat().toList()) {
-					if (networkId.equals(port.getNetworkId())) {
-						throw new UserOperationException(
-								"There are router interface or vm connected to the network.",
-								"有路由的接口或虚拟机连接着这个网络");
+					String deviceOwner = port.getDeviceOwner();
+					if (OpenStackConstants.PORT_DEVICE_OWNER_COMPUTE_NONE.equals(deviceOwner)
+							|| OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE.equals(deviceOwner)) {
+						if (networkId.equals(port.getNetworkId())) {
+							throw new UserOperationException(
+									"There are router interface or vm connected to the network.",
+									"有路由的接口或虚拟机连接着这个网络");
+						}
 					}
 				}
 
@@ -1118,13 +1122,17 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				for (Port port : neutronApi.getPortApi(region).list().concat()
 						.toList()) {
-					if (subnet.getNetworkId().equals(port.getNetworkId())) {
-						if (port.getFixedIps() != null) {
-							for (IP ip : port.getFixedIps()) {
-								if (subnet.getId().equals(ip.getSubnetId())) {
-									throw new UserOperationException(
-											"There are router interface or vm connected to the subnet.",
-											"有路由的接口或虚拟机连接着这个子网");
+					String deviceOwner = port.getDeviceOwner();
+					if (OpenStackConstants.PORT_DEVICE_OWNER_COMPUTE_NONE.equals(deviceOwner)
+							|| OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE.equals(deviceOwner)) {
+						if (subnet.getNetworkId().equals(port.getNetworkId())) {
+							if (port.getFixedIps() != null) {
+								for (IP ip : port.getFixedIps()) {
+									if (subnet.getId().equals(ip.getSubnetId())) {
+										throw new UserOperationException(
+												"There are router interface or vm connected to the subnet.",
+												"有路由的接口或虚拟机连接着这个子网");
+									}
 								}
 							}
 						}
