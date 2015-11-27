@@ -38,7 +38,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
 
     function getPublicNetworkId() {
-      HttpService.doGet(Config.urls.network_public_list,{region:routerInfo.region}).success(function (data, status, headers, config) {
+      HttpService.doGet(Config.urls.network_public_list,{region:routerInfo.region}).then(function (data, status, headers, config) {
         routerInfo.publicNetworkId = data.data[0].id;
       });
     };

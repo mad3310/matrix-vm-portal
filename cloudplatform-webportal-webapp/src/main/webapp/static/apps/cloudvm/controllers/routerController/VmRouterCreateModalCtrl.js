@@ -45,7 +45,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         initRouterTypeSelector();
       },
       initRouterTypeSelector = function () {
-        HttpService.doGet(Config.urls.network_public_list,{region:region}).success(function (data, status, headers, config) {
+        HttpService.doGet(Config.urls.network_public_list,{region:region}).then(function (data, status, headers, config) {
           $scope.publicNetworkId = data.data[0].id;
         });
       },

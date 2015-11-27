@@ -337,7 +337,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                         recordsPerPage: $scope.vpc.pageSize
                     };
                   $scope.isListLoading=true;
-                    HttpService.doGet(Config.urls.vpc_list, queryParams).success(function (data, status, headers, config) {
+                    HttpService.doGet(Config.urls.vpc_list, queryParams).then(function (data, status, headers, config) {
                         $scope.isListLoading=false;
                         $scope.vpcList = data.data.data;
                         $scope.vpc.totalItems = data.data.totalRecords;
@@ -353,7 +353,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                         recordsPerPage: $scope.subnet.pageSize
                     };
                     $scope.isListLoading=true;
-                    HttpService.doGet(Config.urls.subnet_list, queryParams).success(function (data, status, headers, config) {
+                    HttpService.doGet(Config.urls.subnet_list, queryParams).then(function (data, status, headers, config) {
                         $scope.isListLoading=false;
                         $scope.subnetList = data.data.data;
                         $scope.subnet.totalItems = data.data.totalRecords;
@@ -531,7 +531,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               initAssociatedVmList();
           },
           initAssociatedVmList = function () {
-              HttpService.doGet(Config.urls.could_attach_subnet_list, {region:region,subnetId:subnetInfo.id}).success(function (data, status, headers, config) {
+              HttpService.doGet(Config.urls.could_attach_subnet_list, {region:region,subnetId:subnetInfo.id}).then(function (data, status, headers, config) {
                   $scope.associatedVmList = data.data;
               });
               /*HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
@@ -593,7 +593,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                 initDetachVmList();
             },
             initDetachVmList = function () {
-                HttpService.doGet(Config.urls.vm_attach_subnet_list, {region:region,subnetId:subnetInfo.id}).success(function (data, status, headers, config) {
+                HttpService.doGet(Config.urls.vm_attach_subnet_list, {region:region,subnetId:subnetInfo.id}).then(function (data, status, headers, config) {
                  $scope.detachVmList = data.data;
                  });
                 /*HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {

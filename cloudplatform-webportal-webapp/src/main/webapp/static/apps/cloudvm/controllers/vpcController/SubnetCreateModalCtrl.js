@@ -40,7 +40,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                 initSelector();
             },
             initVpcSelector = function () {
-                HttpService.doGet(Config.urls.vpc_list, {region: subnetInfo.region}).success(function (data, status, headers, config) {
+                HttpService.doGet(Config.urls.vpc_list, {region: subnetInfo.region}).then(function (data, status, headers, config) {
                     $scope.vpcList = data.data.data;
                     $scope.vpcListSelectorData = $scope.vpcList.map(function (vpc) {
                         return new ModelService.SelectModel(vpc.name, vpc.id);

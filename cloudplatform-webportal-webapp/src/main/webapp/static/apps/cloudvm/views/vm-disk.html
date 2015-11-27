@@ -1,15 +1,15 @@
 <div class="view-common view-vm-disk" ng-controller="VmDiskCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-click="openVmDiskCreateModal('500')" ng-disabled="operationBtn.create==0"><span>创建云硬盘</span></button>
-            <button class="btn btn-le-blueGreen" ng-click="openVmDiskSnapshotCreateModal('500')" ng-disabled="operationBtn.createsnap==0"><span>创建快照</span></button>
-            <button class="btn btn-le-green" ng-click="openVmDiskAttachModal('500')" ng-disabled="operationBtn.attachdisk==0"><span>挂载云硬盘</span></button>
+            <button class="btn btn-le-blue" ng-click="openVmDiskCreateModal('medium')" ng-disabled="operationBtn.create==0"><span>创建云硬盘</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="openVmDiskSnapshotCreateModal('medium')" ng-disabled="operationBtn.createsnap==0"><span>创建快照</span></button>
+            <button class="btn btn-le-green" ng-click="openVmDiskAttachModal('medium')" ng-disabled="operationBtn.attachdisk==0"><span>挂载云硬盘</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                    <li><button class="btn dropdown-btn" ng-click="openVmDiskEditModal('500')" ng-disabled="operationBtn.edit==0">编辑云硬盘</button></li>
+                    <li><button class="btn dropdown-btn" ng-click="openVmDiskEditModal('medium')" ng-disabled="operationBtn.edit==0">编辑云硬盘</button></li>
                     <li><button class="btn dropdown-btn" ng-click="detachDisk()" ng-disabled="operationBtn.detachdisk==0">卸载云硬盘</button></li>
                     <li><button class="btn dropdown-btn" ng-click="deleteDisk()" ng-disabled="operationBtn.delete==0">删除云硬盘</button></li>
                 </ul>
@@ -32,7 +32,7 @@
                     </th>
                     <th><span>名称</span></th>
                     <th><span>类型</span></th>
-                    <th><span>大小</span></th>
+                    <th><span>容量</span></th>
                     <th><span>状态</span></th>
                     <th><span>挂载云主机</span></th>
                     <th><span>创建时间</span></th>
@@ -117,9 +117,9 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="diskName" name="disk_name" le-auto-focus name-input-restrict />
-                            <span ng-show="(vm_disk_edit_form.$submitted || vm_disk_edit_form.disk_name.$touched) && vm_disk_edit_form.disk_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                                <i class="iconfont icon-icon1"></i>
-                            </span>
+                            <input-validation-tooltip ng-show="(vm_disk_edit_form.$submitted || vm_disk_edit_form.disk_name.$touched) && vm_disk_edit_form.disk_name.$error.nameInputRestrict"
+                                                      validation-message="{{REGEX_MESSAGE.NAME}}">
+                            </input-validation-tooltip>
                         </div>
                     </div>
                     <div class="le-row">
@@ -150,9 +150,9 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-snapshot-name" ng-model="diskSnapshotName" name="disk_snapshot_name" name-input-restrict />
-                            <span ng-show="(vm_disk_snapshot_create_form.$submitted || vm_disk_snapshot_create_form.disk_snapshot_name.$touched) && vm_disk_snapshot_create_form.disk_snapshot_name.$error.nameInputRestrict" class="le-input-validation" title='名称须为2-128个字符，以大小写字母或中文开头，不支持字符@/:="<>{[]}和空格'>
-                                <i class="iconfont icon-icon1"></i>
-                            </span>
+                            <input-validation-tooltip ng-show="(vm_disk_snapshot_create_form.$submitted || vm_disk_snapshot_create_form.disk_snapshot_name.$touched) && vm_disk_snapshot_create_form.disk_snapshot_name.$error.nameInputRestrict"
+                                                      validation-message="{{REGEX_MESSAGE.NAME}}">
+                            </input-validation-tooltip>
                         </div>
                     </div>
                     <div class="le-row">
