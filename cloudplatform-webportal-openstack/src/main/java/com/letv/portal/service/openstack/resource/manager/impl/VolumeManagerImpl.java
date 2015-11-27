@@ -24,10 +24,7 @@ import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeAttachmentResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeSnapshotResourceImpl;
-import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.Ref;
-import com.letv.portal.service.openstack.util.RetryUtil;
-import com.letv.portal.service.openstack.util.ThreadUtil;
+import com.letv.portal.service.openstack.util.*;
 import com.letv.portal.service.openstack.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
@@ -666,7 +663,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		for (int i = 0; i < count; i++) {
 			final String volumeName;
 			if (count > 1) {
-				volumeName = MessageFormat.format("{0}({1})", name, i + 1);
+				volumeName = NameUtil.nameAddNumber(name, i + 1);
 			} else {
 				volumeName = name;
 			}

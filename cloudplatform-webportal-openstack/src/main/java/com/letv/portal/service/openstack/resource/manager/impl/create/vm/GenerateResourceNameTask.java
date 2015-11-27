@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.util.NameUtil;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -20,7 +21,7 @@ public class GenerateResourceNameTask extends VmsCreateSubTask {
             String sourceName = context.getVmCreateConf().getName();
             int i = 1;
             for (VmCreateContext vmCreateContext : vmCreateContexts) {
-                vmCreateContext.setResourceName(MessageFormat.format("{0}({1})", sourceName, i++));
+                vmCreateContext.setResourceName(NameUtil.nameAddNumber(sourceName, i++));
             }
         }
     }

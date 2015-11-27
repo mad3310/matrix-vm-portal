@@ -12,4 +12,5 @@ public class Constants {
     public static final Iterable<Module> jcloudsContextBuilderModules = ImmutableSet
             .<Module>of(new SLF4JLoggingModule());
     public static final Pattern userAdminPasswordPattern = Pattern.compile(ValidationRegex.password);
+    public static final int nameMaxLength = 128;
 }

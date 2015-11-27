@@ -24,6 +24,7 @@ import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.NameUtil;
 import com.letv.portal.service.openstack.util.RetryUtil;
 import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
 import com.letv.portal.service.openstack.util.function.Function;
@@ -2838,7 +2839,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		for (int i = 0; i < count; i++) {
 			final String floatingIpName;
 			if (count > 1) {
-				floatingIpName = MessageFormat.format("{0}({1})", name, i + 1);
+				floatingIpName = NameUtil.nameAddNumber(name, i + 1);
 			} else {
 				floatingIpName = name;
 			}
