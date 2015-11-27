@@ -3,6 +3,8 @@ package com.letv.portal.constant;
 public class Constant {
 
 	public static final String KAPTCHA_COOKIE_NAME = "captcha_cache_id_";
+	//验证码每天验证次数
+	public static final String KAPTCHA_VERIFY_COUNT = "captcha_verify_count_";
 	public static int RESULT_SUCCESS = 1;
 	public static int RESULT_ERROR = 0;
 
