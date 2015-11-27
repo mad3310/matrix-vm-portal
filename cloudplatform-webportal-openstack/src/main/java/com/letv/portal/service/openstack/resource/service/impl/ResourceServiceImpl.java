@@ -1195,4 +1195,11 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
     }
+
+    @Override
+    public void separateSubnetFromRouter(NeutronApi neutronApi, String region, String routerId, String subnetId) throws OpenStackException {
+        checkRegion(region, neutronApi);
+
+    }
+
 }

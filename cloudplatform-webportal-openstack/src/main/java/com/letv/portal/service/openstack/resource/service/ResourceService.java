@@ -47,4 +47,6 @@ public interface ResourceService {
     void checkVolumeOperational(long tenantId, String region, String volumeId) throws OpenStackException;
 
     void editRouter(NovaApi novaApi, NeutronApi neutronApi, String region, String routerId, String name, boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException;
+
+    void separateSubnetFromRouter(NeutronApi neutronApi, String region, String routerId, String subnetId) throws OpenStackException;
 }
