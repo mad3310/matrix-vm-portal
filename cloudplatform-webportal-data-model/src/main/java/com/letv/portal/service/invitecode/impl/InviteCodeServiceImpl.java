@@ -63,7 +63,7 @@ public class InviteCodeServiceImpl extends BaseServiceImpl<InviteCode>  implemen
 
 	@Override
 	public int verify(String inviteC, String kaptcha) {
-		if(!validate(kaptcha) && StringUtils.isEmpty(inviteC)) {
+		if(!validate(kaptcha) || StringUtils.isEmpty(inviteC)) {
 			return 0;
 		}
 		Map<String, Object> params = new HashMap<String, Object>();
