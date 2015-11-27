@@ -32,7 +32,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     var initComponents = function () {
       initRouterSelector();
     },initRouterSelector = function () {
-      HttpService.doGet(Config.urls.router_list,{region:subnetInfo.region}).success(function (data, status, headers, config) {
+      HttpService.doGet(Config.urls.router_list,{region:subnetInfo.region}).then(function (data, status, headers, config) {
         $scope.routerList =  data.data.data;
         $scope.routerListSelectorData=$scope.routerList.map(function(router){
           return new ModelService.SelectModel(router.name,router.id);

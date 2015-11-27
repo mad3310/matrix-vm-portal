@@ -70,7 +70,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             return;
           }else{
             //是否有可用的云主机
-            HttpService.doGet('/ecs/vm/unbindedfloatingip/list',{'region':CurrentContext.regionId}).success(function(data){
+            HttpService.doGet('/ecs/vm/unbindedfloatingip/list',{'region':CurrentContext.regionId}).then(function(data){
               if(data.result==1){//success
                 if(data.data.length>0){
                   var modalInstance = $modal.open({
@@ -212,7 +212,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             recordsPerPage: $scope.pageSize
           };
         $scope.isListLoading=true;
-          HttpService.doGet(Config.urls.floatIP_list, queryParams).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.floatIP_list, queryParams).then(function (data, status, headers, config) {
             $scope.isListLoading=false;
             $scope.floatIpList = data.data.data;
             $scope.totalItems = data.data.totalRecords;

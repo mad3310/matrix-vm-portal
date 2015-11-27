@@ -43,8 +43,8 @@ define([
       return $.param(data);
     };
   }]);
-  app.run(['$route', '$rootScope', '$http', '$location', 'routes', function ($route, $rootScope, $http, $location, routes) {
-
+  app.run(['$route', '$rootScope', '$http', '$location', 'routes','Config', function ($route, $rootScope, $http, $location, routes,Config) {
+    $rootScope.REGEX_MESSAGE = Config.REGEX_MESSAGE;
   }]);
 
   return app;

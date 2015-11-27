@@ -145,23 +145,23 @@ body {
 }
 
 .modal-dialog {
-    margin: 200px auto;
-}
-
-.modal-400 {
-    width: 400px;
-}
-
-.modal-720 {
-    width: 720px;
-}
-
-.modal-500 {
-    width: 500px;
+    margin: 100px auto;
 }
 
 .modal-content{
     border-radius: 2px;
+}
+
+.modal-small {
+    width: 400px;
+}
+
+.modal-large {
+    width: 720px;
+}
+
+.modal-medium {
+    width: 550px;
 }
 
 .pagination{
@@ -182,8 +182,11 @@ body {
     border-color: #088ac2;
 }
 
-.tooltip-validate-info{
-    width: 300px;
+.tooltip-inner {
+    background-color: #666;
+}
+.tooltip.right .tooltip-arrow {
+    border-right-color: #666;
 }
 /*end override bootstrap style*/
 
@@ -937,6 +940,7 @@ le-select{
     width: 100%;
     position: relative;
     display: block;
+    font-size: 12px;
 }
 le-select .le-select-toggle{
     height: 100%;
@@ -978,6 +982,8 @@ le-select .le-select-menu{
     background-color: white;
     border: 1px solid #d2d2d2;
     border-top-width: 0;
+    max-height: 150px;
+    overflow-y: auto;
 }
 le-select .le-select-menu.open{
     display: block;
@@ -1239,3 +1245,27 @@ le-select .le-select-menu li a{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/*begin row-item-description style*/
+.row-item-description{
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+.le-modal-body .row-item-description .col-control{
+    line-height: 20px;
+}
+
+.le-modal-body .le-row.row-item-description{
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-bottom: -10px;
+}
+/*end row-item-description style*/
+
+/*begin tooltip-validate-info style*/
+.tooltip-validate-info{
+    min-width: 100px;
+}
+/*end tooltip-validate-info style*/

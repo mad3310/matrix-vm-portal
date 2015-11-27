@@ -174,22 +174,20 @@ define(['./common.directive'],function (directiveModule) {
                 options:'=selectOptions'
             },
             link: function (scope, element, attrs) {
-                scope.toggleSelect=function(){
-                    scope.isOpen = true;
-                    $document.bind('click',closeDropdown);
+                scope.toggleSelect=function(e){
+                    if(!scope.isOpen){
+                        scope.isOpen = true;
+                        e.stopPropagation();
+                        $document.bind('click',closeDropdown);
+                    }
                 };
                 scope.selectOption=function(selectedOption){
                     scope.model=selectedOption;
                 };
-                var toggleElement = element.find('.le-select-toggle');
                 var closeDropdown=function( evt ) {
                     if(!scope.isOpen){
                         return;
                     }
-                    if ( evt && toggleElement && toggleElement[0].contains(evt.target) ) {
-                        return;
-                    }
-
                     $document.unbind('click', closeDropdown);
                     scope.isOpen = false;
                     if (!scope.$$phase) {
@@ -208,33 +206,43 @@ define(['./common.directive'],function (directiveModule) {
                 externalModel: '=leSliderModel',
                 step:'@leSliderStep',
                 min:'=leSliderMin',
+                isMinChangeable:'@isSliderMinChangeable',
                 max:'@leSliderMax',
                 unit:'@leSliderUnit',
             },
             link: function (scope, element, attrs) {
                 var delayQueueModelHandler = Utility.delayQueueModel();
                 scope.model = scope.externalModel;
-                var max =Number(scope.max),
-                  min=Number(scope.min);
-                scope.$watch('min', function (newValue) {
-                    min=Number(newValue);
-                    scope.model = min;
-                });
+                var max = Number(scope.max),
+                  min = Number(scope.min);
+                if(scope.isMinChangeable === 'true'){
+                    scope.$watch('min', function (newValue) {
+                        min = Number(newValue);
+                        scope.model = min;
+                    });
+                }
                 scope.$watch('model', function (newValue) {
-                    if (newValue !== null && !isNaN(newValue) && Utility.isInt(newValue)) {
-                        if( newValue <= max && newValue >= min){
-                            delayQueueModelHandler(newValue, function(value) {
+                    if (newValue !== null && !isNaN(newValue)) {
+                        if(!Utility.isInt(newValue)){
+                            newValue = Math.floor(newValue);
+                        }
+                        if (newValue <= max && newValue >= min) {
+                            if(newValue % scope.step!==0) {
+                                newValue = Math.ceil(newValue/scope.step) * scope.step;
+                            }
+                            delayQueueModelHandler(newValue, function (value) {
                                 scope.model = Number(value);
                                 scope.externalModel = scope.model;
                             });
                         }
-                        else if(newValue > max){
+                        else if (newValue > max) {
                             scope.model = max;
                         }
-                        else if(newValue < min){
+                        else if (newValue < min) {
                             scope.model = min;
                         }
-                        else{}
+                        else {
+                        }
                     }
                     else {
                         scope.model = min;
@@ -272,6 +280,18 @@ define(['./common.directive'],function (directiveModule) {
                     $timeout( function () { element[0].focus(); } );
                 }
             }
+        };
+    });
+
+    directiveModule.directive('inputValidationTooltip', function ($timeout) {
+        return {
+            restrict: 'AE',
+            scope: {
+                message: '@validationMessage'
+            },
+            link: function (scope, element, attrs) {
+            },
+            templateUrl: '/static/apps/common/directives/input-validation-tooltip/template.html'
         };
     });
 });

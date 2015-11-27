@@ -33,7 +33,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     var initComponents = function () {
       initSubnetSelector();
     },initSubnetSelector = function () {
-      HttpService.doGet(Config.urls.available_for_router_subnet_list,{region:routerInfo.region}).success(function (data, status, headers, config) {
+      HttpService.doGet(Config.urls.available_for_router_subnet_list,{region:routerInfo.region}).then(function (data, status, headers, config) {
         var vpcList = data.data;
         $scope.subnetList = [];
         for(var i= 0,len=vpcList.length;i<len;i++){
