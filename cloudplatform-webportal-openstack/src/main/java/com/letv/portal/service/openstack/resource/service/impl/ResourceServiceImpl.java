@@ -1171,6 +1171,7 @@ public class ResourceServiceImpl implements ResourceService {
                             if (subnetId != null) {
                                 if (routerSubnetIds.contains(subnetId)) {
                                     subnetServerIds.add(deviceId);
+                                    break;
                                 }
                             }
                         }
