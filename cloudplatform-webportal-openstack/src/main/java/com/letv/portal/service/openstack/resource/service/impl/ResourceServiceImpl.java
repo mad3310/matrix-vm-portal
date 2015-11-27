@@ -1191,7 +1191,7 @@ public class ResourceServiceImpl implements ResourceService {
         for (org.jclouds.openstack.neutron.v2.domain.FloatingIP floatingIP : floatingIPList) {
             String portId = floatingIP.getPortId();
             if (portId != null && subnetServerPortIds.contains(portId)) {
-                throw new UserOperationException("Can not disable gateway of router.", "路由关联的子网下有虚拟机绑定了公网IP，不能关闭网关");
+                throw new UserOperationException("Can not disable gateway of router.", "路由器关联的子网网卡绑定了公网IP，不允许关闭网关");
             }
         }
     }
