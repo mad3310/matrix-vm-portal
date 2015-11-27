@@ -1125,8 +1125,16 @@ public class ResourceServiceImpl implements ResourceService {
         routerApi.update(routerId, updateBuilder.build());
     }
 
+    public org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi getNeutronFloatingIPApi(NeutronApi neutronApi, String region) throws APINotAvailableException {
+        Optional<org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi> floatingIPApiOptional = neutronApi.getFloatingIPApi(region);
+        if (!floatingIPApiOptional.isPresent()) {
+            throw new APINotAvailableException(org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi.class);
+        }
+        return floatingIPApiOptional.get();
+    }
+
     private void checkRouterDisableGateway(NovaApi novaApi, NeutronApi neutronApi, String region, String routerId) throws OpenStackException {
-        final FloatingIPApi floatingIPApi = getNovaFloatingIPApi(novaApi, region);
+        final org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi floatingIPApi = getNeutronFloatingIPApi(neutronApi, region);
         final PortApi portApi = neutronApi.getPortApi(region);
 
         List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
@@ -1137,12 +1145,12 @@ public class ResourceServiceImpl implements ResourceService {
         }, new Function<Object>() {
             @Override
             public Object apply() throws Exception {
-                return floatingIPApi.list().toList();
+                return floatingIPApi.list().concat().toList();
             }
         });
 
         final List<Port> portList = (List<Port>) objListRefList.get(0).get();
-        final List<FloatingIP> floatingIPList = (List<FloatingIP>) objListRefList.get(1).get();
+        final List<org.jclouds.openstack.neutron.v2.domain.FloatingIP> floatingIPList = (List<org.jclouds.openstack.neutron.v2.domain.FloatingIP>) objListRefList.get(1).get();
 
         Set<String> routerSubnetIds = new HashSet<String>();
         for (Port port : portList) {
@@ -1159,7 +1167,7 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
 
-        Set<String> subnetServerIds = new HashSet<String>();
+        Set<String> subnetServerPortIds = new HashSet<String>();
         for (Port port : portList) {
             if (OpenStackConstants.PORT_DEVICE_OWNER_COMPUTE_NONE.equals(port.getDeviceOwner())) {
                 String deviceId = port.getDeviceId();
@@ -1170,7 +1178,7 @@ public class ResourceServiceImpl implements ResourceService {
                             String subnetId = fixedIP.getSubnetId();
                             if (subnetId != null) {
                                 if (routerSubnetIds.contains(subnetId)) {
-                                    subnetServerIds.add(deviceId);
+                                    subnetServerPortIds.add(port.getId());
                                     break;
                                 }
                             }
@@ -1180,9 +1188,9 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
 
-        for (FloatingIP floatingIP : floatingIPList) {
-            String instanceId = floatingIP.getInstanceId();
-            if (instanceId != null && subnetServerIds.contains(instanceId)) {
+        for (org.jclouds.openstack.neutron.v2.domain.FloatingIP floatingIP : floatingIPList) {
+            String portId = floatingIP.getPortId();
+            if (portId != null && subnetServerPortIds.contains(portId)) {
                 throw new UserOperationException("Can not disable gateway of router.", "路由关联的子网下有虚拟机绑定了公网IP，不能关闭网关");
             }
         }
