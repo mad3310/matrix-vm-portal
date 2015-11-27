@@ -30,16 +30,16 @@ public class InviteCodeController {
 	
 	
 	@RequestMapping(value="/verify",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject recentOperate(ResultObject obj, HttpServletRequest request){
+	public @ResponseBody ResultObject verify(ResultObject obj, HttpServletRequest request){
 		String inviteCode = (String) request.getParameter("inviteCode");
-		int ret = this.inviteCodeService.verify(inviteCode);
+		String kaptcha = (String) request.getParameter("kaptcha");
+		int ret = this.inviteCodeService.verify(inviteCode, kaptcha);
+		obj.setData(ret);
 		if(ret==0) {
-			obj.setResult(0);
 			obj.addMsg("验证失败");
 		} else if(ret==1) {
 			obj.addMsg("验证通过");
 		} else if(ret==2) {
-			obj.setResult(0);
 			obj.addMsg("邀请码已使用");
 		}
 		return obj;

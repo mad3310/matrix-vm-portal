@@ -20,12 +20,13 @@ public interface IInviteCodeService extends IBaseService<InviteCode>  {
 	  * @Title: verify
 	  * @Description: 验证邀请码
 	  * @param inviteCode 邀请码
+	  * @param kaptcha 验证码
 	  * @return int 0-验证失败，1-验证通过， 2-邀请码已使用   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年11月26日 上午11:06:11
 	  */
-	int verify(String inviteCode);
+	int verify(String inviteCode, String kaptcha);
 	
 	/**
 	  * @Title: isInviteCodeUser
