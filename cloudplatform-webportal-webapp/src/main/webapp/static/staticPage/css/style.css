@@ -36,7 +36,7 @@ a:hover{cursor:pointer;}
 .carousels{overflow:hidden;padding-bottom:60px;}
 .body-top .top-carousel{padding:110px 0 0 0;height:500px;}
 .body-top.body-connectUs .top-carousel{min-height:500px;height:auto;padding-top:20px;}
-.top-carousel .carousel-content{font-size:1.8rem;font-size:18px\9overflow:hidden;}
+.top-carousel .carousel-content{font-size:1.8rem;font-size:18px\9;overflow:hidden;}
 .carousel-content .carousel-contentLeft{padding-top:100px;}
 .carousel-content .content-title{margin-bottom:20px;padding-top:50px;font-size:4.8rem;font-size:48px\9;letter-spacing:.2rem;letter-spacing:2px\9;}
 .body-connectUs .carousel-content .content-title{margin-bottom:40px;}
