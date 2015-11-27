@@ -29,6 +29,6 @@ public class Constants {
 	
 	public static final String SERVICE_PROVIDER_OPENSTACK = "openstack";//服务提供方
 	
-	public static Map<Long, String> productInfo = new HashMap<Long, String>();//产品信息缓存
+	public static final String PRODUCT_INFO_ID_NAME = "product_info_id_name";//产品信息缓存key
 
 }

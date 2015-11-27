@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.base.IBaseRegionDao;
 import com.letv.portal.dao.base.IBaseStandardDao;
@@ -62,6 +64,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	private SessionServiceImpl sessionService;
 	@Autowired
 	private IOrderSubService orderSubService;
+	private ICacheService<?> cacheService = CacheFactory.getCache();
 
 	@Override
 	public IBaseDao<Product> getDao() {
@@ -430,9 +433,11 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	@PostConstruct
 	private void getProductInfo() {
 		List<Product> products = this.productDao.selectByMap(null);
+		Map<Long, String> productInfo = new HashMap<Long, String>();
 		for (Product product : products) {
-			Constants.productInfo.put(product.getId(), product.getName());
+			productInfo.put(product.getId(), product.getName());
 		}
+		this.cacheService.set(Constants.PRODUCT_INFO_ID_NAME, productInfo);
 	}
 
 	@Override

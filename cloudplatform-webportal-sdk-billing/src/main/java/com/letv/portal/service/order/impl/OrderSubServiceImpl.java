@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.order.IOrderSubDao;
 import com.letv.portal.dao.order.IOrderSubDetailDao;
@@ -35,6 +37,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	private IOrderSubDetailDao orderDetailDao;
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	private ICacheService<?> cacheService = CacheFactory.getCache();
 	
 	private final static Logger logger = LoggerFactory.getLogger(OrderSubServiceImpl.class);
 	
@@ -120,6 +123,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		
 		List<Map<String, Object>> retList = new ArrayList<Map<String, Object>>();
 		Set<String> judgeParam = new HashSet<String>();
+		Map<Long, String> productInfo = (Map<Long, String>) this.cacheService.get(Constants.PRODUCT_INFO_ID_NAME, null);
 		
 		for (OrderSub orderSub : orderSubs) {
 			if(judgeParam.contains(orderSub.getSubscription().getProductId()+orderSub.getProductInfoRecord().getParams())) {
@@ -133,7 +137,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			ret.put("payNumber", orderSub.getOrder().getPayNumber());
 			ret.put("orderNumber", orderSub.getOrder().getOrderNumber());
 			ret.put("orderTime", orderSub.getSubscription().getOrderTime());
-			ret.put("productName", Constants.productInfo.get(orderSub.getSubscription().getProductId()));
+			ret.put("productName", productInfo.get(orderSub.getSubscription().getProductId()));
 			ret.put("orderNum", (Integer)params.get("count"));
 			ret.put("params", orderSub.getProductInfoRecord().getDescn());
 			retList.add(ret);
