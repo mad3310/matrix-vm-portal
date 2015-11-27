@@ -34,6 +34,8 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.model.UserVo;
@@ -116,6 +118,7 @@ public class PayServiceImpl implements IPayService {
 	private CloudvmResourceInfoService cloudvmResourceInfoService;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	private ICacheService<?> cacheService = CacheFactory.getCache();
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -235,7 +238,9 @@ public class PayServiceImpl implements IPayService {
 		String productName = this.cloudvmResourceInfoService.getCloudvmResourceNameById(orderSubs.get(0).getCreateUser()
 				, orderSubs.get(0).getSubscription().getProductId(), orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[0], 
 				orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[1]);
-		String productType = Constants.productInfo.get(orderSubs.get(0).getSubscription().getProductId());
+		@SuppressWarnings("unchecked")
+		Map<Long, String> productInfo = (Map<Long, String>) this.cacheService.get(Constants.PRODUCT_INFO_ID_NAME, null);
+		String productType = productInfo.get(orderSubs.get(0).getSubscription().getProductId());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    Date d = new Date();
 		

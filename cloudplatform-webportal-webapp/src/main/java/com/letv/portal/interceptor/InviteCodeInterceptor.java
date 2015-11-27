@@ -70,7 +70,7 @@ public class InviteCodeInterceptor implements HandlerInterceptor{
 		if (isAjaxRequest) {
 			responseJson(request,response,"长时间未操作，请重新登录");
 		} else {
-			response.sendRedirect("/home/index.html");
+			response.sendRedirect("/home/inviteCode.html");
 		}
 		return false;
 	}
