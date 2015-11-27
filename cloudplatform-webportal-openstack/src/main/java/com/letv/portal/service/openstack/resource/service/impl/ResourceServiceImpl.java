@@ -32,6 +32,7 @@ import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
@@ -1197,9 +1198,100 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void separateSubnetFromRouter(NeutronApi neutronApi, String region, String routerId, String subnetId) throws OpenStackException {
+    public void separateSubnetFromRouter(NeutronApi neutronApi, String region, final String routerId, final String subnetId) throws OpenStackException {
         checkRegion(region, neutronApi);
 
+        final RouterApi routerApi = getRouterApi(neutronApi, region);
+        final PortApi portApi = neutronApi.getPortApi(region);
+        final SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+        final NetworkApi networkApi = neutronApi.getNetworkApi(region);
+        final org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi floatingIPApi = getNeutronFloatingIPApi(neutronApi, region);
+
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(
+                new Function<Object>() {
+                    @Override
+                    public Object apply() throws Exception {
+                        return portApi.list().concat().toList();
+                    }
+                }, new Function<Object>() {
+                    @Override
+                    public Object apply() throws Exception {
+                        return floatingIPApi.list().concat().toList();
+                    }
+                }, new Function<Object>() {
+                    @Override
+                    public Object apply() throws Exception {
+                        Subnet subnet = getSubnet(subnetApi, subnetId);
+                        getPrivateNetwork(networkApi, subnet.getNetworkId());
+                        return subnet;
+                    }
+                }, new Function<Object>() {
+                    @Override
+                    public Object apply() throws Exception {
+                        return getRouter(routerApi, routerId);
+                    }
+                });
+        List<Port> portList = (List<Port>) objListRefList.get(0).get();
+        List<org.jclouds.openstack.neutron.v2.domain.FloatingIP> floatingIPList = (List<org.jclouds.openstack.neutron.v2.domain.FloatingIP>) objListRefList.get(1).get();
+
+        Port associatedPort = null;
+        Set<String> subnetServerPortIds = new HashSet<String>();
+        for (Port port : portList) {
+            String deviceOwner = port.getDeviceOwner();
+            if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE
+                    .equals(deviceOwner)
+                    && routerId.equals(port.getDeviceId())) {
+                ImmutableSet<IP> fixedIps = port.getFixedIps();
+                if (fixedIps != null) {
+                    for (IP ip : fixedIps) {
+                        if (subnetId.equals(ip.getSubnetId())) {
+                            associatedPort = port;
+                            break;
+                        }
+                    }
+                }
+            } else if (OpenStackConstants.PORT_DEVICE_OWNER_COMPUTE_NONE.equals(deviceOwner)) {
+                String deviceId = port.getDeviceId();
+                if (deviceId != null) {
+                    ImmutableSet<IP> fixedIps = port.getFixedIps();
+                    if (fixedIps != null) {
+                        for (IP fixedIP : fixedIps) {
+                            if (subnetId.equals(fixedIP.getSubnetId())) {
+                                subnetServerPortIds.add(port.getId());
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (associatedPort == null) {
+            throw new UserOperationException(
+                    "Subnet is not associated with router.",
+                    "子网和路由之间不存在关联");
+        }
+        for (org.jclouds.openstack.neutron.v2.domain.FloatingIP floatingIP : floatingIPList) {
+            String portId = floatingIP.getPortId();
+            if (portId != null && subnetServerPortIds.contains(portId)) {
+                throw new UserOperationException("Can not disable gateway of router.", "子网的虚拟机网卡绑定了公网IP，不允许解除子网和路由的关联");
+            }
+        }
+
+        boolean isSuccess = routerApi.removeInterfaceForSubnet(
+                routerId, subnetId);
+        if (!isSuccess) {
+            throw new OpenStackException(
+                    "Separate subnets and routing failure.",
+                    "子网和路由解除关联失败");
+        }
+
+        final String portId = associatedPort.getId();
+        ThreadUtil.waiting(new Function<Boolean>() {
+            @Override
+            public Boolean apply() throws Exception {
+                return portApi.get(portId) != null;
+            }
+        });
     }
 
 }
