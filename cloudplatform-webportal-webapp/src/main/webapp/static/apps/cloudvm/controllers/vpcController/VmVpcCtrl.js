@@ -196,7 +196,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                     subnetId: checkedSubnets[0].id,
                     routerId:checkedSubnets[0].router.id
                 };
-                var modalInstance = WidgetService.openConfirmModal('解绑路由', '确定要对子网（' + checkedSubnets[0].name + '）路由解绑吗？');
+                var modalInstance = WidgetService.openConfirmModal('解绑路由器', '确定要对子网（' + checkedSubnets[0].name + '）路由器解绑吗？');
                 modalInstance.result.then(function (resultData) {
                     if (!resultData) return resultData;
                     WidgetService.notifyInfo('子网路由解绑执行中...');

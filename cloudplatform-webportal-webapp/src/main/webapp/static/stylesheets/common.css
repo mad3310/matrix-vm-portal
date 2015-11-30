@@ -1208,6 +1208,10 @@ le-select .le-select-menu li a{
 .le-modal-header .close > i{
     font-size: 30px;
     transform:rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);;
     display: block;
     color: #088ac2;
     font-weight: 100;
@@ -1269,3 +1273,11 @@ le-select .le-select-menu li a{
     min-width: 100px;
 }
 /*end tooltip-validate-info style*/
+
+/*begin le-text-ellipsis style*/
+.le-text-ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/*end le-text-ellipsis style*/

@@ -13,20 +13,18 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     $scope.createKeypair = function () {
       var createKeypairData = {
-        region:region,
+        region: region,
         name: $scope.keypairName
       };
-      $scope.isFormSubmiting=true;
-      HttpService.doGet(Config.urls.keypair_check, createKeypairData).then(function (data, status, headers, config) {
-        if(data.result===1){
-          $modalInstance.close(createKeypairData);
-        }
-        else{
-          WidgetService.notifyError(data.msgs[0]||'密钥名称验证失败');
-          $scope.isFormSubmiting=false;
+      $scope.isFormSubmiting = true;
+      HttpService.doGet(Config.urls.keypair_check, createKeypairData, {disableGetGlobalNotify: true}).then(function (data) {
+        $modalInstance.close(createKeypairData);
+      }, function (data) {
+        if (data.result === 0) {
+          WidgetService.notifyError(data.msgs[0] || '密钥名称验证失败');
+          $scope.isFormSubmiting = false;
         }
       });
-
 
     };
 

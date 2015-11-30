@@ -83,11 +83,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.detachDisk=function(){
-        var checkedDisks=getCheckedDisk(),
-          originalStatus=checkedDisks[0].status;
+        var checkedDisks=getCheckedDisk(),originalStatus='';
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
+        }else{
+          originalStatus=checkedDisks[0].status;
         }
         if(checkedDisks[0].status !=='in-use'){
           WidgetService.notifyWarning('云硬盘当前状态不可卸载');
@@ -120,10 +121,12 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.deleteDisk=function(){
         var checkedDisks=getCheckedDisk(),
-          originalStatus=checkedDisks[0].status;
+          originalStatus='';
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
+        }else{
+          originalStatus=checkedDisks[0].status
         }
         if(checkedDisks[0].status!=='available' && checkedDisks[0].status!=='error'){
           WidgetService.notifyWarning('卸载云硬盘后执行删除操作');

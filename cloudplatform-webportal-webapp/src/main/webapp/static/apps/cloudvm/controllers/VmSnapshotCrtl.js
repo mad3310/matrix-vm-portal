@@ -153,10 +153,12 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.deleteDiskSnapshot=function(){
         var checkedSnapshots=getCheckedSnapshot(),
-          originalStatus=checkedSnapshots[0].status;
+          originalStatus='';
         if(checkedSnapshots.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘快照');
           return;
+        }else{
+          originalStatus=checkedSnapshots[0].status
         }
         if(checkedSnapshots[0].status!=='available' && checkedSnapshots[0].status!=='error'){
           WidgetService.notifyWarning('云硬盘快照当前状态不可删除');
@@ -189,10 +191,12 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.deleteVmSnapshot=function(){
         var checkedSnapshots=getCheckedSnapshot(),
-          originalStatus=checkedSnapshots[0].status;
+          originalStatus='';
         if(checkedSnapshots.length !==1){
           WidgetService.notifyWarning('请选中一个云主机快照');
           return;
+        }else{
+          originalStatus=checkedSnapshots[0].status;
         }
         if(originalStatus!=='ACTIVE' && originalStatus!=='KILLED') {
           WidgetService.notifyWarning('云主机快照当前状态不可删除');

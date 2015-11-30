@@ -75,6 +75,9 @@ public class InviteCodeServiceImpl extends BaseServiceImpl<InviteCode>  implemen
 					inviteCode.setUsed("1");
 					inviteCode.setUserId(this.sessionService.getSession().getUserId());
 					this.inviteCodeDao.update(inviteCode);
+					//删除缓存
+					cacheService.delete(Constant.KAPTCHA_COOKIE_NAME + this.sessionService.getSession().getUserId());
+					cacheService.delete(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId());
 					return 1;//验证通过
 				}
 			}
@@ -100,7 +103,7 @@ public class InviteCodeServiceImpl extends BaseServiceImpl<InviteCode>  implemen
 	private boolean validate(String kaptcha) {
 		//前三次不进行验证
 		if(cacheService.get(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId(), null)==null || 
-				(Integer)cacheService.get(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId(), null)<3) {
+				(Integer)cacheService.get(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId(), null)<2) {
 			return true;
 		}
 		if(StringUtils.isEmpty(kaptcha)) {

@@ -142,6 +142,7 @@
 					<div class="clearfix"></div>
 				</div>
 				<ul class="operation-items" ng-hide="expander.length<=0">
+					<div ng-hide="isloading"><i class="iconfont icon-envelope"></i><span>刷新数据中...</span></div>
 					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1&&expander.length>=10,third:$index==2,gotop:$index>2}">
 						<div>{{operation.action}}</div>
 						<div class="items-desc">
@@ -160,6 +161,7 @@
 					</li>
 				</ul>
 				<ul class="operation-items operation-noitems" ng-hide="expander.length>0">
+					<div ng-hide="isloading"><i class="iconfont icon-envelope"></i><span>刷新数据中...</span></div>
 					<i class="iconfont icon-baoxiu"></i><span>暂无最近操作</span>
 					<div class="clearfix"></div>
 				</ul>

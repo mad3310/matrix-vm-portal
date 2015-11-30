@@ -15,7 +15,9 @@ define(['./common.service'], function (serviceModule) {
           }
           else {
             deferred.reject(data);
-            WidgetService.notifyError(data.msgs[0] || '获取数据失败');
+            if(!option.disableGetGlobalNotify){
+              WidgetService.notifyError(data.msgs[0] || '获取数据失败');
+            }
           }
         });
         return deferred.promise;

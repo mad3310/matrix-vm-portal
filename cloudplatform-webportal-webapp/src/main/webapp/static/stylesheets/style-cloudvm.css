@@ -56,7 +56,7 @@
 .letv-modal-header{height:50px;line-height:50px;border-bottom:1px solid #088ac2;text-align:center;font-size:16px;color:#088ac2;margin: 0 15px;padding: 0;}
 .letv-modal-header .modal-title{font-size:16px;line-height: 50px;}
 .letv-modal-header .close{height: 50px;line-height: 50px;margin: 0;}
-.letv-modal-header .close > i {font-size: 30px;transform: rotate(45deg);display: inline-block;color: #088ac2;font-weight: 100;opacity: 1;}
+.letv-modal-header .close > i {font-size: 30px;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);;display: inline-block;color: #088ac2;font-weight: 100;opacity: 1;}
 /*modal-vm-create*/
 .body-left .left-flow{margin-top:5px;}
 .left-flow .flow-desc{width:56px;text-align:center;font-size:14px;color:#088ac2}
