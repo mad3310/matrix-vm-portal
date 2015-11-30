@@ -607,8 +607,13 @@ public class VMController {
 			return new ResultObject(bindingResult.getAllErrors());
 		}
 		ResultObject result = new ResultObject();
+		
 		try {
+			String vmResourceName = Util.session(sessionService).getVMManager().get(form.getRegion(), form.getVmId()).getName();
 			resourceServiceFacade.renameVm(form.getRegion(), form.getVmId(), form.getName());
+			//保存修改云主机名称操作
+			this.recentOperateService.saveInfo(Constant.EDIT_OPENSTACK, MessageFormat.format(Constant.STYLE_OPERATE_1, 
+					vmResourceName, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

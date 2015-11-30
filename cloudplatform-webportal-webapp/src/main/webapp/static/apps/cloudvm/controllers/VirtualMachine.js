@@ -489,11 +489,11 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.vmList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
 
-            $scope.vmList.filter(function(vm){return vm.taskState=='spawning'}).forEach(function(vm) {
+            $scope.vmList.filter(function(vm){return !isVmCreated(vm);}).forEach(function(vm) {
               var vmDetailUrl = Config.urls.vm_detail.replace('{region}', CurrentContext.regionId).replace('{vmId}', vm.id);
               var buildStatusInterval = $interval(function () {
-                HttpService.doGet(vmDetailUrl).then(function (data, status, headers, config) {
-                  if (data.result === 1 && data.data.taskState != 'spawning') {
+                HttpService.doGet(vmDetailUrl).then(function (data) {
+                  if (isVmCreated(data.data)) {
                     vm.vmState = data.data.vmState;
                     vm.taskState = data.data.taskState;
                     $interval.cancel(buildStatusInterval);
@@ -509,6 +509,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           return $scope.vmList.filter(function(item){
             return item.checked===true;
           });
+        },
+        isVmCreated=function(vm){
+          //通过云硬盘是否在绑定中判断云主机是否最终创建成功
+          return !vm.taskState && !(vm.volumes && vm.volumes.length && vm.volumes[0].status==='attaching');
         };
       var watchStateChange=function(){
         var productInfo={
