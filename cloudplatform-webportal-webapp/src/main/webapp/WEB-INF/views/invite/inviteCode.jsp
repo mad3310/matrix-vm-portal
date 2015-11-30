@@ -1,3 +1,5 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +54,7 @@
 		var flag=false;
 		var code=obj.val();
 		$.ajax({
-			url: '../kaptcha',
+			url: '${ctx}/kaptcha',
 			async: false,
 			type: 'post',
 			data: {'kaptcha':code},
@@ -83,7 +85,7 @@
 	}
 	function ifneedcode(){
 		return $.ajax({
-			url: '../kaptcha/isNeed',
+			url: '${ctx}/kaptcha/isNeed',
 			type: 'get',
 			success:function(data){
 				var _target=$('#valicode');
@@ -116,7 +118,7 @@
 				}
 				console.log(inputdata)
 				$.ajax({
-					url:'../inviteCode/verify',
+					url:'${ctx}/inviteCode/verify',
 					type:'post',
 					data:inputdata,
 					success:function(data){
