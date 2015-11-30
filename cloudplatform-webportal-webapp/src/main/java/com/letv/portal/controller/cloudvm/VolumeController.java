@@ -164,7 +164,7 @@ public class VolumeController {
 		return result;
 	}
 
-	@RequestMapping(value = "/volume/edit", method = RequestMethod.POST)
+//	@RequestMapping(value = "/volume/edit", method = RequestMethod.POST)
 	public
 	@ResponseBody
 	ResultObject edit(@Valid VolumeEditForm form, BindingResult bindingResult) {
@@ -181,7 +181,7 @@ public class VolumeController {
 		}
 		localVolumeService.updateNameAndDesc(userId, userId, form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
 		//保存编辑云硬盘操作
-		this.recentOperateService.saveInfo(Constant.EDIT_VOLUME, 
+		this.recentOperateService.saveInfo(Constant.EDIT_VOLUME,
 				MessageFormat.format(Constant.STYLE_OPERATE_2, StringUtils.isEmpty(volumeName)?Constant.NO_NAME:volumeName, form.getName()));
 		return result;
 	}

@@ -1,3 +1,5 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +21,7 @@
 				<div class="error-msg hide"></div>
 				<div class="valicode hide" id="valicode">
 					<input type="text" class="valicode-input formInput" id="input_idcode" placeholder="点击图片刷新验证码" onchange="codeVali($(this))" onpropertychange="codeVali($(this))"/>
-					<img src="../kaptcha" class="vali-codeimg formInput">
+					<img src="../kaptcha" class="vali-codeimg formInput" id="idcode">
 					<div class="error-msg hide">验证码错误，请重新输入</div>
 				</div>
 				<div class="formBtn"><div class="btn btn-le-blue invitebtn">验证</div></div>
@@ -35,6 +37,14 @@
 </html>
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
 <script>
+	//点击刷新图片
+	function codeimgClick(){
+		$('.vali-codeimg').unbind('click').click(function(event) {
+		  	$('.vali-codeimg').hide()
+		                    .attr('src', '../kaptcha?random='+Math.random()*100)
+		                    .fadeIn();
+		});
+	}
 	function inviteVali(obj){
 		var flag=false;
 		var reg=/^[a-zA-z0-9]{12}$/;
@@ -52,7 +62,7 @@
 		var flag=false;
 		var code=obj.val();
 		$.ajax({
-			url: '../kaptcha',
+			url: '${ctx}/kaptcha',
 			async: false,
 			type: 'post',
 			data: {'kaptcha':code},
@@ -63,13 +73,13 @@
 						.next().next('.error-msg').addClass('hide');
 				}else{
 					flag=false;
+					$('.vali-codeimg').attr('src', '${ctx}/kaptcha?random='+Math.random()*100);
 					obj.addClass('has-error')
 						.next().next('.error-msg').removeClass('hide').text('验证码错误，请重新输入');
 				}
-				return flag;
 			}
 		});
-		
+		return flag;
 	}
 	function totalValify(){
 		var flag=true;
@@ -78,12 +88,12 @@
 		if(inviteresult&&coderesult){
 		}else{
 			flag=false;
-			return flag;
 		}
+		return flag;
 	}
 	function ifneedcode(){
 		return $.ajax({
-			url: '../kaptcha/isNeed',
+			url: '${ctx}/kaptcha/isNeed',
 			type: 'get',
 			success:function(data){
 				var _target=$('#valicode');
@@ -97,46 +107,54 @@
 	}
 	function inviteBtnClick(){
 		var _target=$('.invitebtn').unbind('click').click(function(event){
-			var invitecode=$('.inviteCode').val(),code=$('.valicode-input'),inputdata='';
+			var invitecode=$('.inviteCode').val(),code=$('.valicode-input').val(),inputdata='';
 			var ifneedcodeResult=ifneedcode();
 			ifneedcodeResult.done(function(data){
 				if(data.data){//需要验证码
+					// console.log(inviteVali($('.inviteCode')))
+					// console.log(codeVali($('.valicode-input')))
 					if(totalValify()){
+						console.log('totalValify')
 						inputdata={
 							'inviteCode':invitecode,
 							'kaptcha':code
 						}
+						inviteajax(inputdata)
 					}
 				}else{
 					if(inviteVali($('.inviteCode'))){//只需要验证邀请码
 						inputdata={
 							'inviteCode':invitecode
 						}
+						inviteajax(inputdata)
 					}
-				}
-				console.log(inputdata)
-				$.ajax({
-					url:'../inviteCode/verify',
-					type:'post',
-					data:inputdata,
-					success:function(data){
-						if(data.data==0){
-							$('.blockInputs').removeClass('hide');
-							$('.blockSuccess').addClass('hide');
-							$('.inviteCode').addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
-						}else if(data.data==1){//验证通过
-							$('.inviteCode').removeClass('has-error').next('.error-msg').addClass('hide');
-							$('.blockInputs').addClass('hide');
-							$('.blockSuccess').removeClass('hide');
-						}else{
-							$('.blockInputs').removeClass('hide');
-							$('.blockSuccess').addClass('hide');
-							$('.inviteCode').addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
-						}
-					}
-				})
+				}	
 			});
 		});
 	}
+	function inviteajax(inputdata){
+		$.ajax({
+			url:'${ctx}/inviteCode/verify',
+			type:'post',
+			data:inputdata,
+			success:function(data){
+				console.log(data)
+				if(data.data==0){
+					$('.blockInputs').removeClass('hide');
+					$('.blockSuccess').addClass('hide');
+					$('.inviteCode').addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
+				}else if(data.data==1){//验证通过
+					$('.inviteCode').removeClass('has-error').next('.error-msg').addClass('hide');
+					$('.blockInputs').addClass('hide');
+					$('.blockSuccess').removeClass('hide');
+				}else{
+					$('.blockInputs').removeClass('hide');
+					$('.blockSuccess').addClass('hide');
+					$('.inviteCode').addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
+				}
+			}
+		})
+	}
 	inviteBtnClick();
+	codeimgClick();
 </script>
