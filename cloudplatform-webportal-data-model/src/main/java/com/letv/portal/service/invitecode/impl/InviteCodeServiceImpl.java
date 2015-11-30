@@ -74,11 +74,13 @@ public class InviteCodeServiceImpl extends BaseServiceImpl<InviteCode>  implemen
 				if("0".equals(inviteCode.getUsed())) {
 					inviteCode.setUsed("1");
 					inviteCode.setUserId(this.sessionService.getSession().getUserId());
-					this.inviteCodeDao.update(inviteCode);
-					//删除缓存
-					cacheService.delete(Constant.KAPTCHA_COOKIE_NAME + this.sessionService.getSession().getUserId());
-					cacheService.delete(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId());
-					return 1;//验证通过
+					int ret = this.inviteCodeDao.updateInviteCode(inviteCode);
+					if(ret==1) {
+						//删除缓存
+						cacheService.delete(Constant.KAPTCHA_COOKIE_NAME + this.sessionService.getSession().getUserId());
+						cacheService.delete(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId());
+						return 1;//验证通过
+					}
 				}
 			}
 			return 2;//邀请码已使用
