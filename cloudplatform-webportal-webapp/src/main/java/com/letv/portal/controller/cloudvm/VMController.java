@@ -147,8 +147,9 @@ public class VMController {
 			@PathVariable String vmId) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util.session(sessionService).getVMManager()
-					.get(region, vmId));
+//			result.setData(Util.session(sessionService).getVMManager()
+//					.get(region, vmId));
+			result.setData(resourceServiceFacade.getVm(region, vmId));
 //			result.setData(vmQueryService.get(region,vmId));
 		} catch (OpenStackException e) {
 			throw e.matrixException();

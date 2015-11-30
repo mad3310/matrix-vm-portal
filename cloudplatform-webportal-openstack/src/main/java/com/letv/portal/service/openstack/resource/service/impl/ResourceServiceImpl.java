@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.email.impl.DefaultEmailSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
@@ -22,7 +21,6 @@ import com.letv.portal.service.openstack.local.resource.LocalImageResource;
 import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
-import com.letv.portal.service.openstack.local.service.LocalRegionService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.IPAddresses;
 import com.letv.portal.service.openstack.resource.SubnetIp;
@@ -31,9 +29,6 @@ import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
-import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
-import com.letv.portal.service.openstack.resource.manager.impl.Checker;
-import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.*;
@@ -774,6 +769,145 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         return page;
+    }
+
+    @Override
+    public VMResource getVm(final NovaApi novaApi, final NeutronApi neutronApi, final long userVoUserId, final String region, final String vmId) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
+
+        final Server server = getVm(novaApi.getServerApi(region), vmId);
+
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<Port> portList = neutronApi.getPortApi(region).list().concat().toList();
+                List<Port> vmPortList = new LinkedList<Port>();
+                for (Port port : portList) {
+                    if (OpenStackConstants.PORT_DEVICE_OWNER_COMPUTE_NONE.equals(port.getDeviceOwner()) && StringUtils.isNotEmpty(port.getNetworkId())) {
+                        if (StringUtils.equals(vmId, port.getDeviceId())) {
+                            vmPortList.add(port);
+                        }
+                    }
+                }
+                return vmPortList;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<FloatingIP> floatingIPList = novaApi.getFloatingIPApi(region).get().list().toList();
+                List<FloatingIP> vmFloatingIPList = new LinkedList<FloatingIP>();
+                for (FloatingIP floatingIP : floatingIPList) {
+                    if (StringUtils.equals(floatingIP.getInstanceId(), vmId) && VMManagerImpl.isPublicFloatingIp(floatingIP)) {
+                        vmFloatingIPList.add(floatingIP);
+                    }
+                }
+                return vmFloatingIPList;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<Subnet> subnetList = neutronApi.getSubnetApi(region).list().concat().toList();
+                Map<String, Subnet> idToSubnet = new HashMap<String, Subnet>();
+                for (Subnet subnet : subnetList) {
+                    idToSubnet.put(subnet.getId(), subnet);
+                }
+                return idToSubnet;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                List<Network> networkList = neutronApi.getNetworkApi(region).list().concat().toList();
+                Map<String, Network> idToNetwork = new HashMap<String, Network>();
+                for (Network network : networkList) {
+                    idToNetwork.put(network.getId(), network);
+                }
+                return idToNetwork;
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                return novaApi.getFlavorApi(region).get(server.getFlavor().getId());
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                return cloudvmVolumeService.selectByServerIdAndStatus(userVoUserId, region, vmId, null);
+            }
+        }, new Function<Object>() {
+            @Override
+            public Object apply() throws Exception {
+                return cloudvmImageService.getImageOrVmSnapshot(region, server.getImage().getId());
+            }
+        });
+
+        List<Port> vmPortList = (List<Port>) objListRefList.get(0).get();
+        List<FloatingIP> vmFloatingIPList = (List<FloatingIP>) objListRefList.get(1).get();
+        Map<String, Subnet> idToSubnet = (Map<String, Subnet>) objListRefList.get(2).get();
+        Map<String, Network> idToNetwork = (Map<String, Network>) objListRefList.get(3).get();
+        Flavor flavor = (Flavor) objListRefList.get(4).get();
+        List<CloudvmVolume> vmCloudvmVolumeList = (List<CloudvmVolume>) objListRefList.get(5).get();
+        CloudvmImage cloudvmImage = (CloudvmImage) objListRefList.get(6).get();
+
+        VMResourceImpl vmResource = new VMResourceImpl(region, server);
+
+        if (flavor != null) {
+            vmResource.setFlavor(new FlavorResourceImpl(region, flavor));
+        }
+
+        if (cloudvmImage != null) {
+            vmResource.setImage(new LocalImageResource(cloudvmImage));
+        }
+
+        if (vmCloudvmVolumeList != null) {
+            List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
+            for (CloudvmVolume cloudvmVolume : vmCloudvmVolumeList) {
+                volumeResources.add(new LocalVolumeResource(cloudvmVolume));
+            }
+            vmResource.setVolumes(volumeResources);
+        }
+
+        IPAddresses ipAddresses = new IPAddresses();
+
+        Set<String> publicOrPrivateIps = new HashSet<String>();
+
+        if (vmFloatingIPList != null) {
+            for (FloatingIP floatingIP : vmFloatingIPList) {
+                ipAddresses.getPublicIP().add(floatingIP.getIp());
+                publicOrPrivateIps.add(floatingIP.getIp());
+            }
+        }
+
+        if (vmPortList != null) {
+            for (Port port : vmPortList) {
+                Set<IP> fixedIps = port.getFixedIps();
+                if (fixedIps != null) {
+                    for (IP fixedIp : fixedIps) {
+                        String subnetId = fixedIp.getSubnetId();
+                        if (StringUtils.isNotEmpty(subnetId)) {
+                            Subnet subnet = idToSubnet.get(subnetId);
+                            if (subnet != null) {
+                                Network network = idToNetwork.get(subnet.getNetworkId());
+                                if (network != null && !network.getShared() && !network.getExternal()) {
+                                    ipAddresses.getPrivateIP().add(new SubnetIp(new SubnetResourceImpl(region, subnet), fixedIp.getIpAddress()));
+                                    publicOrPrivateIps.add(fixedIp.getIpAddress());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Address address : server.getAddresses().values()) {
+            String ip = address.getAddr();
+            if (!publicOrPrivateIps.contains(ip)) {
+                ipAddresses.getSharedIP().add(ip);
+            }
+        }
+
+        vmResource.setIpAddresses(ipAddresses);
+
+        return vmResource;
     }
 
     @Override

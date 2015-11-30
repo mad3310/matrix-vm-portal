@@ -179,4 +179,15 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         resourceService.separateSubnetFromRouter(neutronApi, region, routerId, subnetId);
     }
+
+    @Override
+    public VMResource getVm(String region, String vmId) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+
+        NovaApi novaApi = getNovaApi();
+        NeutronApi neutronApi = getNeutronApi();
+
+        return resourceService.getVm(novaApi, neutronApi, userVoUserId, region, vmId);
+    }
 }

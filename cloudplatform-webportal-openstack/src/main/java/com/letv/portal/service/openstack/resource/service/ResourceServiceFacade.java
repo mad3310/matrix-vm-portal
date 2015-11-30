@@ -4,9 +4,6 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
-import org.jclouds.openstack.cinder.v1.CinderApi;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.nova.v2_0.NovaApi;
 
 import java.util.List;
 
@@ -43,4 +40,6 @@ public interface ResourceServiceFacade {
 
     void separateSubnetFromRouter(String region, String routerId,
                                   String subnetId) throws OpenStackException;
+
+    VMResource getVm(String region, String vmId) throws OpenStackException;
 }
