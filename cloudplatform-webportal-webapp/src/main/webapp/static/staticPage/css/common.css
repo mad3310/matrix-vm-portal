@@ -28,6 +28,7 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .text-right{text-align:right;}
 .text-red{color:#ff3c37}
 .text-blue{color:#088ac2}
+.text-muted{color:#666;}
 .bg-blue{background:rgba(9,138,195,.7)}
 .bg-yellow{background:rgba(245,193,48,.7)}
 .bg-green{background:rgba(39,199,151,.7)}
