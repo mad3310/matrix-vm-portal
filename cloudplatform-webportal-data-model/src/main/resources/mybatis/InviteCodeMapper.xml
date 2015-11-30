@@ -69,7 +69,7 @@
 	</select>
 	
 	<!-- 更新记录 -->
-	<update id="update" parameterType="InviteCode">
+	<update id="updateInviteCode" parameterType="InviteCode">
 		update 
 			MATRIX_INVITE_CODE
 		set
@@ -77,7 +77,9 @@
 			USED=#{used},
 			UPDATE_USER=#{userId},
 			UPDATE_TIME=now()
-		where ID=#{id}
+		where 
+			ID=#{id} and
+			USED=0
 	</update>
 	
 </mapper>   

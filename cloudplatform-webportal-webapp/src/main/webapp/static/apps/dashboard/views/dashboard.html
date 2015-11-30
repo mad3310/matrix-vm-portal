@@ -3,8 +3,8 @@
 		<div class="body-account clearfix">
 			<div class="clearfix">
 				<div class="le-col-2 text-center">
-					<!-- <img src="../static/images/dashboard/account.png"> -->
-					<img class="userimg" src="{{userimg}}">
+					<i class="iconfont icon-user1 usericon" ng-hide="usericon.hide" ng-style="usericon.styles"></i>
+					<img class="userimg" src="{{userimg}}" ng-hide="!userimg">
 				</div>
 				<div class="le-col-5">
 					<div class="messagetitle">您好：<span class="text-blue">{{username}}&nbsp;</span></div>
@@ -29,7 +29,7 @@
 			<div class="clearfix">
 				<div class="le-col-offset-2 le-col-5">
 					<div>账户余额：&nbsp;&nbsp;<span class="remain">¥{{remain}}</span></div>
-					<div style="margin-top:10px;"><span class="text-gray">预估：</span>&nbsp;&nbsp;¥{{consume.total || '0.00'}}&nbsp;&nbsp;<span class="text-gray">元/天</span></div>
+					<div style="margin-top:10px;"><span class="text-gray">预估消费：&nbsp;&nbsp;</span>¥{{consume.total || '0.00'}}<span class="text-gray">&nbsp;&nbsp;元/天</span></div>
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-offset-6 le-col-6">
