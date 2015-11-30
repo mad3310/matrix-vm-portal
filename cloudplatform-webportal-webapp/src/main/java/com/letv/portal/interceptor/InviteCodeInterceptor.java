@@ -68,7 +68,7 @@ public class InviteCodeInterceptor implements HandlerInterceptor{
 	private boolean toVerify(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
 		if (isAjaxRequest) {
-			responseJson(request,response,"长时间未操作，请重新登录");
+			responseJson(request,response,"未验证邀请码！");
 		} else {
 			response.sendRedirect("/home/inviteCode.html");
 		}
