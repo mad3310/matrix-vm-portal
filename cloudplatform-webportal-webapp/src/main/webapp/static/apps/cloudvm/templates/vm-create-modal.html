@@ -1,5 +1,7 @@
  <div class="modal-header letv-modal-header vm-create-modal-header">
-        <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><i class="iconfont icon-add"></i></button>
+         <a class="close" ng-click="closeModal()">
+             <i class="iconfont icon-add"></i>
+         </a>
         <h3 class="modal-title">创建云主机</h3>
     </div>
     <div class="modal-body">
@@ -264,8 +266,8 @@
                 <div class="right-top">
                     <div class="top-title"><span>配置详情</span><i class="iconfont icon-rounddown"></i></div>
                     <ul class="top-items">
-                        <li ng-show="imageActiveTab === 'snapshot'"><span class="title">快照：</span><span class="value">{{selectedVmSnapshot.name}}</span></li>
-                        <li ng-show="imageActiveTab === 'image'"><span class="title">镜像：</span><span class="value">{{selectedVmImage.name}}</span></li>
+                        <li ng-show="imageActiveTab === 'snapshot'"><span class="title">快照：</span><span class="value le-text-ellipsis" title="{{selectedVmSnapshot.name}}">{{selectedVmSnapshot.name}}</span></li>
+                        <li ng-show="imageActiveTab === 'image'"><span class="title">镜像：</span><span class="value le-text-ellipsis" title="{{selectedVmImage.name}}">{{selectedVmImage.name}}</span></li>
                         <li><span class="title">CPU：</span><span class="value">{{selectedVmCpu}}核</span></li>
                         <li><span class="title">内存：</span><span class="value">{{selectedVmRam/1024 | number:0}}GB</span></li>
                         <li><span class="title">硬盘：</span><span class="value">{{dataDiskVolume}}GB</span></li>
