@@ -94,10 +94,12 @@ define(['controllers/app.controller'], function (controllerModule) {
 				});
 			}
 			function operation(operationurl){
+				$scope.isloading=false;
 				HttpService.doGet(operationurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取操作信息失败！')
 					}else{
+						$scope.isloading=true;
 						$scope.expander=data.data;
 					}
 				});
