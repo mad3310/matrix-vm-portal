@@ -20,6 +20,7 @@
 .body-account .message a:hover{text-decoration:none;}
 .body-account .message .message-num{padding:0 10px 0 0;font-size:18px;color:#088ac2;}
 .body-account .remain{font-size:20px;color:#ff3c37;}
+.body-account .usericon{color:#fff;font-size:70px;line-height:70px;}
 .body-account .userimg{width:70px;height:70px;border-radius:50%}
 /*operation*/
 .body-operation{font-size:12px;color:#333;}
