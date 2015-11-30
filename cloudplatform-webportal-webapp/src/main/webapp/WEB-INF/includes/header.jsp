@@ -7,7 +7,7 @@
         <div class="header-region dropdown pull-left ">
             <a id="drop1" href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <span>北京一区</span>
-                <span class="caret"></span>
+                <!-- <span class="caret"></span> -->
                 <input type="hidden" id="region_id" value="cn-beijing-1" />
             </a>
             <ul class="dropdown-menu" aria-labelledby="drop1">

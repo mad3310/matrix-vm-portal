@@ -9,6 +9,7 @@ import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.VolumeTypeResource;
+import com.letv.portal.service.openstack.util.Ref;
 
 public interface VolumeManager extends ResourceManager {
 
@@ -41,7 +42,7 @@ public interface VolumeManager extends ResourceManager {
 
 	void createVolumeSnapshot(String region, String volumeId, String name, String description) throws OpenStackException;
 
-	void deleteVolumeSnapshot(String region, String snapshotId) throws OpenStackException;
+	void deleteVolumeSnapshot(String region, String snapshotId, Ref<String> nameRef) throws OpenStackException;
 
 	void checkCreate(VolumeCreateConf volumeCreateConf) throws OpenStackException;
 

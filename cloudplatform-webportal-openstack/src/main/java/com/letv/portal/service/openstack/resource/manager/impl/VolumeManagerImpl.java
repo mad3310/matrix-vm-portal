@@ -1029,7 +1029,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	}
 
 	@Override
-	public void deleteVolumeSnapshot(final String region, final String snapshotId) throws OpenStackException {
+	public void deleteVolumeSnapshot(final String region, final String snapshotId, final Ref<String> nameRef) throws OpenStackException {
 		runWithApi(new ApiRunnable<CinderApi, Void>() {
 			@Override
 			public Void run(CinderApi cinderApi) throws Exception {
@@ -1041,6 +1041,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				if (snapshot == null) {
 					throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", snapshotId);
 				}
+				nameRef.set(snapshot.getName());
 
 				Status status = snapshot.getStatus();
 				if (status != Status.AVAILABLE && status != Status.ERROR) {

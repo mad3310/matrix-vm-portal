@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import javax.validation.Valid;
 
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
+import com.letv.portal.service.openstack.util.Ref;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -247,8 +248,9 @@ public class VolumeController {
 		try {
 			VolumeManager volumeManager = Util.session(sessionService).getVolumeManager();
 			//保存删除云硬盘快照操作
-			this.recentOperateService.saveInfo(Constant.SNAPSHOT_DELETE_VOLUME, volumeManager.get(region, snapshotId).getName());
-			volumeManager.deleteVolumeSnapshot(region, snapshotId);
+			Ref<String> nameRef = new Ref<String>();
+			volumeManager.deleteVolumeSnapshot(region, snapshotId, nameRef);
+			this.recentOperateService.saveInfo(Constant.SNAPSHOT_DELETE_VOLUME, nameRef.get());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

@@ -3,10 +3,13 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
+import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedAttributes;
+import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 
 public class WaitingVmsCreatedTask extends VmsCreateSubTask {
 
@@ -32,8 +35,18 @@ public class WaitingVmsCreatedTask extends VmsCreateSubTask {
                             .toArray(new VmCreateContext[0])) {
                         Server server = context.getApiCache().getServerApi()
                                 .get(vmCreateContext.getServerCreated().getId());
-                        if (server == null || server.getStatus() == Server.Status.ERROR || !server.getAddresses().get(vmNetworkName).isEmpty()) {
+                        if (server == null) {
                             unFinishedVms.remove(vmCreateContext);
+                        } else {
+                            ServerExtendedStatus serverExtendedStatus = server.getExtendedStatus().get();
+                            String taskState = serverExtendedStatus.getTaskState();
+                            String vmState = serverExtendedStatus.getVmState();
+                            Server.Status serverStatus = server.getStatus();
+                            if (serverStatus == Server.Status.ERROR || serverStatus == Server.Status.SHUTOFF) {
+                                unFinishedVms.remove(vmCreateContext);
+                            } else if (serverStatus == Server.Status.ACTIVE && taskState == null && "active".equals(vmState) && !server.getAddresses().get(vmNetworkName).isEmpty()) {
+                                unFinishedVms.remove(vmCreateContext);
+                            }
                         }
                     }
                     Thread.sleep(1000);

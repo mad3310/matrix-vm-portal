@@ -80,9 +80,7 @@
 						+'<div class="error-msg hide"></div>';
 						$('#valicode').append(html)
 					}
-					// $('#valicode').html('');
 					if(totalValify()){
-						console.log('totalValify')
 						inputdata={
 							'inviteCode':invitecode,
 							'kaptcha':code
@@ -108,7 +106,6 @@
 			type:'post',
 			data:inputdata,
 			success:function(data){
-				console.log(data)
 				if(data.data==0){
 					$('.blockInputs').removeClass('hide');
 					$('.blockSuccess').addClass('hide');

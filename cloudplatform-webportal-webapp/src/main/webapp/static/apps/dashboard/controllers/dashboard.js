@@ -2,6 +2,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 	controllerModule.controller('DashboardCtrl', ['$scope', '$modal', 'Config', 'HttpService','$http','WidgetService','CurrentContext',
 	     function ($scope, $modal, Config, HttpService,$http,WidgetService,CurrentContext) {
 			$scope.username = "";
+			$scope.usericon={};
 			$scope.userimg='';
 			$scope.message='';
 			$scope.mobileStatus='';
@@ -47,18 +48,21 @@ define(['controllers/app.controller'], function (controllerModule) {
 				quotas(quotaurl,serviceurl)
 			}
 			function userinfo(usinfourl){
+				
 				HttpService.doGet(usinfourl).then(function(data){
-						if(data.result==0){//error
+					if(data.result==0){//error
 						WidgetService.notifyError('获取用户信息失败！')
 					}else{
 						var _data=data.data;
+						$scope.usericon.hide=true;
 						$scope.username=_data.contacts;
-						// $scope.userimg=_data.userAvatar;
 						if(_data.userAvatar){
 							$scope.userimg=_data.userAvatar;
 							$('.account-icon').attr('src',_data.userAvatar);
 						}else{
-							$scope.userimg="../static/images/dashboard/account.png"
+							// $scope.userimg="../static/images/dashboard/account.png"
+							$scope.usericon.hide=false;
+							$scope.usericon.styles={color:'#f5c131'};
 						}
 						$scope.mobileStatus=_data.mobileStatus;
 						$scope.emailStatus=_data.emailStatus;
@@ -94,10 +98,12 @@ define(['controllers/app.controller'], function (controllerModule) {
 				});
 			}
 			function operation(operationurl){
+				$scope.isloading=false;
 				HttpService.doGet(operationurl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取操作信息失败！')
 					}else{
+						$scope.isloading=true;
 						$scope.expander=data.data;
 					}
 				});
@@ -116,18 +122,22 @@ define(['controllers/app.controller'], function (controllerModule) {
 					if(data.result==0){//error
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
-						var total=data.data["2"]+data.data["3"]+data.data["4"]+data.data["5"]
+						var ecs=0,disk=0,floatip=0,route=0;
+						ecs=data.data["2"]?data.data['2']:0;
+						disk=data.data["3"]?data.data['3']:0;
+						floatip=data.data["4"]?data.data['4']:0;
+						route=data.data["5"]?data.data['5']:0;
+						var total=ecs+disk+floatip+route;
 						$scope.consume.total=total.toFixed(2);
-						$scope.consume.ecsconsume=data.data["2"].toFixed(2);
-						$scope.consume.diskconsume=data.data["3"].toFixed(2);
-						$scope.consume.floatipconsume=data.data["4"].toFixed(2);
-						$scope.consume.routeconsume=data.data["5"].toFixed(2);
+						$scope.consume.ecsconsume=ecs.toFixed(2);
+						$scope.consume.diskconsume=disk.toFixed(2);
+						$scope.consume.floatipconsume=floatip.toFixed(2);
+						$scope.consume.routeconsume=route.toFixed(2);
 					}
 				});
 			}
 			function quotas(quotaurl,serviceurl){
 				var serviceTemp=service(serviceurl);
-				// console.log()
 				serviceTemp.then(function(data){
 					HttpService.doGet(quotaurl).then(function(data){
 						if(data.result==0){//error
