@@ -70,7 +70,7 @@ public class InviteCodeInterceptor implements HandlerInterceptor{
 		if (isAjaxRequest) {
 			responseJson(request,response,"未验证邀请码！");
 		} else {
-			response.sendRedirect("/home/inviteCode.html");
+			response.sendRedirect("/invite/inviteCode");
 		}
 		return false;
 	}

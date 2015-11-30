@@ -88,7 +88,7 @@
 	      </property>
 	    </bean>
 	  </mvc:interceptor>
-	  <!-- 邀请码拦截器begin
+	  <!-- 邀请码拦截器begin -->
 	  <mvc:interceptor>
 	    <mvc:mapping path="/**"/>
 	    <bean class="com.letv.portal.interceptor.InviteCodeInterceptor" >
@@ -110,12 +110,14 @@
 	          
 	          <value>/subscription/renew</value>
 	          <value>/billing/renew</value>
+	          <value>/kaptcha</value>
+	          <value>/inviteCode</value>
 	          
 	        </list>
 	      </property>
 	    </bean>
 	  </mvc:interceptor>
-	  	邀请码拦截器end -->
+	  <!-- 邀请码拦截器end -->
 	 <mvc:interceptor>
 		 <mvc:mapping path="/**"/>
 		 <bean class="com.letv.portal.interceptor.CloudvmInterceptor">
