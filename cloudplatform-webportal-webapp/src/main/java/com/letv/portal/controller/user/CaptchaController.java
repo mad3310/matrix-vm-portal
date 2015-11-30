@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -111,7 +110,7 @@ public class CaptchaController {
 	@RequestMapping(value="/isNeed",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject isNeed(ResultObject obj){
 		Object o = cacheService.get(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId(), null);
-		if(o!=null && (Integer)o>=3) {
+		if(o!=null && (Integer)o>=2) {
 			obj.setData(true);
 		} else {
 			obj.setData(false);
