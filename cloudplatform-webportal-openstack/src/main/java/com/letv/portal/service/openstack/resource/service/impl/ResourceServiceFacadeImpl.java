@@ -132,8 +132,8 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
-        CinderApi cinderApi = getCinderApi();
-        return resourceService.listVm(novaApi, neutronApi, cinderApi, userVoUserId, region, name, currentPage, recordsPerPage);
+//        CinderApi cinderApi = getCinderApi();
+        return resourceService.listVm(novaApi, neutronApi, userVoUserId, region, name, currentPage, recordsPerPage);
     }
 
     @Override

@@ -36,7 +36,7 @@ public interface ResourceService {
 
     void deleteKeyPair(NovaApi novaApi, long userVoUserId, String tenantId, String region, String name) throws OpenStackException;
 
-    Page listVm(NovaApi novaApi, NeutronApi neutronApi, CinderApi cinderApi, long userVoUserId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
+    Page listVm(NovaApi novaApi, NeutronApi neutronApi, long userVoUserId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 
     VMResource getVm(NovaApi novaApi, NeutronApi neutronApi, long userVoUserId, String region, String vmId) throws OpenStackException;
 

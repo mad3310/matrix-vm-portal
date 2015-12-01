@@ -578,8 +578,8 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Page listVm(final NovaApi novaApi, final NeutronApi neutronApi, CinderApi cinderApi, final long userVoUserId, final String region, final String name, final Integer currentPage, final Integer recordsPerPage) throws OpenStackException {
-        checkRegion(region, novaApi, neutronApi, cinderApi);
+    public Page listVm(final NovaApi novaApi, final NeutronApi neutronApi, final long userVoUserId, final String region, final String name, final Integer currentPage, final Integer recordsPerPage) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
 
         List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
             @Override
