@@ -64,6 +64,7 @@ import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
+import com.letv.portal.service.openstack.util.NameUtil;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubDetailService;
@@ -663,6 +664,7 @@ public class PayServiceImpl implements IPayService {
 	  * @author lisuxiao
 	  * @date 2015年10月20日 下午2:37:43
 	  */
+	@SuppressWarnings("unchecked")
 	private void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, Map<String, Object> serviceParams, String productType, List<String> ids){
 		Set<Integer> batch = new HashSet<Integer>();
 		for (OrderSub orderSub : orderSubs) {
@@ -687,8 +689,28 @@ public class PayServiceImpl implements IPayService {
 				billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
 						df.format(new Date()), succPrice.toString());
 				
-				//保存最近操作
-		        this.recentOperateService.saveInfo("创建"+productType, (String)serviceParams.get("name"), orderSubs.get(0).getCreateUser(), null);;
+				//当产品为云主机单独处理
+				if(Constant.CREATE_OPENSTACK.equals(productType)) {
+					List<OrderSub> vmOrderSubs = new ArrayList<OrderSub>();
+					for (OrderSub orderSub : orderSubs) {
+						if(Constant.CREATE_OPENSTACK.equals(((Map<Long, String>)cacheService.get(Constants.PRODUCT_INFO_ID_NAME, null)).get(orderSub.getSubscription().getProductId()))) {
+							vmOrderSubs.add(orderSub);
+						}
+					}
+					for (int i=0; i<vmOrderSubs.size(); i++) {
+						if(vmOrderSubs.get(i).getSubscription().getValid()==1) {
+							//保存最近操作
+					        this.recentOperateService.saveInfo("创建"+productType, NameUtil.nameAddNumber((String)serviceParams.get("name"), i+1), vmOrderSubs.get(i).getCreateUser(), null);
+						}
+					}
+				} else {
+					for (int i=0; i<orderSubs.size(); i++) {
+						if(orderSubs.get(i).getSubscription().getValid()==1) {
+							//保存最近操作
+					        this.recentOperateService.saveInfo("创建"+productType, NameUtil.nameAddNumber((String)serviceParams.get("name"), i+1), orderSubs.get(i).getCreateUser(), null);;
+						}
+					}
+				}
 				
 				//服务创建成功后保存服务创建成功通知
 		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
