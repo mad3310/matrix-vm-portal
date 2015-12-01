@@ -49,7 +49,7 @@ public class LoginController {
 		String clientSecret = request.getParameter(OAUTH_CLIENT_SECRET);
 
 		Map<String,Object> oauthUser = this.oauthService.getUserdetailinfo(clientId, clientSecret);
-		if(null == oauthUser && oauthUser.isEmpty()) {
+		if(null == oauthUser || oauthUser.isEmpty()) {
 			toLogin(mav,request.getContextPath());
 		}
 
