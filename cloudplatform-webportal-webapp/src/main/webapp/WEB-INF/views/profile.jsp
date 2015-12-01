@@ -8,7 +8,6 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="shortcut icon" href="/static/images/favicon.ico">
 	<link rel="stylesheet" href="/static/stylesheets/bootstrap.css">
-    <link rel="stylesheet" href="/static/stylesheets/font-awesome.css">
     <link rel="stylesheet" href="/static/stylesheets/common.css">
     <link rel="stylesheet" type="text/css" href="/static/stylesheets/style-profile.css">
 	<title>Le云控制台</title>
