@@ -1,113 +1,38 @@
 package com.letv.portal.model;
 
 import java.util.Date;
-
 import com.letv.common.model.BaseModel;
-import com.letv.portal.enumeration.UserStatus;
-   
+
 public class UserModel extends BaseModel{
 
 	private static final long serialVersionUID = 5336795056773086076L;
-	
-	private UserStatus status;
+
+	private Long ucId;
+	private String oauthId;
+
 	private String email;
-	
 	private String userName;
-	
-	private String realName;
-	
-	private String passportId;
-	
+	private String mobile;
+
 	private Date lastLoginTime;
-	
 	private String lastLoginIp;
-	
-	private Date currentLoginTime;
-	
-	private String currentLoginIp;
-	
-	private Date registerDate;
-	
-	private String password;
-	private String salt;
-	private Integer type;
-	
+
 	private boolean isAdmin;
-	
-	public UserModel() {
+
+	public Long getUcId() {
+		return ucId;
 	}
 
-	public UserStatus getStatus() {
-		return this.status;
+	public void setUcId(Long ucId) {
+		this.ucId = ucId;
 	}
 
-	public void setStatus(UserStatus status) {
-		this.status = status;
+	public String getOauthId() {
+		return oauthId;
 	}
 
-	public String getUserName() {
-		return this.userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-
-	public String getRealName() {
-		return this.realName;
-	}
-
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
-
-	public Date getLastLoginTime() {
-		return this.lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-	}
-
-	public String getLastLoginIp() {
-		return this.lastLoginIp;
-	}
-
-	public void setLastLoginIp(String lastLoginIp) {
-		this.lastLoginIp = lastLoginIp;
-	}
-
-	public Date getRegisterDate() {
-		return this.registerDate;
-	}
-
-	public void setRegisterDate(Date registerDate) {
-		this.registerDate = registerDate;
-	}
-
-	public void setCurrentLoginTime(Date currentLoginTime) {
-		this.currentLoginTime = currentLoginTime;
-	}
-
-	public Date getCurrentLoginTime() {
-		return currentLoginTime;
-	}
-
-	public void setCurrentLoginIp(String currentLoginIp) {
-		this.currentLoginIp = currentLoginIp;
-	}
-
-	public String getCurrentLoginIp() {
-		return currentLoginIp;
-	}
-
-	public String getPassportId() {
-		return passportId;
-	}
-
-	public void setPassportId(String passportId) {
-		this.passportId = passportId;
+	public void setOauthId(String oauthId) {
+		this.oauthId = oauthId;
 	}
 
 	public String getEmail() {
@@ -118,36 +43,43 @@ public class UserModel extends BaseModel{
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public String getSalt() {
-		return salt;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setSalt(String salt) {
-		this.salt = salt;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
-	public Integer getType() {
-		return type;
+	public Date getLastLoginTime() {
+		return lastLoginTime;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	public String getLastLoginIp() {
+		return lastLoginIp;
+	}
+
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
 	}
 
 	public boolean isAdmin() {
 		return isAdmin;
 	}
 
-	public void setAdmin(boolean isAdmin) {
+	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-
 }

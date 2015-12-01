@@ -115,25 +115,25 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			initUserWithOutOpenStack();
 			initUser();
 			if (session!=null) {
-				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
-													@Override
-													public Void apply() {
-														final long userId = session.getUserId();
-														final String openStackUserId = openStackUser.getUserId();
-														final String openStackUserPassword = openStackUser.getPassword();
-														final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-														OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId, sessionId, openStackUserId, openStackUserPassword);
-														return null;
-													}
-												},
-						new Function<Void>() {
-							@Override
-							public Void apply() {
-								OpenStackSessionImpl.this.initResources();
-								return null;
-							}
-						}
-				);
+//				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+//													@Override
+//													public Void apply() {
+                final long userId = session.getUserId();
+                final String openStackUserId = openStackUser.getUserId();
+                final String openStackUserPassword = openStackUser.getPassword();
+                final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+                OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId, sessionId, openStackUserId, openStackUserPassword);
+//														return null;
+//													}
+//												},
+//						new Function<Void>() {
+//							@Override
+//							public Void apply() {
+//								OpenStackSessionImpl.this.initResources();
+//								return null;
+//							}
+//						}
+//				);
 
 				session.setOpenStackSession(this);
 				final SessionServiceImpl sessionService = OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService();
@@ -211,7 +211,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 							if (defaultSecurityGroup == null) {
 								defaultSecurityGroup = securityGroupApi
 										.create(SecurityGroup.CreateSecurityGroup
-												.createBuilder().name("default").build());
+                                                .createBuilder().name("default").build());
 							}
 
 							Rule pingRule = null, sshRule = null;
@@ -246,7 +246,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 									public Void apply() {
 										securityGroupApi.create(Rule.CreateRule
 												.createBuilder(RuleDirection.INGRESS,
-														defaultSecurityGroupRef.getId())
+                                                        defaultSecurityGroupRef.getId())
 												.ethertype(RuleEthertype.IPV4)
 												.protocol(RuleProtocol.ICMP)
 												.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
@@ -257,7 +257,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 									public Void apply() {
 										securityGroupApi.create(Rule.CreateRule
 												.createBuilder(RuleDirection.INGRESS,
-														defaultSecurityGroupRef.getId())
+                                                        defaultSecurityGroupRef.getId())
 												.ethertype(RuleEthertype.IPV4)
 												.protocol(RuleProtocol.TCP).portRangeMin(22)
 												.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
@@ -268,7 +268,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 								if (pingRule == null) {
 									securityGroupApi.create(Rule.CreateRule
 											.createBuilder(RuleDirection.INGRESS,
-													defaultSecurityGroup.getId())
+                                                    defaultSecurityGroup.getId())
 											.ethertype(RuleEthertype.IPV4)
 											.protocol(RuleProtocol.ICMP)
 											.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
@@ -276,7 +276,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 								if (sshRule == null) {
 									securityGroupApi.create(Rule.CreateRule
 											.createBuilder(RuleDirection.INGRESS,
-													defaultSecurityGroup.getId())
+                                                    defaultSecurityGroup.getId())
 											.ethertype(RuleEthertype.IPV4)
 											.protocol(RuleProtocol.TCP).portRangeMin(22)
 											.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
