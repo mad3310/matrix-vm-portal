@@ -205,8 +205,8 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
-        vmNamesAndSubnetName._1 = new CopyOnWriteArrayList<String>();
+    public void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException {
+        final List<String> vmNames = new CopyOnWriteArrayList<String>();
 
         checkRegion(region, novaApi, neutronApi);
 
@@ -214,7 +214,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
-        vmNamesAndSubnetName._2 = privateSubnet.getName();
+        final String subnetName = privateSubnet.getName();
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         final Network privateNetwork = getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
 
@@ -228,7 +228,7 @@ public class ResourceServiceImpl implements ResourceService {
             public Exception apply(String vmId) throws Exception {
                 try {
                     Server server = getVm(serverApi, vmId);
-                    vmNamesAndSubnetName._1.add(server.getName());
+                    vmNames.add(server.getName());
                     List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
                     for (InterfaceAttachment interfaceAttachment : interfaceAttachments) {
                         String attachedNetworkId = interfaceAttachment.getNetworkId();
@@ -265,14 +265,15 @@ public class ResourceServiceImpl implements ResourceService {
                 return null;
             }
         });
+        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames,subnetName));
         if (!exceptions.isEmpty()) {
             throw new OpenStackCompositeException(exceptions);
         }
     }
 
     @Override
-    public void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
-        vmNamesAndSubnetName._1 = new CopyOnWriteArrayList<String>();
+    public void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException {
+        final List<String> vmNames = new CopyOnWriteArrayList<String>();
 
         checkRegion(region, novaApi, neutronApi);
 
@@ -280,7 +281,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
-        vmNamesAndSubnetName._2 = privateSubnet.getName();
+        final String subnetName = privateSubnet.getName();
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
         final PortApi portApi = neutronApi.getPortApi(region);
@@ -294,7 +295,7 @@ public class ResourceServiceImpl implements ResourceService {
             public Exception apply(final String vmId) throws Exception {
                 try {
                     Server server = getVm(serverApi, vmId);
-                    vmNamesAndSubnetName._1.add(server.getName());
+                    vmNames.add(server.getName());
                     List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
                     InterfaceAttachment findedInterfaceAttachment = null;
                     FindedInterfaceAttachment:
@@ -334,6 +335,7 @@ public class ResourceServiceImpl implements ResourceService {
                 return null;
             }
         });
+        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames,subnetName));
         if (!exceptions.isEmpty()) {
             throw new OpenStackCompositeException(exceptions);
         }

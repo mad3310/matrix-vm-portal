@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.letv.portal.service.openstack.util.Ref;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -651,9 +652,14 @@ public class VMController {
     @ResponseBody
     ResultObject attachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
-		Tuple2<List<String>, String> vmNamesAndSubnetName = new Tuple2<List<String>, String>();
+		Ref<Tuple2<List<String>, String>> vmNamesAndSubnetNameRef = new Ref<Tuple2<List<String>, String>>();
 		try {
-            resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId, vmNamesAndSubnetName);
+            resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId, vmNamesAndSubnetNameRef);
+			//保存私有网络绑定云主机操作
+			this.recentOperateService.saveInfo(Constant.SUBNET_ATTACH_VM
+					, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetNameRef.get()._2
+					, StringUtils.join(vmNamesAndSubnetNameRef.get()._1, ","))
+					, this.sessionService.getSession().getUserId(), null);
         } catch (OpenStackCompositeException e) {
             result.getMsgs().addAll(e.toMsgs());
             result.setResult(0);
@@ -664,11 +670,6 @@ public class VMController {
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
-        //保存私有网络绑定云主机操作
-		this.recentOperateService.saveInfo(Constant.SUBNET_ATTACH_VM
-				, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetName._2
-				, StringUtils.join(vmNamesAndSubnetName._1, ","))
-				, this.sessionService.getSession().getUserId(), null);
 		return result;
     }
 
@@ -677,9 +678,14 @@ public class VMController {
     @ResponseBody
     ResultObject detachVmsToSubnet(@RequestParam String region, @RequestParam String vmIds, @RequestParam String subnetId) {
         ResultObject result = new ResultObject();
-		Tuple2<List<String>, String> vmNamesAndSubnetName = new Tuple2<List<String>, String>();
+		Ref<Tuple2<List<String>, String>> vmNamesAndSubnetNameRef = new Ref<Tuple2<List<String>, String>>();
         try {
-            resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId, vmNamesAndSubnetName);
+            resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId, vmNamesAndSubnetNameRef);
+			//保存私有网络解绑云主机操作
+			this.recentOperateService.saveInfo(Constant.SUBNET_DETACH_VM
+					, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetNameRef.get()._2
+					, StringUtils.join(vmNamesAndSubnetNameRef.get()._1, ","))
+					, this.sessionService.getSession().getUserId(), null);
         } catch (OpenStackCompositeException e) {
             result.getMsgs().addAll(e.toMsgs());
             result.setResult(0);
@@ -690,11 +696,6 @@ public class VMController {
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
-		//保存私有网络解绑云主机操作
-		this.recentOperateService.saveInfo(Constant.SUBNET_DETACH_VM
-				, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetName._2
-				, StringUtils.join(vmNamesAndSubnetName._1, ","))
-				, this.sessionService.getSession().getUserId(), null);
         return result;
     }
 
