@@ -5,6 +5,6 @@ import com.letv.portal.model.UserModel;
 
 public interface IUserDao extends IBaseDao<UserModel> {
 
-	UserModel getUserByUcId(Long ucId);
-	  
+	UserModel selectByOauthId(String oauthId);
+	UserModel selectByUcId(Long ucId);
 }

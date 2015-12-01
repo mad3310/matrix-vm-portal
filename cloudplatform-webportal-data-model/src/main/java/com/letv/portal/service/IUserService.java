@@ -1,20 +1,26 @@
 package com.letv.portal.service;
 
+import com.letv.common.session.Session;
+import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.UserVo;
 
 
 public interface IUserService extends IBaseService<UserModel>{
-	
-	public void saveUserObject(UserModel user);
-	
-	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp,String email);
-	
-	public void updateUserLoginInfo(UserModel user,String currentLoginIp);
-	
-	public UserModel getUserById(Long userId);
-	
-	public UserModel getUserByNameAndEmail(String userNamePassport, String email);
-	
-	public UserVo getUcUserById(Long userId);
+
+	void saveUserObject(UserModel user);
+
+	UserModel saveUserObjectWithSpecialName(String userName, String loginIp, String email);
+
+	void updateUserLoginInfo(UserModel user, String currentLoginIp);
+
+	UserModel getUserById(Long userId);
+
+	UserModel getUserByNameAndEmail(String userNamePassport, String email);
+
+	UserVo getUcUserById(Long userId);
+
+	UserModel selectByOauthId(String oauthId);
+	UserModel selectByUcId(Long ucId);
+	Long getUserIdByUcId(Long ucId);
 }

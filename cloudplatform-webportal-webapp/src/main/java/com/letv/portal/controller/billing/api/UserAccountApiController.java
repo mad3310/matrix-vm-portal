@@ -1,9 +1,7 @@
-package com.letv.portal.controller.billing;
+package com.letv.portal.controller.billing.api;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.letv.portal.model.UserModel;
 import com.letv.portal.service.IUserService;
@@ -23,7 +21,6 @@ import com.letv.portal.model.letvcloud.BillRechargeRecord;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
-import com.letv.portal.service.order.IOrderService;
 
 /**Program Name: BaseProductController <br>
  * Description:  基础产品<br>
@@ -33,7 +30,7 @@ import com.letv.portal.service.order.IOrderService;
  * Modified Date: <br>
  */
 @Controller
-@RequestMapping("/userAccount/api")
+@RequestMapping("/api/userAccount")
 public class UserAccountApiController {
 
 	private final static Logger logger = LoggerFactory.getLogger(UserAccountApiController.class);
@@ -45,39 +42,39 @@ public class UserAccountApiController {
 	@Autowired
 	private BillUserServiceBilling billUserServiceBilling;
 
-	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject balance(@PathVariable Long userId, ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	@RequestMapping(value="/balance/{ucId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject balance(@PathVariable Long ucId, ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
-		DecimalFormat formatter = new DecimalFormat("0.00");// billUserAmount.getAvailableAmount().doubleValue()
+		DecimalFormat formatter = new DecimalFormat("0.00");
 		String userAmount = formatter.format(billUserAmount.getAvailableAmount().doubleValue());
 		obj.setData(userAmount);
 		return obj;
 	}
-	@RequestMapping(value="/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject account(@PathVariable Long userId, ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	@RequestMapping(value="/{ucId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject account(@PathVariable Long ucId, ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
 		obj.setData(billUserAmount);
 		return obj;
 	}
-	@RequestMapping(value="/createUserAmount/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject create(@PathVariable Long userId, ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	@RequestMapping(value="/createUserAmount/{ucId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject create(@PathVariable Long ucId, ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		this.billUserAmountService.createUserAmount(userId);
 		return obj;
 	}
 
 	@RequestMapping(value="/recharge",method=RequestMethod.POST)
-	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long userId,@RequestParam(required=true) String chargeMoney,@RequestParam(required=true) int type, ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long ucId,@RequestParam(required=true) String chargeMoney,@RequestParam(required=true) int type, ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		String tradeNum = this.billUserAmountService.recharge(userId, new BigDecimal(chargeMoney), type);
 		obj.setData(tradeNum);
 		return obj;
 	}
 	@RequestMapping(value="/rechargeSuccess",method=RequestMethod.POST)
-	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long userId,@RequestParam(required=true) String tradeNum,@RequestParam(required=true) String orderId,@RequestParam(required=true) String chargeMoney, ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long ucId,@RequestParam(required=true) String tradeNum,@RequestParam(required=true) String orderId,@RequestParam(required=true) String chargeMoney, ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		long rechargeSuccess = this.billUserAmountService.rechargeSuccess(userId, tradeNum, orderId, new BigDecimal(chargeMoney));
 		obj.setData(rechargeSuccess);
 		return obj;
@@ -88,9 +85,9 @@ public class UserAccountApiController {
 		obj.setData(rechargeRecord);
 		return obj;
 	}
-	@RequestMapping(value="/recharge/{userId}/{currentPage}/{recordsPerPage}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject rechargeRecord(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable Long userId, ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	@RequestMapping(value="/recharge/{ucId}/{currentPage}/{recordsPerPage}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject rechargeRecord(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable Long ucId, ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
@@ -99,9 +96,9 @@ public class UserAccountApiController {
 		return obj;
 	}
 
-	@RequestMapping(value="/bill/{userId}/{month}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject monthBill(@PathVariable Long userId, @PathVariable String month,ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	@RequestMapping(value="/bill/{ucId}/{month}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject monthBill(@PathVariable Long ucId, @PathVariable String month,ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		obj.setData(this.billUserServiceBilling.queryUserServiceBilling(userId, month));
 		return obj;
 	}
@@ -110,18 +107,11 @@ public class UserAccountApiController {
 		obj.setData(this.billUserServiceBilling.getUserBillingMonths(year));
 		return obj;
 	}
-	@RequestMapping(value="/billYear/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject billYear(@PathVariable Long userId,ResultObject obj) {
-		userId = getUserIdByUcId(userId);
+	@RequestMapping(value="/billYear/{ucId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject billYear(@PathVariable Long ucId,ResultObject obj) {
+		Long userId = this.userService.getUserIdByUcId(ucId);
 		obj.setData(this.billUserServiceBilling.getUserBillingYears(userId));
 		return obj;
-	}
-
-	private Long getUserIdByUcId(Long ucId) {
-		UserModel userModel = this.userService.selectByUcId(ucId);
-		if(userModel == null)
-			return null;
-		return userModel.getId();
 	}
 
 }
