@@ -155,7 +155,7 @@ public class NetworkController {
 			neworkManager.editPrivate(form.getRegion(), form.getNetworkId(), form.getName());
 			//保存编辑私网操作
 			this.recentOperateService.saveInfo(Constant.EDIT_PRIVATE_NET, 
-					MessageFormat.format(Constant.STYLE_OPERATE_2, oldName, form.getName()));
+					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, Constant.RENAME, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -274,7 +274,7 @@ public class NetworkController {
 			neworkManager.editPrivateSubnet(form.getRegion(), form.getSubnetId(), form.getName(), form.getGatewayIp(), false);
 			//保存编辑子网操作
 			this.recentOperateService.saveInfo(Constant.EDIT_SUBNET, 
-					MessageFormat.format(Constant.STYLE_OPERATE_2, oldName, form.getName()));
+					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, Constant.RENAME, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -437,9 +437,9 @@ public class NetworkController {
 			NetworkManager neworkManager = Util.session(sessionService).getNetworkManager();
 			neworkManager.associateSubnetWithRouter(region, routerId, subnetId);
 			//保存路由器关联子网操作
-			this.recentOperateService.saveInfo(Constant.BINDED_SUBNET_ROUTER, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, neworkManager.getPrivateSubnet(region, subnetId).getName(), 
-							neworkManager.getRouter(region, routerId).getName()));
+			this.recentOperateService.saveInfo(Constant.ROUTER+Constant.BINDED_SUBNET_ROUTER, 
+					MessageFormat.format(Constant.STYLE_OPERATE_1, neworkManager.getRouter(region, routerId).getName(), Constant.BINDED_SUBNET_ROUTER,
+							neworkManager.getPrivateSubnet(region, subnetId).getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -459,9 +459,9 @@ public class NetworkController {
 //			neworkManager.separateSubnetFromRouter(region, routerId, subnetId);
 			resourceServiceFacade.separateSubnetFromRouter(region, routerId, subnetId);
 			//保存路由器解除关联子网操作
-			this.recentOperateService.saveInfo(Constant.UNBINDED_SUBNET_ROUTER, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, neworkManager.getPrivateSubnet(region, subnetId).getName(), 
-							neworkManager.getRouter(region, routerId).getName()));
+			this.recentOperateService.saveInfo(Constant.ROUTER+Constant.UNBINDED_SUBNET_ROUTER, 
+					MessageFormat.format(Constant.STYLE_OPERATE_1, neworkManager.getRouter(region, routerId).getName(), Constant.UNBINDED_SUBNET_ROUTER,
+							neworkManager.getPrivateSubnet(region, subnetId).getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -571,7 +571,8 @@ public class NetworkController {
 			neworkManager.editFloatingIp(form.getRegion(), form.getFloatingIpId(), form.getName());
 			//保存编辑公网IP操作
 			this.recentOperateService.saveInfo(Constant.EDIT_FLOATINGIP, 
-					MessageFormat.format(Constant.STYLE_OPERATE_2, StringUtils.isEmpty(oldName)?Constant.NO_NAME:oldName, form.getName()));
+					MessageFormat.format(Constant.STYLE_OPERATE_1, 
+							StringUtils.isEmpty(oldName)?Constant.NO_NAME:oldName, Constant.RENAME, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

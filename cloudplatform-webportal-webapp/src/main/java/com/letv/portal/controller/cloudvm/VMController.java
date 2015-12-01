@@ -40,6 +40,7 @@ import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.HttpUtil;
+import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.vo.cloudvm.form.keypair.CreateKeyPairForm;
@@ -389,9 +390,10 @@ public class VMController {
 			VolumeResource volumeResource = volumeManager.get(region, volumeId);
 			vmManager.attachVolume(vmResource, volumeResource);
 			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
-			//保存绑定云硬盘操作
-			this.recentOperateService.saveInfo(Constant.ATTACH_VOLUME_OPENSTACK, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName, vmResource.getName()));
+			//保存挂载云硬盘操作
+			this.recentOperateService.saveInfo(Constant.OPENSTACK+Constant.ATTACH_VOLUME_OPENSTACK, 
+					MessageFormat.format(Constant.STYLE_OPERATE_1, 
+							vmResource.getName(), Constant.ATTACH_VOLUME_OPENSTACK, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -414,8 +416,8 @@ public class VMController {
 			String volumeResourceName = localVolumeService.get(this.sessionService.getSession().getUserId(),region, volumeId).getName();
 			vmManager.detachVolume(vmResource, volumeResource);
 			//保存卸载云硬盘操作
-			this.recentOperateService.saveInfo(Constant.DETACH_VOLUME_OPENSTACK,
-					MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName, vmResource.getName()));
+			this.recentOperateService.saveInfo(Constant.OPENSTACK+Constant.DETACH_VOLUME_OPENSTACK,
+					MessageFormat.format(Constant.STYLE_OPERATE_1, vmResource.getName(), Constant.DETACH_VOLUME_OPENSTACK, StringUtils.isEmpty(volumeResourceName)?Constant.NO_NAME:volumeResourceName));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -460,8 +462,8 @@ public class VMController {
 			resourceServiceFacade.bindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机绑定公网IP操作
-			this.recentOperateService.saveInfo(Constant.BINDED_FLOATINGIP_OPENSTACK,
-				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
+			this.recentOperateService.saveInfo(Constant.OPENSTACK+Constant.BINDED_FLOATINGIP_OPENSTACK,
+				MessageFormat.format(Constant.STYLE_OPERATE_1, vmManager.get(region, vmId).getName(), Constant.BINDED_FLOATINGIP_OPENSTACK, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -481,8 +483,8 @@ public class VMController {
 			vmManager.unbindFloatingIp(region, vmId, floatingIpId);
 			String firName = Util.session(sessionService).getNetworkManager().getFloatingIp(region, floatingIpId).getName();
 			//保存云主机解绑公网IP操作
-			this.recentOperateService.saveInfo(Constant.UNBINDED_FLOATINGIP_OPENSTACK,
-				MessageFormat.format(Constant.STYLE_OPERATE_1, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName, vmManager.get(region, vmId).getName()));
+			this.recentOperateService.saveInfo(Constant.OPENSTACK+Constant.UNBINDED_FLOATINGIP_OPENSTACK,
+				MessageFormat.format(Constant.STYLE_OPERATE_1, vmManager.get(region, vmId).getName(), Constant.UNBINDED_FLOATINGIP_OPENSTACK, StringUtils.isEmpty(firName)?Constant.NO_NAME:firName));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -613,8 +615,8 @@ public class VMController {
 			String vmResourceName = Util.session(sessionService).getVMManager().get(form.getRegion(), form.getVmId()).getName();
 			resourceServiceFacade.renameVm(form.getRegion(), form.getVmId(), form.getName());
 			//保存修改云主机名称操作
-			this.recentOperateService.saveInfo(Constant.EDIT_OPENSTACK, MessageFormat.format(Constant.STYLE_OPERATE_2, 
-					vmResourceName, form.getName()));
+			this.recentOperateService.saveInfo(Constant.EDIT_OPENSTACK, MessageFormat.format(Constant.STYLE_OPERATE_1, 
+					vmResourceName, Constant.RENAME, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -656,8 +658,8 @@ public class VMController {
 		try {
             resourceServiceFacade.attachVmsToSubnet(region, vmIds, subnetId, vmNamesAndSubnetNameRef);
 			//保存私有网络绑定云主机操作
-			this.recentOperateService.saveInfo(Constant.SUBNET_ATTACH_VM
-					, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetNameRef.get()._2
+			this.recentOperateService.saveInfo(Constant.SUBNET+Constant.SUBNET_ATTACH_VM
+					, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetNameRef.get()._2, Constant.SUBNET_ATTACH_VM
 					, StringUtils.join(vmNamesAndSubnetNameRef.get()._1, ","))
 					, this.sessionService.getSession().getUserId(), null);
         } catch (OpenStackCompositeException e) {
@@ -682,8 +684,8 @@ public class VMController {
         try {
             resourceServiceFacade.detachVmsFromSubnet(region, vmIds, subnetId, vmNamesAndSubnetNameRef);
 			//保存私有网络解绑云主机操作
-			this.recentOperateService.saveInfo(Constant.SUBNET_DETACH_VM
-					, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetNameRef.get()._2
+			this.recentOperateService.saveInfo(Constant.SUBNET+Constant.SUBNET_DETACH_VM
+					, MessageFormat.format(Constant.STYLE_OPERATE_1, vmNamesAndSubnetNameRef.get()._2, Constant.SUBNET_DETACH_VM
 					, StringUtils.join(vmNamesAndSubnetNameRef.get()._1, ","))
 					, this.sessionService.getSession().getUserId(), null);
         } catch (OpenStackCompositeException e) {
