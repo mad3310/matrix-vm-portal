@@ -8,14 +8,16 @@ public class VmCreateEvent {
     private String region;
     private String vmId;
     private Integer vmIndex;
+    private String name;
     private Object userData;
     private String volumeId;
     private String floatingIpId;
 
-    public VmCreateEvent(String region, String vmId, Integer vmIndex, Object userData) {
+    public VmCreateEvent(String region, String vmId, Integer vmIndex, String name, Object userData) {
         this.region = region;
         this.vmId = vmId;
         this.vmIndex = vmIndex;
+        this.name = name;
         this.userData = userData;
     }
 
@@ -45,6 +47,10 @@ public class VmCreateEvent {
 
     public Integer getVmIndex() {
         return vmIndex;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Object getUserData() {

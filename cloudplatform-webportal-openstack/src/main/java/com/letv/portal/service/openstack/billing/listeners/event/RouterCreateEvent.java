@@ -8,12 +8,14 @@ public class RouterCreateEvent {
     private String region;
     private String routerId;
     private Integer routerIndex;
+    private String name;
     private Object userData;
 
-    public RouterCreateEvent(String region, String routerId, Integer routerIndex, Object userData) {
+    public RouterCreateEvent(String region, String routerId, Integer routerIndex, String name, Object userData) {
         this.region = region;
         this.routerId = routerId;
         this.routerIndex = routerIndex;
+        this.name = name;
         this.userData = userData;
     }
 
@@ -27,6 +29,10 @@ public class RouterCreateEvent {
 
     public Integer getRouterIndex() {
         return routerIndex;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Object getUserData() {

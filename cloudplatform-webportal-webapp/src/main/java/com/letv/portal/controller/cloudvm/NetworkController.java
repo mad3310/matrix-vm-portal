@@ -214,7 +214,7 @@ public class NetworkController {
 			Util.session(sessionService)
 					.getNetworkManager()
 					.createPrivateSubnet(form.getRegion(), form.getNetworkId(), form.getName(), form.getCidr(),
-							form.getAutoGatewayIp(), form.getGatewayIp(), false);
+							form.getAutoGatewayIp(), form.getGatewayIp(), true);
 			//保存创建私网操作
 			this.recentOperateService.saveInfo(Constant.CREATE_SUBNET, form.getName());
 		} catch (UserOperationException e) {
@@ -238,7 +238,7 @@ public class NetworkController {
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
-					.createPrivateNetworkAndSubnet(form.getRegion(), form.getNetworkName(), form.getSubnetName(), form.getCidr(), form.getAutoGatewayIp(), form.getGatewayIp(), false);
+					.createPrivateNetworkAndSubnet(form.getRegion(), form.getNetworkName(), form.getSubnetName(), form.getCidr(), form.getAutoGatewayIp(), form.getGatewayIp(), true);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

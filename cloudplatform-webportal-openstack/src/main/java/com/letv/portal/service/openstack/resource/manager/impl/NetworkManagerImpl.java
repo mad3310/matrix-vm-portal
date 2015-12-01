@@ -1618,10 +1618,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			for (; routerIndex < successCreatedRoutersCount; routerIndex++) {
 				try {
 					final int routerIndexRef = routerIndex;
+					final Router router = successCreatedRouters.get(routerIndexRef);
 					RetryUtil.retry(new Function<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), successCreatedRouters.get(routerIndexRef).getId(), routerIndexRef, listenerUserData));
+							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
 							return true;
 						}
 					}, 3, "路由器监听器实现方错误：重试超过3次");
@@ -2877,10 +2878,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			for (; floatingIpIndex < successCreatedFloatingIpsCount; floatingIpIndex++) {
 				try {
 					final int floatingIpIndexRef = floatingIpIndex;
+					final FloatingIP floatingIP = successCreatedFloatingIps.get(floatingIpIndexRef);
 					RetryUtil.retry(new Function<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), successCreatedFloatingIps.get(floatingIpIndexRef).getId(), floatingIpIndexRef, listenerUserData));
+							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
 							return true;
 						}
 					}, 3, "公网IP监听器实现方错误：重试超过3次");

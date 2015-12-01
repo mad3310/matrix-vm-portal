@@ -8,12 +8,14 @@ public class VolumeCreateEvent {
     private String region;
     private String volumeId;
     private Integer volumeIndex;
+    private String name;
     private Object userData;
 
-    public VolumeCreateEvent(String region, String volumeId, Integer volumeIndex, Object userData) {
+    public VolumeCreateEvent(String region, String volumeId, Integer volumeIndex, String name, Object userData) {
         this.region = region;
         this.volumeId = volumeId;
         this.volumeIndex = volumeIndex;
+        this.name = name;
         this.userData = userData;
     }
 
@@ -27,6 +29,10 @@ public class VolumeCreateEvent {
 
     public Integer getVolumeIndex() {
         return volumeIndex;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Object getUserData() {

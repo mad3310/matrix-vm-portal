@@ -711,10 +711,11 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			for (; volumeIndex < successCreatedVolumesCount; volumeIndex++) {
 				try {
 					final int volumeIndexRef = volumeIndex;
+					final Volume volume = successCreatedVolumes.get(volumeIndexRef);
 					RetryUtil.retry(new Function<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), successCreatedVolumes.get(volumeIndexRef).getId(), volumeIndexRef, listenerUserData));
+							listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), volumeIndexRef, volume.getName(), listenerUserData));
 							return true;
 						}
 					}, 3, "云硬盘监听器实现方错误：重试超过3次");
