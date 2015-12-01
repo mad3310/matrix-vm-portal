@@ -69,38 +69,40 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     @Override
     public void syncStatus(final List<CloudvmVolume> cloudvmVolumes, final Checker<Volume>
             checker) {
-        ThreadUtil.asyncExec(new Function<Void>() {
-            @Override
-            public Void apply() {
-                SyncLocalApiCache apiCache = new SyncLocalApiCache();
-                try {
-                    List<CloudvmVolume> unFinishedVolumes = new LinkedList<CloudvmVolume>();
-                    unFinishedVolumes.addAll(cloudvmVolumes);
-                    while (!unFinishedVolumes.isEmpty()) {
-                        for (CloudvmVolume cloudvmVolume : unFinishedVolumes
-                                .toArray(new CloudvmVolume[0])) {
-                            Volume volume = apiCache.getApi(cloudvmVolume.getTenantId(),
-                                    CinderApi.class)
-                                    .getVolumeApi(
-                                            cloudvmVolume.getRegion()).get(cloudvmVolume.getVolumeId());
-                            if (volume == null) {
-                                unFinishedVolumes.remove(cloudvmVolume);
-                            } else if (checker.check(volume)) {
-                                unFinishedVolumes.remove(cloudvmVolume);
-                                localVolumeService.update(cloudvmVolume.getTenantId(), cloudvmVolume
-                                        .getTenantId(), cloudvmVolume.getRegion(), volume);
+        if (cloudvmVolumes != null && !cloudvmVolumes.isEmpty()) {
+            ThreadUtil.asyncExec(new Function<Void>() {
+                @Override
+                public Void apply() {
+                    SyncLocalApiCache apiCache = new SyncLocalApiCache();
+                    try {
+                        List<CloudvmVolume> unFinishedVolumes = new LinkedList<CloudvmVolume>();
+                        unFinishedVolumes.addAll(cloudvmVolumes);
+                        while (!unFinishedVolumes.isEmpty()) {
+                            for (CloudvmVolume cloudvmVolume : unFinishedVolumes
+                                    .toArray(new CloudvmVolume[0])) {
+                                Volume volume = apiCache.getApi(cloudvmVolume.getTenantId(),
+                                        CinderApi.class)
+                                        .getVolumeApi(
+                                                cloudvmVolume.getRegion()).get(cloudvmVolume.getVolumeId());
+                                if (volume == null) {
+                                    unFinishedVolumes.remove(cloudvmVolume);
+                                } else if (checker.check(volume)) {
+                                    unFinishedVolumes.remove(cloudvmVolume);
+                                    localVolumeService.update(cloudvmVolume.getTenantId(), cloudvmVolume
+                                            .getTenantId(), cloudvmVolume.getRegion(), volume);
+                                }
                             }
+                            Thread.sleep(1000);
                         }
-                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        ExceptionUtil.logAndEmail(e);
+                    } finally {
+                        apiCache.close();
                     }
-                } catch (Exception e) {
-                    ExceptionUtil.logAndEmail(e);
-                } finally {
-                    apiCache.close();
+                    return null;
                 }
-                return null;
-            }
-        });
+            });
+        }
     }
 
     @Override
