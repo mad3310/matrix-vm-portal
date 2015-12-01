@@ -101,11 +101,12 @@ public class OauthServiceImpl  implements IOauthService {
 
 	@Override
 	public Map<String, Object> getUserdetailinfo(String clientId, String clientSecret) {
-		Map<String,Object> userdetailinfo = (Map<String, Object>) this.cacheService.get(clientId, null);
+		/*Map<String,Object> userdetailinfo = (Map<String, Object>) this.cacheService.get(clientId, null);
 		if(null == userdetailinfo)
 			userdetailinfo = getUserdetailinfo(getAccessToken(clientId, clientSecret, getAuthorize(clientId)));
 		this.cacheService.set(clientId, userdetailinfo, OAUTH_TOKEN_CACHE_EXPIRE);
-		return userdetailinfo;
+		return userdetailinfo;*/
+        return getUserdetailinfo(getAccessToken(clientId, clientSecret, getAuthorize(clientId)));
 	}
 
 	public Map<String,Object> transResult(String result){
