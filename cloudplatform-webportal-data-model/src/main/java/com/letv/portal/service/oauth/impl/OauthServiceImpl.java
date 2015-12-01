@@ -62,8 +62,7 @@ public class OauthServiceImpl  implements IOauthService {
 		logger.debug("getAccessToken :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
 		retryOauthApi(result,buffer.toString());
-		if(StringUtils.isEmpty(result))
-			throw new OauthException("长时间未操作，请重新登录");
+		logger.debug("getAccessToken result:" + result);
 		Map<String,Object> resultMap = this.transResult(result);
 		if(StringUtils.isEmpty(result))
 			return null;
@@ -79,6 +78,7 @@ public class OauthServiceImpl  implements IOauthService {
 		logger.debug("getUserdetailinfo :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
 		retryOauthApi(result, buffer.toString());
+		logger.debug("getUserdetailinfo result:" + result);
 		Map<String,Object> resultMap = this.transResult(result);
 		return resultMap;
 	}
@@ -91,7 +91,8 @@ public class OauthServiceImpl  implements IOauthService {
 		buffer.append(OAUTH_AUTH_HTTP).append("/authorizenoredirect?&response_type=code&client_id=").append(clientId).append(OAUTH_REDIRECT_KEY_SECRET);
 		logger.debug("getAuthorize :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
-		retryOauthApi(result,buffer.toString());
+		retryOauthApi(result, buffer.toString());
+		logger.debug("getAuthorize result:" + result);
 		Map<String,Object> resultMap = this.transResult(result);
 		if(null == resultMap)
 			return null;
@@ -108,6 +109,8 @@ public class OauthServiceImpl  implements IOauthService {
 	}
 
 	public Map<String,Object> transResult(String result){
+		if(StringUtils.isEmpty(result))
+			return null;
 		ObjectMapper resultMapper = new ObjectMapper();
 		Map<String,Object> jsonResult;
 		try {
