@@ -56,11 +56,11 @@ public class VMCreate {
                 multiVmCreateContext.setUserId(userId);
 
                 List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
+                tasks.add(new CreateVmContextTask());
+                tasks.add(new GenerateResourceNameTask());
                 tasks.add(new CreateDefaultSecurityGroupAndRuleTask());
                 tasks.add(new CheckVmCreateConfTask());
                 tasks.add(new CheckNovaQuotaTask());
-                tasks.add(new CreateVmContextTask());
-                tasks.add(new GenerateResourceNameTask());
                 tasks.add(new CreateFloatingIpTask());
                 tasks.add(new CreateVolumeTask());
                 tasks.add(new CreateSubnetPortsTask());
@@ -179,7 +179,7 @@ public class VMCreate {
                                             context.getVmCreateListener().vmCreateFailed(
                                                     new VmCreateFailEvent(context.getVmCreateConf().getRegion(), vmIndex, reason, context.getListenerUserData()));
                                         } else {
-                                            VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), vmIndex, context.getListenerUserData());
+                                            VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), vmIndex, vmCreateContext.getResourceName(), context.getListenerUserData());
                                             if (vmCreateContext.getVolume() != null) {
                                                 vmCreateEvent.setVolumeId(vmCreateContext.getVolume().getId());
                                             }

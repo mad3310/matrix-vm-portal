@@ -8,12 +8,14 @@ public class FloatingIpCreateEvent {
     private String region;
     private String floatingIpId;
     private Integer floatingIpIndex;
+    private String name;
     private Object userData;
 
-    public FloatingIpCreateEvent(String region, String floatingIpId, Integer floatingIpIndex, Object userData) {
+    public FloatingIpCreateEvent(String region, String floatingIpId, Integer floatingIpIndex, String name, Object userData) {
         this.region = region;
         this.floatingIpId = floatingIpId;
         this.floatingIpIndex = floatingIpIndex;
+        this.name = name;
         this.userData = userData;
     }
 
@@ -27,6 +29,10 @@ public class FloatingIpCreateEvent {
 
     public Integer getFloatingIpIndex() {
         return floatingIpIndex;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Object getUserData() {

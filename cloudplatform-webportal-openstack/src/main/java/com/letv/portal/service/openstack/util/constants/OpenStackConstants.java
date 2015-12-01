@@ -6,4 +6,5 @@ package com.letv.portal.service.openstack.util.constants;
 public class OpenStackConstants {
     public static final String PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE = "network:router_interface";
     public static final String PORT_DEVICE_OWNER_COMPUTE_NONE = "compute:None";
+    public static final String PORT_DEVICE_OWNER_NETWORK_DHCP = "network:dhcp";
 }
