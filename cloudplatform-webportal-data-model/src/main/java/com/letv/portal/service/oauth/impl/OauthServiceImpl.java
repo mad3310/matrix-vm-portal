@@ -62,7 +62,6 @@ public class OauthServiceImpl  implements IOauthService {
 		logger.debug("getAccessToken :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
 		retryOauthApi(result,buffer.toString());
-		logger.debug("getAccessToken result:" + result);
 		Map<String,Object> resultMap = this.transResult(result);
 		if(StringUtils.isEmpty(result))
 			return null;
@@ -78,7 +77,6 @@ public class OauthServiceImpl  implements IOauthService {
 		logger.debug("getUserdetailinfo :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
 		retryOauthApi(result, buffer.toString());
-		logger.debug("getUserdetailinfo result:" + result);
 		Map<String,Object> resultMap = this.transResult(result);
 		return resultMap;
 	}
@@ -92,7 +90,6 @@ public class OauthServiceImpl  implements IOauthService {
 		logger.debug("getAuthorize :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
 		retryOauthApi(result, buffer.toString());
-		logger.debug("getAuthorize result:" + result);
 		Map<String,Object> resultMap = this.transResult(result);
 		if(null == resultMap)
 			return null;
@@ -101,12 +98,13 @@ public class OauthServiceImpl  implements IOauthService {
 
 	@Override
 	public Map<String, Object> getUserdetailinfo(String clientId, String clientSecret) {
-		/*Map<String,Object> userdetailinfo = (Map<String, Object>) this.cacheService.get(clientId, null);
+        if(StringUtils.isEmpty(clientId) || StringUtils.isEmpty(clientSecret))
+            return null;
+		Map<String,Object> userdetailinfo = (Map<String, Object>) this.cacheService.get(clientId, null);
 		if(null == userdetailinfo)
 			userdetailinfo = getUserdetailinfo(getAccessToken(clientId, clientSecret, getAuthorize(clientId)));
 		this.cacheService.set(clientId, userdetailinfo, OAUTH_TOKEN_CACHE_EXPIRE);
-		return userdetailinfo;*/
-        return getUserdetailinfo(getAccessToken(clientId, clientSecret, getAuthorize(clientId)));
+		return userdetailinfo;
 	}
 
 	public Map<String,Object> transResult(String result){

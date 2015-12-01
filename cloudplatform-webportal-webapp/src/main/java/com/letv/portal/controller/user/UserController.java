@@ -54,12 +54,7 @@ public class UserController {
 			obj.setResult(0);
 			return obj;
 		}
-		Map<String, Object> userdetailinfo = this.ucService.getUserByUserId(session.getUcId());
-		if(userdetailinfo == null || userdetailinfo.isEmpty()) {
-			obj.setResult(0);
-			return obj;
-		}
-		obj.setData(userdetailinfo);
+		obj.setData(session.getUserName());
 		return obj;
 	}
 
@@ -77,7 +72,7 @@ public class UserController {
 			obj.setResult(0);
 			return obj;
 		}
-		Long ucId = getUcIdByUserId(userId);
+		Long ucId =  this.userService.getUcIdByUserId(userId);
 		Map<String, Object> user = this.ucService.getUserByUserId(ucId);
 		if(user == null || user.isEmpty()) {
 			obj.setResult(0);
@@ -92,7 +87,7 @@ public class UserController {
 			obj.setResult(0);
 			return obj;
 		}
-		Long ucId = getUcIdByUserId(userId);
+		Long ucId = this.userService.getUcIdByUserId(userId);
 		Map<String, Object> unReadMessage = this.ucService.getUnReadMessage(ucId);
 		if(unReadMessage == null || unReadMessage.isEmpty()) {
 			obj.setResult(0);
@@ -100,11 +95,5 @@ public class UserController {
 		}
 		obj.setData(unReadMessage.get("totalCount"));
 		return obj;
-	}
-	private Long getUcIdByUserId(Long userId) {
-		UserModel userModel = this.userService.getUserById(userId);
-		if(userModel == null)
-			return null;
-		return userModel.getUcId();
 	}
 }

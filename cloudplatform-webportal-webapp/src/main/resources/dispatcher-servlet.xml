@@ -64,14 +64,14 @@
 	      <property name="allowUrls">
 	        <list>
 	          <value>/oauth/callback</value>
-	          <value>/static</value>
 	          <value>/logout</value>
-	          <value>/toLogin</value>
-	          <value>/home</value>
+                <value>/static</value>
+                <value>/home</value>
 	          <value>/user</value>
 
 	          <!-- 支付完成回调api -->
 	          <value>/pay/callback</value>
+              <value>/payment/success</value>
 
 	          <!-- 监控api -->
 	          <value>/jettyMonitor</value>

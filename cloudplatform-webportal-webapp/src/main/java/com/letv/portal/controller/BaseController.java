@@ -36,14 +36,6 @@ public class BaseController {
 		return "/index";
 	}
 
-	@RequestMapping(value ="/toLogin")
-	public ModelAndView toLogin(@RequestParam String back,ModelAndView mav){
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(back);
-		mav.addObject("loginURI", buffer.toString());
-		mav.setViewName("/toLogin");
-		return mav;
-	}
 	@RequestMapping(value ="/profile",method=RequestMethod.GET)
 	public ModelAndView toProfile(ModelAndView mav){
 		mav.setViewName("/profile");

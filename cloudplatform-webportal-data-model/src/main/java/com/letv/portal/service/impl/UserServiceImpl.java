@@ -115,4 +115,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		return userModel.getId();
 	}
 
+	@Override
+	public Long getUcIdByUserId(Long userId) {
+		UserModel userModel = this.selectById(userId);
+		if(userModel == null)
+			return null;
+		return userModel.getUcId();
+	}
+
 }
