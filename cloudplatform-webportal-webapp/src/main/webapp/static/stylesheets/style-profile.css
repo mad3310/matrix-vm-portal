@@ -1,12 +1,6 @@
 .text-gray{color:#888}
 .no-paddingR{padding-right:0;}
 .no-paddingL{padding-left:0;}
-/*滚动条*/
-::-webkit-scrollbar{width: 7px;box-shadow: 2px 2px 3px 0;}
-::-webkit-scrollbar-track{background-color:rgba(235,235,235,1);}
-::-webkit-scrollbar-thumb{background:#d0cfcf;}
-::-webkit-scrollbar-button {height:7px;background:#dbdbdb;}
-::-webkit-scrollbar-corner{background:#d0cfcf;}
 .main-body{width:1079px;width:100%;min-width:1079px;}
 /*header*/
 .header .header-account .account-icon{width:26px;height:26px;border-radius:50%;}
