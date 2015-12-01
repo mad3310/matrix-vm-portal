@@ -72,7 +72,7 @@ public class LoginController {
 
 	private ModelAndView toLogin(ModelAndView mav,String requestURI,String queryString) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(requestURI).append(StringUtils.isEmpty(queryString) ? "" : "?").append(StringUtils.isEmpty(queryString)?"":queryString);
+		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(requestURI).append(StringUtils.isEmpty(queryString) ? "" : "?&").append(StringUtils.isEmpty(queryString)?"":queryString);
 		mav.setViewName("redirect:" + buffer.toString());
 		return mav;
 	}
