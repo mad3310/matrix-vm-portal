@@ -56,6 +56,7 @@ public class VMCreate {
                 multiVmCreateContext.setUserId(userId);
 
                 List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
+                tasks.add(new CreateDefaultSecurityGroupAndRuleTask());
                 tasks.add(new CheckVmCreateConfTask());
                 tasks.add(new CheckNovaQuotaTask());
                 tasks.add(new CreateVmContextTask());
