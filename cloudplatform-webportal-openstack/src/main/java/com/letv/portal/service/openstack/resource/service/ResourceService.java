@@ -51,4 +51,6 @@ public interface ResourceService {
     void editRouter(NovaApi novaApi, NeutronApi neutronApi, String region, String routerId, String name, boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException;
 
     void separateSubnetFromRouter(NeutronApi neutronApi, String region, String routerId, String subnetId) throws OpenStackException;
+
+    void createDefaultSecurityGroupAndRule(NeutronApi neutronApi) throws OpenStackException;
 }

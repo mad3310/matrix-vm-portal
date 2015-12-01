@@ -31,6 +31,9 @@ import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
+import com.letv.portal.service.openstack.resource.service.impl.task.rule.create.PingRuleCreateTask;
+import com.letv.portal.service.openstack.resource.service.impl.task.rule.create.RuleCreateTask;
+import com.letv.portal.service.openstack.resource.service.impl.task.rule.create.SshRuleCreateTask;
 import com.letv.portal.service.openstack.util.*;
 import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
 import com.letv.portal.service.openstack.util.function.Function;
@@ -46,7 +49,9 @@ import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.*;
 import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.SecurityGroup;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
+import org.jclouds.openstack.neutron.v2.extensions.SecurityGroupApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
@@ -1424,6 +1429,64 @@ public class ResourceServiceImpl implements ResourceService {
             @Override
             public Boolean apply() throws Exception {
                 return portApi.get(portId) != null;
+            }
+        });
+    }
+
+    @Override
+    public void createDefaultSecurityGroupAndRule(final NeutronApi neutronApi) throws OpenStackException {
+        ThreadUtil.concurrentFilter(CollectionUtil.toList(neutronApi.getConfiguredRegions()), new Function1<Void, String>() {
+            @Override
+            public Void apply(String region) throws Exception {
+                Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
+                        .getSecurityGroupApi(region);
+                if (!securityGroupApiOptional.isPresent()) {
+                    throw new APINotAvailableException(SecurityGroupApi.class).matrixException();
+                }
+                final SecurityGroupApi securityGroupApi = securityGroupApiOptional.get();
+
+                SecurityGroup defaultSecurityGroup = null;
+                for (SecurityGroup securityGroup : securityGroupApi
+                        .listSecurityGroups().concat().toList()) {
+                    if ("default".equals(securityGroup.getName())) {
+                        defaultSecurityGroup = securityGroup;
+                        break;
+                    }
+                }
+                if (defaultSecurityGroup == null) {
+                    defaultSecurityGroup = securityGroupApi
+                            .create(SecurityGroup.CreateSecurityGroup
+                                    .createBuilder().name("default").build());
+                }
+
+                List<RuleCreateTask> ruleCreateTaskList = new LinkedList<RuleCreateTask>();
+                ruleCreateTaskList.add(new PingRuleCreateTask());
+                ruleCreateTaskList.add(new SshRuleCreateTask());
+
+                for (Rule rule : defaultSecurityGroup.getRules()) {
+                    for (RuleCreateTask ruleCreateTask : ruleCreateTaskList.toArray(new RuleCreateTask[0])) {
+                        if (ruleCreateTask.isMatch(rule)) {
+                            ruleCreateTaskList.remove(ruleCreateTask);
+                        }
+                    }
+                }
+
+                if (ruleCreateTaskList.size() > 1) {
+                    final SecurityGroup securityGroup = defaultSecurityGroup;
+                    ThreadUtil.concurrentFilter(ruleCreateTaskList, new Function1<Void, RuleCreateTask>() {
+                        @Override
+                        public Void apply(RuleCreateTask ruleCreateTask) throws Exception {
+                            ruleCreateTask.create(securityGroupApi, securityGroup);
+                            return null;
+                        }
+                    });
+                } else {
+                    for (RuleCreateTask ruleCreateTask : ruleCreateTaskList) {
+                        ruleCreateTask.create(securityGroupApi, defaultSecurityGroup);
+                    }
+                }
+
+                return null;
             }
         });
     }
