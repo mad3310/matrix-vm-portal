@@ -27,12 +27,11 @@ import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.NameUtil;
 import com.letv.portal.service.openstack.util.RetryUtil;
 import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.FipQos;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
@@ -1619,7 +1618,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				try {
 					final int routerIndexRef = routerIndex;
 					final Router router = successCreatedRouters.get(routerIndexRef);
-					RetryUtil.retry(new Function<Boolean>() {
+					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
 							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
@@ -1635,7 +1634,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			for (; routerIndex < routersCount; routerIndex++) {
 				try {
 					final int routerIndexRef = routerIndex;
-					RetryUtil.retry(new Function<Boolean>() {
+					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
 							listener.routerCreateFailed(new RouterCreateFailEvent(routerCreateConf.getRegion(), routerIndexRef, reason, listenerUserData));
@@ -2879,7 +2878,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				try {
 					final int floatingIpIndexRef = floatingIpIndex;
 					final FloatingIP floatingIP = successCreatedFloatingIps.get(floatingIpIndexRef);
-					RetryUtil.retry(new Function<Boolean>() {
+					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
 							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
@@ -2895,7 +2894,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			for (; floatingIpIndex < floatingIpCount; floatingIpIndex++) {
 				try {
 					final int floatingIpIndexRef = floatingIpIndex;
-					RetryUtil.retry(new Function<Boolean>() {
+					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
 							listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndexRef, reason, listenerUserData));

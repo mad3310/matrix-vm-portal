@@ -4,14 +4,12 @@ import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
-import com.google.common.base.Optional;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.billing.event.service.EventPublishService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
-import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.internal.UserExists;
 import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
@@ -22,17 +20,11 @@ import com.letv.portal.service.openstack.local.service.LocalNetworkService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
-import com.letv.portal.service.openstack.util.CollectionUtil;
 import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
-import com.letv.portal.service.openstack.util.function.Function1;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.*;
-import org.jclouds.openstack.neutron.v2.extensions.SecurityGroupApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.SchedulingTaskExecutor;

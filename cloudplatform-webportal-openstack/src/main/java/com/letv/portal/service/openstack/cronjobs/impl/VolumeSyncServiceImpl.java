@@ -14,7 +14,7 @@ import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
@@ -22,7 +22,6 @@ import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,7 +69,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     public void syncStatus(final List<CloudvmVolume> cloudvmVolumes, final Checker<Volume>
             checker) {
         if (cloudvmVolumes != null && !cloudvmVolumes.isEmpty()) {
-            ThreadUtil.asyncExec(new Function<Void>() {
+            ThreadUtil.asyncExec(new Function0<Void>() {
                 @Override
                 public Void apply() {
                     SyncLocalApiCache apiCache = new SyncLocalApiCache();

@@ -3,13 +3,12 @@ package com.letv.portal.service.openstack.jclouds.cache;
 import com.google.common.cache.*;
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.model.UserVo;
-import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCacheKey;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.constants.Constants;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import org.jclouds.ContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +92,7 @@ public class UserApiCache implements Closeable {
 
     public void loadApis(Class<? extends Closeable>... apiTypes) {
         for (final Class<? extends Closeable> apiType : apiTypes) {
-            ThreadUtil.asyncExec(new Function<Void>() {
+            ThreadUtil.asyncExec(new Function0<Void>() {
                 @Override
                 public Void apply() throws Exception {
                     UserApiCache.this.getApi(apiType);

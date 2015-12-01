@@ -4,16 +4,12 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
-import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.Timeout;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
-
-import java.util.concurrent.TimeUnit;
 
 public class AddVolumeTask extends VmsCreateSubTask {
 
@@ -33,7 +29,7 @@ public class AddVolumeTask extends VmsCreateSubTask {
                     boolean volumeUpdated = false;
                     if (vmCreateContext.getServerCreated() != null && vmCreateContext.getVolume() != null) {
                         final String volumeId = vmCreateContext.getVolume().getId();
-                        ThreadUtil.waiting(new Function<Boolean>() {
+                        ThreadUtil.waiting(new Function0<Boolean>() {
                             @Override
                             public Boolean apply() throws Exception {
                                 Volume volume = volumeApi.get(volumeId);
@@ -48,7 +44,7 @@ public class AddVolumeTask extends VmsCreateSubTask {
                                     .attachVolumeToServerAsDevice(
                                             vmCreateContext.getVolume().getId(),
                                             vmCreateContext.getServerCreated().getId(), "");
-                            ThreadUtil.waiting(new Function<Boolean>() {
+                            ThreadUtil.waiting(new Function0<Boolean>() {
                                 @Override
                                 public Boolean apply() throws Exception {
                                     Volume volume = volumeApi.get(volumeId);
@@ -74,7 +70,7 @@ public class AddVolumeTask extends VmsCreateSubTask {
                                         .selectByVolumeId(context.getUserId(), context.getVmCreateConf().getRegion(), volume.getId());
                                 if (cloudvmVolume != null) {
                                     final String volumeId = vmCreateContext.getVolume().getId();
-                                    ThreadUtil.waiting(new Function<Boolean>() {
+                                    ThreadUtil.waiting(new Function0<Boolean>() {
                                         @Override
                                         public Boolean apply() throws Exception {
                                             Volume volume = volumeApi.get(volumeId);
