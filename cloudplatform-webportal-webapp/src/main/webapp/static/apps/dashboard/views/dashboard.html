@@ -146,14 +146,11 @@
 					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1&&expander.length>=10,third:$index==2,gotop:$index>2}">
 						<div>{{operation.action}}</div>
 						<div class="items-desc">
-							<span class="text-blue" ng-show="operation.content.indexOf('=')<0">{{operation.content}}</span>
-							<span ng-show="operation.content.indexOf('=-')>0">
-								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=-'))}}</span>&nbsp;为&nbsp;
-								<span class="text-yellow">{{operation.content.substring(operation.content.indexOf('=-')+2)}}</span>
-							</span>
+							<span class="text-blue" ng-show="operation.content.indexOf('==')<=0">{{operation.content}}</span>
 							<span ng-show="operation.content.indexOf('==')>0">
-								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=='))}}</span>&nbsp;到&nbsp;
-								<span class="text-yellow">{{operation.content.substring(operation.content.indexOf('==')+2)}}</span>
+								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=='))}}</span>
+								&nbsp;<span>{{operation.content.substring(operation.content.indexOf('==')+2,operation.content.lastIndexOf('=='))}}</span>&nbsp;
+								<span class="text-yellow">{{operation.content.substring(operation.content.lastIndexOf('==')+2)}}</span>
 							</span>
 							<span class="pull-right" data-picker>{{operation.createTime|date:'yyyy-MM-dd HH:mm'}}</span>
 							<div class="clearfix"></div>
@@ -196,7 +193,7 @@
 					<div class="le-col-6 no-paddingR">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>带宽<span>（mbps）</span></div>
+								<div>带宽<span>（Mbps）</span></div>
 								<div class="source-precent">
 									<div class="active" ng-style="quotas.bandwidthStyle"></div>
 									<div class="clearfix"></div>
@@ -398,7 +395,7 @@
 				<div class="item-title le-col-6 text-left">
 					<span>云引擎</span>
 					<div class="item-desc">扩展服务、快捷开发</div>
-					<div><a class="item-detail" href="#">查看详情>></a></div>
+					<div><a class="item-detail" href=""><span>查看详情&nbsp;</span><i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
 				</div>
 				<div class="clearfix"></div>
 				<div class="item-buttons le-col-6 text-right">
@@ -416,7 +413,7 @@
 				<div class="item-title le-col-6 text-left">
 					<span>负载均衡SLB</span>
 					<div class="item-desc">扩展服务、快捷开发</div>
-					<div><a class="item-detail" href="#">查看详情>></a></div>
+					<div><a class="item-detail" href=""><span>查看详情&nbsp;</span><i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
 				</div>
 				<div class="clearfix"></div>
 				<div class="item-buttons le-col-6 text-right">
@@ -434,7 +431,7 @@
 				<div class="item-title le-col-6 text-left">
 					<span>关系型数据库</span>
 					<div class="item-desc">扩展服务、快捷开发</div>
-					<div><a class="item-detail" href="#">查看详情>></a></div>
+					<div><a class="item-detail" href=""><span>查看详情&nbsp;</span><i class="iconfont icon-rilijiantouyoushuang"></i></a></div>
 				</div>
 				<div class="clearfix"></div>
 				<div class="item-buttons le-col-6 text-right">

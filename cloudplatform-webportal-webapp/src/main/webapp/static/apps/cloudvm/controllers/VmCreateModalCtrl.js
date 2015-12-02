@@ -37,6 +37,14 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmCount = 1;
     $scope.vmTotalPrice = '';
 
+    $scope.firstStepToNextTab = function (event) {
+      if($scope.vm_create_form.vm_name.$valid){
+        event.preventDefault();
+        $scope.activeFlow=2;
+        $scope.hackRzSlider();
+      }
+    };
+
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
     };

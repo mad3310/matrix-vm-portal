@@ -498,7 +498,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
-	private boolean isPrivateNetwork(Network network) {
+	public static boolean isPrivateNetwork(Network network) {
 		return !network.getShared() && !network.getExternal();
 	}
 

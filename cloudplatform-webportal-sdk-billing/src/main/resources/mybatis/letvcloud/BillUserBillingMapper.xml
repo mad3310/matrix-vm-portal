@@ -10,6 +10,14 @@
     where userId = #{userId} and billingMonth = #{billingMonth}
     order by createdTime desc
   </select>
+  <select id="getUserBillingsCount"  resultType="java.lang.Long">
+    select
+    	count(1)
+    from
+    	bill_user_billing
+    where 
+    	userId = #{userId} and billingMonth = #{billingMonth}
+  </select>
   <select id="getUserBillingDetails" resultType="com.letv.portal.letvcloud.bill.vo.BillMonthDetailBilling">
     SELECT tmp.featherCode,r.price,d.discount,tmp.totalFee,tmp.totalAmount FROM (SELECT t.featherCode,SUM(t.fee) AS totalFee,SUM(t.useAmount) AS totalAmount,t.orderId
     FROM bill_deduction_record t WHERE  t.deductionDate LIKE #{month}"%" AND t.orderId=#{orderId} GROUP BY t.featherCode) tmp
