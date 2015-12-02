@@ -14,7 +14,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.RetryUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 
 public class VMCreate {
 
@@ -56,10 +56,11 @@ public class VMCreate {
                 multiVmCreateContext.setUserId(userId);
 
                 List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
-                tasks.add(new CheckVmCreateConfTask());
-                tasks.add(new CheckNovaQuotaTask());
                 tasks.add(new CreateVmContextTask());
                 tasks.add(new GenerateResourceNameTask());
+                tasks.add(new CreateDefaultSecurityGroupAndRuleTask());
+                tasks.add(new CheckVmCreateConfTask());
+                tasks.add(new CheckNovaQuotaTask());
                 tasks.add(new CreateFloatingIpTask());
                 tasks.add(new CreateVolumeTask());
                 tasks.add(new CreateSubnetPortsTask());
@@ -90,7 +91,7 @@ public class VMCreate {
 
             notifyListener(multiVmCreateContext, exceptionOfCreating);
 
-            ThreadUtil.asyncExec(new Function<Void>() {
+            ThreadUtil.asyncExec(new Function0<Void>() {
                 @Override
                 public Void apply() {
                     BindFloatingIpTask bindFloatingIpTask = new BindFloatingIpTask();
@@ -162,14 +163,14 @@ public class VMCreate {
 
     private void notifyListener(final MultiVmCreateContext context, final String reason) {
         if (context.getVmCreateListener() != null) {
-            ThreadUtil.asyncExec(new Function<Void>() {
+            ThreadUtil.asyncExec(new Function0<Void>() {
 
                 @Override
                 public Void apply() {
                     for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
                         try {
                             final int vmIndex = i;
-                            RetryUtil.retry(new Function<Boolean>() {
+                            RetryUtil.retry(new Function0<Boolean>() {
                                 @Override
                                 public Boolean apply() throws Exception {
                                     if (context.getVmCreateContexts() != null && context.getVmCreateContexts().size() > vmIndex) {
@@ -178,7 +179,7 @@ public class VMCreate {
                                             context.getVmCreateListener().vmCreateFailed(
                                                     new VmCreateFailEvent(context.getVmCreateConf().getRegion(), vmIndex, reason, context.getListenerUserData()));
                                         } else {
-                                            VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), vmIndex, context.getListenerUserData());
+                                            VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), vmIndex, vmCreateContext.getResourceName(), context.getListenerUserData());
                                             if (vmCreateContext.getVolume() != null) {
                                                 vmCreateEvent.setVolumeId(vmCreateContext.getVolume().getId());
                                             }

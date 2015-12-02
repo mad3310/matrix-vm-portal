@@ -21,16 +21,11 @@ import com.letv.common.session.SessionServiceImpl;
  */
 @Controller("paySkip")
 public class SkipController {
-	
-	@Autowired(required=false)
-	private SessionServiceImpl sessionService;
-	
+
 	/**
 	 * Methods Name: payment<br>
 	 * Description: 跳转至支付页
 	 * @author name: yaokuo
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value ="/payment/{orderNum}/{redirect}",method=RequestMethod.GET)
@@ -46,7 +41,7 @@ public class SkipController {
 		mav.setViewName("/payment/paycomplete");
 		return mav;
 	}
-	
+
 	@RequestMapping(value ="/payment/wxpay",method=RequestMethod.GET)
 	public ModelAndView wxPay(HttpServletRequest request,ModelAndView mav){
 		mav.addObject("orderNum",request.getParameter("orderNum"));
@@ -55,5 +50,5 @@ public class SkipController {
 		mav.setViewName("/payment/wxpay");
 		return mav;
 	}
-	
+
 }

@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
 
 /**
  * Created by zhouxianguang on 2015/6/8.

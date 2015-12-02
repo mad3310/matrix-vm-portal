@@ -6,7 +6,7 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.TimeoutException;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import com.letv.portal.service.openstack.util.function.Function1;
 
 import java.util.LinkedList;
@@ -26,7 +26,7 @@ public class ThreadUtil {
 //        executorService.submit(task);
 //    }
 
-    public static void asyncExec(final Function<Void> task) {
+    public static void asyncExec(final Function0<Void> task) {
         executorService.submit(new Runnable() {
             @Override
             public void run() {
@@ -65,15 +65,15 @@ public class ThreadUtil {
 //        }
 //    }
 
-    public static <T> List<Ref<T>> concurrentRunAndWait(Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
+    public static <T> List<Ref<T>> concurrentRunAndWait(Function0<T> currentThreadTask, Function0<T>... otherTasks) throws OpenStackException {
         return concurrentRunAndWait(null, currentThreadTask, otherTasks);
     }
 
-    public static <T> List<Ref<T>> concurrentRunAndWait(Timeout timeout, Function<T> currentThreadTask, Function<T>... otherTasks) throws OpenStackException {
+    public static <T> List<Ref<T>> concurrentRunAndWait(Timeout timeout, Function0<T> currentThreadTask, Function0<T>... otherTasks) throws OpenStackException {
         try {
             List<ListenableFuture<Ref<T>>> futures = new LinkedList<ListenableFuture<Ref<T>>>();
             for (int i = 0; i < otherTasks.length; i++) {
-                final Function<T> task = otherTasks[i];
+                final Function0<T> task = otherTasks[i];
                 futures.add(executorService.submit(new Callable<Ref<T>>() {
                     @Override
                     public Ref<T> call() throws Exception {
@@ -126,8 +126,8 @@ public class ThreadUtil {
 //        }
 //    }
 
-    public static void concurrentRun(Function<Void>... tasks) {
-        for (final Function<Void> task : tasks) {
+    public static void concurrentRun(Function0<Void>... tasks) {
+        for (final Function0<Void> task : tasks) {
             executorService.submit(new Runnable() {
                 @Override
                 public void run() {
@@ -141,11 +141,11 @@ public class ThreadUtil {
         }
     }
 
-    public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter) throws OpenStackException {
+    public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<PT, RT> filter) throws OpenStackException {
         return concurrentFilter(list, filter, null);
     }
 
-    public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<RT, PT> filter, Timeout timeout) throws OpenStackException {
+    public static <PT, RT> List<RT> concurrentFilter(List<PT> list, final Function1<PT, RT> filter, Timeout timeout) throws OpenStackException {
         try {
             if (list.isEmpty()) {
                 return new LinkedList<RT>();
@@ -201,22 +201,22 @@ public class ThreadUtil {
         return new LinkedList<RT>();
     }
 
-    public static void waiting(Function<Boolean> checker)
+    public static void waiting(Function0<Boolean> checker)
             throws OpenStackException {
         waiting(checker, null, null);
     }
 
-    public static void waiting(Function<Boolean> checker, Timeout timeout)
+    public static void waiting(Function0<Boolean> checker, Timeout timeout)
             throws OpenStackException {
         waiting(checker, timeout, null);
     }
 
-    public static void waiting(Function<Boolean> checker, Long sleepTime)
+    public static void waiting(Function0<Boolean> checker, Long sleepTime)
             throws OpenStackException {
         waiting(checker, null, sleepTime);
     }
 
-    public static void waiting(Function<Boolean> checker, Timeout timeout, Long sleepTime)
+    public static void waiting(Function0<Boolean> checker, Timeout timeout, Long sleepTime)
             throws OpenStackException {
         try {
             Long timeoutMillis = null;

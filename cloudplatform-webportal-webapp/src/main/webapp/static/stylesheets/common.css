@@ -106,7 +106,12 @@ body {
 .icon-clouddashboard:before { content: "\e648"; }
 .icon-cloudimage:before { content: "\e649"; }
 /*end custom iconfont style*/
-
+/*滚动条*/
+::-webkit-scrollbar{width: 7px;box-shadow: 2px 2px 3px 0;}
+::-webkit-scrollbar-track{background-color:rgba(235,235,235,1);}
+::-webkit-scrollbar-thumb{background:#d0cfcf;}
+::-webkit-scrollbar-button {height:7px;background:#dbdbdb;}
+::-webkit-scrollbar-corner{background:#d0cfcf;}
 /*begin override bootstrap style*/
 .btn {
     border-radius: 2px;

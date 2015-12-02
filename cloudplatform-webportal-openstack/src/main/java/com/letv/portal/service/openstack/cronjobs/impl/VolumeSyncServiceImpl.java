@@ -14,7 +14,7 @@ import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
@@ -22,7 +22,6 @@ import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,38 +68,40 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
     @Override
     public void syncStatus(final List<CloudvmVolume> cloudvmVolumes, final Checker<Volume>
             checker) {
-        ThreadUtil.asyncExec(new Function<Void>() {
-            @Override
-            public Void apply() {
-                SyncLocalApiCache apiCache = new SyncLocalApiCache();
-                try {
-                    List<CloudvmVolume> unFinishedVolumes = new LinkedList<CloudvmVolume>();
-                    unFinishedVolumes.addAll(cloudvmVolumes);
-                    while (!unFinishedVolumes.isEmpty()) {
-                        for (CloudvmVolume cloudvmVolume : unFinishedVolumes
-                                .toArray(new CloudvmVolume[0])) {
-                            Volume volume = apiCache.getApi(cloudvmVolume.getTenantId(),
-                                    CinderApi.class)
-                                    .getVolumeApi(
-                                            cloudvmVolume.getRegion()).get(cloudvmVolume.getVolumeId());
-                            if (volume == null) {
-                                unFinishedVolumes.remove(cloudvmVolume);
-                            } else if (checker.check(volume)) {
-                                unFinishedVolumes.remove(cloudvmVolume);
-                                localVolumeService.update(cloudvmVolume.getTenantId(), cloudvmVolume
-                                        .getTenantId(), cloudvmVolume.getRegion(), volume);
+        if (cloudvmVolumes != null && !cloudvmVolumes.isEmpty()) {
+            ThreadUtil.asyncExec(new Function0<Void>() {
+                @Override
+                public Void apply() {
+                    SyncLocalApiCache apiCache = new SyncLocalApiCache();
+                    try {
+                        List<CloudvmVolume> unFinishedVolumes = new LinkedList<CloudvmVolume>();
+                        unFinishedVolumes.addAll(cloudvmVolumes);
+                        while (!unFinishedVolumes.isEmpty()) {
+                            for (CloudvmVolume cloudvmVolume : unFinishedVolumes
+                                    .toArray(new CloudvmVolume[0])) {
+                                Volume volume = apiCache.getApi(cloudvmVolume.getTenantId(),
+                                        CinderApi.class)
+                                        .getVolumeApi(
+                                                cloudvmVolume.getRegion()).get(cloudvmVolume.getVolumeId());
+                                if (volume == null) {
+                                    unFinishedVolumes.remove(cloudvmVolume);
+                                } else if (checker.check(volume)) {
+                                    unFinishedVolumes.remove(cloudvmVolume);
+                                    localVolumeService.update(cloudvmVolume.getTenantId(), cloudvmVolume
+                                            .getTenantId(), cloudvmVolume.getRegion(), volume);
+                                }
                             }
+                            Thread.sleep(1000);
                         }
-                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        ExceptionUtil.logAndEmail(e);
+                    } finally {
+                        apiCache.close();
                     }
-                } catch (Exception e) {
-                    ExceptionUtil.logAndEmail(e);
-                } finally {
-                    apiCache.close();
+                    return null;
                 }
-                return null;
-            }
-        });
+            });
+        }
     }
 
     @Override

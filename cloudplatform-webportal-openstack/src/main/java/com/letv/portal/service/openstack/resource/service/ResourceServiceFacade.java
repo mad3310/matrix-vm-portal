@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.service;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
 
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
  * Created by zhouxianguang on 2015/10/30.
  */
 public interface ResourceServiceFacade {
-    void attachVmsToSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
+    void attachVmsToSubnet(String region, String vmIds, String subnetId, Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException;
 
-    void detachVmsFromSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
+    void detachVmsFromSubnet(String region, String vmIds, String subnetId, Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException;
 
     List<VMResource> listVmNotInAnyNetwork(String region) throws OpenStackException;
 

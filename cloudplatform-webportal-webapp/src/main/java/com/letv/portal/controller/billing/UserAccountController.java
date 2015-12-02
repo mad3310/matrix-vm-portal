@@ -29,24 +29,26 @@ import com.letv.portal.service.order.IOrderService;
 @Controller
 @RequestMapping("/userAccount")
 public class UserAccountController {
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(UserAccountController.class);
-	
+
 	@Autowired
 	private BillUserAmountService billUserAmountService;
-	@Autowired
-	private IOrderService orderService;
-	
-	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)   
+
+	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject account(@PathVariable Long userId, ResultObject obj) {
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
-		DecimalFormat formatter = new DecimalFormat("0.00");// billUserAmount.getAvailableAmount().doubleValue()
-	    String userAmount = formatter.format(billUserAmount.getAvailableAmount().doubleValue());
+		DecimalFormat formatter = new DecimalFormat("0.00");
+		if(null == billUserAmount) {
+			obj.setData("0.00");
+			return obj;
+		}
+		String userAmount = formatter.format(billUserAmount.getAvailableAmount().doubleValue());
 		obj.setData(userAmount);
 		return obj;
 	}
 
-	@RequestMapping(value="/order/un/{userId}",method=RequestMethod.GET)   
+	@RequestMapping(value="/order/un/{userId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject unReadOrder(@PathVariable Long userId, ResultObject obj) {
 	   /* Map<String, Object> params = new HashMap<String,Object>();
 	    params.put("userId", userId);
@@ -55,5 +57,5 @@ public class UserAccountController {
 		obj.setData(0);
 		return obj;
 	}
-	
+
 }

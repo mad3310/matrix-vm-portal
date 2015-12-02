@@ -31,9 +31,12 @@ import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
+import com.letv.portal.service.openstack.resource.service.impl.task.rule.create.PingRuleCreateTask;
+import com.letv.portal.service.openstack.resource.service.impl.task.rule.create.RuleCreateTask;
+import com.letv.portal.service.openstack.resource.service.impl.task.rule.create.SshRuleCreateTask;
 import com.letv.portal.service.openstack.util.*;
 import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import com.letv.portal.service.openstack.util.function.Function1;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.apache.commons.lang.StringUtils;
@@ -46,7 +49,9 @@ import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.*;
 import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.SecurityGroup;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
+import org.jclouds.openstack.neutron.v2.extensions.SecurityGroupApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
@@ -200,8 +205,8 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
-        vmNamesAndSubnetName._1 = new CopyOnWriteArrayList<String>();
+    public void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException {
+        final List<String> vmNames = new CopyOnWriteArrayList<String>();
 
         checkRegion(region, novaApi, neutronApi);
 
@@ -209,7 +214,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
-        vmNamesAndSubnetName._2 = privateSubnet.getName();
+        final String subnetName = privateSubnet.getName();
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         final Network privateNetwork = getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
 
@@ -218,12 +223,12 @@ public class ResourceServiceImpl implements ResourceService {
 
         List<String> vmIdList = JsonUtil.fromJson(vmIds, new TypeReference<List<String>>() {
         });
-        List<Exception> exceptions = ThreadUtil.concurrentFilter(vmIdList, new Function1<Exception, String>() {
+        List<Exception> exceptions = ThreadUtil.concurrentFilter(vmIdList, new Function1<String, Exception>() {
             @Override
             public Exception apply(String vmId) throws Exception {
                 try {
                     Server server = getVm(serverApi, vmId);
-                    vmNamesAndSubnetName._1.add(server.getName());
+                    vmNames.add(server.getName());
                     List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
                     for (InterfaceAttachment interfaceAttachment : interfaceAttachments) {
                         String attachedNetworkId = interfaceAttachment.getNetworkId();
@@ -260,14 +265,15 @@ public class ResourceServiceImpl implements ResourceService {
                 return null;
             }
         });
+        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames,subnetName));
         if (!exceptions.isEmpty()) {
             throw new OpenStackCompositeException(exceptions);
         }
     }
 
     @Override
-    public void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
-        vmNamesAndSubnetName._1 = new CopyOnWriteArrayList<String>();
+    public void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, final String subnetId, final Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException {
+        final List<String> vmNames = new CopyOnWriteArrayList<String>();
 
         checkRegion(region, novaApi, neutronApi);
 
@@ -275,7 +281,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
         final Subnet privateSubnet = getSubnet(subnetApi, subnetId);
-        vmNamesAndSubnetName._2 = privateSubnet.getName();
+        final String subnetName = privateSubnet.getName();
         final NetworkApi networkApi = neutronApi.getNetworkApi(region);
         getPrivateNetwork(networkApi, privateSubnet.getNetworkId());
         final PortApi portApi = neutronApi.getPortApi(region);
@@ -284,12 +290,12 @@ public class ResourceServiceImpl implements ResourceService {
 
         List<String> vmIdList = JsonUtil.fromJson(vmIds, new TypeReference<List<String>>() {
         });
-        List<Exception> exceptions = ThreadUtil.concurrentFilter(vmIdList, new Function1<Exception, String>() {
+        List<Exception> exceptions = ThreadUtil.concurrentFilter(vmIdList, new Function1<String, Exception>() {
             @Override
             public Exception apply(final String vmId) throws Exception {
                 try {
                     Server server = getVm(serverApi, vmId);
-                    vmNamesAndSubnetName._1.add(server.getName());
+                    vmNames.add(server.getName());
                     List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
                     InterfaceAttachment findedInterfaceAttachment = null;
                     FindedInterfaceAttachment:
@@ -317,7 +323,7 @@ public class ResourceServiceImpl implements ResourceService {
                     }
 
                     final String portId = findedInterfaceAttachment.getPortId();
-                    ThreadUtil.waiting(new Function<Boolean>() {
+                    ThreadUtil.waiting(new Function0<Boolean>() {
                         @Override
                         public Boolean apply() throws Exception {
                             return portApi.get(portId) != null;
@@ -329,6 +335,7 @@ public class ResourceServiceImpl implements ResourceService {
                 return null;
             }
         });
+        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames,subnetName));
         if (!exceptions.isEmpty()) {
             throw new OpenStackCompositeException(exceptions);
         }
@@ -522,7 +529,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         localKeyPairService.delete(userVoUserId, region, name);
 
-        ThreadUtil.waiting(new Function<Boolean>() {
+        ThreadUtil.waiting(new Function0<Boolean>() {
             @Override
             public Boolean apply() throws Exception {
                 return keyPairApi.get(name) != null;
@@ -573,15 +580,15 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Page listVm(final NovaApi novaApi, final NeutronApi neutronApi, CinderApi cinderApi, final long userVoUserId, final String region, final String name, final Integer currentPage, final Integer recordsPerPage) throws OpenStackException {
-        checkRegion(region, novaApi, neutronApi, cinderApi);
+    public Page listVm(final NovaApi novaApi, final NeutronApi neutronApi, final long userVoUserId, final String region, final String name, final Integer currentPage, final Integer recordsPerPage) throws OpenStackException {
+        checkRegion(region, novaApi, neutronApi);
 
-        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 return listServers(novaApi, region, name, currentPage, recordsPerPage);
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Port> portList = neutronApi.getPortApi(region).list().concat().toList();
@@ -598,7 +605,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return vmIdToPortList;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<FloatingIP> floatingIPList = novaApi.getFloatingIPApi(region).get().list().toList();
@@ -610,7 +617,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return vmIdToFloatingIP;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Subnet> subnetList = neutronApi.getSubnetApi(region).list().concat().toList();
@@ -620,7 +627,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return idToSubnet;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Network> networkList = neutronApi.getNetworkApi(region).list().concat().toList();
@@ -630,7 +637,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return idToNetwork;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Flavor> flavorList = novaApi.getFlavorApi(region).listInDetail().concat().toList();
@@ -640,7 +647,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return idToFlavor;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<CloudvmVolume> cloudvmVolumeList = cloudvmVolumeService.selectByName(userVoUserId, region, null, null);
@@ -657,7 +664,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return vmIdToCloudvmVolumeList;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<CloudvmImage> cloudvmImageList = cloudvmImageService.selectAllImageOrVmSnapshot(userVoUserId, region);
@@ -777,7 +784,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         final Server server = getVm(novaApi.getServerApi(region), vmId);
 
-        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Port> portList = neutronApi.getPortApi(region).list().concat().toList();
@@ -791,7 +798,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return vmPortList;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<FloatingIP> floatingIPList = novaApi.getFloatingIPApi(region).get().list().toList();
@@ -803,7 +810,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return vmFloatingIPList;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Subnet> subnetList = neutronApi.getSubnetApi(region).list().concat().toList();
@@ -813,7 +820,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return idToSubnet;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Network> networkList = neutronApi.getNetworkApi(region).list().concat().toList();
@@ -823,17 +830,17 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return idToNetwork;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 return novaApi.getFlavorApi(region).get(server.getFlavor().getId());
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 return cloudvmVolumeService.selectByServerIdAndStatus(userVoUserId, region, vmId, null);
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 return cloudvmImageService.getImageOrVmSnapshot(region, server.getImage().getId());
@@ -943,7 +950,7 @@ public class ResourceServiceImpl implements ResourceService {
         final PortApi portApi = neutronApi.getPortApi(region);
         final RouterApi routerApi = neutronApi.getRouterApi(region).get();
 
-        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<FloatingIP> floatingIPList = floatingIPApi.list().toList();
@@ -957,7 +964,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return floatingIPList;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<InterfaceAttachment> interfaceAttachments = attachInterfaceApi.list(vmId).toList();
@@ -966,13 +973,13 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return interfaceAttachments;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Port> portList = portApi.list().concat().toList();
                 return portList;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Network> networkList = networkApi.list().concat().toList();
@@ -982,7 +989,7 @@ public class ResourceServiceImpl implements ResourceService {
                 }
                 return idToNetwork;
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 List<Router> routerList = routerApi.list().concat().toList();
@@ -1000,7 +1007,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         final Ref<Boolean> isInSharedNetworkRef = new Ref<Boolean>(false);
         final Set<String> findedRouterIds = new ConcurrentSkipListSet<String>();
-        ThreadUtil.concurrentFilter(interfaceAttachments, new Function1<Void, InterfaceAttachment>() {
+        ThreadUtil.concurrentFilter(interfaceAttachments, new Function1<InterfaceAttachment, Void>() {
             @Override
             public Void apply(InterfaceAttachment interfaceAttachment) throws Exception {
                 final String networkId = interfaceAttachment.getNetworkId();
@@ -1009,7 +1016,7 @@ public class ResourceServiceImpl implements ResourceService {
                     if (network.getShared()) {
                         isInSharedNetworkRef.set(true);
                     } else {
-                        ThreadUtil.concurrentFilter(CollectionUtil.toList(interfaceAttachment.getFixedIps()), new Function1<Void, FixedIP>() {
+                        ThreadUtil.concurrentFilter(CollectionUtil.toList(interfaceAttachment.getFixedIps()), new Function1<FixedIP, Void>() {
                             @Override
                             public Void apply(FixedIP fixedIP) throws Exception {
                                 String subnetId = fixedIP.getSubnetId();
@@ -1069,7 +1076,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         floatingIPApi.addToServer(floatingIP.getIp(), vmId);
 
-        ThreadUtil.asyncExec(new Function<Void>() {
+        ThreadUtil.asyncExec(new Function0<Void>() {
             @Override
             public Void apply() throws Exception {
                 emailBindIP(region, server, floatingIP.getIp(), email, userName);
@@ -1166,7 +1173,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         eventPublishService.onDelete(new ResourceLocator().region(region).id(volumeId).type(VolumeResource.class));
 
-        ThreadUtil.waiting(new Function<Boolean>() {
+        ThreadUtil.waiting(new Function0<Boolean>() {
             @Override
             public Boolean apply() throws Exception {
                 return volumeApi.get(volumeId) != null;
@@ -1272,12 +1279,12 @@ public class ResourceServiceImpl implements ResourceService {
         final org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi floatingIPApi = getNeutronFloatingIPApi(neutronApi, region);
         final PortApi portApi = neutronApi.getPortApi(region);
 
-        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function<Object>() {
+        List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 return portApi.list().concat().toList();
             }
-        }, new Function<Object>() {
+        }, new Function0<Object>() {
             @Override
             public Object apply() throws Exception {
                 return floatingIPApi.list().concat().toList();
@@ -1342,24 +1349,24 @@ public class ResourceServiceImpl implements ResourceService {
         final org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi floatingIPApi = getNeutronFloatingIPApi(neutronApi, region);
 
         List<Ref<Object>> objListRefList = ThreadUtil.concurrentRunAndWait(
-                new Function<Object>() {
+                new Function0<Object>() {
                     @Override
                     public Object apply() throws Exception {
                         return portApi.list().concat().toList();
                     }
-                }, new Function<Object>() {
+                }, new Function0<Object>() {
                     @Override
                     public Object apply() throws Exception {
                         return floatingIPApi.list().concat().toList();
                     }
-                }, new Function<Object>() {
+                }, new Function0<Object>() {
                     @Override
                     public Object apply() throws Exception {
                         Subnet subnet = getSubnet(subnetApi, subnetId);
                         getPrivateNetwork(networkApi, subnet.getNetworkId());
                         return subnet;
                     }
-                }, new Function<Object>() {
+                }, new Function0<Object>() {
                     @Override
                     public Object apply() throws Exception {
                         return getRouter(routerApi, routerId);
@@ -1420,10 +1427,68 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         final String portId = associatedPort.getId();
-        ThreadUtil.waiting(new Function<Boolean>() {
+        ThreadUtil.waiting(new Function0<Boolean>() {
             @Override
             public Boolean apply() throws Exception {
                 return portApi.get(portId) != null;
+            }
+        });
+    }
+
+    @Override
+    public void createDefaultSecurityGroupAndRule(final NeutronApi neutronApi) throws OpenStackException {
+        ThreadUtil.concurrentFilter(CollectionUtil.toList(neutronApi.getConfiguredRegions()), new Function1<String, Void>() {
+            @Override
+            public Void apply(String region) throws Exception {
+                Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
+                        .getSecurityGroupApi(region);
+                if (!securityGroupApiOptional.isPresent()) {
+                    throw new APINotAvailableException(SecurityGroupApi.class).matrixException();
+                }
+                final SecurityGroupApi securityGroupApi = securityGroupApiOptional.get();
+
+                SecurityGroup defaultSecurityGroup = null;
+                for (SecurityGroup securityGroup : securityGroupApi
+                        .listSecurityGroups().concat().toList()) {
+                    if ("default".equals(securityGroup.getName())) {
+                        defaultSecurityGroup = securityGroup;
+                        break;
+                    }
+                }
+                if (defaultSecurityGroup == null) {
+                    defaultSecurityGroup = securityGroupApi
+                            .create(SecurityGroup.CreateSecurityGroup
+                                    .createBuilder().name("default").build());
+                }
+
+                List<RuleCreateTask> ruleCreateTaskList = new LinkedList<RuleCreateTask>();
+                ruleCreateTaskList.add(new PingRuleCreateTask());
+                ruleCreateTaskList.add(new SshRuleCreateTask());
+
+                for (Rule rule : defaultSecurityGroup.getRules()) {
+                    for (RuleCreateTask ruleCreateTask : ruleCreateTaskList.toArray(new RuleCreateTask[0])) {
+                        if (ruleCreateTask.isMatch(rule)) {
+                            ruleCreateTaskList.remove(ruleCreateTask);
+                        }
+                    }
+                }
+
+                if (ruleCreateTaskList.size() > 1) {
+                    final SecurityGroup securityGroup = defaultSecurityGroup;
+                    ThreadUtil.concurrentFilter(ruleCreateTaskList, new Function1<RuleCreateTask, Void>() {
+                        @Override
+                        public Void apply(RuleCreateTask ruleCreateTask) throws Exception {
+                            ruleCreateTask.create(securityGroupApi, securityGroup);
+                            return null;
+                        }
+                    });
+                } else {
+                    for (RuleCreateTask ruleCreateTask : ruleCreateTaskList) {
+                        ruleCreateTask.create(securityGroupApi, defaultSecurityGroup);
+                    }
+                }
+
+                return null;
             }
         });
     }

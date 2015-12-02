@@ -3,7 +3,6 @@ package com.letv.portal.service.openstack.billing.impl;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.exception.MatrixException;
-import com.letv.portal.model.cloudvm.CloudvmRcCount;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.service.openstack.billing.BillingResource;
 import com.letv.portal.service.openstack.billing.ResourceDeleteService;
@@ -20,10 +19,9 @@ import com.letv.portal.service.openstack.resource.*;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.RandomUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.Timeout;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import com.letv.portal.service.openstack.util.function.Function1;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
@@ -96,7 +94,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                 }
 
                 for (Map.Entry<Class<? extends BillingResource>, List<ResourceLocator>> typeToLocatorsEntry : typeToLocators.entrySet()) {
-                    ThreadUtil.concurrentFilter(typeToLocatorsEntry.getValue(), new Function1<Void, ResourceLocator>() {
+                    ThreadUtil.concurrentFilter(typeToLocatorsEntry.getValue(), new Function1<ResourceLocator, Void>() {
                         @Override
                         public Void apply(ResourceLocator resourceLocator) throws Exception {
                             deleteBillingResource(userId, userApiCache, resourceLocator);
@@ -135,7 +133,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         final Snapshot snapshot = snapshotApi.get(locator.getId());
 
         if (snapshot != null) {
-            ThreadUtil.waiting(new Function<Boolean>() {
+            ThreadUtil.waiting(new Function0<Boolean>() {
                 @Override
                 public Boolean apply() throws Exception {
                     Snapshot latestSnapshot = snapshotApi.get(locator.id());
@@ -152,7 +150,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 
             boolean isSuccess = snapshotApi.delete(snapshot.getId());
             if (isSuccess) {
-                ThreadUtil.waiting(new Function<Boolean>() {
+                ThreadUtil.waiting(new Function0<Boolean>() {
                     @Override
                     public Boolean apply() throws Exception {
                         return snapshotApi.get(snapshot.getId()) != null;
@@ -176,7 +174,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                     boolean isSuccess = volumeAttachmentApi.detachVolumeFromServer(volumeAttachment.getVolumeId(), volumeAttachment.getServerId());
                     if (isSuccess) {
                         localVolumeService.update(userId, userId, locator.region(), volume);
-                        ThreadUtil.waiting(new Function<Boolean>() {
+                        ThreadUtil.waiting(new Function0<Boolean>() {
                             @Override
                             public Boolean apply() throws Exception {
                                 return volumeAttachmentApi.getAttachmentForVolumeOnServer(volumeAttachment.getVolumeId(), volumeAttachment.getServerId()) != null;
@@ -194,7 +192,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                 }
             }
 
-            ThreadUtil.waiting(new Function<Boolean>() {
+            ThreadUtil.waiting(new Function0<Boolean>() {
                 @Override
                 public Boolean apply() throws Exception {
                     Volume latestVolume = volumeApi.get(locator.id());
@@ -211,7 +209,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 
             boolean isSuccess = volumeApi.delete(locator.id());
             if (isSuccess) {
-                ThreadUtil.waiting(new Function<Boolean>() {
+                ThreadUtil.waiting(new Function0<Boolean>() {
                     @Override
                     public Boolean apply() throws Exception {
                         return volumeApi.get(locator.id()) != null;
@@ -230,7 +228,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         if (floatingIP != null) {
             boolean isSuccess = floatingIPApi.delete(locator.id());
             if (isSuccess) {
-                ThreadUtil.waiting(new Function<Boolean>() {
+                ThreadUtil.waiting(new Function0<Boolean>() {
                     @Override
                     public Boolean apply() throws Exception {
                         return floatingIPApi.get(locator.id()) != null;
@@ -261,7 +259,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
                             if (ip.getSubnetId() != null) {
                                 boolean isSuccess = routerApi.removeInterfaceForSubnet(router.getId(), ip.getSubnetId());
                                 if (isSuccess) {
-                                    ThreadUtil.waiting(new Function<Boolean>() {
+                                    ThreadUtil.waiting(new Function0<Boolean>() {
                                         @Override
                                         public Boolean apply() throws Exception {
                                             return portApi.get(port.getId()) != null;
@@ -280,7 +278,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 
             boolean isSuccess = routerApi.delete(locator.id());
             if (isSuccess) {
-                ThreadUtil.waiting(new Function<Boolean>() {
+                ThreadUtil.waiting(new Function0<Boolean>() {
                     @Override
                     public Boolean apply() throws Exception {
                         return routerApi.get(locator.id()) != null;
@@ -299,7 +297,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
         if (server != null) {
             Flavor flavor = novaApi.getFlavorApi(locator.region()).get(server.getFlavor().getId());
 
-            ThreadUtil.waiting(new Function<Boolean>() {
+            ThreadUtil.waiting(new Function0<Boolean>() {
                 @Override
                 public Boolean apply() throws Exception {
                     Server latestServer = serverApi.get(locator.id());
@@ -328,7 +326,7 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 
             boolean isSuccess = serverApi.delete(locator.id());
             if (isSuccess) {
-                ThreadUtil.waiting(new Function<Boolean>() {
+                ThreadUtil.waiting(new Function0<Boolean>() {
                     @Override
                     public Boolean apply() throws Exception {
                         return serverApi.get(locator.id()) != null;

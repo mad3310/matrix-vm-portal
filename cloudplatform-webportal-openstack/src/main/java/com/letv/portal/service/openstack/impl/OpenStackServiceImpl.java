@@ -4,14 +4,12 @@ import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
-import com.google.common.base.Optional;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.billing.event.service.EventPublishService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
-import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.internal.UserExists;
 import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
@@ -22,17 +20,11 @@ import com.letv.portal.service.openstack.local.service.LocalNetworkService;
 import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
-import com.letv.portal.service.openstack.util.CollectionUtil;
 import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
-import com.letv.portal.service.openstack.util.function.Function1;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.*;
-import org.jclouds.openstack.neutron.v2.extensions.SecurityGroupApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.SchedulingTaskExecutor;
@@ -290,101 +282,7 @@ public class OpenStackServiceImpl implements OpenStackService {
                             openStackUser.getPassword()).modules(Constants.jcloudsContextBuilderModules)
                     .buildApi(NeutronApi.class);
             try {
-                ThreadUtil.concurrentFilter(CollectionUtil.toList(neutronApi.getConfiguredRegions()), new Function1<Void, String>() {
-                    @Override
-                    public Void apply(String region) throws Exception {
-                        Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
-                                .getSecurityGroupApi(region);
-                        if (!securityGroupApiOptional.isPresent()) {
-                            throw new APINotAvailableException(SecurityGroupApi.class).matrixException();
-                        }
-                        final SecurityGroupApi securityGroupApi = securityGroupApiOptional.get();
-
-                        SecurityGroup defaultSecurityGroup = null;
-                        for (SecurityGroup securityGroup : securityGroupApi
-                                .listSecurityGroups().concat().toList()) {
-                            if ("default".equals(securityGroup.getName())) {
-                                defaultSecurityGroup = securityGroup;
-                                break;
-                            }
-                        }
-                        if (defaultSecurityGroup == null) {
-                            defaultSecurityGroup = securityGroupApi
-                                    .create(SecurityGroup.CreateSecurityGroup
-                                            .createBuilder().name("default").build());
-                        }
-
-                        Rule pingRule = null, sshRule = null;
-                        for (Rule rule : defaultSecurityGroup.getRules()) {
-                            if (pingRule != null && sshRule != null) {
-                                break;
-                            }
-                            if (pingRule == null) {
-                                if (rule.getDirection() == RuleDirection.INGRESS
-                                        && rule.getEthertype() == RuleEthertype.IPV4
-                                        && rule.getProtocol() == RuleProtocol.ICMP
-                                        && "0.0.0.0/0".equals(rule.getRemoteIpPrefix())) {
-                                    pingRule = rule;
-                                }
-                            }
-                            if (sshRule == null) {
-                                if (rule.getDirection() == RuleDirection.INGRESS
-                                        && rule.getEthertype() == RuleEthertype.IPV4
-                                        && rule.getProtocol() == RuleProtocol.TCP
-                                        && "0.0.0.0/0".equals(rule.getRemoteIpPrefix())
-                                        && rule.getPortRangeMin() == 22
-                                        && rule.getPortRangeMax() == 22) {
-                                    sshRule = rule;
-                                }
-                            }
-                        }
-
-                        if (pingRule == null && sshRule == null) {
-                            final SecurityGroup defaultSecurityGroupRef = defaultSecurityGroup;
-                            ThreadUtil.concurrentRunAndWait(new Function<Void>() {
-                                @Override
-                                public Void apply() {
-                                    securityGroupApi.create(Rule.CreateRule
-                                            .createBuilder(RuleDirection.INGRESS,
-                                                    defaultSecurityGroupRef.getId())
-                                            .ethertype(RuleEthertype.IPV4)
-                                            .protocol(RuleProtocol.ICMP)
-                                            .remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
-									return null;
-                                }
-                            }, new Function<Void>() {
-                                @Override
-                                public Void apply() {
-                                    securityGroupApi.create(Rule.CreateRule
-                                            .createBuilder(RuleDirection.INGRESS,
-                                                    defaultSecurityGroupRef.getId())
-                                            .ethertype(RuleEthertype.IPV4)
-                                            .protocol(RuleProtocol.TCP).portRangeMin(22)
-                                            .portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
-									return null;
-                                }
-                            });
-                        } else {
-                            if (pingRule == null) {
-                                securityGroupApi.create(Rule.CreateRule
-                                        .createBuilder(RuleDirection.INGRESS,
-                                                defaultSecurityGroup.getId())
-                                        .ethertype(RuleEthertype.IPV4)
-                                        .protocol(RuleProtocol.ICMP)
-                                        .remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
-                            }
-                            if (sshRule == null) {
-                                securityGroupApi.create(Rule.CreateRule
-                                        .createBuilder(RuleDirection.INGRESS,
-                                                defaultSecurityGroup.getId())
-                                        .ethertype(RuleEthertype.IPV4)
-                                        .protocol(RuleProtocol.TCP).portRangeMin(22)
-                                        .portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
-                            }
-                        }
-                        return null;
-                    }
-                });
+                resourceService.createDefaultSecurityGroupAndRule(neutronApi);
             } finally {
                 neutronApi.close();
             }

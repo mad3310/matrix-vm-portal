@@ -11,7 +11,6 @@ import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.BillingResource;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.ResourceQueryService;
-import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.jclouds.cache.UserApiCache;
@@ -24,13 +23,12 @@ import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.util.*;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import com.letv.portal.service.openstack.util.function.Function1;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
 
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
-import org.jclouds.openstack.keystone.v2_0.features.UserApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.Router;
@@ -159,12 +157,12 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
             try {
                 userApiCache.loadApis(NovaApi.class, NeutronApi.class);
                 @SuppressWarnings("unchecked")
-                List<Ref<List<Tuple2<ResourceLocator, BillingResource>>>> resultRefList = ThreadUtil.concurrentRunAndWait(new Timeout().time(40L).unit(TimeUnit.MINUTES), new Function<List<Tuple2<ResourceLocator, BillingResource>>>() {
+                List<Ref<List<Tuple2<ResourceLocator, BillingResource>>>> resultRefList = ThreadUtil.concurrentRunAndWait(new Timeout().time(40L).unit(TimeUnit.MINUTES), new Function0<List<Tuple2<ResourceLocator, BillingResource>>>() {
                     @Override
                     public List<Tuple2<ResourceLocator, BillingResource>> apply() throws Exception {
                         List<Tuple2<ResourceLocator, BillingResource>> entries = ThreadUtil.concurrentFilter(
                                 CollectionUtil.toList(resourceLocators),
-                                new Function1<Tuple2<ResourceLocator, BillingResource>, ResourceLocator>() {
+                                new Function1<ResourceLocator, Tuple2<ResourceLocator, BillingResource>>() {
                                     @Override
                                     public Tuple2<ResourceLocator, BillingResource> apply(ResourceLocator locator)
                                             throws Exception {
@@ -184,7 +182,7 @@ public class ResourceQueryServiceImpl implements ResourceQueryService {
                                 }, new Timeout().time(30L).unit(TimeUnit.MINUTES));
                         return entries;
                     }
-                }, new Function<List<Tuple2<ResourceLocator, BillingResource>>>() {
+                }, new Function0<List<Tuple2<ResourceLocator, BillingResource>>>() {
                     @Override
                     public List<Tuple2<ResourceLocator, BillingResource>> apply() throws Exception {
                         Set<String> regions = new HashSet<String>();

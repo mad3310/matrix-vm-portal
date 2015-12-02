@@ -35,7 +35,7 @@ public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
 
 //    @Override
 //    public void updateLocalCommonQuotaService(final long userVoUserId, final String osTenantId, final NovaApi novaApi, final NeutronApi neutronApi, final CinderApi cinderApi) throws OpenStackException {
-//        ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+//        ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 //            @Override
 //            public Void apply() throws Exception {
 //                Set<String> regions = novaApi.getConfiguredRegions();
@@ -70,7 +70,7 @@ public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
 //                });
 //                return null;
 //            }
-//        }, new Function<Void>() {
+//        }, new Function0<Void>() {
 //            @Override
 //            public Void apply() throws Exception {
 //                Set<String> regions = neutronApi.getConfiguredRegions();
@@ -83,7 +83,7 @@ public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
 //                });
 //                return null;
 //            }
-//        }, new Function<Void>() {
+//        }, new Function0<Void>() {
 //            @Override
 //            public Void apply() throws Exception {
 //                Set<String> regions = cinderApi.getConfiguredRegions();

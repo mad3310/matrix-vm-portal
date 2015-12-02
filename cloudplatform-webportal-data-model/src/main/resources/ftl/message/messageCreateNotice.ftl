@@ -8,8 +8,10 @@
 				<th>资源类型</th>
 				<th>资源ID</th>
 				<th>资源名称</th>
+				<#if isVm>
 				<th>用户名</th>
 				<th>密码</th>
+				</#if>
 			</tr>
 		<thead>
 		<tbody>
@@ -19,8 +21,10 @@
 				<td>${res.type}</td>
 				<td>${res.id}</td>
 				<td>${res.name}</td>
+				<#if isVm>
 				<td>${res.userName}</td>
 				<td>${res.password}</td>
+				</#if>
 			</tr>
 			</#list>
 		</tbody>
