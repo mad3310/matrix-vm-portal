@@ -66,13 +66,15 @@ public class LoginController {
 			}
 		});
 
-		mav.setViewName("redirect:" + request.getParameter("redirect"));
+		/*mav.setViewName("redirect:" + request.getParameter("redirect"));*/
+        mav.setViewName("redirect:/profile");
 		return mav;
 	}
 
 	private ModelAndView toLogin(ModelAndView mav,String requestURI,String queryString) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(requestURI).append(StringUtils.isEmpty(queryString) ? "" : "?&").append(StringUtils.isEmpty(queryString)?"":queryString);
+		/*buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(requestURI).append(StringUtils.isEmpty(queryString) ? "" : "?&").append(StringUtils.isEmpty(queryString)?"":queryString);*/
+        buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
 		mav.setViewName("redirect:" + buffer.toString());
 		return mav;
 	}

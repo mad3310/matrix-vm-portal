@@ -87,8 +87,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
             responseJson(request,response,"长时间未操作，请重新登录");
         } else {
             StringBuffer buffer = new StringBuffer();
-            buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback?&redirect=").append(request.getRequestURI())
-                    .append(StringUtils.isEmpty(request.getQueryString())?"":"?&").append(StringUtils.isEmpty(request.getQueryString())?"":request.getQueryString());
+            /*buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback?&redirect=").append(request.getRequestURI())
+                    .append(StringUtils.isEmpty(request.getQueryString())?"":"?&").append(StringUtils.isEmpty(request.getQueryString())?"":request.getQueryString());*/
+            buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
             response.sendRedirect(buffer.toString());
         }
         return false;
