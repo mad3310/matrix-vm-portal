@@ -254,8 +254,9 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     @Override
     public boolean updateUserAmountFromAvailableToFreeze(long userId, BigDecimal price) {
         logger.info("开始转移可用余额到冻结余额,用户id:"+userId+",金额："+price);
-        BillUserAmount billUserAmount = this.getUserAmount(userId);
+        BillUserAmount billUserAmount = null;
         synchronized(obj) {
+        	billUserAmount = this.getUserAmount(userId);
             if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
                 billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
                 billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().add(price));
@@ -273,8 +274,9 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     public boolean updateUserAmountFromFreezeToAvailable(long userId, BigDecimal price, String productName, String productType) {
         boolean ret = false;
         logger.info("开始转移冻结余额到可用余额,用户id:"+userId+",金额："+price);
-        BillUserAmount billUserAmount = this.getUserAmount(userId);
+        BillUserAmount billUserAmount = null;
         synchronized(obj) {
+        	billUserAmount = this.getUserAmount(userId);
             if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
                 billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(price));
                 billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
@@ -319,8 +321,9 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     public boolean reduceAvailableAmount(long userId, BigDecimal price, String productName, String productType, String date) {
         boolean ret = false;
         logger.info("开始扣除可用余额,用户id:"+userId+",金额："+price);
-        BillUserAmount billUserAmount = this.getUserAmount(userId);
+        BillUserAmount billUserAmount = null;
         synchronized(obj) {
+        	billUserAmount = this.getUserAmount(userId);
             if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
                 billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
                 billUserAmountMapper.reduceAvailableAmount(billUserAmount);
@@ -365,8 +368,9 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     public boolean reduceFreezeAmount(long userId, BigDecimal price, String productName, String productType) {
         boolean ret = false;
         logger.info("开始扣除冻结金额,用户id:"+userId+",金额："+price);
-        BillUserAmount billUserAmount = this.getUserAmount(userId);
+        BillUserAmount billUserAmount = null;
         synchronized(obj) {
+        	billUserAmount = this.getUserAmount(userId);
             if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
                 billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
                 billUserAmountMapper.reduceFreezeAmount(billUserAmount);
@@ -411,8 +415,9 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                                     BigDecimal failPrice, String productName, String productType) {
         boolean ret = false;
         logger.info("开始处理冻结金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
-        BillUserAmount billUserAmount = this.getUserAmount(userId);
+        BillUserAmount billUserAmount = null;
         synchronized(obj) {
+        	billUserAmount = this.getUserAmount(userId);
             if(billUserAmount.getFreezeAmount().compareTo(succPrice.add(failPrice))>=0) {
                 billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(succPrice.add(failPrice)));
                 billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(failPrice));
@@ -421,7 +426,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                 ret = true;
             } else {
                 logger.error("冻结金额小于需要处理金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
-                throw new MatrixException(MessageFormat.format("冻结金额小于需要处理金额,用户id:{1},成功金额：{2},失败金额：{3}", userId, succPrice, failPrice));
+                throw new MatrixException(MessageFormat.format("冻结金额小于需要处理金额,用户id:{0},成功金额：{1},失败金额：{2}", userId, succPrice, failPrice));
             }
         }
 

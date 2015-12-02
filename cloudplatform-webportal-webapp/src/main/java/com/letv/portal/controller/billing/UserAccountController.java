@@ -1,8 +1,8 @@
 package com.letv.portal.controller.billing;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
-import com.letv.portal.service.order.IOrderService;
+import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 
 /**Program Name: BaseProductController <br>
  * Description:  基础产品<br>
@@ -34,6 +33,8 @@ public class UserAccountController {
 
 	@Autowired
 	private BillUserAmountService billUserAmountService;
+	@Autowired
+	private BillUserServiceBilling billUserServiceBilling;
 
 	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject account(@PathVariable Long userId, ResultObject obj) {
@@ -49,12 +50,10 @@ public class UserAccountController {
 	}
 
 	@RequestMapping(value="/order/un/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject unReadOrder(@PathVariable Long userId, ResultObject obj) {
-	   /* Map<String, Object> params = new HashMap<String,Object>();
-	    params.put("userId", userId);
-	    params.put("status", 0); //unRead
-	    Integer count = this.orderService.selectByMapCount(params);*/
-		obj.setData(0);
+	public @ResponseBody ResultObject getUserBillingCount(@PathVariable Long userId, ResultObject obj) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+	    Long count = this.billUserServiceBilling.getUserBillingCount(userId, sdf.format(new Date()));
+		obj.setData(count);
 		return obj;
 	}
 

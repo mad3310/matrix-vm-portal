@@ -6,9 +6,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
-import com.letv.portal.service.IUserService;
 import com.letv.portal.service.oauth.IOauthService;
 import com.letv.portal.service.oauth.IUcService;
 import com.letv.portal.service.openstack.OpenStackService;
@@ -17,7 +15,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,14 +35,20 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 
     @Autowired(required=false)
     private SessionServiceImpl sessionService;
+    @Autowired
+    private IOauthService oauthService;
+    @Autowired
+    private IUcService ucService;
+    @Autowired
+    private OpenStackService openStackService;
+
+    @Autowired
+    private ILoginProxy loginProxy;
 
     public String[] allowUrls;
 
-    @Value("${oauth.auth.http}")
-    private String OAUTH_AUTH_HTTP;
-    @Value("${webportal.local.http}")
-    private String WEBPORTAL_LOCAL_HTTP;
-
+    private static String OAUTH_CLIENT_ID = "client_id";
+    private static String OAUTH_CLIENT_SECRET = "client_secret";
 
     public void setAllowUrls(String[] allowUrls) {
         this.allowUrls = allowUrls;
@@ -74,9 +77,26 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
             return true;
 
         Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-        if(session != null )
-            return pass(session);
+        if(session != null ) {
+            return loginSuccess(session, request);
+        }
+        //session is null,login by request
+        String clientId = request.getParameter(OAUTH_CLIENT_ID);
+        String clientSecret = request.getParameter(OAUTH_CLIENT_SECRET);
 
+        session = this.loginProxy.login(clientId,clientSecret);
+
+        //login success,session not null.
+        if(session != null) {
+            try {
+                session.setOpenStackSession(openStackService.createSession(session.getUserId(),null,null,null));
+            } catch (OpenStackException e) {
+                logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
+            }
+            return loginSuccess(session, request);
+        }
+
+        //login failed by request.
         return toLogin(request,response);
 
     }
@@ -86,15 +106,13 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
         if (isAjaxRequest) {
             responseJson(request,response,"长时间未操作，请重新登录");
         } else {
-            StringBuffer buffer = new StringBuffer();
-            /*buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback?&redirect=").append(request.getRequestURI())
-                    .append(StringUtils.isEmpty(request.getQueryString())?"":"?&").append(StringUtils.isEmpty(request.getQueryString())?"":request.getQueryString());*/
-            buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
-            response.sendRedirect(buffer.toString());
+            RequestDispatcher rd = request.getRequestDispatcher("/toLogin?back="+request.getRequestURI());
+            rd.forward(request, response);
         }
         return false;
     }
-    private boolean pass(Session session){
+    private boolean loginSuccess(Session session,HttpServletRequest request){
+        request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
         sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
             @Override
             public Session execute() throws Throwable {

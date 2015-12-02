@@ -58,7 +58,8 @@ public class UcServiceImpl implements IUcService {
 		try {
 			jsonResult = resultMapper.readValue(result, Map.class);
 		}catch (Exception e) {
-			e.printStackTrace();
+			logger.error("uc api transResult error:{}",e.getMessage());
+			return null;
 		}
 		return jsonResult;
 	}
