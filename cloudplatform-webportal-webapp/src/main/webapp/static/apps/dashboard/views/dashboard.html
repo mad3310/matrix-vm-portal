@@ -146,14 +146,11 @@
 					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1&&expander.length>=10,third:$index==2,gotop:$index>2}">
 						<div>{{operation.action}}</div>
 						<div class="items-desc">
-							<span class="text-blue" ng-show="operation.content.indexOf('=')<0">{{operation.content}}</span>
-							<span ng-show="operation.content.indexOf('=-')>0">
-								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=-'))}}</span>&nbsp;为&nbsp;
-								<span class="text-yellow">{{operation.content.substring(operation.content.indexOf('=-')+2)}}</span>
-							</span>
+							<span class="text-blue" ng-show="operation.content.indexOf('==')<=0">{{operation.content}}</span>
 							<span ng-show="operation.content.indexOf('==')>0">
-								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=='))}}</span>&nbsp;到&nbsp;
-								<span class="text-yellow">{{operation.content.substring(operation.content.indexOf('==')+2)}}</span>
+								<span class="text-green">{{operation.content.substring(0,operation.content.indexOf('=='))}}</span>
+								&nbsp;<span>{{operation.content.substring(operation.content.indexOf('==')+2,operation.content.lastIndexOf('=='))}}</span>&nbsp;
+								<span class="text-yellow">{{operation.content.substring(operation.content.lastIndexOf('==')+2)}}</span>
 							</span>
 							<span class="pull-right" data-picker>{{operation.createTime|date:'yyyy-MM-dd HH:mm'}}</span>
 							<div class="clearfix"></div>
