@@ -1,3 +1,4 @@
+@charset "utf-8";
 /*begin global style*/
 * {
     box-sizing: border-box;
@@ -6,7 +7,7 @@
 }
 
 body {
-    font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif, "宋体";
+    font-family:"\5FAE\8F6F\96C5\9ED1","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"\5B8B\4F53";
     font-size: 14px;
     line-height: 1.42857143;
 }
@@ -15,10 +16,10 @@ body {
 /*begin custom iconfont style*/
 @font-face {font-family: "iconfont";
     src: url('../fonts/iconfont.eot'); /* IE9*/
-    src: url('../fonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('../fonts/iconfont.woff') format('woff'), /* chrome、firefox */
-    url('../fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-    url('../fonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+    src: url('../fonts/iconfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/iconfont.woff') format('woff'), 
+    url('../fonts/iconfont.ttf') format('truetype'), 
+    url('../fonts/iconfont.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -34,6 +35,7 @@ body {
 .icon-roundcheck:before { content: "\e601"; }
 .icon-myfill:before { content: "\e602"; }
 .icon-my:before { content: "\e603"; }
+.icon-rilijiantouyoushuang:before { content: "\e64d"; }
 .icon-round:before { content: "\e604"; }
 .icon-roundaddfill:before { content: "\e605"; }
 .icon-roundadd:before { content: "\e606"; }
@@ -106,7 +108,7 @@ body {
 .icon-clouddashboard:before { content: "\e648"; }
 .icon-cloudimage:before { content: "\e649"; }
 /*end custom iconfont style*/
-/*滚动条*/
+/*scrollbar-style*/
 ::-webkit-scrollbar{width: 7px;box-shadow: 2px 2px 3px 0;}
 ::-webkit-scrollbar-track{background-color:rgba(235,235,235,1);}
 ::-webkit-scrollbar-thumb{background:#d0cfcf;}
@@ -172,7 +174,7 @@ body {
 }
 
 .pagination{
-    /*by yk 按钮靠右*/
+    /*by yk 鎸夐挳闈犲彸*/
     position: absolute;
     right: 12px;
     /*end*/
@@ -1043,6 +1045,7 @@ le-select .le-select-menu li a{
 /*begin view-common style*/
 .view-common .operate-panel > .le-btn-group > .btn{
     margin-right: 10px;
+    outline:none;
 }
 
 
@@ -1165,12 +1168,12 @@ le-select .le-select-menu li a{
     background-color: #e05c69;
     color: #fff;
 }
-.btn-le-blue:hover,.btn-le-blue:active,.btn-le-blue:focus{color:#fff;background:#077CAE;}
-.btn-le-blueGreen:hover,.btn-le-blueGreen:active,.btn-le-blueGreen:focus{color:#fff;background:#0592A2;}
-.btn-le-green:hover,.btn-le-green:active,.btn-le-green:focus{color:#fff;background:#06A094}
-.btn-le-yellow:hover,.btn-le-yellow:active,.btn-le-yellow:focus{color:#fff;background:rgb(234,176,15);}
-.btn-le-red:hover,.btn-le-red:active,.btn-le-red:focus{color:#fff;background:#E41E19}
-.btn-le-roseRed:hover,.btn-le-roseRed:active,.btn-le-roseRed:focus{color:#fff;background:#CA535F}
+.btn-le-blue:hover,.btn-le-blue:active,.btn-le-blue:focus{outline:none;color:#fff;background:#077CAE;}     
+.btn-le-blueGreen:hover,.btn-le-blueGreen:focus,.btn-le-blueGreen:active{outline:none;color:#fff;background:#0592A2;}
+.btn-le-green:hover,.btn-le-green:active,.btn-le-green:focus{outline:none;color:#fff;background:#06A094}
+.btn-le-yellow:hover,.btn-le-yellow:active,.btn-le-yellow:focus{outline:none;color:#fff;background:rgb(234,176,15);}
+.btn-le-red:hover,.btn-le-red:active,.btn-le-red:focus{outline:none;color:#fff;background:#E41E19}
+.btn-le-roseRed:hover,.btn-le-roseRed:active,.btn-le-roseRed:focus{outline:none;color:#fff;background:#CA535F}
 /*end btn-le style*/
 
 /*begin le-text style*/
@@ -1247,9 +1250,7 @@ le-select .le-select-menu li a{
     width: 250px;
 }
 /*end le-modal style*/
-/*禁止选中*/
 .unselectable{-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;}
-/*隐藏过多内容*/
 .hide-out-text{
     display: block;
     overflow: hidden;
@@ -1287,4 +1288,4 @@ le-select .le-select-menu li a{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/*end le-text-ellipsis style*/
+/*end le-text-ellipsis style

@@ -78,7 +78,6 @@ function fFuc(){
         }
      });
      repeatCount ++;
-     console.log(repeatCount);
   }else{
     fClearPoll();
     $("#WeChatRefresh").css('display', 'block');

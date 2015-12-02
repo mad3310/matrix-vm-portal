@@ -48,7 +48,7 @@
                     <th><span>状态</span></th>
                     <th><span>镜像</span></th>
                     <th><span>配置</span></th>
-                    <th><span>监控</span></th>
+                    <!-- <th><span>监控</span></th> -->
                     <th><span>创建时间</span></th>
                     <th><span>VNC登录</span></th>
                 </tr>
@@ -77,7 +77,7 @@
                     </td>
                     <td><span>{{vm.image.name || '无'}}</span></td>
                     <td><span>{{vm | vmFlavorFilter}}</span></td>
-                    <td><span class="iconfont icon-monitor"></span></td>
+                    <!-- <td><span class="iconfont icon-monitor"></span></td> -->
                     <td><span>{{vm.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
                     <td><span class="iconfont icon-computer" ng-click="navigateToVNC(vm)"></span></td>
                 </tr>
