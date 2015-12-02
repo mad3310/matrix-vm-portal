@@ -89,7 +89,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
         //login success,session not null.
         if(session != null) {
             try {
-                session.setOpenStackSession(openStackService.createSession(session.getUserId(),null,null,null));
+                session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
             } catch (OpenStackException e) {
                 logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
             }

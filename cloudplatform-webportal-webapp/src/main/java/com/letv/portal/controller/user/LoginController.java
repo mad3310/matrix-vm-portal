@@ -54,7 +54,7 @@ public class LoginController {
 		if(null == session)
 			return toLogin(mav,request.getRequestURI(),request.getQueryString());
 
-        loginSuccess(request,session);
+        loginSuccess(request, session);
 
 		/*mav.setViewName("redirect:" + request.getParameter("redirect"));*/
         mav.setViewName("redirect:/profile");
@@ -63,7 +63,7 @@ public class LoginController {
 
     private void loginSuccess(HttpServletRequest request,Session session) {
         try {
-            session.setOpenStackSession(openStackService.createSession(session.getUserId(),null,null,null));
+            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
         } catch (OpenStackException e) {
             logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
         }
