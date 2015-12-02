@@ -10,4 +10,6 @@ public interface ILoginProxy {
 	Session saveOrUpdateUserAndLogin(UserLogin userLogin);
 
 	void logout();
+
+	Session login(String clientId,String clientSecret);
 }
