@@ -65,6 +65,7 @@
 	        <list>
 	          <value>/oauth/callback</value>
 	          <value>/logout</value>
+                <value>/toLogin</value>
                 <value>/static</value>
                 <value>/home</value>
 	          <value>/user</value>
