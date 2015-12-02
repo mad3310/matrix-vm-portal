@@ -109,4 +109,10 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
 		this.billUserBillingDao.insert(billUserBilling);
 		
 	}
+
+
+	@Override
+	public Long getUserBillingCount(Long userId, String month) {
+		return billUserBillingDao.getUserBillingsCount(userId, month);
+	}
 }

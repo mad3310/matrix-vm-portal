@@ -54,8 +54,13 @@ public class UserController {
 			obj.setResult(0);
 			return obj;
 		}
-		obj.setData(session.getUserName());
-		return obj;
+        Map<String, Object> userdetailinfo = this.ucService.getUserByUserId(session.getUcId());
+        if(userdetailinfo == null || userdetailinfo.isEmpty()) {
+            obj.setData(session.getUserName());
+            return obj;
+        }
+        obj.setData(userdetailinfo);
+        return obj;
 	}
 
 	/**Methods Name: userInfo <br>

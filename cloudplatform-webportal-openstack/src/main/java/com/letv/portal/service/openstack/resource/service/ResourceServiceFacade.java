@@ -43,4 +43,7 @@ public interface ResourceServiceFacade {
                                   String subnetId) throws OpenStackException;
 
     VMResource getVm(String region, String vmId) throws OpenStackException;
+
+    Page listPrivateSubnet(String region, String name, Integer currentPage,
+                           Integer recordsPerPage) throws OpenStackException;
 }

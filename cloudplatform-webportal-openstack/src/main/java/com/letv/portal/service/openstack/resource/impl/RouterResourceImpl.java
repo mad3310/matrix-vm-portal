@@ -26,6 +26,11 @@ public class RouterResourceImpl extends AbstractResource implements
 		this.router = router;
 	}
 
+	public RouterResourceImpl(String region, Router router) {
+		this.region = region;
+		this.router = router;
+	}
+
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router) {
 		this(region, regionDisplayName, router, null, null, null);

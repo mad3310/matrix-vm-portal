@@ -17,6 +17,17 @@ public interface BillUserServiceBilling {
      * @return
      */
     BillMonthBilling queryUserServiceBilling(Long userId,String month);
+    /**
+      * @Title: getUserBillingCount
+      * @Description: 根据用户ID、月份查询用户账单数
+      * @param userId
+      * @param month
+      * @return Long   
+      * @throws 
+      * @author lisuxiao
+      * @date 2015年12月2日 下午4:54:48
+      */
+    Long getUserBillingCount(Long userId,String month);
 
     /**
      * 根据订单Id、月份查询用户账单详细信息

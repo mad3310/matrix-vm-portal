@@ -9,11 +9,15 @@ import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.oauth.IOauthService;
+import com.letv.portal.service.oauth.IUcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+
+import java.util.Map;
 
 @Component
 public class LoginProxyImpl  implements ILoginProxy{
@@ -22,6 +26,12 @@ public class LoginProxyImpl  implements ILoginProxy{
 
 	@Autowired
 	private IUserService userService;
+
+	@Autowired
+	private IOauthService oauthService;
+
+	@Autowired
+	private IUcService ucService;
 	@Autowired
 	private SessionServiceImpl sessionService;
 
@@ -32,9 +42,11 @@ public class LoginProxyImpl  implements ILoginProxy{
 		UserModel user = this.userService.selectByOauthId(session.getOauthId());
 		Long userId;
 		if(null == user) {
+            session.setUcId(this.ucService.getUcIdByOauthId(session.getOauthId()));
 			userId = this.insertUser(session);
 		} else {
-			userId = user.getId();
+            session.setUcId(user.getUcId());
+            userId = user.getId();
 			user.setEmail(session.getEmail());
 			user.setUserName(session.getUserName());
 			user.setMobile(session.getMobile());
@@ -42,7 +54,7 @@ public class LoginProxyImpl  implements ILoginProxy{
 		}
 		session.setUserId(userId);
 
-		logger.info("logined successfully:{}",session.getUserName());
+		logger.info("logined successfully:{}", session.getUserName());
 		return session;
 	}
 	public Long insertUser(Session session) {
@@ -91,6 +103,31 @@ public class LoginProxyImpl  implements ILoginProxy{
 		});
 
 		logger.debug("logouted successfully");
+	}
+
+	@Override
+	public Session login(String clientId,String clientSecret) {
+
+		Map<String,Object> oauthUser = this.oauthService.getUserdetailinfo(clientId, clientSecret);
+		if(null == oauthUser || oauthUser.isEmpty()) {
+			return null;
+		}
+        String oauthId = (String) oauthUser.get("uuid");
+
+		Session session = new Session();
+		//use clinetId when user logout.
+		session.setClientId(clientId);
+		session.setClientSecret(clientSecret);
+		session.setOauthId(oauthId);
+		String username = (String) oauthUser.get("username");
+		String email = (String) oauthUser.get("email");
+
+		session.setUserName(username);
+		session.setEmail(email);
+		session.setMobile((String) oauthUser.get("telephone"));
+
+		session = this.saveOrUpdateUserBySession(session);
+		return session;
 	}
 
 	private Session createUserSession(UserModel user) {

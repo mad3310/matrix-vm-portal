@@ -1,3 +1,4 @@
+@charset "utf-8";
 .text-gray{color:#888}
 .no-paddingR{padding-right:0;}
 .no-paddingL{padding-left:0;}
@@ -74,4 +75,6 @@
 .recommend-item .item-title{padding-top:25px;}
 .recommend-item .item-desc{padding-top:10px;font-size:12px;color:#888;}
 .recommend-item .item-detail{padding-top:10px;font-size:12px;}
+.recommend-item .item-detail:hover,.recommend-item .item-detail:focus,.recommend-item .item-detail:active{color:#088ac2;text-decoration:none;}
+.item-detail .iconfont{padding:0;font-size:12px;}
 .recommend-item .item-buttons{margin:25px 0;}

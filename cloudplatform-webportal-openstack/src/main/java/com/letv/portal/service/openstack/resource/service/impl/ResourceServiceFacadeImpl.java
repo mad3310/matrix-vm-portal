@@ -191,4 +191,11 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         return resourceService.getVm(novaApi, neutronApi, userVoUserId, region, vmId);
     }
+
+    @Override
+    public Page listPrivateSubnet(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+        NeutronApi neutronApi = getNeutronApi();
+
+        return resourceService.listPrivateSubnet(neutronApi, region, name, currentPage, recordsPerPage);
+    }
 }
