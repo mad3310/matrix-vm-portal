@@ -53,20 +53,13 @@ define(['controllers/app.controller'], function (controllerModule) {
           initSelector();
         },
         initSelector = function () {
-          $scope.vpcCreate.subnet.cidrs = [
-            {
-              cidr: '192.168.1.0/24',
-              gatewayIp: '192.168.1.1'
-            },
-            {
-              cidr: '192.168.0.0/24',
-              gatewayIp: '192.168.0.1'
-            }
-          ];
-          $scope.vpcCreate.subnet.cidrListSelectorData = $scope.vpcCreate.subnet.cidrs.map(function (cidr) {
-            return new ModelService.SelectModel(cidr.cidr, cidr.cidr,{gatewayIp: cidr.gatewayIp});
+          HttpService.doGet(Config.urls.subnet_option_list).then(function (data, status, headers, config) {
+            $scope.vpcCreate.subnet.cidrs=data.data;
+            $scope.vpcCreate.subnet.cidrListSelectorData = $scope.vpcCreate.subnet.cidrs.map(function (cidr) {
+              return new ModelService.SelectModel(cidr.cidr, cidr.cidr,{gatewayIp: cidr.gatewayIp});
+            });
+            $scope.vpcCreate.subnet.selectedCidr = $scope.vpcCreate.subnet.cidrListSelectorData[0];
           });
-          $scope.vpcCreate.subnet.selectedCidr = $scope.vpcCreate.subnet.cidrListSelectorData[0];
         };
 
     initComponents();
