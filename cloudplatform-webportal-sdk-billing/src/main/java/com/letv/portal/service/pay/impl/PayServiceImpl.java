@@ -664,7 +664,6 @@ public class PayServiceImpl implements IPayService {
 	  * @author lisuxiao
 	  * @date 2015年10月20日 下午2:37:43
 	  */
-	@SuppressWarnings("unchecked")
 	private void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, Map<String, Object> serviceParams, String productType, Map<String, String> idNames){
 		Set<Integer> batch = new HashSet<Integer>();
 		for (OrderSub orderSub : orderSubs) {
@@ -715,7 +714,7 @@ public class PayServiceImpl implements IPayService {
 					resModel.put("region", orderSubs.get(0).getSubscription().getBaseRegionName());
 					resModel.put("type", orderSubs.get(0).getSubscription().getProductName());
 					resModel.put("id", id);
-					resModel.put("name", serviceParams.get("name"));
+					resModel.put("name", idNames.get(id));
 					if(Constant.OPENSTACK.equals(productType)) {
 						resModel.put("userName", "root");
 						resModel.put("password", serviceParams.get("adminPass"));
