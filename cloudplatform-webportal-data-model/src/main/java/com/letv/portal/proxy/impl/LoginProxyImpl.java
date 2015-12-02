@@ -42,9 +42,11 @@ public class LoginProxyImpl  implements ILoginProxy{
 		UserModel user = this.userService.selectByOauthId(session.getOauthId());
 		Long userId;
 		if(null == user) {
+            session.setUcId(this.ucService.getUcIdByOauthId(session.getOauthId()));
 			userId = this.insertUser(session);
 		} else {
-			userId = user.getId();
+            session.setUcId(user.getUcId());
+            userId = user.getId();
 			user.setEmail(session.getEmail());
 			user.setUserName(session.getUserName());
 			user.setMobile(session.getMobile());
@@ -112,14 +114,11 @@ public class LoginProxyImpl  implements ILoginProxy{
 		}
         String oauthId = (String) oauthUser.get("uuid");
 
-		Long ucId = this.ucService.getUcIdByOauthId(oauthId);
 		Session session = new Session();
 		//use clinetId when user logout.
 		session.setClientId(clientId);
 		session.setClientSecret(clientSecret);
-
 		session.setOauthId(oauthId);
-		session.setUcId(ucId);
 		String username = (String) oauthUser.get("username");
 		String email = (String) oauthUser.get("email");
 
