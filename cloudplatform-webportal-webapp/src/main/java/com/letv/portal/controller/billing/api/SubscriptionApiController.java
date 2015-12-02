@@ -40,6 +40,11 @@ public class SubscriptionApiController {
 	@RequestMapping(value="/list/{ucId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable Long ucId, Page page,HttpServletRequest request,ResultObject obj) {
 		Long userId = this.userService.getUserIdByUcId(ucId);
+		if(null == userId) {
+			obj.setResult(0);
+			obj.addMsg("no user exist by ucId,please login lcp first.");
+			return obj;
+		}
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("userId", userId);
 		params.put("valid", 1);
@@ -51,6 +56,11 @@ public class SubscriptionApiController {
 	@RequestMapping(value="/detail/{id}/{ucId}", method=RequestMethod.GET)
 	public @ResponseBody ResultObject detailById(@PathVariable Long id, @PathVariable Long ucId,HttpServletRequest request,ResultObject obj) {
 		Long userId = this.userService.getUserIdByUcId(ucId);
+		if(null == userId) {
+			obj.setResult(0);
+			obj.addMsg("no user exist by ucId,please login lcp first.");
+			return obj;
+		}
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		OrderSub orderSub = this.orderSubService.selectDetailBySubscriptionId(id, userId);
 		if(orderSub==null) {

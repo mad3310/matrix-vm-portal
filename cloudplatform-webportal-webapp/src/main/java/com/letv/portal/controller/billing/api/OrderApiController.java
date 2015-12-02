@@ -43,6 +43,11 @@ public class OrderApiController {
 	@RequestMapping(value="/detail/{orderId}/{ucId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject queryOrderDetailById(@PathVariable Long orderId, @PathVariable Long ucId, ResultObject obj) {
 		Long userId = this.userService.getUserIdByUcId(ucId);
+		if(null == userId) {
+			obj.setResult(0);
+			obj.addMsg("no user exist by ucId,please login lcp first.");
+			return obj;
+		}
 		List<Map<String, Object>> ret = this.orderSubService.queryOrderDetailById(orderId, userId);
 		if(ret==null) {
 			obj.setResult(0);

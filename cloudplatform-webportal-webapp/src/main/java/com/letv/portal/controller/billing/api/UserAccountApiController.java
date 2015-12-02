@@ -45,6 +45,12 @@ public class UserAccountApiController {
 	@RequestMapping(value="/balance/{ucId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject balance(@PathVariable Long ucId, ResultObject obj) {
 		Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
+
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
 		DecimalFormat formatter = new DecimalFormat("0.00");
 		String userAmount = formatter.format(billUserAmount.getAvailableAmount().doubleValue());
@@ -53,28 +59,48 @@ public class UserAccountApiController {
 	}
 	@RequestMapping(value="/{ucId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject account(@PathVariable Long ucId, ResultObject obj) {
-		Long userId = this.userService.getUserIdByUcId(ucId);
+        Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
 		obj.setData(billUserAmount);
 		return obj;
 	}
 	@RequestMapping(value="/createUserAmount/{ucId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject create(@PathVariable Long ucId, ResultObject obj) {
-		Long userId = this.userService.getUserIdByUcId(ucId);
+        Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		this.billUserAmountService.createUserAmount(userId);
 		return obj;
 	}
 
 	@RequestMapping(value="/recharge",method=RequestMethod.POST)
 	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long ucId,@RequestParam(required=true) String chargeMoney,@RequestParam(required=true) int type, ResultObject obj) {
-		Long userId = this.userService.getUserIdByUcId(ucId);
+        Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		String tradeNum = this.billUserAmountService.recharge(userId, new BigDecimal(chargeMoney), type);
 		obj.setData(tradeNum);
 		return obj;
 	}
 	@RequestMapping(value="/rechargeSuccess",method=RequestMethod.POST)
 	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long ucId,@RequestParam(required=true) String tradeNum,@RequestParam(required=true) String orderId,@RequestParam(required=true) String chargeMoney, ResultObject obj) {
-		Long userId = this.userService.getUserIdByUcId(ucId);
+        Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		long rechargeSuccess = this.billUserAmountService.rechargeSuccess(userId, tradeNum, orderId, new BigDecimal(chargeMoney));
 		obj.setData(rechargeSuccess);
 		return obj;
@@ -87,7 +113,12 @@ public class UserAccountApiController {
 	}
 	@RequestMapping(value="/recharge/{ucId}/{currentPage}/{recordsPerPage}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject rechargeRecord(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable Long ucId, ResultObject obj) {
-		Long userId = this.userService.getUserIdByUcId(ucId);
+        Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
@@ -98,7 +129,12 @@ public class UserAccountApiController {
 
 	@RequestMapping(value="/bill/{ucId}/{month}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject monthBill(@PathVariable Long ucId, @PathVariable String month,ResultObject obj) {
-		Long userId = this.userService.getUserIdByUcId(ucId);
+        Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		obj.setData(this.billUserServiceBilling.queryUserServiceBilling(userId, month));
 		return obj;
 	}
@@ -109,9 +145,13 @@ public class UserAccountApiController {
 	}
 	@RequestMapping(value="/billYear/{ucId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject billYear(@PathVariable Long ucId,ResultObject obj) {
-		Long userId = this.userService.getUserIdByUcId(ucId);
+        Long userId = this.userService.getUserIdByUcId(ucId);
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		obj.setData(this.billUserServiceBilling.getUserBillingYears(userId));
 		return obj;
 	}
-
 }

@@ -85,6 +85,11 @@ public class RenewApiController {
 		Map<String, Object> subDetailParams = new HashMap<String, Object>();
 		subDetailParams.put("subscriptionId", map.get("subscriptionId"));
 		Long userId = this.userService.getUserIdByUcId(Long.parseLong((String)map.get("userId")));
+        if(null == userId) {
+            obj.setResult(0);
+            obj.addMsg("no user exist by ucId,please login lcp first.");
+            return obj;
+        }
 		subDetailParams.put("userId", userId);
 
 		List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectByMap(subDetailParams);
@@ -129,6 +134,11 @@ public class RenewApiController {
 		}
 		Long subscriptionId = Long.parseLong((String)map.get("subscriptionId"));
 		Long userId = this.userService.getUserIdByUcId(Long.parseLong((String) map.get("userId")));
+		if(null == userId) {
+			obj.setResult(0);
+			obj.addMsg("no user exist by ucId,please login lcp first.");
+			return obj;
+		}
 		//map中参数会保存到计费详情中,业务字段删除
 		map.remove("subscriptionId");
 		map.remove("userId");
