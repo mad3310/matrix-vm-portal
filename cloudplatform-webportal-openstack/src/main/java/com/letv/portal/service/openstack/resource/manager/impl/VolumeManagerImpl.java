@@ -6,10 +6,8 @@ import java.util.*;
 
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
-import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
-import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
@@ -25,7 +23,7 @@ import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeAttachmentResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeSnapshotResourceImpl;
 import com.letv.portal.service.openstack.util.*;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.*;
@@ -173,7 +171,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
                 final Map<String, Resource> idToServer = new HashMap<String, Resource>();
                 final Ref<Integer> volumeCountRef = new Ref<Integer>();
 
-                ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+                ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 					@Override
 					public Void apply() {
 						try {
@@ -186,7 +184,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						}
 						return null;
 					}
-				}, new Function<Void>() {
+				}, new Function0<Void>() {
 					@Override
 					public Void apply() {
 						try {
@@ -286,7 +284,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 				final List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
 
-				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+				ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 					@Override
 					public Void apply() {
 						Integer currentPage = null;
@@ -345,7 +343,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						volumeCountRef.set(volumeCount);
 						return null;
 					}
-				}, new Function<Void>() {
+				}, new Function0<Void>() {
 					@Override
 					public Void apply() {
 						return null;
@@ -712,7 +710,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				try {
 					final int volumeIndexRef = volumeIndex;
 					final Volume volume = successCreatedVolumes.get(volumeIndexRef);
-					RetryUtil.retry(new Function<Boolean>() {
+					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
 							listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), volumeIndexRef, volume.getName(), listenerUserData));
@@ -728,7 +726,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			for (; volumeIndex < volumesCount; volumeIndex++) {
 				try {
 					final int volumeIndexRef = volumeIndex;
-					RetryUtil.retry(new Function<Boolean>() {
+					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
 							listener.volumeCreateFailed(new VolumeCreateFailEvent(volumeCreateConf.getRegion(), volumeIndexRef, reason, listenerUserData));
@@ -928,7 +926,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					page = new Page(currentPage, recordsPerPage);
 				}
 
-				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+				ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 					@Override
 					public Void apply() {
 						List<? extends Snapshot> allVolumeSnapshots = cinderApi.getSnapshotApi(region).list().toList();
@@ -947,7 +945,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						}
 						return null;
 					}
-				}, new Function<Void>() {
+				}, new Function0<Void>() {
 					@Override
 					public Void apply() {
 						ICloudvmVolumeService cloudvmVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmVolumeService();

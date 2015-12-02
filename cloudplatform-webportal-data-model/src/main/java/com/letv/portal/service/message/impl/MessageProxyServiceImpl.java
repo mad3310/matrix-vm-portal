@@ -3,6 +3,7 @@ package com.letv.portal.service.message.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.letv.portal.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 	private String UC_AUTH_API_HTTP;
 	@Autowired
 	public SessionServiceImpl sessionService;
+	@Autowired
+	public IUserService userService;
 
 	@Override
 	public Map<String,Object> saveMessage(Message msg) {
@@ -69,8 +72,8 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 		map.put("msgContent", msg.getMsgContent());
 		map.put("msgStatus", msg.getMsgStatus());
 		map.put("msgType", msg.getMsgType());
-		
-		buffer.append(UC_AUTH_API_HTTP).append("/pubMessage.do?userid=").append(userId);
+		Long ucId = this.userService.getUcIdByUserId(userId);
+		buffer.append(UC_AUTH_API_HTTP).append("/message/pubMessage.do?userid=").append(ucId);
 		//buffer.append("http://10.150.146.171/uc-http-api/pubMessage.do?userid=").append(userId);
 		logger.info("saveMessage url:{}",buffer.toString());
 		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);

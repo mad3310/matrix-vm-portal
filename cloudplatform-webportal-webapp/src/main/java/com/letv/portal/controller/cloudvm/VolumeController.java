@@ -183,7 +183,8 @@ public class VolumeController {
 		localVolumeService.updateNameAndDesc(userId, userId, form.getRegion(), form.getVolumeId(), form.getName(), form.getDescription());
 		//保存编辑云硬盘操作
 		this.recentOperateService.saveInfo(Constant.EDIT_VOLUME,
-				MessageFormat.format(Constant.STYLE_OPERATE_2, StringUtils.isEmpty(volumeName)?Constant.NO_NAME:volumeName, form.getName()));
+				MessageFormat.format(Constant.STYLE_OPERATE_1, 
+						StringUtils.isEmpty(volumeName)?Constant.NO_NAME:volumeName, Constant.RENAME, form.getName()));
 		return result;
 	}
 

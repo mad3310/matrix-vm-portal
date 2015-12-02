@@ -3,7 +3,6 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 import com.google.common.base.Optional;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
-import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
@@ -30,23 +29,12 @@ import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreate;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.check.VMCreateCheck;
-import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
-import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
-import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 import com.letv.portal.service.openstack.util.StringUtil;
 import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 
-import com.mchange.lang.ByteUtils;
-import org.apache.commons.codec.Charsets;
-import org.apache.commons.lang3.CharSet;
-import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.http.HttpResponseException;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
@@ -54,17 +42,13 @@ import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.*;
 import org.jclouds.openstack.glance.v1_0.domain.Image;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
-import org.jclouds.openstack.neutron.v2.domain.*;
-import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.*;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
-import org.jclouds.openstack.nova.v2_0.domain.Quota;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
 import org.jclouds.openstack.nova.v2_0.extensions.*;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
-import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.jclouds.openstack.v2_0.domain.Resource;
 import org.slf4j.Logger;
 
@@ -319,8 +303,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
                             regionDisplayName, server, VMManagerImpl.this,
                             imageManager, openStackUser);
-                    vmResourceImpl.setVolumes(volumeManager.getOfVM(region,
-                            regionDisplayName, id));
+//                    vmResourceImpl.setVolumes(volumeManager.getOfVM(region,
+//                            regionDisplayName, id));
                     return vmResourceImpl;
                 } else {
                     throw new ResourceNotFoundException("VM", "虚拟机", id);
@@ -1880,7 +1864,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
     @Override
     public void createForBilling(final long userId, final VMCreateConf2 conf, final VmCreateListener listener, final Object listenerUserData) throws OpenStackException {
-        ThreadUtil.asyncExec(new Function<Void>() {
+        ThreadUtil.asyncExec(new Function0<Void>() {
             @Override
             public Void apply() {
                 try {

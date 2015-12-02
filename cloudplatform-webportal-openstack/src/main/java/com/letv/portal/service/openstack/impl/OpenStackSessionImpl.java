@@ -6,9 +6,8 @@ import java.text.MessageFormat;
 
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.service.openstack.util.ThreadUtil;
-import com.letv.portal.service.openstack.util.function.Function;
+import com.letv.portal.service.openstack.util.function.Function0;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
 import org.jclouds.openstack.neutron.v2.domain.RuleDirection;
 import org.jclouds.openstack.neutron.v2.domain.RuleEthertype;
@@ -115,7 +114,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			initUserWithOutOpenStack();
 			initUser();
 			if (session!=null) {
-//				ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+//				ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 //													@Override
 //													public Void apply() {
                 final long userId = session.getUserId();
@@ -126,7 +125,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 //														return null;
 //													}
 //												},
-//						new Function<Void>() {
+//						new Function0<Void>() {
 //							@Override
 //							public Void apply() {
 //								OpenStackSessionImpl.this.initResources();
@@ -190,7 +189,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			try {
 				for (final String region : neutronApi.getConfiguredRegions()) {
 					final NetworkApi networkApi = neutronApi.getNetworkApi(region);
-					ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+					ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 						@Override
 						public Void apply() throws Exception{
 							Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
@@ -241,7 +240,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 							if (pingRule == null && sshRule == null) {
 								final SecurityGroup defaultSecurityGroupRef = defaultSecurityGroup;
-								ThreadUtil.concurrentRunAndWait(new Function<Void>() {
+								ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 									@Override
 									public Void apply() {
 										securityGroupApi.create(Rule.CreateRule
@@ -252,7 +251,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 												.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
 										return null;
 									}
-								}, new Function<Void>() {
+								}, new Function0<Void>() {
 									@Override
 									public Void apply() {
 										securityGroupApi.create(Rule.CreateRule

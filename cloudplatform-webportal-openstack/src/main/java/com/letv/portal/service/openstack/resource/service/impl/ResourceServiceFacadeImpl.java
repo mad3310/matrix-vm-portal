@@ -9,6 +9,7 @@ import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
+import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.Util;
 
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
@@ -61,14 +62,14 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
     }
 
     @Override
-    public void attachVmsToSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
+    public void attachVmsToSubnet(String region, String vmIds, String subnetId, Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
         resourceService.attachVmsToSubnet(novaApi, neutronApi, region, vmIds, subnetId, vmNamesAndSubnetName);
     }
 
     @Override
-    public void detachVmsFromSubnet(String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException {
+    public void detachVmsFromSubnet(String region, String vmIds, String subnetId, Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
         resourceService.detachVmsFromSubnet(novaApi, neutronApi, region, vmIds, subnetId, vmNamesAndSubnetName);

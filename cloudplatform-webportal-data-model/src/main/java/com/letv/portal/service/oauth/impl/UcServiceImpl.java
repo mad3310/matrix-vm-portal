@@ -21,18 +21,18 @@ public class UcServiceImpl implements IUcService {
 
 
 	@Override
-	public Map<String,Object> getUnReadMessage(Long userId) {
+	public Map<String,Object> getUnReadMessage(Long ucId) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(UC_AUTH_API_HTTP).append("/message/unReadMessage.do?userId=").append(userId);
+		buffer.append(UC_AUTH_API_HTTP).append("/message/unReadMessage.do?userId=").append(ucId);
 		logger.info("getUnReadMessage url:{}",buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 2000);
 		Map<String,Object> resultMap = this.transResult(result);
 		return resultMap;
 	}
 	@Override
-	public Map<String,Object> getUserByUserId(Long userId) {
+	public Map<String,Object> getUserByUserId(Long ucId) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(UC_AUTH_API_HTTP).append("/user/userInfoById.do?userId=").append(userId);
+		buffer.append(UC_AUTH_API_HTTP).append("/user/userInfoById.do?userId=").append(ucId);
 		logger.info("getUserDetailInfo url:{}",buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 2000);
 		Map<String,Object> resultMap = this.transResult(result);

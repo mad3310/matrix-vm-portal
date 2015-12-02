@@ -299,7 +299,7 @@ function iflogged(){
 				_target.removeClass('hide');
 				$('.logged').addClass('hide');
 			}else{
-				var name=data.data.contacts;
+				var name=data.data;
 				_target.addClass('hide');
 				$('.logged').removeClass('hide').find('.logged-name').text(name);
 				if(data.data.userAvatar){

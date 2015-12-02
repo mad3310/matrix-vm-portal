@@ -23,4 +23,5 @@ public interface IUserService extends IBaseService<UserModel>{
 	UserModel selectByOauthId(String oauthId);
 	UserModel selectByUcId(Long ucId);
 	Long getUserIdByUcId(Long ucId);
+	Long getUcIdByUserId(Long userId);
 }

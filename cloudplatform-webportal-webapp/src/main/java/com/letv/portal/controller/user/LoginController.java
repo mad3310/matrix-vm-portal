@@ -8,6 +8,7 @@ import com.letv.portal.service.oauth.IOauthService;
 import com.letv.portal.service.oauth.IUcService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +51,12 @@ public class LoginController {
 
 		Map<String,Object> oauthUser = this.oauthService.getUserdetailinfo(clientId, clientSecret);
 		if(null == oauthUser || oauthUser.isEmpty()) {
-			toLogin(mav,request.getContextPath());
+			return toLogin(mav,request.getRequestURI(),request.getQueryString());
 		}
 
 		Session session = loginSuccess(oauthUser, clientId, clientSecret);
 		if(null == session)
-			toLogin(mav,request.getContextPath());
+			return toLogin(mav,request.getRequestURI(),request.getQueryString());
 
 		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
 		sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
@@ -65,14 +66,14 @@ public class LoginController {
 			}
 		});
 
-		mav.setViewName("redirect:/" + request.getParameter("redirect"));
+		mav.setViewName("redirect:" + request.getParameter("redirect"));
 		return mav;
 	}
 
-	private ModelAndView toLogin(ModelAndView mav,String callback) {
+	private ModelAndView toLogin(ModelAndView mav,String requestURI,String queryString) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(callback);
-		mav.setViewName("redirect:/" + buffer.toString());
+		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(requestURI).append(StringUtils.isEmpty(queryString) ? "" : "?&").append(StringUtils.isEmpty(queryString)?"":queryString);
+		mav.setViewName("redirect:" + buffer.toString());
 		return mav;
 	}
 	private Session loginSuccess(Map<String,Object> oauthUser,String clientId,String clientSecret) {

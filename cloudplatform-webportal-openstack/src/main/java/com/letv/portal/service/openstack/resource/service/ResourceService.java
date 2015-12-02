@@ -4,6 +4,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -20,9 +21,9 @@ public interface ResourceService {
 
     void checkRegion(String region, Closeable... apis) throws RegionNotFoundException;
 
-    void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
+    void attachVmsToSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, String subnetId, Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException;
 
-    void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, String subnetId, Tuple2<List<String>, String> vmNamesAndSubnetName) throws OpenStackException;
+    void detachVmsFromSubnet(NovaApi novaApi, NeutronApi neutronApi, String region, String vmIds, String subnetId, Ref<Tuple2<List<String>, String>> vmNamesAndSubnetName) throws OpenStackException;
 
     List<VMResource> listVmNotInAnyNetwork(NovaApi novaApi, NeutronApi neutronApi, String region) throws OpenStackException;
 
