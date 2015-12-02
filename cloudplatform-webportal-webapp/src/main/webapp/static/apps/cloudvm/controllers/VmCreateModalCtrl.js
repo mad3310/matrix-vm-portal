@@ -240,6 +240,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           flavorGroupData = data.data;
           for (var cpu in flavorGroupData) {
             $scope.vmCpuList.push(cpu);
+            $scope.vmCpuList.sort(function(a,b){
+              return Number(a)-Number(b);
+            });
           }
           $scope.selectedVmCpu = $scope.vmCpuList[0];
         });
@@ -248,6 +251,9 @@ define(['controllers/app.controller'], function (controllerModule) {
         $scope.vmRamList.splice(0, $scope.vmRamList.length);
         for (var ram in flavorGroupData[$scope.selectedVmCpu]) {
           $scope.vmRamList.push(ram);
+          $scope.vmRamList.sort(function(a,b){
+            return Number(a)-Number(b);
+          });
         }
         $scope.selectedVmRam = $scope.vmRamList[0];
       },
