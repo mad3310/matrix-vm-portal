@@ -35,12 +35,12 @@ public class VolumeSnapshotResourceImpl implements VolumeSnapshotResource {
 
     @Override
     public String getVolumeName() {
-        return volume.getName();
+        return volume != null ? volume.getName() : null;
     }
 
     @Override
     public String getVolumeId() {
-        return volume.getId();
+        return volume != null ? volume.getId() : null;
     }
 
     @Override
