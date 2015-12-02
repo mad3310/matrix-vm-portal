@@ -192,11 +192,12 @@ public class NetworkController {
 			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util
-					.session(sessionService)
-					.getNetworkManager()
-					.listPrivateSubnet(region, name, currentPage,
-							recordsPerPage));
+//			result.setData(Util
+//					.session(sessionService)
+//					.getNetworkManager()
+//					.listPrivateSubnet(region, name, currentPage,
+//							recordsPerPage));
+			result.setData(resourceServiceFacade.listPrivateSubnet(region, name, currentPage, recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

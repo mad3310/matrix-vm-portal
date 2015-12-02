@@ -54,4 +54,6 @@ public interface ResourceService {
     void separateSubnetFromRouter(NeutronApi neutronApi, String region, String routerId, String subnetId) throws OpenStackException;
 
     void createDefaultSecurityGroupAndRule(NeutronApi neutronApi) throws OpenStackException;
+
+    Page listPrivateSubnet(NeutronApi neutronApi, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 }

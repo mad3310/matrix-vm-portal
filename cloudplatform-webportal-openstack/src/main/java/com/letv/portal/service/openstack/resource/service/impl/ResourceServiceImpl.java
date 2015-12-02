@@ -22,13 +22,9 @@ import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
-import com.letv.portal.service.openstack.resource.IPAddresses;
-import com.letv.portal.service.openstack.resource.SubnetIp;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
-import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
-import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
+import com.letv.portal.service.openstack.resource.*;
+import com.letv.portal.service.openstack.resource.impl.*;
+import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.impl.task.rule.create.PingRuleCreateTask;
@@ -39,10 +35,11 @@ import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
 import com.letv.portal.service.openstack.util.function.Function0;
 import com.letv.portal.service.openstack.util.function.Function1;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
+import com.letv.portal.service.openstack.util.tuple.Tuple3;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
-import org.jclouds.openstack.cinder.v1.domain.*;
+import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
@@ -63,7 +60,6 @@ import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
 import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
 import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
-import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -265,7 +261,7 @@ public class ResourceServiceImpl implements ResourceService {
                 return null;
             }
         });
-        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames,subnetName));
+        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames, subnetName));
         if (!exceptions.isEmpty()) {
             throw new OpenStackCompositeException(exceptions);
         }
@@ -335,7 +331,7 @@ public class ResourceServiceImpl implements ResourceService {
                 return null;
             }
         });
-        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames,subnetName));
+        vmNamesAndSubnetName.set(new Tuple2<List<String>, String>(vmNames, subnetName));
         if (!exceptions.isEmpty()) {
             throw new OpenStackCompositeException(exceptions);
         }
@@ -537,46 +533,13 @@ public class ResourceServiceImpl implements ResourceService {
         }, new Timeout().time(5L).unit(TimeUnit.MINUTES));
     }
 
-    private Tuple2<List<Server>, Integer> listServers(NovaApi novaApi, String region, String name, Integer currentPage, Integer recordsPerPage) {
-        ServerApi serverApi = novaApi.getServerApi(region);
-        final FlavorApi flavorApi = novaApi.getFlavorApi(region);
-
-        List<Server> servers = serverApi.listInDetail()
-                .concat().toList();
-
-        List<Server> nameMatchedServers;
-        if (StringUtils.isNotEmpty(name)) {
-            nameMatchedServers = new LinkedList<Server>();
-            for (Server server : servers) {
-                if (StringUtils.contains(server.getName(), name)) {
-                    nameMatchedServers.add(server);
-                }
+    private Tuple2<List<Server>, Integer> listServers(NovaApi novaApi, String region, String name, Integer currentPage, Integer recordsPerPage) throws Exception {
+        return listResourcesByNameAndPage(novaApi.getServerApi(region).listInDetail().concat().toList(), new Function1<Server, String>() {
+            @Override
+            public String apply(Server server) throws Exception {
+                return server.getName();
             }
-        } else {
-            nameMatchedServers = servers;
-        }
-
-        List<Server> pagedServers;
-        if (currentPage != null && recordsPerPage != null) {
-            if (currentPage > 0 && recordsPerPage > 0) {
-                int serverBeginIndex = (currentPage - 1) * recordsPerPage;
-                int serverEndIndex = serverBeginIndex + recordsPerPage;
-                if (serverBeginIndex >= nameMatchedServers.size()) {
-                    pagedServers = new LinkedList<Server>();
-                } else {
-                    if (serverEndIndex > nameMatchedServers.size()) {
-                        serverEndIndex = nameMatchedServers.size();
-                    }
-                    pagedServers = nameMatchedServers.subList(serverBeginIndex, serverEndIndex);
-                }
-            } else {
-                pagedServers = new LinkedList<Server>();
-            }
-        } else {
-            pagedServers = nameMatchedServers;
-        }
-
-        return new Tuple2<List<Server>, Integer>(pagedServers, nameMatchedServers.size());
+        }, name, currentPage, recordsPerPage);
     }
 
     @Override
@@ -1491,6 +1454,162 @@ public class ResourceServiceImpl implements ResourceService {
                 return null;
             }
         });
+    }
+
+    private <T> Tuple2<List<T>, Integer> listResourcesByNameAndPage(List<T> resources, Function1<T, String> resourceNameGetter, String name, Integer currentPage, Integer recordsPerPage) throws Exception {
+        List<T> nameMatchedResources;
+        if (StringUtils.isNotEmpty(name)) {
+            nameMatchedResources = new LinkedList<T>();
+            for (T resource : resources) {
+                if (StringUtils.contains(resourceNameGetter.apply(resource), name)) {
+                    nameMatchedResources.add(resource);
+                }
+            }
+        } else {
+            nameMatchedResources = resources;
+        }
+
+        List<T> pagedResources;
+        if (currentPage != null && recordsPerPage != null) {
+            if (currentPage > 0 && recordsPerPage > 0) {
+                int resourceBeginIndex = (currentPage - 1) * recordsPerPage;
+                int resourceEndIndex = resourceBeginIndex + recordsPerPage;
+                if (resourceBeginIndex >= nameMatchedResources.size()) {
+                    pagedResources = new LinkedList<T>();
+                } else {
+                    if (resourceEndIndex > nameMatchedResources.size()) {
+                        resourceEndIndex = nameMatchedResources.size();
+                    }
+                    pagedResources = nameMatchedResources.subList(resourceBeginIndex, resourceEndIndex);
+                }
+            } else {
+                pagedResources = new LinkedList<T>();
+            }
+        } else {
+            pagedResources = nameMatchedResources;
+        }
+
+        return new Tuple2<List<T>, Integer>(pagedResources, nameMatchedResources.size());
+    }
+
+    @Override
+    public Page listPrivateSubnet(final NeutronApi neutronApi, final String region, final String name, final Integer currentPage, final Integer recordsPerPage) throws OpenStackException {
+        checkRegion(region, neutronApi);
+        if (currentPage != null && currentPage < 1) {
+            throw new OpenStackException("currentPage < 1", "当前页不能小于1");
+        }
+        if (recordsPerPage != null && recordsPerPage < 1) {
+            throw new OpenStackException("recordsPerPage < 1", "每页子网数不能小于1");
+        }
+
+        final PortApi portApi = neutronApi.getPortApi(region);
+        final SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+        final NetworkApi networkApi = neutronApi.getNetworkApi(region);
+        final RouterApi routerApi = getRouterApi(neutronApi, region);
+
+        List<Ref<Object>> objRefList = ThreadUtil.concurrentRunAndWait(
+                new Function0<Object>() {
+                    @Override
+                    public Object apply() throws Exception {
+                        Map<String, Port> subnetIdToPort = new HashMap<String, Port>();
+                        for (Port port : portApi.list()
+                                .concat().toList()) {
+                            if (OpenStackConstants.PORT_DEVICE_OWNER_NETWORK_ROUTER_INTERFACE.equals(port
+                                    .getDeviceOwner())) {
+                                ImmutableSet<IP> fixedIps = port.getFixedIps();
+                                if (fixedIps != null) {
+                                    for (IP ip : fixedIps) {
+                                        subnetIdToPort.put(ip.getSubnetId(),
+                                                port);
+                                    }
+                                }
+                            }
+                        }
+                        return subnetIdToPort;
+                    }
+                }, new Function0<Object>() {
+                    @Override
+                    public Object apply() throws Exception {
+                        Map<String, Network> idToPrivateNetwork = new HashMap<String, Network>();
+                        for (Network network : networkApi
+                                .list().concat().toList()) {
+                            if (NetworkManagerImpl.isPrivateNetwork(network)) {
+                                idToPrivateNetwork.put(network.getId(), network);
+                            }
+                        }
+
+                        List<Subnet> subnetList = subnetApi.list().concat().toList();
+                        List<Subnet> privateSubnetList = new LinkedList<Subnet>();
+                        for (Subnet subnet : subnetList) {
+                            if (idToPrivateNetwork.containsKey(subnet.getNetworkId())) {
+                                privateSubnetList.add(subnet);
+                            }
+                        }
+                        Collections.sort(privateSubnetList, new Comparator<Subnet>() {
+                            @Override
+                            public int compare(Subnet o1, Subnet o2) {
+                                return o2.getCreated().compareTo(o1.getCreated());
+                            }
+                        });
+
+                        Tuple2<List<Subnet>, Integer> pagedSubnetListAndTotalCount = listResourcesByNameAndPage(privateSubnetList, new Function1<Subnet, String>() {
+                            @Override
+                            public String apply(Subnet subnet) throws Exception {
+                                return subnet.getName();
+                            }
+                        }, name, currentPage, recordsPerPage);
+
+                        return new Tuple3<Map<String, Network>, List<Subnet>, Integer>(idToPrivateNetwork, pagedSubnetListAndTotalCount._1, pagedSubnetListAndTotalCount._2);
+                    }
+                }, new Function0<Object>() {
+                    @Override
+                    public Object apply() throws Exception {
+                        Map<String, Router> idToRouter = new HashMap<String, Router>();
+                        for (Router router : routerApi.list().concat().toList()) {
+                            idToRouter.put(router.getId(), router);
+                        }
+                        return idToRouter;
+                    }
+                });
+
+        Map<String, Port> subnetIdToPort = (Map<String, Port>) objRefList.get(0).get();
+
+        Tuple3<Map<String, Network>, List<Subnet>, Integer> idToPrivateNetworkAndSubnetListAndTotalCount = (Tuple3<Map<String, Network>, List<Subnet>, Integer>) objRefList.get(1).get();
+        Map<String, Network> idToPrivateNetwork = idToPrivateNetworkAndSubnetListAndTotalCount._1;
+        List<Subnet> subnetList = idToPrivateNetworkAndSubnetListAndTotalCount._2;
+        Integer subnetTotalCount = idToPrivateNetworkAndSubnetListAndTotalCount._3;
+
+        Map<String, Router> idToRouter = (Map<String, Router>) objRefList.get(2).get();
+
+        List<SubnetResource> subnetResourceList = new LinkedList<SubnetResource>();
+        for (Subnet subnet : subnetList) {
+            NetworkResource networkResource = null;
+            Network network = idToPrivateNetwork.get(subnet.getNetworkId());
+            if (network != null) {
+                networkResource = new NetworkResourceImpl(region, network);
+            }
+
+            RouterResource routerResource = null;
+            Router router = null;
+            Port port = subnetIdToPort.get(subnet.getId());
+            if (port != null) {
+                String routerId = port.getDeviceId();
+                if (routerId != null) {
+                    router = idToRouter.get(routerId);
+                }
+            }
+            if (router != null) {
+                routerResource = new RouterResourceImpl(region, router);
+            }
+
+            SubnetResource subnetResource = new SubnetResourceImpl(region, "", subnet, networkResource, routerResource);
+            subnetResourceList.add(subnetResource);
+        }
+
+        Page page = new Page(currentPage, recordsPerPage);
+        page.setData(subnetResourceList);
+        page.setTotalRecords(subnetTotalCount);
+        return page;
     }
 
 }
