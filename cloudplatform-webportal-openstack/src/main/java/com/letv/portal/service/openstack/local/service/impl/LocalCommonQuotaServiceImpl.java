@@ -4,6 +4,7 @@ import com.letv.portal.model.common.CommonQuota;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.common.ICommonQuotaService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
         }
         if (commonQuota.getValue() < value) {
             Object[] arguments = new Object[]{type.getName(), type.getUnit(), commonQuota.getValue(), value};
-            throw new OpenStackException(
+            throw new UserOperationException(
                     MessageFormat.format("{0} exceeding the quota,tenantId:{1},region:{2},value:{3}", type.toString(), userVoUserId, region, value),
                     MessageFormat.format("{0}{3}{1}超过了配额{2}{1}", arguments));
         }

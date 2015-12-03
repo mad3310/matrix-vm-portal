@@ -6,12 +6,12 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.IpUtil;
+import com.letv.portal.enumeration.LoginClient;
 import com.letv.portal.proxy.ILoginProxy;
-import com.letv.portal.service.oauth.IOauthService;
-import com.letv.portal.service.oauth.IUcService;
+import com.letv.portal.service.ILoginRecordService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 
 /**
  * 处理session超时的拦截器
@@ -36,16 +35,14 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
     @Autowired(required=false)
     private SessionServiceImpl sessionService;
     @Autowired
-    private IOauthService oauthService;
-    @Autowired
-    private IUcService ucService;
-    @Autowired
     private OpenStackService openStackService;
 
     @Autowired
     private ILoginProxy loginProxy;
 
     public String[] allowUrls;
+    @Autowired
+    private ILoginRecordService loginRecordService;
 
     private static String OAUTH_CLIENT_ID = "client_id";
     private static String OAUTH_CLIENT_SECRET = "client_secret";
@@ -93,6 +90,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
             } catch (OpenStackException e) {
                 logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
             }
+            this.loginRecordService.insert(session.getUserId(),IpUtil.getIp(request), LoginClient.APP,true);
             return loginSuccess(session, request);
         }
 

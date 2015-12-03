@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.ILoginRecordDao">
+
+	<insert id="insert" parameterType="LoginRecord" useGeneratedKeys="true" keyProperty="id">
+		insert into WEBPORTA_LOGIN_RECORD (USER_ID,LOGIN_TIME,LOGIN_IP,LOGIN_CLIENT,SUCCESS) values
+		(#{userId},#{loginTime},#{loginIp},#{loginClient,typeHandler=com.letv.portal.enumeration.LoginClientHandle},#{success})
+	</insert>
+
+</mapper>

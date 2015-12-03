@@ -3,12 +3,12 @@ package com.letv.portal.controller.user;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.IpUtil;
+import com.letv.portal.enumeration.LoginClient;
 import com.letv.portal.proxy.ILoginProxy;
-import com.letv.portal.service.oauth.IOauthService;
-import com.letv.portal.service.oauth.IUcService;
+import com.letv.portal.service.ILoginRecordService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @Controller
 public class LoginController {
 	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
-	@Autowired
-	private IOauthService oauthService;
-	@Autowired
-	private IUcService ucService;
 	@Autowired
 	private OpenStackService openStackService;
 	@Autowired(required=false)
@@ -34,6 +29,8 @@ public class LoginController {
 
 	@Autowired
 	private ILoginProxy loginProxy;
+    @Autowired
+    private ILoginRecordService loginRecordService;
 
 	private static String OAUTH_CLIENT_ID = "client_id";
 	private static String OAUTH_CLIENT_SECRET = "client_secret";
@@ -54,6 +51,12 @@ public class LoginController {
 		if(null == session)
 			return toLogin(mav,request.getRequestURI(),request.getQueryString());
 
+        try {
+            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
+        } catch (OpenStackException e) {
+            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
+        }
+        this.loginRecordService.insert(session.getUserId(),IpUtil.getIp(request), LoginClient.APP,true);
         loginSuccess(request, session);
 
 		/*mav.setViewName("redirect:" + request.getParameter("redirect"));*/
@@ -62,11 +65,6 @@ public class LoginController {
 	}
 
     private void loginSuccess(HttpServletRequest request,Session session) {
-        try {
-            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
-        } catch (OpenStackException e) {
-            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
-        }
         request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
         sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
             @Override

@@ -103,6 +103,8 @@ public class OauthServiceImpl  implements IOauthService {
 		Map<String,Object> userdetailinfo = (Map<String, Object>) this.cacheService.get(clientId, null);
 		if(null == userdetailinfo)
 			userdetailinfo = getUserdetailinfo(getAccessToken(clientId, clientSecret, getAuthorize(clientId)));
+        if(null == userdetailinfo)
+            return null;
 		this.cacheService.set(clientId, userdetailinfo, OAUTH_TOKEN_CACHE_EXPIRE);
 		return userdetailinfo;
 	}
