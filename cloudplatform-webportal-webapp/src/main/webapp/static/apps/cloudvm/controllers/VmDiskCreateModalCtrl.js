@@ -23,13 +23,13 @@ define(['controllers/app.controller'], function (controllerModule) {
           $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
         }
         else{
+          $scope.snapshotListSelectorData.push(new ModelService.SelectModel('请选择快照',''));
+          $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
           HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '', recordsPerPage: ''}).then(function (data, status, headers, config) {
             $scope.snapshotList = data.data.data;
-            $scope.snapshotListSelectorData=$scope.snapshotList.map(function(snapshot){
-              return new ModelService.SelectModel(snapshot.name,snapshot.id);
+            $scope.snapshotList.forEach(function(snapshot){
+              $scope.snapshotListSelectorData.push(new ModelService.SelectModel(snapshot.name,snapshot.id));
             });
-            $scope.snapshotListSelectorData.unshift(new ModelService.SelectModel('请选择快照',''));
-            $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
           });
         }
       },
