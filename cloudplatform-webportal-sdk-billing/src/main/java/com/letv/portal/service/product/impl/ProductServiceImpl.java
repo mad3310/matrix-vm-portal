@@ -255,10 +255,11 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 				list.add(typeAndValue);
 				standards.put(baseStandard.getBaseElement().getName(), list);
 			}
+			if(baseStandard.getBasePrice()!=null) {
+				chargeTypes.put(baseStandard.getBaseElement().getName(), baseStandard.getBasePrice().getType());
+			}
 		}
-		if(baseStandards!=null && baseStandards.size()!=0 && baseStandards.get(0).getBasePrice()!=null) {
-			chargeTypes.put(baseStandards.get(0).getBaseElement().getName(), baseStandards.get(0).getBasePrice().getType());
-		}
+		
 	}
 	
 	protected boolean validateChargeTypeZero(Map<String, Object> map, String element, Map<String, List<Map<String, String>>> elements) {
