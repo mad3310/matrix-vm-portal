@@ -1606,7 +1606,12 @@ public class ResourceServiceImpl implements ResourceService {
             subnetResourceList.add(subnetResource);
         }
 
-        Page page = new Page(currentPage, recordsPerPage);
+        Page page;
+        if (currentPage != null && recordsPerPage != null) {
+            page = new Page(currentPage, recordsPerPage);
+        } else {
+            page = new Page();
+        }
         page.setData(subnetResourceList);
         page.setTotalRecords(subnetTotalCount);
         return page;
