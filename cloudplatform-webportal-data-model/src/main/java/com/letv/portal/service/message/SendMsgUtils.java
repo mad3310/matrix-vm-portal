@@ -25,6 +25,8 @@ public class SendMsgUtils {
     private  String corpID;
     @Value("${sms.srcAddr}")
     private  String srcAddr;
+    @Value("${sms.corpPD}")
+    private  String corpPD;
     @Value("${sms.china.corpId}")
     private String chinaCorpId;
     @Value("${sms.china.srcAddr}")
@@ -88,7 +90,7 @@ public class SendMsgUtils {
 
         }
 
-        String allUrl = url + "?destAddr=" +sendMobile + "&msg=" + sendMessage + "&srcAddr=" + sendSrcAddr + "&corpID=" + sendCorpId;
+        String allUrl = url + "?destAddr=" +sendMobile + "&msg=" + sendMessage + "&srcAddr=" + sendSrcAddr + "&corpID=" + sendCorpId + "&corpPD="+corpPD;
         logger.info("sendmsg get Url:{}",allUrl);
         return allUrl;
     }

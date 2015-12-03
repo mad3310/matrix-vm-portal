@@ -45,6 +45,16 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     };
 
+    $scope.thirdStepToNextTab = function (event) {
+      event.preventDefault();
+      if($scope.vmNetworkType=='private' && !$scope.vmNetworkSubnetList.length){
+        WidgetService.notifyWarning('你还没有子网，请去私有网络中创建。');
+        return;
+      }
+      $scope.activeFlow=4;
+      $scope.hackRzSlider();
+    };
+
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
     };
