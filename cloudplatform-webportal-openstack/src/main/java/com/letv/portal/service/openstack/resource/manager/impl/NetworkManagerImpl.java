@@ -757,7 +757,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, existsSubnetList.size() + 1);
+						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, privateSubnetCount + 1);
 
 				Optional<QuotaApi> quotaApiOptional = neutronApi
 						.getQuotaApi(region);
@@ -850,7 +850,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, existsSubnetList.size() + 1);
+						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, privateSubnetCount + 1);
 
 				if (quota.getSubnet() <= privateSubnetCount) {
 					throw new UserOperationException(
