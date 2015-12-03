@@ -8,6 +8,7 @@ import com.letv.common.util.IpUtil;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
+import com.letv.portal.service.ILoginRecordService;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.oauth.IOauthService;
 import com.letv.portal.service.oauth.IUcService;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.Map;
 
 @Component
@@ -47,13 +49,8 @@ public class LoginProxyImpl  implements ILoginProxy{
 		} else {
             session.setUcId(user.getUcId());
             userId = user.getId();
-			user.setEmail(session.getEmail());
-			user.setUserName(session.getUserName());
-			user.setMobile(session.getMobile());
-			this.userService.updateBySelective(user);
 		}
 		session.setUserId(userId);
-
 		logger.info("logined successfully:{}", session.getUserName());
 		return session;
 	}

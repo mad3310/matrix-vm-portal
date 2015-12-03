@@ -1,6 +1,5 @@
 package com.letv.portal.model;
 
-import java.util.Date;
 import com.letv.common.model.BaseModel;
 
 public class UserModel extends BaseModel{
@@ -13,9 +12,6 @@ public class UserModel extends BaseModel{
 	private String email;
 	private String userName;
 	private String mobile;
-
-	private Date lastLoginTime;
-	private String lastLoginIp;
 
 	private boolean isAdmin;
 
@@ -57,22 +53,6 @@ public class UserModel extends BaseModel{
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
-	}
-
-	public Date getLastLoginTime() {
-		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-	}
-
-	public String getLastLoginIp() {
-		return lastLoginIp;
-	}
-
-	public void setLastLoginIp(String lastLoginIp) {
-		this.lastLoginIp = lastLoginIp;
 	}
 
 	public boolean isAdmin() {

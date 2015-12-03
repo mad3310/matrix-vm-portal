@@ -14,8 +14,6 @@
 		<result column="EMAIL" property="email" />
 		<result column="MOBILE" property="mobile" />
 
-		<result column="LASTLOGINTIME" property="lastLoginTime" />
-		<result column="LASTLOGINIP" property="lastLoginIp" />
 		<result column="IS_ADMIN" property="isAdmin" />
 
 		<result column="DELETED" property="deleted" />
@@ -45,13 +43,13 @@
 
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
-		ID,UC_ID,OAUTH_ID,USERNAME,EMAIL,MOBILE,LAST_LOGIN_TIME,LASTLOGIN_IP,IS_ADMIN,
+		ID,UC_ID,OAUTH_ID,USERNAME,EMAIL,MOBILE,IS_ADMIN,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-		insert into WEBPORTAL_USER (UC_ID,OAUTH_ID,USERNAME,EMAIL,MOBILE,LAST_LOGIN_TIME,LASTLOGIN_IP,IS_ADMIN, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER) values
+		insert into WEBPORTAL_USER (UC_ID,OAUTH_ID,USERNAME,EMAIL,MOBILE,IS_ADMIN, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER) values
 		(#{ucId},#{oauthId},#{userName},#{email},#{mobile},#{lastLoginTime},#{lastLoginIp},#{isAdmin},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
@@ -72,12 +70,6 @@
 			</if>
 			<if test="mobile != null  and mobile != '' ">
 				MOBILE=#{mobile},
-			</if>
-			<if test="lastLoginTime != null  and lastLoginTime != '' ">
-				LAST_LOGIN_TIME=#{lastLoginTime},
-			</if>
-			<if test="lastLoginIp != null  and lastLoginIp != '' ">
-				LASTLOGIN_IP=#{lastLoginIp},
 			</if>
 		</set>
 		where ID = #{id}

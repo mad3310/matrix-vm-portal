@@ -6,7 +6,6 @@ import com.letv.portal.dao.IUserDao;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
-import com.letv.portal.service.oauth.IUcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 
 	public void saveUserObject(UserModel user) {
 		Date date = new Date();
-		user.setLastLoginTime(date);
 		user.setDeleted(true);
 		//TODO re-factor
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -63,9 +61,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		if(null == user)
 			throw new CommonException("User object is not null");
 
-		Date lastLoginTime = new Date();
-		user.setLastLoginIp(currentLoginIp);
-		user.setLastLoginTime(lastLoginTime);
 		super.update(user);
 	}
 
