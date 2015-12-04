@@ -18,12 +18,8 @@ define(['controllers/app.controller'], function (controllerModule) {
 			var date=new Date();
 			var month=date.getMonth()+1;
 			var formatdate=date.getFullYear().toString()+month.toString();
-			$scope.date=formatdate;//当前月份的账单
-			$scope.year=date.getFullYear();
-			$scope.month=date.getMonth()+1;
-			$scope.day=date.getDate();
-			$scope.hour=date.getHours();
-			$scope.minute=date.getMinutes();
+			$scope.billdate=formatdate;//当前月份的账单
+			
 			$scope.expanderToggle = function(element){
 				var _target=element.target||element.srcElement;
 				var _items=$(_target).parent().parent().find('.operation-items');
@@ -111,7 +107,14 @@ define(['controllers/app.controller'], function (controllerModule) {
 						WidgetService.notifyError('获取操作信息失败！')
 					}else{
 						$scope.isloading=true;
-						$scope.expander=data.data;
+						$scope.expander=data.data.operate;
+						var time=new Date(data.data.date);
+						$scope.date=time;
+						$scope.year=time.getFullYear();
+						$scope.month=time.getMonth()+1;
+						$scope.day=time.getDate();
+						$scope.hour=time.getHours();
+						$scope.minute=time.getMinutes();
 					}
 				});
 			}
