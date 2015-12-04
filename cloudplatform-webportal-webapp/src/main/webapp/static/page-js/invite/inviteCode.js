@@ -68,7 +68,7 @@
 	}
 	function inviteBtnClick(){
 		var html='';
-		var _target=$('.invitebtn').unbind('click').click(function(event){
+		$('.invitebtn').unbind('click').click(function(event){
 			var invitecode=$('.inviteCode').val(),code=$('.valicode-input').val(),inputdata='';
 			var ifneedcodeResult=ifneedcode();
 			ifneedcodeResult.done(function(data){
@@ -107,6 +107,9 @@
 			data:inputdata,
 			success:function(data){
 				if(data.data==0){
+					if($('#idcode').length>0){//有验证码,刷新验证码
+						$('#idcode').attr('src', '../kaptcha');
+					}
 					$('.blockInputs').removeClass('hide');
 					$('.blockSuccess').addClass('hide');
 					$('.inviteCode').addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
