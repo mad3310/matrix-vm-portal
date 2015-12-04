@@ -395,7 +395,7 @@ public class NetworkController {
 					form.getEnablePublicNetworkGateway(), form.getPublicNetworkId());
 			//保存编辑路由操作
 			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, form.getName()));
+					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, Constant.RENAME, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
