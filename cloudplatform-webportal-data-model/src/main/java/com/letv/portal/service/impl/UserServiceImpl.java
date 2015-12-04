@@ -1,19 +1,20 @@
 package com.letv.portal.service.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.CommonException;
 import com.letv.portal.dao.IUserDao;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 @Service("userService")
@@ -104,10 +105,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 
 	@Override
 	public Long getUserIdByUcId(Long ucId) {
-		UserModel userModel = this.selectByUcId(ucId);
-		if(userModel == null)
-			return null;
-		return userModel.getId();
+		return this.userDao.selectUserIdByUcId(ucId);
 	}
 
 	@Override

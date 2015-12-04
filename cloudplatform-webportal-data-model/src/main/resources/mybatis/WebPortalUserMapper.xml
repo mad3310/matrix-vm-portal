@@ -87,6 +87,11 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_USER where UC_ID = #{ucId}
 	</select>
+	<select id="selectUserIdByUcId" resultType="java.lang.Long" parameterType="java.lang.Long">
+		select
+			ID
+		from WEBPORTAL_USER where UC_ID = #{ucId}
+	</select>
 	<!-- 根据oauthid查询-->
 	<select id="selectByOauthId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
