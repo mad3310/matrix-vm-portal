@@ -7,6 +7,7 @@
 .header .header-account .account-icon{width:26px;height:26px;border-radius:50%;}
 /*account*/
 .body-account{height:200px;padding-top:45px;border:1px solid #ededed;font-size:12px;color:#333;background-color:#fbfbfb}
+.body-account a{text-decoration:none;}
 .body-account .messagetitle{font-size:16px;color:#300000}
 .body-account ul{margin:10px 0 0 0;}
 .body-account ul li{margin-right:10px;list-style:none;color:#088ac2;display:inline;}

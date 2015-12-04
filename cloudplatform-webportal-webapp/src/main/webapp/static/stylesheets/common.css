@@ -1078,7 +1078,7 @@ le-select .le-select-menu li a{
 .view-common .list-common{
     position: relative;
 }
-
+.view-common .list-common .nodata{color:#888;}
 .view-common .list-common table{
     min-height: 90px;
 }
