@@ -37,13 +37,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 
         modalInstance.result.then(function (resultData) {
           if (resultData) {
-            WidgetService.notifySuccess('密钥创建成功');
-            refreshKeypairList();
-            // $scope.keypairDownloadUrl=$sce.trustAsResourceUrl(Config.urls.keypair_create+'?'+$httpParamSerializerJQLike(resultData));
+            $scope.keypairDownloadUrl=$sce.trustAsResourceUrl(Config.urls.keypair_create+'?'+$httpParamSerializerJQLike(resultData));
             $timeout(function(){
-              $scope.keypairDownloadUrl=$sce.trustAsResourceUrl(Config.urls.keypair_create+'?'+$httpParamSerializerJQLike(resultData));
-              // WidgetService.notifySuccess('密钥创建成功');
-              // refreshKeypairList();
+              WidgetService.notifySuccess('密钥创建成功');
+              refreshKeypairList();
             },2000);
           }
         }, function () {
