@@ -50,7 +50,7 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		insert into WEBPORTAL_USER (UC_ID,OAUTH_ID,USERNAME,EMAIL,MOBILE,IS_ADMIN, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER) values
-		(#{ucId},#{oauthId},#{userName},#{email},#{mobile},#{lastLoginTime},#{lastLoginIp},#{isAdmin},now(),#{createUser},now(),#{updateUser})
+		(#{ucId},#{oauthId},#{userName},#{email},#{mobile},#{isAdmin},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 

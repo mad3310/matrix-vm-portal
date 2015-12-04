@@ -84,8 +84,8 @@
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
 
-                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
+                <webportal.errormail.to></webportal.errormail.to>
+                <service.notice.email.to></service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 <webportal.log.path>D:</webportal.log.path>
                 <!-- fixed and zabbix config -->
@@ -146,8 +146,8 @@
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;sunweiwei1@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
+                <webportal.errormail.to>zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;sunweiwei1@letv.com;hanxiangxiang@letv.com</webportal.errormail.to>
+                <service.notice.email.to>zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;sunweiwei1@letv.com;hanxiangxiang@letv.com</service.notice.email.to>
 
                 <start.timing.jobs>N</start.timing.jobs>
                 <webportal.log.path>/var/log</webportal.log.path>
