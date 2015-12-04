@@ -15,6 +15,15 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.consume={};
 			$scope.service={}
 			$scope.quotas={};
+			var date=new Date();
+			var month=date.getMonth()+1;
+			var formatdate=date.getFullYear().toString()+month.toString();
+			$scope.date=formatdate;//当前月份的账单
+			$scope.year=date.getFullYear();
+			$scope.month=date.getMonth()+1;
+			$scope.day=date.getDate();
+			$scope.hour=date.getHours();
+			$scope.minute=date.getMinutes();
 			$scope.expanderToggle = function(element){
 				var _target=element.target||element.srcElement;
 				var _items=$(_target).parent().parent().find('.operation-items');
@@ -43,12 +52,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 				remain(remainurl);
 				billing(billMesurl);
 				operation(operationurl);
-				// service(serviceurl);
 				consume(consumeurl);
 				quotas(quotaurl,serviceurl)
 			}
 			function userinfo(usinfourl){
-				
 				HttpService.doGet(usinfourl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取用户信息失败！')

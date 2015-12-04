@@ -105,7 +105,6 @@ function moneyInput(){
     var money=_target.val();
     if(money){
         if(reg.test(money)){
-            console.log(money)
             if(money<0){
                 _target.addClass('has-error');
                 _errordesc.text('输入不合法数字！请输入两位小数');
