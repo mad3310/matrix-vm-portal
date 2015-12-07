@@ -12,9 +12,9 @@
                         <span class="letv-control-label">名称：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <input type="text" class="le-form-control input-keypair-name" ng-model="keypairName" ng-model-options="{ updateOn: 'blur'}" name="keypair_name" le-auto-focus name-input-nozh-restrict />
-                        <input-validation-tooltip ng-show="(vm_keypair_create_form.$submitted || vm_keypair_create_form.keypair_name.$touched) && vm_keypair_create_form.keypair_name.$error.nameInputNozhRestrict"
-                                                  validation-message="{{REGEX_MESSAGE.NAME_NO_ZH}}">
+                        <input type="text" class="le-form-control input-keypair-name" ng-model="keypairName" ng-model-options="{ updateOn: 'blur'}" name="keypair_name" le-auto-focus name-input-keypair-restrict />
+                        <input-validation-tooltip ng-show="(vm_keypair_create_form.$submitted || vm_keypair_create_form.keypair_name.$touched) && vm_keypair_create_form.keypair_name.$error.nameInputKeypairRestrict"
+                                                  validation-message="{{REGEX_MESSAGE.NAME_KEYPAIR}}">
                         </input-validation-tooltip>
                     </div>
                 </div>

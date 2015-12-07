@@ -55,12 +55,12 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
-    directiveModule.directive('nameInputNozhRestrict', function(Config) {
+    directiveModule.directive('nameInputKeypairRestrict', function(Config) {
         return {
             require: 'ngModel',
             link: function(scope, elm, attrs, ctrl) {
-                ctrl.$validators.nameInputNozhRestrict = function(modelValue, viewValue) {
-                    if (viewValue && Config.REGEX.NAME_NO_ZH.test(viewValue)) {
+                ctrl.$validators.nameInputKeypairRestrict = function(modelValue, viewValue) {
+                    if (viewValue && Config.REGEX.NAME_KEYPAIR.test(viewValue)) {
                         return true;
                     }
                     return false;
