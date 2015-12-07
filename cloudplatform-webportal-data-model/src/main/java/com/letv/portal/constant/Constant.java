@@ -63,7 +63,7 @@ public class Constant {
 	public static final String MODIFY_PWD_OPENSTACK = "云主机修改密码";
 	//挂载云硬盘
 	public static final String ATTACH_VOLUME_OPENSTACK = "挂载云硬盘";
-	public static final String DETACH_VOLUME_OPENSTACK = "解挂云硬盘";
+	public static final String DETACH_VOLUME_OPENSTACK = "卸载云硬盘";
 	//创建快照
 	public static final String SNAPSHOT_CREATE_OPENSTACK = "创建云主机快照";
 	public static final String SNAPSHOT_DELETE_OPENSTACK = "删除云主机快照";
@@ -99,9 +99,10 @@ public class Constant {
 	public static final String UNBINDED_SUBNET_ROUTER = "解除关联子网";
 	public static final String EDIT_ROUTER = "编辑路由器";
 	
-	public static final String CREATE_PRIVATE_NET = "创建私网";
-	public static final String EDIT_PRIVATE_NET = "编辑私网";
-	public static final String DELETE_PRIVATE_NET = "删除私网";
+	public static final String CREATE_PRIVATE_NET = "创建VPC";
+	public static final String CREATE_PRIVATE_NET_SUBNET = "创建VPC和子网";
+	public static final String EDIT_PRIVATE_NET = "编辑VPC";
+	public static final String DELETE_PRIVATE_NET = "删除VPC";
 	public static final String CREATE_SUBNET = "创建子网";
 	public static final String EDIT_SUBNET = "编辑子网";
 	public static final String DELETE_SUBNET = "删除子网";

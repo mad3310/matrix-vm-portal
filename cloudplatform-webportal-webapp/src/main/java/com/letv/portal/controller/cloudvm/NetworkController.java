@@ -240,6 +240,8 @@ public class NetworkController {
 			Util.session(sessionService)
 					.getNetworkManager()
 					.createPrivateNetworkAndSubnet(form.getRegion(), form.getNetworkName(), form.getSubnetName(), form.getCidr(), form.getAutoGatewayIp(), form.getGatewayIp(), true);
+			//保存创建vpc操作
+			this.recentOperateService.saveInfo(Constant.CREATE_PRIVATE_NET, form.getNetworkName());
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -393,7 +395,7 @@ public class NetworkController {
 					form.getEnablePublicNetworkGateway(), form.getPublicNetworkId());
 			//保存编辑路由操作
 			this.recentOperateService.saveInfo(Constant.EDIT_ROUTER, 
-					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, form.getName()));
+					MessageFormat.format(Constant.STYLE_OPERATE_1, oldName, Constant.RENAME, form.getName()));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

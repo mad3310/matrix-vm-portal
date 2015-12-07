@@ -7,6 +7,7 @@
 .header .header-account .account-icon{width:26px;height:26px;border-radius:50%;}
 /*account*/
 .body-account{height:200px;padding-top:45px;border:1px solid #ededed;font-size:12px;color:#333;background-color:#fbfbfb}
+.body-account a{text-decoration:none;}
 .body-account .messagetitle{font-size:16px;color:#300000}
 .body-account ul{margin:10px 0 0 0;}
 .body-account ul li{margin-right:10px;list-style:none;color:#088ac2;display:inline;}
@@ -14,6 +15,14 @@
 .body-account .message{margin:10px 0 0 0;}
 .body-account .message a:hover{text-decoration:none;}
 .body-account .message .message-num{padding:0 10px 0 0;font-size:18px;color:#088ac2;}
+.body-account .message .message-num{
+-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;-ms-backface-visibility:hidden;backface-visibility:hidden;
+-webkit-animation-duration:1s;-webkit-animation-delay:.1s;-webkit-animation-timing-function:ease;-webkit-animation-fill-mode:both;
+-moz-animation-duration:1s;-moz-animation-delay:.1s;-moz-animation-timing-function:ease;-moz-animation-fill-mode:both;
+-ms-animation-duration:1s;-ms-animation-delay:.1s;-ms-animation-timing-function:ease;-ms-animation-fill-mode:both;
+animation-duration:1s;animation-delay:.1s;animation-timing-function:ease;animation-fill-mode:both;
+}
+.message-num.messbounce {-webkit-animation-name: messbounce;-moz-animation-name: messbounce;-ms-animation-name: messbounce;animation-name: messbounce;}
 .body-account .remain{font-size:20px;color:#ff3c37;}
 .body-account .usericon{color:#fff;font-size:70px;line-height:70px;}
 .body-account .userimg{width:70px;height:70px;border-radius:50%}
@@ -78,3 +87,35 @@
 .recommend-item .item-detail:hover,.recommend-item .item-detail:focus,.recommend-item .item-detail:active{color:#088ac2;text-decoration:none;}
 .item-detail .iconfont{padding:0;font-size:12px;}
 .recommend-item .item-buttons{margin:25px 0;}
+@-webkit-keyframes messbounce {
+0%,30%,50%,80%,100% {-webkit-transform: translateY(0);}
+20%{-webkit-transform: translateY(-20px);}
+40%{-webkit-transform: translateY(-15px);}
+60% {-webkit-transform: translateY(-10px);}
+70%{-webkit-transform: translateY(-5px);}
+90%{-webkit-transform: translateY(-2px);}
+}
+@-moz-keyframes messbounce {
+0%,30%,50%,80%,100%  {-moz-transform: translateY(0);}
+20%{-moz-transform: translateY(-20px);}
+40%{-moz-transform: translateY(-15px);}
+60% {-moz-transform: translateY(-10px);}
+70%{-moz-transform: translateY(-5px);}
+90%{-moz-transform: translateY(-2px);}
+}
+@-ms-keyframes messbounce {
+0%,30%,50%,80%,100% {-ms-transform: translateY(0);}
+20%{-ms-transform: translateY(-20px);}
+40%{-ms-transform: translateY(-15px);}
+60% {-ms-transform: translateY(-10px);}
+70%{-ms-transform: translateY(-5px);}
+90%{-ms-transform: translateY(-2px);}
+}
+@keyframes messbounce {
+0%,30%,50%,80%,100%  {transform: translateY(0);}
+20%{transform: translateY(-20px);}
+40%{transform: translateY(-15px);}
+60% {transform: translateY(-10px);}
+70%{transform: translateY(-5px);}
+90%{transform: translateY(-2px);}
+}

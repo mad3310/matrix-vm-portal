@@ -130,15 +130,19 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 				continue;
 			}
 			Map<String, Object> params = JSONObject.parseObject(orderSub.getProductInfoRecord().getParams(), Map.class);	
+			int count = (Integer)params.get("count");
+			if(orderSub.getSubscription().getBuyType()==1) {
+				count = 1;
+			}
 			Map<String, Object> ret = new HashMap<String, Object>();
-			ret.put("price", getValidProductOrderPrice(orderSub, (Integer)params.get("count")));
+			ret.put("price", getValidProductOrderPrice(orderSub, count));
 			ret.put("totalPrice", getValidTotalOrderPrice(orderSubs));
 			ret.put("orderStatus", orderSub.getOrder().getStatus());
 			ret.put("payNumber", orderSub.getOrder().getPayNumber());
 			ret.put("orderNumber", orderSub.getOrder().getOrderNumber());
 			ret.put("orderTime", orderSub.getSubscription().getOrderTime());
 			ret.put("productName", productInfo.get(orderSub.getSubscription().getProductId()));
-			ret.put("orderNum", (Integer)params.get("count"));
+			ret.put("orderNum", count);
 			ret.put("params", orderSub.getProductInfoRecord().getDescn());
 			retList.add(ret);
 			judgeParam.add(orderSub.getSubscription().getProductId()+orderSub.getProductInfoRecord().getParams());

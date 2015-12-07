@@ -25,7 +25,7 @@
         </div>
         <a href="http://uc.letvcloud.com/userView/ucOverview.do" class="header-account pull-right">
             <img src="/static/images/nav-account.png" class="account-icon" />
-            <span>${sessionScope.userSession.userName}</span>
+            <span class="header-username"></span>
         </a>
         <a href="/home/helpcenter.html" class="header-help pull-right">
             <img src="/static/images/nav-help.png" class="help-icon" />

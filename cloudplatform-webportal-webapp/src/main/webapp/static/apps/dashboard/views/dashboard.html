@@ -4,24 +4,24 @@
 			<div class="clearfix">
 				<div class="le-col-2 text-center">
 					<i class="iconfont icon-user1 usericon" ng-hide="usericon.hide" ng-style="usericon.styles"></i>
-					<img class="userimg" src="{{userimg}}" ng-hide="!userimg">
+					<a href="http://uc.letvcloud.com/userView/ucOverview.do"><img class="userimg" src="{{userimg}}" ng-hide="!userimg"></a>
 				</div>
 				<div class="le-col-5">
-					<div class="messagetitle">您好：<span class="text-blue">{{username}}&nbsp;</span></div>
+					<div class="messagetitle">您好：<a href="http://uc.letvcloud.com/userView/ucOverview.do"><span class="text-blue">{{username}}</span></a></div>
 					<ul>
-						<li><i class="iconfont icon-icon" ng-class="{1:'', 'undefined':'text-gray'}[mobileStatus]"></i></li>
-						<li><i class="iconfont icon-xinfeng" ng-class="{1:'', 'undefined':'text-gray'}[emailStatus]"></i></li>
-						<li><i class="iconfont icon-shenfenrenzheng" ng-class="{1:'', 'undefined':'text-gray'}[userStatus]"></i></li>
+						<li><a href="http://uc.letvcloud.com/userView/accountManagerView.do"><i class="iconfont icon-icon" ng-class="{1:'', 'undefined':'text-gray'}[mobileStatus]"></i></a></li>
+						<li><a href="http://uc.letvcloud.com/userView/accountManagerView.do"><i class="iconfont icon-xinfeng" ng-class="{1:'', 'undefined':'text-gray'}[emailStatus]"></i></a></li>
+						<li><a href="http://uc.letvcloud.com/userView/accountManagerView.do"><i class="iconfont icon-shenfenrenzheng" ng-class="{1:'', 'undefined':'text-gray'}[userStatus]"></i></a></li>
 					</ul>
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-6">
 						<div class="messagetitle">消息中心</div>
-						<div class="message"><a href="http://uc.letvcloud.com/messageView/msgCenterView.do"><span class="message-num">{{message || '0'}}</span></a><span class="text-gray">条</span></div>
+						<div class="message"><a href="http://uc.letvcloud.com/messageView/msgCenterView.do"><span class="message-num messbounce">{{message || '0'}}</span></a><span class="text-gray">条</span></div>
 					</div>
 					<div class="le-col-6">
 						<div class="messagetitle">我的账单</div>
-						<div class="message"><a href="http://uc.letvcloud.com/uc/bill/getMonthBillView.do"><span class="message-num">{{billMes || '0'}}</span></a><span class="text-gray">条</span></div>
+						<div class="message"><a href="http://uc.letvcloud.com/uc/bill/getMonthBillView.do?month={{billdate}}"><span class="message-num messbounce">{{billMes || '0'}}</span></a><span class="text-gray">条</span></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -152,7 +152,12 @@
 								&nbsp;<span>{{operation.content.substring(operation.content.indexOf('==')+2,operation.content.lastIndexOf('=='))}}</span>&nbsp;
 								<span class="text-yellow">{{operation.content.substring(operation.content.lastIndexOf('==')+2)}}</span>
 							</span>
-							<span class="pull-right" data-picker>{{operation.createTime|date:'yyyy-MM-dd HH:mm'}}</span>
+							<span class="pull-right" ng-show="{{((operation.createTime|date:'yyyyMdH')==year.toString().concat(month.toString(),day.toString(),hour.toString())&&minute-(operation.createTime|date:'m')<5)||((operation.createTime|date:'yyyyMd')==year.toString().concat(month.toString(),day.toString())&&(hour-1==(operation.createTime|date:'H'))&&60+minute-(operation.createTime|date:'m')<5)}}" date-picker>刚刚</span><!--5分钟内-->
+							<span class="pull-right" ng-show="{{((operation.createTime|date:'yyyyMdH')==year.toString().concat(month.toString(),day.toString(),hour.toString())&&minute-(operation.createTime|date:'m')>=5&&minute-(operation.createTime|date:'m')<30)||((operation.createTime|date:'yyyyMd')==year.toString().concat(month.toString(),day.toString())&&(hour-1==(operation.createTime|date:'H'))&&60+minute-(operation.createTime|date:'m')>=5&&60+minute-(operation.createTime|date:'m')<30)}}" date-picker>4分钟前</span><!--30分钟内-->
+							<span class="pull-right" ng-show="{{((operation.createTime|date:'yyyyMdH')==year.toString().concat(month.toString(),day.toString(),hour.toString())&&minute-(operation.createTime|date:'m')>=30)||((operation.createTime|date:'yyyyMd')==year.toString().concat(month.toString(),day.toString())&&(hour-1==(operation.createTime|date:'H'))&&60+minute-(operation.createTime|date:'m')>=30)||((operation.createTime|date:'yyyyMd')==year.toString().concat(month.toString(),
+							day.toString())&&(hour-1>(operation.createTime|date:'H')))}}" date-picker>{{operation.createTime|date:'HH:mm'}}</span><!--当天-->
+							<span class="pull-right" ng-show="{{(operation.createTime|date:'yyyyM')==year.toString().concat(month.toString())&&(operation.createTime|date:'d')!=day}}" date-picker>{{operation.createTime|date:'HH:mm'}}</span><!--当年当月非当天-->
+							<span class="pull-right" ng-show="{{(operation.createTime|date:'yyyy')!=year||(operation.createTime|date:'M')!=month}}" date-picker>{{operation.createTime|date:'yyyy-MM-dd'}}</span><!--非当年或非当月-->
 							<div class="clearfix"></div>
 						</div>
 					</li>
@@ -447,3 +452,6 @@
 	</div>
 	<div class="clearfix"></div>
 </div>
+	<toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-top-right'}">
+    </toaster-container>
+

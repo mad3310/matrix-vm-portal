@@ -105,7 +105,6 @@ function moneyInput(){
     var money=_target.val();
     if(money){
         if(reg.test(money)){
-            console.log(money)
             if(money<0){
                 _target.addClass('has-error');
                 _errordesc.text('输入不合法数字！请输入两位小数');
@@ -197,11 +196,10 @@ function rollup(){
 		}
 	});
 }
-//获取用户账号&余额
+//获取用户账号信息
 function userInfo(){
     var userid=$('#userId').val();
     var payurl="/user/"+userid;
-    var remainurl="/userAccount/balance/"+userid;
     $.ajax({
         url:payurl,
         cache:false,
@@ -214,6 +212,11 @@ function userInfo(){
             }
         }
     });
+}
+// 获取用户账号余额
+function userRemainInfo(){
+    var userid=$('#userId').val();
+    var remainurl="/userAccount/balance/"+userid;
     return $.ajax({
         url:remainurl,
         cache:false,
@@ -286,12 +289,13 @@ function orderDetail(){
                                  +'</tr>';
             }
             $('#orderpay').text('¥'+totalprice);
-            var userRemain=userInfo();
+            var userRemain=userRemainInfo();
             userRemain.done(function(data){
                 if(Number(data.data)>=Number(totalprice)){
                     $('.remainPay').val(totalprice);
                 }else{
                     $('.remainPay').val(data.data);
+                    $('.payoption:eq(0)').addClass('active'); 
                 }
             });
             _target.append(orderHtml);
