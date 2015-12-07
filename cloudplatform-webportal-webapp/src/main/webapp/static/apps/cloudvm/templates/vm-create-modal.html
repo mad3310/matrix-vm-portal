@@ -41,7 +41,7 @@
                         <div class="inputs-item clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">主机名称：</span></div>
                             <div class="col-sm-10">
-                                <input type="text" name="vm_name" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" le-auto-focus name-input-restrict />
+                                <input type="text" name="vm_name" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" ng-trim="false" le-auto-focus name-input-restrict />
                                 <input-validation-tooltip ng-show="(vm_create_form.$submitted || vm_create_form.vm_name.$touched) && vm_create_form.vm_name.$error.nameInputRestrict"
                                                           validation-message="{{REGEX_MESSAGE.NAME}}">
                                 </input-validation-tooltip>

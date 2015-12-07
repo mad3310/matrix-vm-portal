@@ -114,7 +114,7 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-vm-name" ng-model="vmName" name="vm_name" le-auto-focus name-input-restrict />
+                            <input type="text" class="le-form-control input-vm-name" ng-model="vmName" name="vm_name" ng-trim="false" le-auto-focus name-input-restrict />
                             <input-validation-tooltip ng-show="(vm_edit_form.$submitted || vm_edit_form.vm_name.$touched) && vm_edit_form.vm_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>
@@ -231,7 +231,7 @@
                             <span class="letv-control-label">快照名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-vm-snapshot-name" ng-model="vmSnapshotName" name="vm_snapshot_name" name-input-restrict />
+                            <input type="text" class="le-form-control input-vm-snapshot-name" ng-model="vmSnapshotName" ng-trim="false" name="vm_snapshot_name" le-auto-focus name-input-restrict />
                             <input-validation-tooltip ng-show="(vm_snapshot_create_form.$submitted || vm_snapshot_create_form.vm_snapshot_name.$touched) && vm_snapshot_create_form.vm_snapshot_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>

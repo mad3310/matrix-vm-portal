@@ -136,7 +136,7 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="vpcCreate.name"
-                                   name="vpc_name" le-auto-focus name-input-restrict />
+                                   name="vpc_name" ng-trim="false" le-auto-focus name-input-restrict />
                             <input-validation-tooltip ng-show="(vpc_create_form.$submitted || vpc_create_form.vpc_name.$touched) && vpc_create_form.vpc_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>
@@ -163,7 +163,7 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="vpcCreate.subnet.name"
-                                   name="subnet_name" name-input-restrict/>
+                                   name="subnet_name" ng-trim="false" le-auto-focus name-input-restrict/>
                             <input-validation-tooltip ng-show="(vpc_create_form.$submitted || vpc_create_form.subnet_name.$touched) && vpc_create_form.subnet_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>
@@ -212,7 +212,7 @@
                     </div>
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control input-disk-name" ng-model="vpcEdit.name"
-                               name="edit_vpc_name" le-auto-focus name-input-restrict/>
+                               name="edit_vpc_name" ng-trim="false" le-auto-focus name-input-restrict/>
                         <input-validation-tooltip ng-show="(vpc_edit_form.$submitted || vpc_edit_form.edit_vpc_name.$touched) && vpc_edit_form.edit_vpc_name.$error.nameInputRestrict"
                                                   validation-message="{{REGEX_MESSAGE.NAME}}">
                         </input-validation-tooltip>
@@ -244,7 +244,7 @@
                     </div>
                     <div class="le-col-9 col-control">
                         <input type="text" class="le-form-control input-disk-name" ng-model="subnetEdit.name"
-                               name="edit_subnet_name" le-auto-focus name-input-restrict/>
+                               name="edit_subnet_name" ng-trim="false" le-auto-focus name-input-restrict/>
                         <input-validation-tooltip ng-show="(subnet_edit_form.$submitted || subnet_edit_form.edit_subnet_name.$touched) && subnet_edit_form.edit_subnet_name.$error.nameInputRestrict"
                                                   validation-message="{{REGEX_MESSAGE.NAME}}">
                         </input-validation-tooltip>
@@ -277,7 +277,7 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="subnetCreate.name"
-                                   name="subnet_name" le-auto-focus name-input-restrict/>
+                                   name="subnet_name" ng-trim="false" le-auto-focus name-input-restrict/>
                             <input-validation-tooltip ng-show="(subnet_create_form.$submitted || subnet_create_form.subnet_name.$touched) && subnet_create_form.subnet_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>
@@ -335,7 +335,7 @@
                         </div>
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="subnetCreate.name"
-                                   name="subnet_name" le-auto-focus name-input-restrict/>
+                                   name="subnet_name" ng-trim="false" le-auto-focus name-input-restrict/>
                             <input-validation-tooltip ng-show="(subnet_create_with_vpc_form.$submitted || subnet_create_with_vpc_form.subnet_name.$touched) && subnet_create_with_vpc_form.subnet_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>

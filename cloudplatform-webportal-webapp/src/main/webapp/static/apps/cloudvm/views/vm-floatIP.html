@@ -128,7 +128,7 @@
                         <span class="letv-control-label">名称：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <input type="text" name="ip_name" class="le-form-control" ng-model="ipName" placeholder="请输入公网IP名称" le-auto-focus name-input-restrict />
+                        <input type="text" name="ip_name" class="le-form-control" ng-model="ipName" placeholder="请输入公网IP名称" ng-trim="false" le-auto-focus name-input-restrict />
                         <input-validation-tooltip ng-show="(vm_ip_edit_form.$submitted || vm_ip_edit_form.ip_name.$touched) && vm_ip_edit_form.ip_name.$error.nameInputRestrict"
                                                   validation-message="{{REGEX_MESSAGE.NAME}}">
                         </input-validation-tooltip>
