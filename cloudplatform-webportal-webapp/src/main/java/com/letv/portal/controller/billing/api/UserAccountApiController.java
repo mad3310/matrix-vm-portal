@@ -46,9 +46,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject balance(@PathVariable Long ucId, ResultObject obj) {
 		Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+			UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId,userModel);
+			userId = userModel.getId();
         }
 
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
@@ -61,9 +61,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject account(@PathVariable Long ucId, ResultObject obj) {
         Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+            UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId, userModel);
+            userId = userModel.getId();
         }
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
 		obj.setData(billUserAmount);
@@ -73,9 +73,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject create(@PathVariable Long ucId, ResultObject obj) {
         Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+            UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId, userModel);
+            userId = userModel.getId();
         }
 		this.billUserAmountService.createUserAmount(userId);
 		return obj;
@@ -85,9 +85,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long ucId,@RequestParam(required=true) String chargeMoney,@RequestParam(required=true) int type, ResultObject obj) {
         Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+            UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId, userModel);
+            userId = userModel.getId();
         }
 		String tradeNum = this.billUserAmountService.recharge(userId, new BigDecimal(chargeMoney), type);
 		obj.setData(tradeNum);
@@ -97,9 +97,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long ucId,@RequestParam(required=true) String tradeNum,@RequestParam(required=true) String orderId,@RequestParam(required=true) String chargeMoney, ResultObject obj) {
         Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+            UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId, userModel);
+            userId = userModel.getId();
         }
 		long rechargeSuccess = this.billUserAmountService.rechargeSuccess(userId, tradeNum, orderId, new BigDecimal(chargeMoney));
 		obj.setData(rechargeSuccess);
@@ -115,9 +115,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject rechargeRecord(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable Long ucId, ResultObject obj) {
         Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+            UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId, userModel);
+            userId = userModel.getId();
         }
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
@@ -131,9 +131,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject monthBill(@PathVariable Long ucId, @PathVariable String month,ResultObject obj) {
         Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+            UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId, userModel);
+            userId = userModel.getId();
         }
 		obj.setData(this.billUserServiceBilling.queryUserServiceBilling(userId, month));
 		return obj;
@@ -147,9 +147,9 @@ public class UserAccountApiController {
 	public @ResponseBody ResultObject billYear(@PathVariable Long ucId,ResultObject obj) {
         Long userId = this.userService.getUserIdByUcId(ucId);
         if(null == userId) {
-            obj.setResult(0);
-            obj.addMsg("no user exist by ucId,please login lcp first.");
-            return obj;
+            UserModel userModel = new UserModel();
+            this.userService.insertByUcId(ucId, userModel);
+            userId = userModel.getId();
         }
 		obj.setData(this.billUserServiceBilling.getUserBillingYears(userId));
 		return obj;

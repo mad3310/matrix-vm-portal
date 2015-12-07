@@ -1,20 +1,20 @@
 package com.letv.portal.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.CommonException;
 import com.letv.portal.dao.IUserDao;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.oauth.IUcService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service("userService")
@@ -22,21 +22,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 
 	@Autowired
 	private IUserDao userDao;
+	@Autowired
+	private IUcService ucService;
 
 	public UserServiceImpl() {
 		super(UserModel.class);
-	}
-
-	public void saveUserObject(UserModel user) {
-		Date date = new Date();
-		user.setDeleted(true);
-		//TODO re-factor
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		user.setCreateUser(Long.valueOf(0L));
-		user.setCreateTime(timestamp);
-		user.setUpdateUser(Long.valueOf(0L));
-		user.setUpdateTime(timestamp);
-		super.insert(user);
 	}
 
 	@Override
@@ -53,7 +43,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		UserModel user = new UserModel();
 		user.setUserName(userName);
 		user.setEmail(email);
-		saveUserObject(user);
+		insert(user);
 		return user;
 	}
 
@@ -108,7 +98,34 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		return this.userDao.selectUserIdByUcId(ucId);
 	}
 
-	@Override
+
+    @Override
+    public void insertByUcId(Long ucId,UserModel userModel) {
+        Map<String, Object> userMap = this.ucService.getUserByUserId(ucId);
+        if(null == userMap && userMap.isEmpty())
+            throw new CommonException("getUserByUserId:user is null by ucId:{}"+ucId);
+        userModel.setUcId(ucId);
+        userModel.setOauthId((String) userMap.get("uuid"));
+        userModel.setEmail((String) userMap.get("email"));
+        userModel.setUserName((String) userMap.get("contacts"));
+        userModel.setMobile((String) userMap.get("mobile"));
+        this.insert(userModel);
+    }
+
+    @Override
+    public void insert(UserModel user) {
+        Date date = new Date();
+        user.setDeleted(true);
+        //TODO re-factor
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        user.setCreateUser(Long.valueOf(0L));
+        user.setCreateTime(timestamp);
+        user.setUpdateUser(Long.valueOf(0L));
+        user.setUpdateTime(timestamp);
+        super.insert(user);
+    }
+
+    @Override
 	public Long getUcIdByUserId(Long userId) {
 		UserModel userModel = this.selectById(userId);
 		if(userModel == null)

@@ -61,7 +61,7 @@ public class LoginProxyImpl  implements ILoginProxy{
 		userModel.setEmail(session.getEmail());
 		userModel.setUserName(session.getUserName());
 		userModel.setMobile(session.getMobile());
-		this.userService.saveUserObject(userModel);
+		this.userService.insert(userModel);
 		return userModel.getId();
 	}
 

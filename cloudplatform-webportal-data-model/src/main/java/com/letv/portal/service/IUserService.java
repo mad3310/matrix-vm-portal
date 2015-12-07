@@ -8,9 +8,8 @@ import com.letv.portal.model.UserVo;
 
 public interface IUserService extends IBaseService<UserModel>{
 
-	void saveUserObject(UserModel user);
-
-	UserModel saveUserObjectWithSpecialName(String userName, String loginIp, String email);
+    void insertByUcId(Long ucId,UserModel userModel);
+    UserModel saveUserObjectWithSpecialName(String userName, String loginIp, String email);
 
 	void updateUserLoginInfo(UserModel user, String currentLoginIp);
 
