@@ -64,7 +64,6 @@ import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
-import com.letv.portal.service.openstack.util.NameUtil;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubDetailService;

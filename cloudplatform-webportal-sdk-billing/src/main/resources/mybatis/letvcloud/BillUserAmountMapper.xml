@@ -19,7 +19,7 @@
             freezeAmount = #{freezeAmount},
             lastUpdateTime = NOW()
         </set>
-        where userId = #{userId}
+        where userId = #{userId}  and lastUpdateTime = #{lastUpdateTime}
     </update>
     
     <update id="reduceFreezeAmount" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
@@ -28,7 +28,7 @@
             freezeAmount = #{freezeAmount},
             lastUpdateTime = NOW()
         </set>
-        where userId = #{userId}
+        where userId = #{userId}  and lastUpdateTime = #{lastUpdateTime}
     </update>
     <update id="reduceAvailableAmount" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
         update bill_user_amount
@@ -36,7 +36,7 @@
             availableAmount = #{availableAmount},
             lastUpdateTime = NOW()
         </set>
-        where userId = #{userId}
+        where userId = #{userId}  and lastUpdateTime = #{lastUpdateTime}
     </update>
     <update id="addAmount" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
         update bill_user_amount

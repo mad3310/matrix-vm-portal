@@ -17,15 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.MatrixException;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.dao.letvcloud.BillRechargeRecordMapper;
 import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
-import com.letv.portal.model.letvcloud.BillDeduction;
 import com.letv.portal.model.letvcloud.BillRechargeRecord;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.model.message.Message;
 import com.letv.portal.service.message.IMessageProxyService;
+import com.letv.portal.util.ExceptionEmailServiceUtil;
 
 /**
  * Created by wanglei14 on 2015/6/28.
@@ -42,6 +43,8 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     BillRechargeRecordMapper billRechargeRecordMapper;
     @Autowired
     IMessageProxyService messageProxyService;
+    @Autowired
+    ExceptionEmailServiceUtil exceptionEmailServiceUtil;
 
     @Override
     public void createUserAmount(Long userId) throws CommonException {
@@ -183,6 +186,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
         if(!(Boolean) msgRet.get("result")) {
             logger.error("充值成功后保存消息通知失败，失败原因:"+msgRet.get("message"));
+            this.exceptionEmailServiceUtil.sendErrorEmail("充值成功后保存消息通知失败", "充值成功后保存消息通知失败，返回结果:"+msgRet.toString());
         }
 
         return ret;
@@ -249,45 +253,61 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         return result;
     }
 
-    private Object obj = new Object();
-
     @Override
     public boolean updateUserAmountFromAvailableToFreeze(long userId, BigDecimal price) {
         logger.info("开始转移可用余额到冻结余额,用户id:"+userId+",金额："+price);
+        
         BillUserAmount billUserAmount = null;
-        synchronized(obj) {
-        	billUserAmount = this.getUserAmount(userId);
-            if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
+	    int ret = 0;
+	    int count = 0;
+	    do {
+	    	billUserAmount = this.getUserAmount(userId);
+	        if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
                 billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
                 billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().add(price));
-                billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
-                logger.info("转移可用余额到冻结余额成功,用户id:"+userId+",金额："+price);
-                return true;
-            } else {
-                logger.error("账户可用余额小于需要转移金额,用户id:"+userId+",金额："+price);
-                throw new MatrixException("账户可用余额小于需要转移金额,用户id:"+userId+",金额："+price);
-            }
+	            ret = billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
+	        }
+	        try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error("updateUserAmountFromAvailableToFreeze sleep had error : ", e);
+			}
+	        count++;
+	    } while (ret < 1 && count < 10);
+        
+        if(ret==1) {
+        	logger.info("转移可用余额到冻结余额成功,用户id:"+userId+",金额："+price);
+        	return true;
+        } else {
+        	logger.error("转移可用余额到冻结余额异常,用户id:"+userId+",可用余额："+billUserAmount.getAvailableAmount()+",需要转移余额："+price);
+        	throw new ValidateException("转移可用余额到冻结余额异常,用户id:"+userId+",可用余额："+billUserAmount.getAvailableAmount()+",需要转移余额："+price);
         }
     }
 
     @Override
     public boolean updateUserAmountFromFreezeToAvailable(long userId, BigDecimal price, String productName, String productType) {
-        boolean ret = false;
         logger.info("开始转移冻结余额到可用余额,用户id:"+userId+",金额："+price);
+        
         BillUserAmount billUserAmount = null;
-        synchronized(obj) {
-        	billUserAmount = this.getUserAmount(userId);
-            if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
-                billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(price));
-                billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
-                billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
-                logger.info("转移冻结余额到可用余额成功,用户id:"+userId+",金额："+price);
-                ret = true;
-            } else {
-                logger.error("账户冻结余额小于需要转移金额,用户id:"+userId+",金额："+price);
-                throw new MatrixException("账户冻结余额小于需要转移金额,用户id:"+userId+",金额："+price);
-            }
-        }
+        
+        int ret = 0;
+	    int count = 0;
+	    do {
+	    	billUserAmount = this.getUserAmount(userId);
+	        if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
+	            billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(price));
+	            billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
+	            ret = billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
+	        } 
+	        try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error("updateUserAmountFromFreezeToAvailable sleep had error : ", e);
+			}
+	        count++;
+	    } while (ret < 1 && count < 10);
+        
+        
         //服务创建失败后保存回退金额消息通知
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date d = new Date();
@@ -312,29 +332,40 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         msg.setCreatedTime(d);
         Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
         if(!(Boolean) msgRet.get("result")) {
-            logger.error("服务创建失败后保存回退金额消息通知，失败原因:"+msgRet.get("message"));
+            logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
+            this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
         }
-        return ret;
+        
+        if(ret==1) {
+        	logger.info("转移冻结余额到可用余额成功,用户id:"+userId+",金额："+price);
+        	return true;
+        } else {
+        	logger.error("转移冻结余额到可用余额异常,用户id:"+userId+",冻结金额："+billUserAmount.getFreezeAmount()+",需要转移金额："+price);
+            throw new ValidateException("转移冻结余额到可用余额异常,用户id:"+userId+",冻结金额："+billUserAmount.getFreezeAmount()+",需要转移金额："+price);
+        }
     }
 
     @Override
     public boolean reduceAvailableAmount(long userId, BigDecimal price, String productName, String productType, String date) {
-        boolean ret = false;
         logger.info("开始扣除可用余额,用户id:"+userId+",金额："+price);
+        
         BillUserAmount billUserAmount = null;
-        synchronized(obj) {
-        	billUserAmount = this.getUserAmount(userId);
-            if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
-                billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
-                billUserAmountMapper.reduceAvailableAmount(billUserAmount);
-                logger.info("扣除可用余额成功,用户id:"+userId+",金额："+price);
-                ret = true;
-            } else {
-                logger.error("账户可用余额小于扣除金额,用户id:"+userId+",金额："+price);
-                throw new MatrixException("账户可用余额小于扣除金额,用户id:"+userId+",金额："+price);
-            }
-        }
-
+        int ret = 0;
+	    int count = 0;
+	    do {
+	    	billUserAmount = this.getUserAmount(userId);
+	    	if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
+	            billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
+	            ret = billUserAmountMapper.reduceAvailableAmount(billUserAmount);
+	        } 
+	        try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error("reduceAvailableAmount sleep had error : ", e);
+			}
+	        count++;
+	    } while (ret < 1 && count < 10);
+	    
         //续费成功后保存金额消息通知
         StringBuffer buffer = new StringBuffer();
         Message msg = new Message();
@@ -358,29 +389,40 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         msg.setCreatedTime(new Date());
         Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
         if(!(Boolean) saveRet.get("result")) {
-            logger.error("续费成功后保存金额消息通知，失败原因:"+saveRet.get("message"));
+            logger.error("续费成功后保存金额消息通知失败，失败原因:"+saveRet.get("message"));
+            this.exceptionEmailServiceUtil.sendErrorEmail("续费成功后保存金额消息通知失败", "续费成功后保存金额消息通知失败，返回结果:"+saveRet.toString());
         }
 
-        return ret;
+        if(ret==1) {
+	    	logger.info("扣除可用余额成功,用户id:"+userId+",金额："+price);
+        	return true;
+        } else {
+        	logger.error("扣除可用余额异常,用户id:"+userId+",可用金额："+billUserAmount.getAvailableAmount()+",扣除金额："+price);
+            throw new ValidateException("扣除可用余额异常,用户id:"+userId+",可用金额："+billUserAmount.getAvailableAmount()+",扣除金额："+price);
+        }
     }
 
     @Override
     public boolean reduceFreezeAmount(long userId, BigDecimal price, String productName, String productType) {
-        boolean ret = false;
         logger.info("开始扣除冻结金额,用户id:"+userId+",金额："+price);
+        
         BillUserAmount billUserAmount = null;
-        synchronized(obj) {
-        	billUserAmount = this.getUserAmount(userId);
-            if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
-                billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
-                billUserAmountMapper.reduceFreezeAmount(billUserAmount);
-                logger.info("扣除冻结金额成功,用户id:"+userId+",金额："+price);
-                ret = true;
-            } else {
-                logger.error("冻结金额小于需要扣除金额,用户id:"+userId+",金额："+price);
-                throw new MatrixException("冻结金额小于需要扣除金额,用户id:"+userId+",金额："+price);
-            }
-        }
+        int ret = 0;
+	    int count = 0;
+	    do {
+	    	billUserAmount = this.getUserAmount(userId);
+	    	if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
+	            billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
+	            ret = billUserAmountMapper.reduceFreezeAmount(billUserAmount);
+	        } 
+	        try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error("reduceFreezeAmount sleep had error : ", e);
+			}
+	        count++;
+	    } while (ret < 1 && count < 10);
+	    
         //服务创建成功后保存扣减金额消息通知
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date d = new Date();
@@ -405,30 +447,42 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         msg.setCreatedTime(d);
         Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
         if(!(Boolean) msgRet.get("result")) {
-            logger.error("服务创建成功后保存扣减金额消息通知，失败原因:"+msgRet.get("message"));
+            logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+msgRet.get("message"));
+            this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+msgRet.toString());
         }
-        return ret;
+        
+        if(ret==1) {
+	    	logger.info("扣除冻结金额成功,用户id:"+userId+",金额："+price);
+        	return true;
+        } else {
+        	logger.error("扣除冻结金额异常,用户id:"+userId+",冻结金额："+billUserAmount.getFreezeAmount()+",扣除金额："+price);
+            throw new ValidateException("扣除冻结金额异常,用户id:"+userId+",冻结金额："+billUserAmount.getFreezeAmount()+",扣除金额："+price);
+        }
     }
 
     @Override
     public boolean dealFreezeAmount(long userId, BigDecimal succPrice,
                                     BigDecimal failPrice, String productName, String productType) {
-        boolean ret = false;
         logger.info("开始处理冻结金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
+        
         BillUserAmount billUserAmount = null;
-        synchronized(obj) {
-        	billUserAmount = this.getUserAmount(userId);
-            if(billUserAmount.getFreezeAmount().compareTo(succPrice.add(failPrice))>=0) {
+        int ret = 0;
+	    int count = 0;
+	    do {
+	    	billUserAmount = this.getUserAmount(userId);
+	    	if(billUserAmount.getFreezeAmount().compareTo(succPrice.add(failPrice))>=0) {
                 billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(succPrice.add(failPrice)));
                 billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(failPrice));
-                billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
-                logger.info("处理冻结金额成功");
-                ret = true;
-            } else {
-                logger.error("冻结金额小于需要处理金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
-                throw new MatrixException(MessageFormat.format("冻结金额小于需要处理金额,用户id:{0},成功金额：{1},失败金额：{2}", userId, succPrice, failPrice));
-            }
-        }
+                ret = billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
+	        } 
+	        try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error("reduceFreezeAmount sleep had error : ", e);
+			}
+	        count++;
+	    } while (ret < 1 && count < 10);
+        
 
         //服务创建失败后保存回退金额消息通知
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -457,7 +511,8 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             msg.setCreatedTime(d);
             Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
             if(!(Boolean) saveRet.get("result")) {
-                logger.error("服务创建成功后保存扣减金额消息通知，失败原因:"+saveRet.get("message"));
+                logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+saveRet.get("message"));
+                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+saveRet.toString());
             }
         }
 
@@ -482,11 +537,18 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             msg.setCreatedTime(d);
             Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
             if(!(Boolean) msgRet.get("result")) {
-                logger.error("服务创建失败后保存回退金额消息通知，失败原因:"+msgRet.get("message"));
+                logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
+                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
             }
         }
 
-        return ret;
+        if(ret==1) {
+	    	logger.info("处理冻结金额成功,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
+        	return true;
+        } else {
+        	logger.error(MessageFormat.format("处理冻结金额异常,用户id:{0},冻结金额：{1},成功金额：{2},失败金额：{3}", userId, billUserAmount.getFreezeAmount(), succPrice, failPrice));
+            throw new ValidateException(MessageFormat.format("处理冻结金额异常,用户id:{0},冻结金额：{1},成功金额：{2},失败金额：{3}", userId, billUserAmount.getFreezeAmount(), succPrice, failPrice));
+        }
     }
 
 }
