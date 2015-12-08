@@ -519,7 +519,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'virtualMachine',
           'state':'vmState',
-          'other':['volumes'],
+          'other':['volumes','ipAddresses.public'],
           'operations':['create','start','stop','delete','restart','createsnap','attachdisk','detachdisk','bindfloatIp','editpass']
         }
         $scope.$watch(function(){
@@ -532,6 +532,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           for(var k in operaArraytemp){
             $scope.operationBtn[operaArraytemp[k]]=operationArraycopy[k]
           }
+
         });
       } 
       refreshVmList();

@@ -10,12 +10,12 @@
                 <!-- <span class="caret"></span> -->
                 <input type="hidden" id="region_id" value="cn-beijing-1" />
             </a>
-            <ul class="dropdown-menu" aria-labelledby="drop1">
+            <!-- <ul class="dropdown-menu" aria-labelledby="drop1">
                 <li><a href="javascript:void(0);" class="active">北京一区</a></li>
                 <li><a href="javascript:void(0);">北京二区</a></li>
                 <li><a href="javascript:void(0);">北京三区</a></li>
                 <li><a href="javascript:void(0);">北京四区</a></li>
-            </ul>
+            </ul> -->
         </div>
         <a href="/account/logout" class="header-logout pull-right">
             <span>退出</span>

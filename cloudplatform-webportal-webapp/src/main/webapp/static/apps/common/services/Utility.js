@@ -27,6 +27,36 @@ define(['./common.service'],function (serviceModule) {
         };
 
       };
+      var jsonTrans=function(obj,path){
+        var patharry=[],_targetobj='',pathtemp='';
+        var flag=false;
+        if(path.indexOf('.')>0){
+          patharry=path.split('.');
+          var objtemp='';
+          for(var i in patharry){
+            objtemp=objtemp?objtemp:obj;
+            objtemp=objtemp[patharry[i]];
+            pathtemp=patharry[i];
+          }
+          _targetobj=objtemp;
+        }else{
+          pathtemp=path;
+          _targetobj=obj[path];
+        }
+        if(_targetobj instanceof Array){
+          if(_targetobj.length>0){
+            flag=true;
+          }
+        }else{
+          if(_targetobj){
+            flag=true;
+          }
+        }
+        return {
+          "flag":flag,
+          "pathvalue":pathtemp
+        };
+      }
       service.setOperationBtns=function($scope,objList,productInfo,operationArry,Config){
           var type=productInfo.type;
           var state=productInfo.state;
@@ -40,27 +70,34 @@ define(['./common.service'],function (serviceModule) {
               var objtemp=objList[i];
               statetemp=objtemp[state]?objtemp[state]:'default';
               for(var j in operaArraytemp){
+                operationArry[i][j]=operationArry[i][j]?operationArry[i][j]:Config.statusOperations[type][statetemp][operaArraytemp[j]];
                 if(otheraffect.length>0){//其他影响因素
                   for(var k in otheraffect){
-                    var otheraffecttemp=objtemp[otheraffect[k]]
-                    if(otheraffecttemp instanceof Array){
-                      if(otheraffecttemp.length>0){
-                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
-                      }else{
-                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
-                      }
+                    var flag=jsonTrans(objtemp,otheraffect[k]).flag;
+                    var pathvalue=jsonTrans(objtemp,otheraffect[k]).pathvalue;
+                    if(flag){
+                      operationArry[i][j]=operationArry[i][j]*Config.statusOperations[type][pathvalue][operaArraytemp[j]];
                     }else{
-                      if(otheraffecttemp){
-                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
-                      }else{
-                        operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
-                      }
-                    }    
+                      operationArry[i][j]=operationArry[i][j]*Config.statusOperations[type][pathvalue+'null'][operaArraytemp[j]];
+                    }
+                    // var otheraffecttemp=objtemp[otheraffect[k]]
+                    // if(otheraffecttemp instanceof Array){
+                    //   if(otheraffecttemp.length>0){
+                    //     operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
+                    //   }else{
+                    //     operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                    //   }
+                    // }else{
+                    //   if(otheraffecttemp){
+                    //     operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]][operaArraytemp[j]];
+                    //   }else{
+                    //     operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]]*Config.statusOperations[type][otheraffect[k]+'null'][operaArraytemp[j]];
+                    //   }
+                    // }    
                   }
                 }else{//无其他因素影响
                   operationArry[i][j]=Config.statusOperations[type][statetemp][operaArraytemp[j]];
                 }
-                // operationArry[i][j]=Config.statusOperations[type][objList[i][state]][operaArraytemp[j]];
                 operationArraycopy[j]=1;
               }
             }else{

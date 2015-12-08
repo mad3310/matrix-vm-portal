@@ -179,7 +179,11 @@ define(['./common.service'], function (serviceModule) {
         "volumes":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
                   "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},
         "volumesnull":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":0,"bindfloatIp":1,"unbindfloatIp":1,
-                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1}           
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},
+        "public":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":1,"bindfloatIp":0,"unbindfloatIp":1,
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},
+        "publicnull":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":0,
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1}            
       },
       "disk":{
         "creating":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
