@@ -80,12 +80,12 @@ define(['./common.service'], function (serviceModule) {
     };
     config.REGEX= {
       NAME: /^[a-zA-Z\u4e00-\u9fa5][a-zA-Z0-9\u4e00-\u9fa5\(（_\-\)）]{1,127}$/,
-      NAME_NO_ZH: /^[a-zA-Z][a-zA-Z0-9(（_\-\)）]{1,127}$/,
+      NAME_KEYPAIR: /^[a-zA-Z][a-zA-Z0-9_\-]{1,127}$/,
       PASSWORD: /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*)[a-zA-Z0-9]{8,30}$/,
     };
     config.REGEX_MESSAGE= {
       NAME: '名称须为2-128个字符，支持大小写字母数字或中文以及()（）_-，以大小写字母或中文开头',
-      NAME_NO_ZH: '名称须为2-128个字符，支持大小写字母数字以及()（）_-，以大小写字母开头',
+      NAME_KEYPAIR: '名称须为2-128个字符，支持大小写字母数字以及_-，以大小写字母开头',
       PASSWORD: '8-30个字符，同时包含大小写字母和数字，不支持特殊符号',
     };
     config.vmStatuses = {
@@ -175,7 +175,11 @@ define(['./common.service'], function (serviceModule) {
         "error":{"create":1,"start":0,"stop":0,"restart":0,"createsnap":0,"changeconfig":0,"attachdisk":0,"detachdisk":0,"bindfloatIp":0,"unbindfloatIp":0,
                   "joinnet":0,"bindalarm":0,"vnc":0,"editssh":0,"editpass":0,"delete":1},
         "default":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
-                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},           
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},
+        "volumes":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1},
+        "volumesnull":{"create":1,"start":1,"stop":1,"restart":1,"createsnap":1,"changeconfig":1,"attachdisk":1,"detachdisk":0,"bindfloatIp":1,"unbindfloatIp":1,
+                  "joinnet":1,"bindalarm":1,"vnc":1,"editssh":1,"editpass":1,"delete":1}           
       },
       "disk":{
         "creating":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},

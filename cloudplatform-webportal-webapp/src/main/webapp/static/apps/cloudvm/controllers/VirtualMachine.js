@@ -502,7 +502,6 @@ define(['controllers/app.controller'], function (controllerModule) {
                 });
               }, 5000);
             });
-
           });
         },
         getCheckedVm=function(){
@@ -512,7 +511,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         },
         isVmCreated=function(vm){
           //通过云硬盘是否在绑定中判断云主机是否最终创建成功
-          return !vm.taskState && !(vm.volumes && vm.volumes.length && vm.volumes.filter(function(volume){
+          return vm.vmState!=='building' && !vm.taskState && !(vm.volumes && vm.volumes.length && vm.volumes.filter(function(volume){
               return volume.status==='attaching';
             }).length);
         };
@@ -520,8 +519,8 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'virtualMachine',
           'state':'vmState',
-          'other':[],
-          'operations':['create','start','stop','delete','restart','createsnap','attachdisk','detachdisk']
+          'other':['volumes'],
+          'operations':['create','start','stop','delete','restart','createsnap','attachdisk','detachdisk','bindfloatIp','editpass']
         }
         $scope.$watch(function(){
           return $scope.vmList.map(function(vm) {

@@ -80,7 +80,7 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" le-auto-focus name-input-restrict/>
+                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" ng-trim="false" le-auto-focus name-input-restrict/>
                             <input-validation-tooltip ng-show="(vm_router_create_form.$submitted || vm_router_create_form.router_name.$touched) && vm_router_create_form.router_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>
@@ -141,7 +141,7 @@
                     <span class="letv-control-label">名称：</span>
                 </div>
                 <div class="le-col-9 col-control">
-                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" le-auto-focus name-input-restrict />
+                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" ng-trim="false" le-auto-focus name-input-restrict />
                     <input-validation-tooltip ng-show="(vm_router_edit_form.$submitted || vm_router_edit_form.edit_router_name.$touched) && vm_router_edit_form.edit_router_name.$error.nameInputRestrict"
                                               validation-message="{{REGEX_MESSAGE.NAME}}">
                     </input-validation-tooltip>

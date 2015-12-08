@@ -116,7 +116,7 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-name" ng-model="diskName" name="disk_name" le-auto-focus name-input-restrict />
+                            <input type="text" class="le-form-control input-disk-name" ng-model="diskName" name="disk_name" ng-trim="false" le-auto-focus name-input-restrict />
                             <input-validation-tooltip ng-show="(vm_disk_edit_form.$submitted || vm_disk_edit_form.disk_name.$touched) && vm_disk_edit_form.disk_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>
@@ -149,7 +149,7 @@
                             <span class="letv-control-label">快照名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-snapshot-name" ng-model="diskSnapshotName" name="disk_snapshot_name" name-input-restrict />
+                            <input type="text" class="le-form-control input-disk-snapshot-name" ng-model="diskSnapshotName" name="disk_snapshot_name" ng-trim="false"name-input-restrict />
                             <input-validation-tooltip ng-show="(vm_disk_snapshot_create_form.$submitted || vm_disk_snapshot_create_form.disk_snapshot_name.$touched) && vm_disk_snapshot_create_form.disk_snapshot_name.$error.nameInputRestrict"
                                                       validation-message="{{REGEX_MESSAGE.NAME}}">
                             </input-validation-tooltip>
