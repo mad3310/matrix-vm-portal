@@ -38,11 +38,16 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmTotalPrice = '';
 
     $scope.firstStepToNextTab = function (event) {
-      if($scope.vm_create_form.vm_name.$valid){
-        event.preventDefault();
-        $scope.activeFlow=2;
-        $scope.hackRzSlider();
+      event.preventDefault();
+      if(!$scope.vm_create_form.vm_name.$valid){
+        return;
       }
+      if($scope.imageActiveTab === 'snapshot' && !$scope.vmSnapshotList.length){
+        WidgetService.notifyWarning('你还没有快照，请去创建或者选择系统镜像。');
+        return;
+      }
+      $scope.activeFlow=2;
+      $scope.hackRzSlider();
     };
 
     $scope.thirdStepToNextTab = function (event) {
@@ -233,11 +238,14 @@ define(['controllers/app.controller'], function (controllerModule) {
       },
       initVmSecurityKeypairSelector = function () {
         HttpService.doGet(Config.urls.keypair_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).then(function (data, status, headers, config) {
-          $scope.vmSecurityKeypairList = data.data.data;
-          $scope.vmSecurityKeypairSelectorData=$scope.vmSecurityKeypairList.map(function(subnet){
-            return new ModelService.SelectModel(subnet.name,subnet.name);
-          });
-          $scope.selectedVmSecurityKeypair=$scope.vmSecurityKeypairSelectorData[0];
+          if(data.data.data && data.data.data.length){
+            $scope.vmSecurityKeypairList = data.data.data;
+            $scope.vmSecurityKeypairSelectorData.push(new ModelService.SelectModel('请选择密钥',''));
+            $scope.vmSecurityKeypairList.forEach(function(subnet){
+              $scope.vmSecurityKeypairSelectorData.push(new ModelService.SelectModel(subnet.name,subnet.name));
+            });
+            $scope.selectedVmSecurityKeypair=$scope.vmSecurityKeypairSelectorData[0];
+          }
         });
       },
       initVmCpuSelector = function () {
