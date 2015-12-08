@@ -883,6 +883,9 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid:focus{
 
 /*begin buy-period-selector style*/
 buy-period-selector{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     display: block;
     width: 320px;
 }
