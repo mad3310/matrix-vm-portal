@@ -174,7 +174,7 @@
                             <span class="letv-control-label">子网地址：</span>
                         </div>
                         <div class="le-col-8 col-control">
-                            <le-select select-model="vpcCreate.subnet.selectedCidr" select-options="vpcCreate.subnet.cidrListSelectorData"></le-select>
+                            <le-select select-model="vpcCreate.subnet.selectedCidr" select-options="vpcCreate.subnet.cidrListSelectorData" select-empty-text="暂无可用子网地址"></le-select>
                         </div>
                     </div>
                     <div class="le-row" ng-if="vpcCreate.isCreateSubnet === 'true'">
@@ -288,7 +288,7 @@
                             <span class="letv-control-label">私有网络：</span>
                         </div>
                         <div class="le-col-8 col-control">
-                            <le-select select-model="selectedVpc" select-options="vpcListSelectorData"></le-select>
+                            <le-select select-model="selectedVpc" select-options="vpcListSelectorData" select-empty-text="暂无可用私有网络"></le-select>
                         </div>
                     </div>
                     <div class="le-row">
@@ -296,7 +296,7 @@
                             <span class="letv-control-label">子网地址：</span>
                         </div>
                         <div class="le-col-8 col-control">
-                            <le-select select-model="selectedCidr" select-options="cidrListSelectorData"></le-select>
+                            <le-select select-model="selectedCidr" select-options="cidrListSelectorData" select-empty-text="暂无可用子网地址"></le-select>
                         </div>
                     </div>
                     <div class="le-row">
@@ -354,7 +354,7 @@
                             <span class="letv-control-label">子网地址：</span>
                         </div>
                         <div class="le-col-8 col-control">
-                            <le-select select-model="selectedCidr" select-options="cidrListSelectorData"></le-select>
+                            <le-select select-model="selectedCidr" select-options="cidrListSelectorData" select-empty-text="暂无可用子网地址"></le-select>
                         </div>
                     </div>
                     <div class="le-row">
@@ -399,7 +399,7 @@
                         <span class="letv-control-label">路由器：</span>
                     </div>
                     <div class="le-col-8 col-control">
-                        <le-select select-model="selectedRouter" select-options="routerListSelectorData"></le-select>
+                        <le-select select-model="selectedRouter" select-options="routerListSelectorData" select-empty-text="暂无可用路由器"></le-select>
                     </div>
                 </div>
                 <div class="le-row">
