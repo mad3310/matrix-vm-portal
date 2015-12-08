@@ -193,7 +193,7 @@
                 <uc.auth.api.http>http://lcp-lcp-uc.letvcloud.com/uc-http-api</uc.auth.api.http>
                 <webportal.local.http>http://127.0.0.1</webportal.local.http>
 
-                <oauth.auth.http>>https://login.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>>https://oauthtest.lecloud.com</oauth.auth.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
 
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
@@ -223,7 +223,7 @@
                 <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 <task.executor.size>30</task.executor.size>
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
                 <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
                 <openstack.keystone.version>2.0</openstack.keystone.version>
                 <openstack.keystone.public.port>5000</openstack.keystone.public.port>
