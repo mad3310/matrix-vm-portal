@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 
 import com.letv.common.exception.MatrixException;
+import com.letv.portal.service.openstack.jclouds.service.OpenStackUserInfo;
 import com.letv.portal.service.openstack.util.ThreadUtil;
 import com.letv.portal.service.openstack.util.function.Function0;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -66,8 +67,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	}
 
 	public OpenStackSessionImpl(
-			OpenStackConf openStackConf, OpenStackUser openStackUser)
-			throws OpenStackException {
+			OpenStackConf openStackConf, OpenStackUser openStackUser) {
 //		this.openStackServiceGroup = openStackServiceGroup;
 		this.openStackConf = openStackConf;
 		this.openStackUser = openStackUser;
@@ -117,11 +117,8 @@ public class OpenStackSessionImpl implements OpenStackSession {
 //				ThreadUtil.concurrentRunAndWait(new Function0<Void>() {
 //													@Override
 //													public Void apply() {
-                final long userId = session.getUserId();
-                final String openStackUserId = openStackUser.getUserId();
-                final String openStackUserPassword = openStackUser.getPassword();
                 final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-                OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId, sessionId, openStackUserId, openStackUserPassword);
+                OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(new OpenStackUserInfo(openStackUser.tenant,sessionId));
 //														return null;
 //													}
 //												},
@@ -144,15 +141,15 @@ public class OpenStackSessionImpl implements OpenStackSession {
 				final String openStackUserId = openStackUser.getUserId();
 				final String openStackUserPassword = openStackUser.getPassword();
 				final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-				OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId,sessionId,openStackUserId,openStackUserPassword);
+				OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(new OpenStackUserInfo(openStackUser.tenant,sessionId));
 			}
 		}
 	}
 
 	private void initUserWithOutOpenStack()throws OpenStackException{
-		try{
-			final String password = OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().userIdToPassword(openStackUser.getUserId());
-			openStackUser.setPassword(password);
+//		try{
+//			final String password = OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().userIdToPassword(openStackUser.getUserId());
+//			openStackUser.setPassword(password);
 
 			if (openStackUser.getEmail().endsWith("@letv.com")) {
 				openStackUser.setInternalUser(true);
@@ -161,9 +158,9 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			if (!openStackUser.getEmail().contains("@") || !openStackUser.getUserId().contains("@")) {
 				throw new OpenStackException(MessageFormat.format("invalid user email or id,email:'{0}',userId:'{1}'.", openStackUser.getEmail(), openStackUser.getUserId()), "用户信息不合法");
 			}
-		} catch (NoSuchAlgorithmException e) {
-			throw new OpenStackException("后台服务不可用", e);
-		}
+//		} catch (NoSuchAlgorithmException e) {
+//			throw new OpenStackException("后台服务不可用", e);
+//		}
 	}
 
 	private void initUser() throws OpenStackException {

@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.jclouds.cache;
 import com.google.common.cache.*;
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.model.UserVo;
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
@@ -28,26 +29,17 @@ public class UserApiCache implements Closeable {
 
     private Cache<Class<? extends Closeable>, Closeable> apiCache;
 
-    private OpenStackUserInfo openStackUserInfo;
+    private OpenStackTenant tenant;
 
-    public UserApiCache(OpenStackUserInfo openStackUserInfo) {
-        this.openStackUserInfo = openStackUserInfo;
-        init();
-    }
-
-    public UserApiCache(String email) throws NoSuchAlgorithmException {
-        String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
-        String password = OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().userIdToPassword(openStackUserId);
-        this.openStackUserInfo = new OpenStackUserInfo(openStackUserId, password);
+    public UserApiCache(OpenStackTenant tenant) {
+        this.tenant = tenant;
         init();
     }
 
     public UserApiCache(long userId) throws NoSuchAlgorithmException {
         UserVo userVo = OpenStackServiceImpl.getOpenStackServiceGroup().getUserService().getUcUserById(userId);
         String email = userVo.getEmail();
-        String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
-        String password = OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().userIdToPassword(openStackUserId);
-        this.openStackUserInfo = new OpenStackUserInfo(openStackUserId, password);
+        this.tenant = new OpenStackTenant(userId, email);
         init();
     }
 
@@ -80,8 +72,8 @@ public class UserApiCache implements Closeable {
                             .newBuilder(ApiServiceImpl.apiToProvider.get(apiType))
                             .endpoint(OpenStackServiceImpl.getOpenStackConf().getPublicEndpoint())
                             .credentials(
-                                    OpenStackServiceImpl.createCredentialsIdentity(openStackUserInfo.getUserId()),
-                                    openStackUserInfo.getPassword()).modules(Constants.jcloudsContextBuilderModules)
+                                    tenant.jcloudsCredentialsIdentity,
+                                    tenant.password).modules(Constants.jcloudsContextBuilderModules)
                             .buildApi(apiType);
                 }
             });

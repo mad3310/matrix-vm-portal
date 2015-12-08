@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.billing.event.service.EventPublishService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
@@ -23,6 +24,7 @@ import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.util.constants.Constants;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jclouds.ContextBuilder;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +153,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Autowired
 	private LocalCommonQuotaSerivce localCommonQuotaSerivce;
-	
+
 	@Autowired
 	private LocalNetworkService localNetworkService;
 
@@ -202,15 +204,13 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setLocalCommonQuotaSerivce(localCommonQuotaSerivce);
 		openStackServiceGroup.setLocalNetworkService(localNetworkService);
         openStackServiceGroup.setResourceService(resourceService);
+		openStackServiceGroup.setOpenStackService(this);
 	}
 
 	@Override
-	public OpenStackSession createSession(long userVoUserId, String userId, String email,
-			String userName) throws OpenStackException {
-		OpenStackUser openStackUser = new OpenStackUser();
-		openStackUser.setUserVoUserId(userVoUserId);
-		openStackUser.setUserId(userId);
-		openStackUser.setEmail(email);
+	public OpenStackSession createSession(long userVoUserId, String email,
+			String userName) {
+		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(userVoUserId, email));
 		openStackUser.setUserName(userName);
 //		openStackUser.setFirstLogin(false);
 		openStackUser.setInternalUser(false);
@@ -220,66 +220,62 @@ public class OpenStackServiceImpl implements OpenStackService {
 	}
 
 	@Override
-	public boolean isUserExists(String email,String password) throws OpenStackException {
-		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), email,
-				password);
+	public String getOpenStackTenantNameFromMatrixUser(long userVoUserId, String email) {
+        assert StringUtils.isNotBlank(email);
+        return email + "_" + userVoUserId;
+    }
+
+//	public static String getOpenStackTenantName(long userVoUserId, String email){
+//		return getOpenStackServiceGroup().getOpenStackService().getOpenStackTenantNameFromMatrixUser(userVoUserId, email);
+//	}
+
+	@Override
+	public boolean isUserExists(String tenantName, String password) throws OpenStackException {
+		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(),tenantName,password);
 		return userExists.run();
 	}
 
 	@Override
-	public void registerUser(String email, String password) throws OpenStackException {
-		UserRegister userRegister = new UserRegister(openStackConf.getAdminEndpoint(), email, password, email,
-				openStackConf.getUserRegisterToken());
+	public void registerUser(String tenantName, String password, String email) throws OpenStackException {
+		UserRegister userRegister = new UserRegister(openStackConf.getAdminEndpoint(), openStackConf.getUserRegisterToken(), tenantName, password, email);
 		userRegister.run();
 	}
 
 	@Override
-	public void registerUserIfNotExists(String email, String password) throws OpenStackException {
-		if (!isUserExists(email, password)) {
-			registerUser(email, password);
+	public void registerUserIfNotExists(String tenantName, String password, String email) throws OpenStackException {
+		if (!isUserExists(tenantName, password)) {
+			registerUser(tenantName, password, email);
 		}
 	}
 
 	@Override
-	public OpenStackUser registerAndInitUserIfNotExists(long userVoUserId, String userName, String email, String password) throws OpenStackException {
-        OpenStackUser openStackUser = new OpenStackUser();
-        openStackUser.setUserVoUserId(userVoUserId);
-        openStackUser.setEmail(email);
-        openStackUser.setPassword(password);
-        openStackUser.setUserId(email);
-        openStackUser.setUserName(userName);
-        if (openStackUser.getEmail().endsWith("@letv.com")) {
-            openStackUser.setInternalUser(true);
-        }
+	public void registerAndInitUserIfNotExists(String tenantName, String password, String email) throws OpenStackException {
+//        OpenStackUser openStackUser = new OpenStackUser(tenant);
+//        openStackUser.setUserName(userName);
+//        if (openStackUser.tenant.email.endsWith("@letv.com")) {
+//            openStackUser.setInternalUser(true);
+//        }
 
-        UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), email,
-                password);
+        UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), tenantName, password);
         boolean isUserExists = userExists.run();
-        if (isUserExists) {
-            openStackUser.setTenantId(userExists.getTenantId());
-        } else {
-            UserRegister userRegister = new UserRegister(openStackConf.getAdminEndpoint(), openStackUser.getUserId(), openStackUser.getPassword(), openStackUser.getEmail(),
-                    openStackConf.getUserRegisterToken());
+        if (!isUserExists) {
+            UserRegister userRegister = new UserRegister(openStackConf.getAdminEndpoint(),
+                    openStackConf.getUserRegisterToken(), tenantName, password, email);
             userRegister.run();
-            userExists = new UserExists(openStackConf.getPublicEndpoint(), email,
-                    password);
-            userExists.run();
-            openStackUser.setTenantId(userExists.getTenantId());
 
-            initResourcesForUser(openStackUser);
+            initResourcesForUser(tenantName, password);
         }
-        return openStackUser;
+//        return openStackUser;
     }
 
-    private void initResourcesForUser(OpenStackUser openStackUser) throws OpenStackException {
+    private void initResourcesForUser(String tenantName, String password) throws OpenStackException {
         try {
             final NeutronApi neutronApi = ContextBuilder
                     .newBuilder(ApiServiceImpl.apiToProvider.get(NeutronApi.class))
                     .endpoint(openStackConf.getPublicEndpoint())
                     .credentials(
-                            openStackUser.getUserId() + ":"
-                                    + openStackUser.getUserId(),
-                            openStackUser.getPassword()).modules(Constants.jcloudsContextBuilderModules)
+                            OpenStackServiceImpl.createCredentialsIdentity(tenantName),
+                            password).modules(Constants.jcloudsContextBuilderModules)
                     .buildApi(NeutronApi.class);
             try {
                 resourceService.createDefaultSecurityGroupAndRule(neutronApi);
@@ -301,6 +297,10 @@ public class OpenStackServiceImpl implements OpenStackService {
 //		return openStackSession;
 //	}
 
+	public static String createCredentialsIdentity(String tenantName) {
+		return tenantName + ":" + tenantName;
+	}
+
 	public static OpenStackServiceGroup getOpenStackServiceGroup() {
 		return INSTANCE.openStackServiceGroup;
 	}
@@ -308,12 +308,4 @@ public class OpenStackServiceImpl implements OpenStackService {
     public static OpenStackConf getOpenStackConf() {
         return INSTANCE.openStackConf;
     }
-
-    public static String createCredentialsIdentity(String email) {
-        return email + ":" + email;
-    }
-
-	public static String createOpenStackUserId(String email){
-		return email;
-	}
 }

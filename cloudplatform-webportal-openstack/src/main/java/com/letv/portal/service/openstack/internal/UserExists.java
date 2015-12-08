@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.internal;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.util.HttpUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -31,14 +32,18 @@ public class UserExists {
 //			.getLogger(UserExists.class);
 
 	private final String endpoint;
-	private final String userName;
+	private final String tenantName;
 	private final String password;
 
 	private String tenantId;
 
-	public UserExists(String publicEndpoint, String userName, String password) {
-		this.endpoint = publicEndpoint;
-		this.userName = userName;
+//	public UserExists(String endpoint, OpenStackTenant tenant){
+//		this(endpoint,tenant.tenantName,tenant.password);
+//	}
+
+	public UserExists(String endpoint, String tenantName, String password) {
+		this.endpoint = endpoint;
+		this.tenantName = tenantName;
 		this.password = password;
 	}
 
@@ -46,9 +51,9 @@ public class UserExists {
 	public boolean run() throws OpenStackException {
 		boolean status = false;
 
-		if (userName == null) {
+		if (this.tenantName == null) {
 			throw new OpenStackException("OpenStack user name is null.", "后台错误");
-		} else if (userName.isEmpty()) {
+		} else if (this.tenantName.isEmpty()) {
 			throw new OpenStackException(
 					"OpenStack user name is an empty string.", "后台错误");
 		}
@@ -66,9 +71,9 @@ public class UserExists {
 			body.p("auth", body_Auth);
 			Params body_Auth_PasswordCredentials = new Params();
 			body_Auth.p("passwordCredentials", body_Auth_PasswordCredentials);
-			body_Auth_PasswordCredentials.p("username", this.userName).p(
+			body_Auth_PasswordCredentials.p("username", this.tenantName).p(
 					"password", this.password);
-			body_Auth.p("tenantName", this.userName);
+			body_Auth.p("tenantName", this.tenantName);
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			StringWriter stringWriter = new StringWriter();

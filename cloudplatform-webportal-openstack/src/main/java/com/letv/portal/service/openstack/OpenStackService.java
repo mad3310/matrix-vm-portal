@@ -9,16 +9,18 @@ import org.jclouds.openstack.neutron.v2.NeutronApi;
  */
 public interface OpenStackService {
 
-    OpenStackSession createSession(long userVoUserId, String userId, String email,
-                                   String userName) throws OpenStackException;
+    OpenStackSession createSession(long userVoUserId, String email,
+                                   String userName);
 
-    boolean isUserExists(String email, String password) throws OpenStackException;
+    String getOpenStackTenantNameFromMatrixUser(long userVoUserId, String email);
 
-    void registerUser(String email, String password) throws OpenStackException;
+    boolean isUserExists(String tenantName, String password) throws OpenStackException;
 
-    void registerUserIfNotExists(String email, String password) throws OpenStackException;
+    void registerUser(String tenantName, String password, String email) throws OpenStackException;
 
-    OpenStackUser registerAndInitUserIfNotExists(long userVoUserId, String userName, String email, String password) throws OpenStackException;
+    void registerUserIfNotExists(String tenantName, String password, String email) throws OpenStackException;
+
+    void registerAndInitUserIfNotExists(String tenantName, String password, String email) throws OpenStackException;
 
 //    OpenStackSession createSessionForSync(long userVoUserId) throws OpenStackException;
 }

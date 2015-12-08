@@ -20,8 +20,7 @@ public class PasswordServiceImpl implements PasswordService {
 	private String userPasswordSalt;
 
 	@SuppressWarnings("deprecation")
-	public String userIdToPassword(String userId)
-			throws NoSuchAlgorithmException {
+	public String userIdToPassword(String userId) {
 		return DigestUtils.sha512Hex((userId + userPasswordSalt)
 				.getBytes(Charsets.UTF_8));
 	}

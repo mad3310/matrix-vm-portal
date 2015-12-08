@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.cronjobs.impl.cache;
 import com.google.common.cache.*;
 import com.letv.common.exception.MatrixException;
 import com.letv.portal.model.UserVo;
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.service.impl.ApiServiceImpl;
@@ -26,17 +27,15 @@ public class SyncLocalApiCache implements Closeable {
 
     private Cache<SyncLocalApiCacheKey, Closeable> apiCache;
 
-    private LoadingCache<Long, OpenStackUserInfo> userIdToInfo;
+    private LoadingCache<Long, OpenStackTenant> userIdToInfo;
 
     public SyncLocalApiCache() {
-        this.userIdToInfo = CacheBuilder.newBuilder().build(new CacheLoader<Long, OpenStackUserInfo>() {
+        this.userIdToInfo = CacheBuilder.newBuilder().build(new CacheLoader<Long, OpenStackTenant>() {
             @Override
-            public OpenStackUserInfo load(Long userId) throws Exception {
+            public OpenStackTenant load(Long userId) throws Exception {
                 UserVo userVo = OpenStackServiceImpl.getOpenStackServiceGroup().getUserService().getUcUserById(userId);
                 String email = userVo.getEmail();
-                String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
-                String password = OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().userIdToPassword(openStackUserId);
-                return new OpenStackUserInfo(openStackUserId, password);
+                return new OpenStackTenant(userId,email);
             }
         });
         this.apiCache = CacheBuilder.newBuilder().removalListener(new RemovalListener<SyncLocalApiCacheKey, Closeable>() {
@@ -64,13 +63,13 @@ public class SyncLocalApiCache implements Closeable {
             return (T) apiCache.get(new SyncLocalApiCacheKey(userId, apiType), new Callable<Closeable>() {
                 @Override
                 public Closeable call() throws Exception {
-                    OpenStackUserInfo userInfo = userIdToInfo.get(userId);
+                    OpenStackTenant userInfo = userIdToInfo.get(userId);
                     return ContextBuilder
                             .newBuilder(ApiServiceImpl.apiToProvider.get(apiType))
                             .endpoint(OpenStackServiceImpl.getOpenStackConf().getPublicEndpoint())
                             .credentials(
-                                    OpenStackServiceImpl.createCredentialsIdentity(userInfo.getUserId()),
-                                    userInfo.getPassword()).modules(Constants.jcloudsContextBuilderModules)
+                                    userInfo.jcloudsCredentialsIdentity,
+                                    userInfo.password).modules(Constants.jcloudsContextBuilderModules)
                             .buildApi(apiType);
                 }
             });
