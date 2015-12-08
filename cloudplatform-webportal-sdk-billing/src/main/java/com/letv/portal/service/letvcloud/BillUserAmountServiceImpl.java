@@ -172,12 +172,12 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         buffer.append("您在");
         buffer.append(sdf.format(d));
         buffer.append("成功充值");
-        buffer.append(amount);
+        buffer.append(amount.setScale(2));
         buffer.append("元，当前账户余额为[￥");
-        buffer.append(billUserAmount.getAvailableAmount());
+        buffer.append(billUserAmount.getAvailableAmount().setScale(2));
         buffer.append("]，如有问题，可拨打客服电话。");
         Message msg = new Message();
-        msg.setMsgTitle("成功充值"+amount+"元");
+        msg.setMsgTitle("成功充值"+amount.setScale(2)+"元");
         msg.setMsgContent(buffer.toString());
         msg.setMsgStatus("0");//未读
         msg.setMsgType("2");//个人消息
@@ -320,12 +320,12 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             buffer.append(productName);
             buffer.append("】");
             buffer.append("创建失败，系统退回账户");
-            buffer.append(price);
+            buffer.append(price.setScale(2));
             buffer.append("元，当前账户余额为[￥");
-            buffer.append(billUserAmount.getAvailableAmount());
+            buffer.append(billUserAmount.getAvailableAmount().setScale(2));
             buffer.append("]，如有问题，可拨打客服电话。");
             Message msg = new Message();
-            msg.setMsgTitle("退款"+price+"元");
+            msg.setMsgTitle("退款"+price.setScale(2)+"元");
             msg.setMsgContent(buffer.toString());
             msg.setMsgStatus("0");//未读
             msg.setMsgType("2");//个人消息
@@ -378,11 +378,11 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             buffer.append(productName);
             buffer.append("】成功，");
             buffer.append("消费");
-            buffer.append(price);
+            buffer.append(price.setScale(2));
             buffer.append("元，当前账户余额为[￥");
-            buffer.append(billUserAmount.getAvailableAmount());
+            buffer.append(billUserAmount.getAvailableAmount().setScale(2));
             buffer.append("]，如有问题，可拨打客服电话。");
-            msg.setMsgTitle("续费成功，消费金额"+price+"元");
+            msg.setMsgTitle("续费成功，消费金额"+price.setScale(2)+"元");
             msg.setMsgContent(buffer.toString());
             msg.setMsgStatus("0");//未读
             msg.setMsgType("2");//个人消息
@@ -435,12 +435,12 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             buffer.append(productName);
             buffer.append("】");
             buffer.append("消费");
-            buffer.append(price);
+            buffer.append(price.setScale(2));
             buffer.append("元，当前账户余额为[￥");
-            buffer.append(billUserAmount.getAvailableAmount());
+            buffer.append(billUserAmount.getAvailableAmount().setScale(2));
             buffer.append("]，如有问题，可拨打客服电话。");
             Message msg = new Message();
-            msg.setMsgTitle("消费金额"+price+"元");
+            msg.setMsgTitle("消费金额"+price.setScale(2)+"元");
             msg.setMsgContent(buffer.toString());
             msg.setMsgStatus("0");//未读
             msg.setMsgType("2");//个人消息
@@ -499,11 +499,11 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                 buffer.append(productName);
                 buffer.append("】");
                 buffer.append("消费");
-                buffer.append(succPrice);
+                buffer.append(succPrice.setScale(2));
                 buffer.append("元，当前账户余额为[￥");
-                buffer.append(billUserAmount.getAvailableAmount());
+                buffer.append(billUserAmount.getAvailableAmount().setScale(2));
                 buffer.append("]，如有问题，可拨打客服电话。");
-                msg.setMsgTitle("消费金额"+succPrice+"元");
+                msg.setMsgTitle("消费金额"+succPrice.setScale(2)+"元");
                 msg.setMsgContent(buffer.toString());
                 msg.setMsgStatus("0");//未读
                 msg.setMsgType("2");//个人消息
@@ -524,12 +524,12 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                 buffer.append(productName);
                 buffer.append("】");
                 buffer.append("创建失败，系统退回账户");
-                buffer.append(failPrice);
+                buffer.append(failPrice.setScale(2));
                 buffer.append("元，当前账户余额为[￥");
-                buffer.append(billUserAmount.getAvailableAmount());
+                buffer.append(billUserAmount.getAvailableAmount().setScale(2));
                 buffer.append("]，如有问题，可拨打客服电话。");
 
-                msg.setMsgTitle("退款"+failPrice+"元");
+                msg.setMsgTitle("退款"+failPrice.setScale(2)+"元");
                 msg.setMsgContent(buffer.toString());
                 msg.setMsgStatus("0");//未读
                 msg.setMsgType("2");//个人消息

@@ -258,15 +258,8 @@ function orderDetail(){
              _target.html('');
              var orderArray=data.data;
              var totalprice=0;
-             var order,orderHtml='',params='',paramsArray='';
+             var order,orderHtml='',productnum=0,params='',paramsArray='';
              var index='',title='',desc='';
-             orderHtml=orderHtml+'<tr>'
-                                 +'<td>'+orderArray[0].orderNumber+'</td>'
-                                 +'<td><div style="width:50%;text-align:right;">云服务产品</div></td>'
-                                 +'<td>'+orderArray.length+'</td>'
-                                 +'<td>1个月</td>'
-                                 +'<td class="price">¥'+orderArray[0].totalPrice+'</td>'
-                             +'</tr>'
              for(var i in orderArray){
                 var paramsHtml='';
                 order=orderArray[i];
@@ -281,6 +274,7 @@ function orderDetail(){
                                                 +'<div class="text-right">'+title+'&nbsp;:</div><div class="payitem-desc">&nbsp;'+desc+'</div>'
                                         +'</div>'
                 }
+                productnum=productnum+order.orderNum
                 orderHtml=orderHtml+'<tr>'
                                          +'<td></td>'
                                          +'<td><div style="width:50%;text-align:right;">'+order.productName+'</div></td>'
@@ -300,6 +294,14 @@ function orderDetail(){
                                      +'<td></td>'
                                  +'</tr>';
             }
+            var temphtml='<tr>'
+                             +'<td>'+orderArray[0].orderNumber+'</td>'
+                             +'<td><div style="width:50%;text-align:right;">云服务产品</div></td>'
+                             +'<td>'+productnum+'</td>'
+                             +'<td>1个月</td>'
+                             +'<td class="price">¥'+orderArray[0].totalPrice+'</td>'
+                         +'</tr>';
+            _target.append(temphtml);
             $('#orderpay').text('¥'+totalprice);
             var userRemain=userRemainInfo();
             userRemain.done(function(data){
@@ -372,8 +374,14 @@ function goPay(){
                         if(data.result==0){//error
                         }else{
                             if(data.data.status==1){//已失效
-                                alert('订单已失效')
-                            }else{
+                                $('.modal-container').find('.modal-title .title').text('温馨提示');
+                                $('.modal-container').find('.modal-content .content-desc').text('长时间未支付，订单已失效');
+                                $('.modal-container').find('.modal-content .paybtns').html('<button class="btn btn-le-blue paybtn">确定</button>')
+                                $('.modal-container').css({
+                                    width:width,
+                                    height:height
+                                }).removeClass('hide');
+                            }else if(data.data.status==0){//未支付
                                 if(_alloption.length>1){//组合支付
                                     if(money==0){//默认支付宝全额付
                                         option='0';
@@ -389,6 +397,14 @@ function goPay(){
                                     width:width,
                                     height:height
                                 }).removeClass('hide');
+                            }else{//status==2 已支付
+                                $('.modal-container').find('.modal-title .title').text('温馨提示');
+                                $('.modal-container').find('.modal-content .content-desc').text('订单已支付成功，请勿重复操作');
+                                $('.modal-container').find('.modal-content .paybtns').html('<button class="btn btn-le-blue paybtn">确定</button>')
+                                $('.modal-container').css({
+                                    width:width,
+                                    height:height
+                                }).removeClass('hide');
                             }
                         }
                     }
@@ -397,28 +413,32 @@ function goPay(){
             }
         });   
     });
-    $('.paybtn').unbind('click').click(function(event) {//隐藏窗口
-        $.ajax({
-            url: '/order/pay/'+orderNum,
-            cache:false,
-            type: 'get',
-            success:function(data){
-                var url='/cvm/#/vm';
-                if(data.result==0){//error
+    $('.paybtns').unbind('click').click(function(event) {//隐藏窗口
+        var _etarget=event.target||event.srcElement;
+        var _target=$(_etarget);
+        if(_target.hasClass('paybtn')){
+            $.ajax({
+                url: '/order/pay/'+orderNum,
+                cache:false,
+                type: 'get',
+                success:function(data){
+                    var url='/cvm/#/vm';
+                    if(data.result==0){//error
 
-                }else{
-                    if(data.data.status==2){//已付款
-                        if(redirects[redirect]){
-                            url=redirects[redirect]
-                        }
-                        window.location.href=url;
-                        $('.modal-container').addClass('hide');
                     }else{
-                        $('.modal-container').addClass('hide');
+                        if(data.data.status==2||data.data.status==1){//已付款或订单已失效
+                            if(redirects[redirect]){
+                                url=redirects[redirect]
+                            }
+                            window.location.href=url;
+                            $('.modal-container').addClass('hide');
+                        }else{
+                            $('.modal-container').addClass('hide');
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     });
     $('.icon-add').unbind('click').click(function(event) {
         $('.modal-container').addClass('hide');
