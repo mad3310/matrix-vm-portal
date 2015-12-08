@@ -37,14 +37,16 @@ define(['controllers/app.controller'], function (controllerModule) {
         var vpcList = data.data;
         $scope.subnetList = [];
         for(var i= 0,len=vpcList.length;i<len;i++){
-          (function(subnets){
+          (function(vpc){
+            var subnets = vpc.subnets;
             for(var i= 0,len=subnets.length;i<len;i++){
+              subnets[i].nameWithVpc = subnets[i].name+'('+vpc.name+')';
               $scope.subnetList.push(subnets[i]);
             }
-          })(vpcList[i].subnets)
+          })(vpcList[i])
         }
         $scope.subnetListSelectorData=$scope.subnetList.map(function(subnet){
-          return new ModelService.SelectModel(subnet.name,subnet.id);
+          return new ModelService.SelectModel(subnet.nameWithVpc,subnet.id);
         });
         $scope.selectedSubnet=$scope.subnetListSelectorData[0];
       });
