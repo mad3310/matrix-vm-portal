@@ -1,10 +1,15 @@
 package com.letv.portal.controller.user;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.letv.common.session.Session;
+import com.letv.common.util.CookieUtil;
 import com.letv.common.util.HttpsClient;
+import com.letv.common.util.SessionUtil;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.proxy.impl.LoginProxyImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,7 @@ public class LogoutController{
 
     @Autowired
     private SessionServiceImpl sessionService;
+    private ICacheService<?> cacheService = CacheFactory.getCache();
 
     private final static String OAUTH_REDIRECT_KEY_SECRET = "&app_key=chenle&app_secret=newpasswd";
 
@@ -46,6 +52,13 @@ public class LogoutController{
 
         loginProxy.logout();
         Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+        Cookie cookie = CookieUtil.getCookieByName(request, CookieUtil.COOKIE_KEY);
+        if(null != cookie) {
+            session = (Session) this.cacheService.get(SessionUtil.getUuidBySessionId(cookie.getValue()),null);
+            CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
+            CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_ID,response,CookieUtil.LCP_COOKIE_DOMAIN);
+            CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_NAME,response,CookieUtil.LCP_COOKIE_DOMAIN);
+        }
         if(session != null) {
             String clientId = session.getClientId();
             String clientSecret = session.getClientSecret();
@@ -53,7 +66,6 @@ public class LogoutController{
             StringBuffer buffer = new StringBuffer();
             buffer.append(OAUTH_AUTH_HTTP).append("/logout?client_id=").append(clientId).append("&client_secret=").append(clientSecret).append(OAUTH_REDIRECT_KEY_SECRET);
 
-            request.getSession().invalidate();
             sessionService.setSession(null,"logout");
             HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
         }

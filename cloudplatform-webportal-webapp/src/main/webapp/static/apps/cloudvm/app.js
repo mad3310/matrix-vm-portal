@@ -45,6 +45,7 @@ define([
   }]);
   app.run(['$route', '$rootScope', '$http', '$location', 'routes','Config', function ($route, $rootScope, $http, $location, routes,Config) {
     $rootScope.REGEX_MESSAGE = Config.REGEX_MESSAGE;
+    $rootScope.EMPTY_TEXT = Config.EMPTY_TEXT;
   }]);
 
   return app;

@@ -36,7 +36,7 @@
                         <span>主机设置</span>
                     </div>
                 </div>
-                <div id="left-flowone" ng-class="{hide:activeFlow!=1}">
+                <div id="left-flowone" ng-show="activeFlow==1">
                     <div class="left-inputs">
                         <div class="inputs-item clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">主机名称：</span></div>
@@ -91,7 +91,7 @@
                         <div class="clearfix"></div>
                     </div>
                 </div>
-                <div id="left-flowtwo" ng-class="{hide:activeFlow!=2}">
+                <div id="left-flowtwo" ng-show="activeFlow==2">
                     <div class="left-inputs">
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">CPU：</span></div>
@@ -144,7 +144,7 @@
                         <div class="clearfix"></div>
                     </div>
                 </div>
-                <div id="left-flowthree" ng-class="{hide:activeFlow!=3}">
+                <div id="left-flowthree" ng-show="activeFlow==3">
                     <div class="left-inputs">
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2">
@@ -201,7 +201,7 @@
                         <div class="clearfix"></div>
                     </div>
                 </div>
-                <div id="left-flowfour" ng-class="{hide:activeFlow!=4}">
+                <div id="left-flowfour" ng-show="activeFlow==4">
                     <div class="left-inputs">
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">登录方式：</span></div>

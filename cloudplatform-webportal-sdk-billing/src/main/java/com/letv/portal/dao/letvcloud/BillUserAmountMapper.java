@@ -23,9 +23,9 @@ public interface BillUserAmountMapper {
 
     Date getLastUpdateTime(long userId);
     //账户余额转为冻结余额
-    void updateUserAmountFromAvailableToFreeze(BillUserAmount userAmount);
+    int updateUserAmountFromAvailableToFreeze(BillUserAmount userAmount);
     //扣除冻结余额
-    void reduceFreezeAmount(BillUserAmount userAmount);
+    int reduceFreezeAmount(BillUserAmount userAmount);
     //扣除可用余额
-    void reduceAvailableAmount(BillUserAmount userAmount);
+    int reduceAvailableAmount(BillUserAmount userAmount);
 }

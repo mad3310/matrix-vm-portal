@@ -32,4 +32,4 @@
             <span>帮助中心</span>
         </a>
     </div>
-    <input id="userId" type="text" class="hide" value="${sessionScope.userSession.userId}">
+    <input id="userId" type="text" class="hide" value="${cookie.userId.value}">

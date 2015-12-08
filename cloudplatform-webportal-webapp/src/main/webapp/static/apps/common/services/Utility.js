@@ -8,8 +8,8 @@ define(['./common.service'],function (serviceModule) {
       service.getRzSliderHack=function(scope){
          return function(){
            $timeout(function() {
-             scope.$broadcast('reCalcViewDimensions');
-           });
+             scope.$broadcast('rzSliderForceRender');
+           },50);
          };
       };
 

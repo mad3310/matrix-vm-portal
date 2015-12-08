@@ -198,7 +198,7 @@ function rollup(){
 }
 //获取用户账号信息
 function userInfo(){
-    var userid=$('#userId').val();
+    var userid=getCookie("userId");
     var payurl="/user/"+userid;
     $.ajax({
         url:payurl,
@@ -213,9 +213,21 @@ function userInfo(){
         }
     });
 }
+//获取浏览器缓存
+function getCookie(name){
+    var arr=document.cookie.split('; ');
+
+    for(var i=0; i<arr.length; i++){
+        var arr2=arr[i].split('=');
+        if(arr2[0]==name){
+            return arr2[1];
+        }
+    }
+    return '';
+}
 // 获取用户账号余额
 function userRemainInfo(){
-    var userid=$('#userId').val();
+    var userid=getCookie("userId");
     var remainurl="/userAccount/balance/"+userid;
     return $.ajax({
         url:remainurl,

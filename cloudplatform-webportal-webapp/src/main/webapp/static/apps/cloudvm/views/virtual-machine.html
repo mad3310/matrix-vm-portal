@@ -75,7 +75,7 @@
                         <span>{{vm | vmStatusFilter}}</span>
                         <span ng-show="vm.vmState!=='building' && !!vm.taskState" class="status-loading"></span>
                     </td>
-                    <td><span>{{vm.image.name || '无'}}</span></td>
+                    <td><span>{{vm.image.name || EMPTY_TEXT}}</span></td>
                     <td><span>{{vm | vmFlavorFilter}}</span></td>
                     <!-- <td><span class="iconfont icon-monitor"></span></td> -->
                     <td><span>{{vm.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
