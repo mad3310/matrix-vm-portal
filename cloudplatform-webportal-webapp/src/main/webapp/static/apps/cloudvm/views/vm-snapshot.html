@@ -88,6 +88,7 @@
                         <td><span>数据盘</span></td>
                         <td>
                             <span>{{snapshot.status | diskStatusFilter}}</span>
+                            <span ng-show="['creating','deleting'].indexOf(snapshot.status)>-1" class="status-loading"></span>
                         </td>
                         <td><span>{{snapshot.size}}GB</span></td>
                         <td><span>{{snapshot.created | date:'yyyy-MM-dd HH:mm'}}</span></td>
