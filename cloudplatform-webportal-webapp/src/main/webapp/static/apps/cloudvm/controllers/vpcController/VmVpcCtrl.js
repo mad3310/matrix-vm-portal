@@ -137,10 +137,8 @@ define(['controllers/app.controller'], function (controllerModule) {
                 modalInstance.result.then(function (resultData) {
                     if (!resultData) return resultData;
                     WidgetService.notifyInfo('VPC删除执行中...');
-                    checkedVpcs[0].status = 'DELETEING';
                     HttpService.doPost(Config.urls.vpc_delete, data).success(function (data, status, headers, config) {
                         if (data.result === 1) {
-                            checkedVpcs[0].status = 'DELETED';
                             modalInstance.close(data);
                             WidgetService.notifySuccess('删除VPC成功');
                             refreshVpcList();

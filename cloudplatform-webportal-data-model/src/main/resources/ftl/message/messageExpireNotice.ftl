@@ -1,7 +1,7 @@
 <link type="text/css" rel="stylesheet" href="/assets/css/main/usercenterRechargeApp.css"/>
-<p style="font-size: 12px;">${introduce}</p>
+<p style="font-size: 14px;">${introduce}</p>
 <div class="table-luzhi-wraper">
-	<table class="table table-responsive table-luzhi" style="font-size: 12px;width:calc(100% - 4em);margin-left: 2em;">
+	<table class="table table-responsive table-luzhi" style="font-size: 14px;width:calc(100% - 4em);margin-left: 2em;">
 		<thead>
 			<tr>
 				<th>地域</th>
@@ -24,4 +24,4 @@
 		</tbody>
 	</table>
 </div>
-<p style="font-size: 12px;color: red;">${warn}</p>
+<p style="font-size: 14px;color: red;">${warn}</p>
