@@ -69,8 +69,8 @@
                 <!-- 支付回调成功跳转页面 -->
                 <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
                 <!-- 用户中心及oauth配置 -->
-                <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
-                <uc.auth.api.http>http://uc.letvcloud.com/uc-http-api</uc.auth.api.http>
+                <uc.auth.http>http://lcp-uc.letvcloud.com</uc.auth.http>
+                <uc.auth.api.http>http://lcp-uc.letvcloud.com/uc-http-api</uc.auth.api.http>
                 <webportal.local.http>http://matrix.letvcloud.com</webportal.local.http>
 
                 <oauth.auth.http>https://oauthtest.lecloud.com</oauth.auth.http>
@@ -130,8 +130,8 @@
                 <pay.callback>http://10.176.127.32/pay/callback</pay.callback>
                 <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
                 <!-- 用户中心及oauth配置 -->
-                <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
-                <uc.auth.api.http>http://uc.letvcloud.com/uc-http-api</uc.auth.api.http>
+                <uc.auth.http>http://lcp-uc.letvcloud.com</uc.auth.http>
+                <uc.auth.api.http>http://lcp-uc.letvcloud.com/uc-http-api</uc.auth.api.http>
                 <webportal.local.http>http://matrix.letvcloud.com</webportal.local.http>
 
                 <oauth.auth.http>https://oauthtest.lecloud.com</oauth.auth.http>
@@ -181,19 +181,19 @@
             <id>production</id>
             <properties>
                 <!-- db配置 -->
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/lcp_main?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lcp?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>lcp_wr</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>Passw0rd</cloudplatform.webportal.db.password>
 
                 <!-- 支付回调callBack地址 -->
-                <pay.callback>http://10.176.127.32/pay/callback</pay.callback>
-                <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
+                <pay.callback>http://lcp.letvcloud.com/pay/callback</pay.callback>
+                <pay.success>http://lcp.letvcloud.com/payment/success</pay.success>
                 <!-- 用户中心及oauth配置 -->
-                <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
-                <uc.auth.api.http>http://uc.letvcloud.com/uc-http-api</uc.auth.api.http>
+                <uc.auth.http>http://lcp-lcp-uc.letvcloud.com</uc.auth.http>
+                <uc.auth.api.http>http://lcp-lcp-uc.letvcloud.com/uc-http-api</uc.auth.api.http>
                 <webportal.local.http>http://127.0.0.1</webportal.local.http>
 
-                <oauth.auth.http>https://oauthtest.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>>https://login.lecloud.com</oauth.auth.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
 
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
@@ -205,8 +205,8 @@
                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;sunweiwei1@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
+                <webportal.errormail.to>zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;liuhao1@letv.com</webportal.errormail.to>
+                <service.notice.email.to>zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;liuhao1@letv.com</service.notice.email.to>
 
                 <start.timing.jobs>N</start.timing.jobs>
                 <webportal.log.path>/var/log</webportal.log.path>

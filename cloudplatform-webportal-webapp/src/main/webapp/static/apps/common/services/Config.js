@@ -149,7 +149,7 @@ define(['./common.service'], function (serviceModule) {
     ];
     config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     config.serverName={
-      uc:"uc.letvcloud.com",
+      uc:"lcp-uc.letvcloud.com",
       matrix:"matrix.letvclond.com"
     };
     config.statusOperations={

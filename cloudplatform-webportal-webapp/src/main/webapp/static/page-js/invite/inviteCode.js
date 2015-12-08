@@ -122,7 +122,7 @@
 						clearTimeout(time)
 					}else{
 						time=setTimeout(function(){
-							window.location.href="http://matrix.letvcloud.com/profile";
+							window.location.href="http://lcp.letvcloud.com/profile";
 						},5000);
 					}
 				}else{

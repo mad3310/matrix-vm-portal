@@ -3,7 +3,7 @@ var redirects={
     '3':'/cvm/#/vm-disk',
     '4':'/cvm/#/vm-floatIP',
     '5':'/cvm/#/vm-router',
-    'renew':'http://uc.letvcloud.com/uc/renew/getRenewView.do'
+    'renew':'http://lcp-uc.letvcloud.com/uc/renew/getRenewView.do'
 }
 //余额选择
 function remainChose(){

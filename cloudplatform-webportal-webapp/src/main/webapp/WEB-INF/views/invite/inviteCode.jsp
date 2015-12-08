@@ -31,7 +31,7 @@
 			<div class="blockTitle"><span>恭喜</span></div>
 			<div class="blockDesc"><span>邀请码验证通过，可继续访问乐视云平台</span></div>
 			<div><a><span>5s后自动跳转~</span></a></div>
-			<div><span class="text-muted">若没有自动跳转，请点击</span><a href="http://matrix.letvcloud.com/profile"><span>这里</span></a></div>
+			<div><span class="text-muted">若没有自动跳转，请点击</span><a href="http://lcp.letvcloud.com/profile"><span>这里</span></a></div>
 		</div>
 	</div>
 </body>
