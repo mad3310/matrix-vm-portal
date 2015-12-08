@@ -948,6 +948,9 @@ numeric-input .up-down > a > i{
 
 /*begin le-select style*/
 le-select{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     height: 30px;
     width: 100%;
     position: relative;
