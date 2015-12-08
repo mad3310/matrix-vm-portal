@@ -152,6 +152,7 @@ define(['./common.service'], function (serviceModule) {
       uc:"uc.letvcloud.com",
       matrix:"matrix.letvclond.com"
     };
+    config.EMPTY_TEXT='--';
     config.statusOperations={
       "virtualMachine":{
         "active":{"create":1,"start":0,"stop":1,"restart":1,"createsnap":1,"changeconfig":0,"attachdisk":1,"detachdisk":1,"bindfloatIp":1,"unbindfloatIp":1,

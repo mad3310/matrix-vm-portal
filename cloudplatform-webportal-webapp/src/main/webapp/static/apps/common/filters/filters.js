@@ -103,7 +103,7 @@ define(['./common.filter'], function (filterModule) {
 
   filterModule.filter('vpcSubnetsFilter', ['Config', function (Config) {
     return function (input) {
-      return input.map(function(subnet){return subnet.name;}).join(', ') || '未设置';
+      return input.map(function(subnet){return subnet.name;}).join(', ') || Config.EMPTY_TEXT;
     }
   }]);
 

@@ -28,7 +28,7 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:img.checked}" ng-click="checkimg(img)"></span>
                     </td>
-                    <td class="le-col-name"><span>{{img.name|| '未设置'}}</span></td>
+                    <td class="le-col-name"><span>{{img.name|| EMPTY_TEXT}}</span></td>
                     <td><span>{{img.platform}}</span></td>
                     <td><span>{{img.type}}</span></td>
                     <td><span>{{img.status | vmImageStatusFilter}}</span></td>

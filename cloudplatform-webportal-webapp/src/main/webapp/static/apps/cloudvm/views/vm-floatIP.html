@@ -43,10 +43,10 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:fIp.checked}" ng-click="checkFip(fIp)"></span>
                     </td>
-                    <td class="le-col-name"><span>{{fIp.name|| '未设置'}}</span></td>
+                    <td class="le-col-name"><span>{{fIp.name|| EMPTY_TEXT}}</span></td>
                     <td><span>{{fIp.ipAddress}}</span></td>
                     <td><span>{{fIp.status | vmFloatIpFilter}}</span></td>
-                    <td class="le-col-name"><span>{{fIp.bindResource.name||'-'}}</span></td>
+                    <td class="le-col-name"><span>{{fIp.bindResource.name || EMPTY_TEXT}}</span></td>
                     <td><span>{{fIp.bandWidth}}</span></td>
                     <td><span>{{fIp.carrier.name}}</span></td>
                     <td><span>{{fIp.created | date:'yyyy-MM-dd HH:mm'}}</span></td>

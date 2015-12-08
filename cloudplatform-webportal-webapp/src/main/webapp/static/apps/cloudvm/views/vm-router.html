@@ -41,7 +41,7 @@
                     <td class="unselectable">
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:router.checked}" ng-click="checkRouter(router)"></span>
                     </td>
-                    <td class="le-col-name"><span>{{router.name|| '未设置'}}</span></td>
+                    <td class="le-col-name"><span>{{router.name|| EMPTY_TEXT}}</span></td>
                     <td><span>{{router.status|routerStatusFilter}}</span></td>
                     <td><span>{{router.publicNetworkGatewayEnable|routerGatewayFilter}}</span></td>
                     <td class="le-col-name"><span>{{router.subnets | routerSubnetFilter}}</span></td>
