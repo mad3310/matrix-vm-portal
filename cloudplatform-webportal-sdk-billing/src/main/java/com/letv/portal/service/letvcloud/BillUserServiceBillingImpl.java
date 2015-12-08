@@ -48,8 +48,9 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
         for (BillUserBilling billUserBilling : billUserBillingList) {
         	billUserBilling.setProductName(productInfo.get(Long.parseLong(billUserBilling.getServiceCode())));
             totalMoney = totalMoney.add(new BigDecimal(billUserBilling.getBillingMoney()));
+            billUserBilling.setBillingMoney(new BigDecimal(billUserBilling.getBillingMoney()).setScale(2).toString());
         }
-        billMonthBilling.setTotalMoney(totalMoney.doubleValue()); //账单总额
+        billMonthBilling.setTotalMoney(totalMoney.setScale(2).doubleValue()); //账单总额
 
         BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
         BigDecimal userMoney = billUserAmount.getAvailableAmount(); //资金账号金额

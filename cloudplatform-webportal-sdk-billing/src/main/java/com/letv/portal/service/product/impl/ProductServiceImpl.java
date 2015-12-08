@@ -406,13 +406,16 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 				}
 				for (OrderSub orderSub : orderSubs) {
 					long day = (orderSub.getEndTime().getTime()-orderSub.getStartTime().getTime())/(1000*3600*24); 
-					price = orderSub.getDiscountPrice()==null ? price.add(orderSub.getPrice().divide(new BigDecimal(day), 2, BigDecimal.ROUND_HALF_DOWN)): 
-							price.add(orderSub.getDiscountPrice().divide(new BigDecimal(day), 2, BigDecimal.ROUND_HALF_DOWN));
+					price = orderSub.getDiscountPrice()==null ? price.add(orderSub.getPrice().divide(new BigDecimal(day), 5, BigDecimal.ROUND_HALF_DOWN)): 
+							price.add(orderSub.getDiscountPrice().divide(new BigDecimal(day), 5, BigDecimal.ROUND_HALF_DOWN));
 				}
 				ret.put(subscription.getProductId(), price);
 			} else if(subscription.getChargeType()==1) {//按量TODO
 				
 			}
+		}
+		for(Long id : ret.keySet()) {
+			ret.put(id, ret.get(id).setScale(2, BigDecimal.ROUND_HALF_DOWN));
 		}
 		return ret;
 	}
