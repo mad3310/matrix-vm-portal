@@ -66,7 +66,9 @@ define(['controllers/app.controller'], function (controllerModule) {
         order_num: $scope.ipCount.toString(),
         os_broadband:$scope.networkBandWidth.toString()
       };
+        $scope.isCalculatingPrice=true;
       HttpService.doPost(Config.urls.floatip_calculate_price,data).success(function (data, status, headers, config) {
+        $scope.isCalculatingPrice=false;
         if(data.result===1){
           $scope.totalPrice=data.data;
         }

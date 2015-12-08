@@ -41,7 +41,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           volumeType: $scope.selectedDiskType.name,
           volumeSize: $scope.diskVolume.toString(),
         };
+        $scope.isCalculatingPrice=true;
         HttpService.doPost(Config.urls.disk_calculate_price,data).success(function (data, status, headers, config) {
+          $scope.isCalculatingPrice=false;
           if(data.result===1){
             $scope.totalPrice=data.data;
           }
