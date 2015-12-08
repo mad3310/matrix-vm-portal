@@ -191,21 +191,23 @@ define(['./common.directive'],function (directiveModule) {
             restrict: 'AE',
             scope: {
                 model: '=selectModel',
-                options:'=selectOptions'
+                options:'=selectOptions',
+                externalEmptyText:'@selectEmptyText'
             },
             link: function (scope, element, attrs) {
-                scope.toggleSelect=function(e){
-                    if(!scope.isOpen){
+                scope.emptyText = !scope.externalEmptyText ? '暂无数据' : scope.externalEmptyText;
+                scope.toggleSelect = function (e) {
+                    if (!scope.isOpen) {
                         scope.isOpen = true;
                         e.stopPropagation();
-                        $document.bind('click',closeDropdown);
+                        $document.bind('click', closeDropdown);
                     }
                 };
-                scope.selectOption=function(selectedOption){
-                    scope.model=selectedOption;
+                scope.selectOption = function (selectedOption) {
+                    scope.model = selectedOption;
                 };
-                var closeDropdown=function( evt ) {
-                    if(!scope.isOpen){
+                var closeDropdown = function (evt) {
+                    if (!scope.isOpen) {
                         return;
                     }
                     $document.unbind('click', closeDropdown);
