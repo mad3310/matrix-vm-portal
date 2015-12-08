@@ -3,6 +3,9 @@ package com.letv.portal.controller.user;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
 import com.letv.common.util.CookieUtil;
+import com.letv.common.util.SessionUtil;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.oauth.IUcService;
@@ -37,6 +40,8 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
+    private ICacheService<?> cacheService = CacheFactory.getCache();
+
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	/**Methods Name: userInfo <br>
@@ -49,11 +54,16 @@ public class UserController {
 	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public @ResponseBody ResultObject userInfo(HttpServletRequest request,ResultObject obj) throws Exception{
-		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-		if(session == null) {
+		Cookie cookie = CookieUtil.getCookieByName(request,CookieUtil.COOKIE_KEY);
+		if(cookie == null) {
 			obj.setResult(0);
 			return obj;
 		}
+        Session session = (Session) this.cacheService.get(SessionUtil.getUuidBySessionId(cookie.getValue()), null);
+        if(null == session) {
+            obj.setResult(0);
+            return obj;
+        }
         Map<String, Object> userdetailinfo = this.ucService.getUserByUserId(session.getUcId());
         if(userdetailinfo == null || userdetailinfo.isEmpty()) {
             obj.setData(session.getUserName());

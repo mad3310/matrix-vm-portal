@@ -11,11 +11,12 @@ import java.util.Map;
  */
 public class CookieUtil {
     public static final String COOKIE_KEY = "matrix_uc_cookie";
+    public static final String COOKIE_KEY_USER_NAME = "userName";
+    public static final String COOKIE_KEY_USER_ID = "userId";
 
-    private static final int MEMORY_COOKIE_AGE = -1;
-    private static final String UC_COOKIE_DOMAIN = "letvcloud.com";
-    private static final String DELETE_COOKIE_VALUE = null;
+    public static final String LCP_COOKIE_DOMAIN = "letvcloud.com";
     public static final int USER_NAME_MAX_AGE = 3600 * 24;
+    private static final String DELETE_COOKIE_VALUE = null;
     private static final int DELETE_COOKIE_MAX_AGE = 0;
 
     public static void addCookieWithDomain(HttpServletResponse response,String name,String value,int maxAge, String domain){
