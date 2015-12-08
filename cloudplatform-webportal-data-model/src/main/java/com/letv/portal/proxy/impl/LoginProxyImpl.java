@@ -5,6 +5,9 @@ import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.IpUtil;
+import com.letv.common.util.SessionUtil;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
@@ -12,9 +15,11 @@ import com.letv.portal.service.ILoginRecordService;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.oauth.IOauthService;
 import com.letv.portal.service.oauth.IUcService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -36,6 +41,10 @@ public class LoginProxyImpl  implements ILoginProxy{
 	private IUcService ucService;
 	@Autowired
 	private SessionServiceImpl sessionService;
+    @Value("${oauth.token.cache.expire}")
+    public long OAUTH_TOKEN_CACHE_EXPIRE;
+
+	private ICacheService<?> cacheService = CacheFactory.getCache();
 
 	@Override
 	public Session saveOrUpdateUserBySession(Session session) {
@@ -124,15 +133,37 @@ public class LoginProxyImpl  implements ILoginProxy{
 		session.setMobile((String) oauthUser.get("telephone"));
 
 		session = this.saveOrUpdateUserBySession(session);
+        if(session !=null)
+            this.cacheService.set(oauthId,session,OAUTH_TOKEN_CACHE_EXPIRE);
 		return session;
 	}
 
+	@Override
+	public Session getUserBySessionId(String sessionId) {
+        if(StringUtils.isEmpty(sessionId))
+            return null;
+        Session session  = (Session) this.cacheService.get(SessionUtil.getUuidBySessionId(sessionId), null);
+        if(null == session) {
+            UserModel userModel = this.userService.selectByOauthId(SessionUtil.getUuidBySessionId(sessionId));
+            session =  createUserSession(userModel);
+            session.setClientId(SessionUtil.getClientIdAndClientSecretBySessionId(sessionId).getClient_id());
+            session.setClientSecret(SessionUtil.getClientIdAndClientSecretBySessionId(sessionId).getClient_secret());
+            if(session !=null)
+                this.cacheService.set(SessionUtil.getUuidBySessionId(sessionId),session,OAUTH_TOKEN_CACHE_EXPIRE);
+        }
+        return session;
+    }
+
 	private Session createUserSession(UserModel user) {
+        if(null == user)
+            return null;
 		Session session = new Session();
 		session.setUserId(user.getId());
 		session.setUserName(user.getUserName());
 		session.setEmail(user.getEmail());
 		session.setAdmin(user.isAdmin());
+        session.setUcId(user.getUcId());
+        session.setOauthId(user.getOauthId());
 		return session;
 	}
 }

@@ -34,7 +34,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				$scope.expander.layout === "top-expander"? $scope.expander.layout = "top-shrink":$scope.expander.layout="top-expander";
 			}
 			var inite=function(){
-				var userid=$('#userId').val();
+				var userid=getCookie("userId");
 				var usinfourl="/user/"+userid;
 				var messageurl="/user/message/un/"+userid;
 				var remainurl="/userAccount/balance/"+userid;
@@ -51,6 +51,18 @@ define(['controllers/app.controller'], function (controllerModule) {
 				consume(consumeurl);
 				quotas(quotaurl,serviceurl)
 			}
+			 //获取浏览器缓存
+			 function getCookie(name){
+				 var arr=document.cookie.split('; ');
+
+				 for(var i=0; i<arr.length; i++){
+					 var arr2=arr[i].split('=');
+					 if(arr2[0]==name){
+						 return arr2[1];
+					 }
+				 }
+				 return '';
+			 }
 			function userinfo(usinfourl){
 				HttpService.doGet(usinfourl).then(function(data){
 					if(data.result==0){//error

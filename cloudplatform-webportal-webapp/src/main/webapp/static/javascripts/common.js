@@ -15,6 +15,18 @@ function browerversion(obj){
     window.location.replace="/browserError";
   }
 }
+//获取浏览器缓存
+function getCookie(name){
+  var arr=document.cookie.split('; ');
+
+  for(var i=0; i<arr.length; i++){
+    var arr2=arr[i].split('=');
+    if(arr2[0]==name){
+      return arr2[1];
+    }
+  }
+  return '';
+}
 var client=new ClientInfor();
   browerversion(client); //浏览器检测初始化
   /*设置页面的最低高度*/
@@ -66,7 +78,7 @@ var client=new ClientInfor();
     $(e.target).closest('li').addClass('active');
   });
   // 用户头像修改
-  var userid=$('#userId').val();
+  var userid=getCookie("userId");
   var usinfourl="/user/"+userid;
   $.ajax({
     url:usinfourl,

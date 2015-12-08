@@ -12,4 +12,6 @@ public interface ILoginProxy {
 	void logout();
 
 	Session login(String clientId,String clientSecret);
+
+	Session getUserBySessionId(String sessionId);
 }

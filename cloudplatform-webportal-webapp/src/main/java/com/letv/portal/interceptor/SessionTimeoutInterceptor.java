@@ -6,7 +6,11 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.CookieUtil;
 import com.letv.common.util.IpUtil;
+import com.letv.common.util.SessionUtil;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.enumeration.LoginClient;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginRecordService;
@@ -15,11 +19,13 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,8 +50,12 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
     @Autowired
     private ILoginRecordService loginRecordService;
 
+    @Value("${oauth.token.cache.expire}")
+    public long OAUTH_TOKEN_CACHE_EXPIRE;
+
     private static String OAUTH_CLIENT_ID = "client_id";
     private static String OAUTH_CLIENT_SECRET = "client_secret";
+    private ICacheService<?> cacheService = CacheFactory.getCache();
 
     public void setAllowUrls(String[] allowUrls) {
         this.allowUrls = allowUrls;
@@ -73,26 +83,24 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
         if(allowUrl(request))
             return true;
 
-        Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-        if(session != null ) {
-            return loginSuccess(session, request);
+        Cookie cookie = CookieUtil.getCookieByName(request, CookieUtil.COOKIE_KEY);
+        Session session = null;
+        if (null != cookie) {
+            session = this.loginProxy.getUserBySessionId(cookie.getValue());
         }
-        //session is null,login by request
-        String clientId = request.getParameter(OAUTH_CLIENT_ID);
-        String clientSecret = request.getParameter(OAUTH_CLIENT_SECRET);
+        if(null == session) {
+            //session is null,login by request
+            String clientId = request.getParameter(OAUTH_CLIENT_ID);
+            String clientSecret = request.getParameter(OAUTH_CLIENT_SECRET);
 
-        session = this.loginProxy.login(clientId,clientSecret);
+            session = this.loginProxy.login(clientId,clientSecret);
+            if(null !=session)
+                this.loginRecordService.insert(session.getUserId(),IpUtil.getIp(request), LoginClient.APP,true);
+        }
 
         //login success,session not null.
-        if(session != null) {
-            try {
-                session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
-            } catch (OpenStackException e) {
-                logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
-            }
-            this.loginRecordService.insert(session.getUserId(),IpUtil.getIp(request), LoginClient.APP,true);
-            return loginSuccess(session, request);
-        }
+        if(null != session)
+            return loginSuccess(session, request,response);
 
         //login failed by request.
         return toLogin(request,response);
@@ -109,8 +117,15 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
         }
         return false;
     }
-    private boolean loginSuccess(Session session,HttpServletRequest request){
-        request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
+    private boolean loginSuccess(Session session,HttpServletRequest request,HttpServletResponse response){
+        try {
+            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
+        } catch (OpenStackException e) {
+            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
+        }
+        CookieUtil.addCookieWithDomain(response,CookieUtil.COOKIE_KEY,SessionUtil.generateSessionId(session.getOauthId(),session.getClientId(),session.getClientSecret()),CookieUtil.USER_NAME_MAX_AGE,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_ID, String.valueOf(session.getUserId()), CookieUtil.USER_NAME_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_NAME, String.valueOf(session.getUserName()), CookieUtil.USER_NAME_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
         sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
             @Override
             public Session execute() throws Throwable {

@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="/static/staticPage/css/style.css">
 </head>
 <body>
-	<input id="userId" type="text" class="hide" value="${sessionScope.userSession.userId}">
+	<input id="userId" type="text" class="hide" value="${cookie.userId.value}">
 	<input id="orderNum" type="text" class="hide" value="${orderNum}">
 	<input id="redirect" type="text" class="hide" value="${redirect}">
 	<div class="main-body">
