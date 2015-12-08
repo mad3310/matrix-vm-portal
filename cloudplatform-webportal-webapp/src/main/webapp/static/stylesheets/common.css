@@ -872,7 +872,7 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid:focus{
 /*end le-input-validation style*/
 
 /*begin letv-checkbox style*/
-.letv-mutiCheck{line-height: 22px;border:1px solid #dbdbdb;margin:3px 3px 2px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
+.letv-mutiCheck{-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;line-height: 22px;border:1px solid #dbdbdb;margin:3px 3px 2px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
 .letv-mutiCheck:hover{cursor:pointer;}
 .letv-mutiCheck span{line-height: 22px}
 .letv-mutiCheck i{line-height: 22px;color: #dbdbdb;}
@@ -900,7 +900,7 @@ buy-period-selector .check-buy-period.selected{
 
 /*begin letv-radioCheck style*/
 .radio-check-group{line-height: 30px;}
-.letv-radioCheck{width: 80px;height: 22px;line-height: 22px;padding: 0;margin:0;display: inline-block;}
+.letv-radioCheck{-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;width: 80px;height: 22px;line-height: 22px;padding: 0;margin:0;display: inline-block;}
 .letv-radioCheck:hover{cursor:pointer;}
 .letv-radioCheck i.iconfont{color: #dbdbdb; }
 .letv-radioCheck.selected i.iconfont,.letv-radioCheck.selected span.letv-radio-content{color: #088ac2; }
