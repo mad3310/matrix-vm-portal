@@ -223,12 +223,15 @@
                         <div class="inputs-item nomargin row clearfix" ng-show="vmSecurityType=='keypair'">
                             <div class="col-sm-2"><span class="letv-control-label">密钥：</span></div>
                             <div class="col-sm-10">
-                                <input ng-if="vmSecurityType=='keypair'" type="hidden" name='keypair' ng-model="selectedVmSecurityKeypair" required />
-                                <span class="no-keypair-text" ng-show="!vmSecurityKeypairSelectorData.length">没有密钥，<a href="javascript:void(0);" ng-click="openVmKeypairCreateModal('500')">请创建</a></span>
-                                <input-validation-tooltip ng-if="vmSecurityType=='keypair'" ng-show="vm_create_form.$submitted && vm_create_form.keypair.$error.required"
+                                <input ng-if="vmSecurityType=='keypair'" type="hidden" name='keypair' ng-model="selectedVmSecurityKeypair" vm-create-keypair-validator />
+                                <span class="no-keypair-text" ng-show="!vmSecurityKeypairSelectorData.length">没有密钥，<a href="javascript:void(0);" ng-click="openVmKeypairCreateModal('medium')">请创建</a></span>
+                                <input-validation-tooltip ng-if="vmSecurityType=='keypair'" ng-show="vm_create_form.$submitted && vm_create_form.keypair.$error.keypairIsNullRestrict"
                                                           validation-message="请创建密钥">
                                 </input-validation-tooltip>
                                 <le-select ng-show="vmSecurityKeypairSelectorData.length" select-model="selectedVmSecurityKeypair" select-options="vmSecurityKeypairSelectorData"></le-select>
+                                <input-validation-tooltip class="validation-tooltip-keypair" ng-if="vmSecurityType=='keypair' && selectedVmSecurityKeypair" ng-show="vm_create_form.$submitted && vm_create_form.keypair.$error.keypairValueRestrict"
+                                                          validation-message="请选择密钥">
+                                </input-validation-tooltip>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix" ng-if="vmSecurityType=='password'">

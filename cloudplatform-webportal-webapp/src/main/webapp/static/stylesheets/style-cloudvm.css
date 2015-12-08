@@ -35,6 +35,7 @@
 
 .vm-create-form le-select{
     width: 250px;
+    display: inline-block;
 }
 
 .vm-create-form .no-keypair-text{
@@ -50,6 +51,11 @@
 
 .vm-create-form .left-inputs .inputs-item.row-item-description{
     margin-bottom:0;
+}
+
+.vm-create-form .validation-tooltip-keypair{
+    position: relative;
+    top: -10px;
 }
 /*modal-self*/
 .modal-720{width:720px;min-width:720px;}
@@ -74,7 +80,7 @@
 .inputs-item>.col-sm-2{padding:0;text-align:right;}
 .inputs-item>.col-sm-9{padding-left:0;padding-right:0;}
 .inputs-item>.col-sm-10{padding-left:0;}
-.inputs-item input{width: 70%;}
+.inputs-item input{width: 250px;}
 .system-content{padding:5px 0 5px 0;font-size:12px;margin-bottom: 0;list-style: none;}
 .system-content li{padding:2px 5px;width: 50%;float: left;}
 .system-content .letv-radioCheck{width: 100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

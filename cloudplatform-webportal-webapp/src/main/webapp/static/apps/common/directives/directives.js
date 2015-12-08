@@ -115,6 +115,26 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
+    directiveModule.directive('vmCreateKeypairValidator', function(Config) {
+        return {
+            require: 'ngModel',
+            link: function(scope, elm, attrs, ctrl) {
+                ctrl.$validators.keypairIsNullRestrict = function(modelValue, viewValue) {
+                    if (viewValue) {
+                        return true;
+                    }
+                    return false;
+                };
+                ctrl.$validators.keypairValueRestrict = function(modelValue, viewValue) {
+                    if (viewValue && viewValue.value) {
+                        return true;
+                    }
+                    return false;
+                };
+            }
+        };
+    });
+
     directiveModule.directive('numericInput', function () {
         var MAX=10,
           MIN=1;
