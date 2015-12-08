@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.impl;
 
+import com.letv.portal.service.openstack.OpenStackTenant;
+
 import java.io.Serializable;
 
 public class OpenStackUser implements Serializable{
@@ -8,41 +10,45 @@ public class OpenStackUser implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -5937930998427002260L;
-	private long userVoUserId;
-	private String userId;
-	private String password;
-	private String email;
+
+	public final OpenStackTenant tenant;
+
+//	private long userVoUserId;
+//	private String userId;
+//	private String password;
+//	private String email;
 	private String userName;
 //	private boolean firstLogin;
 	private boolean internalUser;
 	private String tenantId;
 	
-	public OpenStackUser(){
+	public OpenStackUser(OpenStackTenant tenant){
+		this.tenant = tenant;
 	}
 
-	public long getUserVoUserId() {
-		return userVoUserId;
+		public long getUserVoUserId() {
+		return tenant.userId;
 	}
-
-	public void setUserVoUserId(long userVoUserId) {
-		this.userVoUserId = userVoUserId;
-	}
-
+//
+//	public void setUserVoUserId(long userVoUserId) {
+//		this.userVoUserId = userVoUserId;
+//	}
+//
 	public String getUserId() {
-		return userId;
+		return tenant.tenantName;
 	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
+//
+//	public void setUserId(String userId) {
+//		this.userId = userId;
+//	}
+//
 	public String getPassword() {
-		return password;
+		return tenant.password;
 	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+//
+//	public void setPassword(String password) {
+//		this.password = password;
+//	}
 
 //	public boolean getFirstLogin() {
 //		return firstLogin;
@@ -61,13 +67,13 @@ public class OpenStackUser implements Serializable{
 	}
 
 	public String getEmail() {
-		return email;
+		return tenant.email;
 	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
+//
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
+//
 	public String getUserName() {
 		return userName;
 	}

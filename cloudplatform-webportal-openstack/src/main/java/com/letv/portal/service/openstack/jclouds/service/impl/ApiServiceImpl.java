@@ -8,6 +8,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
@@ -100,8 +101,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     }
 
     private OpenStackUserInfo getUserInfo(Long userId, String sessionId) throws NoSuchAlgorithmException {
-        final String email;
-        final String password;
+        final OpenStackTenant openStackTenant;
 
         Session session = sessionService.getSession();
         OpenStackSessionImpl openStackSession = null;
@@ -113,35 +113,33 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
             userId = session.getUserId();
 
             OpenStackUser openStackUser = openStackSession.getOpenStackUser();
-            email = openStackUser.getEmail();
-            password = openStackUser.getPassword();
+            openStackTenant = openStackUser.tenant;
 
             sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
         } else {
             UserVo user = userService.getUcUserById(userId);
 
-            email = user.getEmail();
-            password = passwordService.userIdToPassword(OpenStackServiceImpl.createOpenStackUserId(email));
+            openStackTenant=new OpenStackTenant(userId, user.getEmail());
 
             if (sessionId == null) {
                 sessionId = "";
             }
         }
 
-        return new OpenStackUserInfo(userId, sessionId, email, password);
+        return new OpenStackUserInfo(openStackTenant, sessionId);
     }
 
     @SuppressWarnings("unchecked")
 	private <T extends Closeable> T getApi(final Class<T> apiType, final OpenStackUserInfo userInfo) throws ExecutionException {
-        return (T) apiCache.get(new ApiCacheKey(userInfo.getUserId(), userInfo.getSessionId(), apiType), new Callable<Closeable>() {
+        return (T) apiCache.get(new ApiCacheKey(userInfo.tenant.userId, userInfo.sessionId, apiType), new Callable<Closeable>() {
             @Override
             public Closeable call() throws Exception {
                 return ContextBuilder
                         .newBuilder(apiToProvider.get(apiType))
                         .endpoint(OpenStackServiceImpl.getOpenStackConf().getPublicEndpoint())
                         .credentials(
-                                OpenStackServiceImpl.createCredentialsIdentity(userInfo.getEmail()),
-                                userInfo.getPassword()).modules(Constants.jcloudsContextBuilderModules)
+                                userInfo.tenant.jcloudsCredentialsIdentity,
+                                userInfo.tenant.password).modules(Constants.jcloudsContextBuilderModules)
                         .buildApi(apiType);
             }
         });
@@ -214,7 +212,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
             OpenStackUserInfo userInfo = getUserInfo(userId, sessionId);
             List<ApiCacheKey> keys = new LinkedList<ApiCacheKey>();
             for (Class<? extends Closeable> apiType : apiToProvider.keySet()) {
-                keys.add(new ApiCacheKey(userInfo.getUserId(), userInfo.getSessionId(), apiType));
+                keys.add(new ApiCacheKey(userInfo.tenant.userId, userInfo.sessionId, apiType));
             }
             apiCache.invalidateAll(keys);
         } catch (NoSuchAlgorithmException e) {
@@ -223,9 +221,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     }
 
     @Override
-    public void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword) {
-        final OpenStackUserInfo userInfo = new OpenStackUserInfo(userId, sessionId, openStackUserId, openStackUserPassword);
-
+    public void loadAllApiForCurrentSession(final OpenStackUserInfo userInfo) {
         ThreadUtil.concurrentRun(new Function0<Void>() {
             @Override
             public Void apply() {
@@ -273,12 +269,10 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     public void loadAllApiForRandomSessionFromBackend(long userId, String randomSessionId) throws NoSuchAlgorithmException, OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
         final String email = userVo.getEmail();
-        String openStackUserId = OpenStackServiceImpl.createOpenStackUserId(email);
-        String openStackUserPassword = passwordService.userIdToPassword(openStackUserId);
 
 //        openStackService.registerAndInitUserIfNotExists(userId, userVo.getUsername(), email, openStackUserPassword);
 
-        loadAllApiForCurrentSession(userId, randomSessionId, openStackUserId, openStackUserPassword);
+        loadAllApiForCurrentSession(new OpenStackUserInfo(new OpenStackTenant(userId,email),randomSessionId));
     }
 
 }

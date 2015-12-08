@@ -118,11 +118,11 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
         return false;
     }
     private boolean loginSuccess(Session session,HttpServletRequest request,HttpServletResponse response){
-        try {
-            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
-        } catch (OpenStackException e) {
-            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
-        }
+//        try {
+//            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
+//        } catch (OpenStackException e) {
+//            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
+//        }
         CookieUtil.addCookieWithDomain(response,CookieUtil.COOKIE_KEY,SessionUtil.generateSessionId(session.getOauthId(),session.getClientId(),session.getClientSecret()),CookieUtil.USER_NAME_MAX_AGE,CookieUtil.LCP_COOKIE_DOMAIN);
         CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_ID, String.valueOf(session.getUserId()), CookieUtil.USER_NAME_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
         CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_NAME, String.valueOf(session.getUserName()), CookieUtil.USER_NAME_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);

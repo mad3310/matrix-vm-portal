@@ -72,6 +72,7 @@ import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
+import com.letv.portal.util.ExceptionEmailServiceUtil;
 import com.letv.portal.util.MessageFormatServiceUtil;
 import com.letv.portal.util.SerialNumberUtil;
 import com.mysql.jdbc.StringUtils;
@@ -118,6 +119,8 @@ public class PayServiceImpl implements IPayService {
 	private CloudvmResourceInfoService cloudvmResourceInfoService;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	@Autowired
+    ExceptionEmailServiceUtil exceptionEmailServiceUtil;
 	private ICacheService<?> cacheService = CacheFactory.getCache();
 
 	@Value("${pay.callback}")
@@ -674,67 +677,79 @@ public class PayServiceImpl implements IPayService {
 			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(successCount));
 			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(failCount));
 			
-			//处理冻结金额(减少成功个数冻结余额，转移失败个数冻结金额到可用余额)
-			billUserAmountService.dealFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice, failPrice, (String)serviceParams.get("name"), productType);
-			
-			//更新订阅订单起始时间
-			updateSubscriptionAndOrderTime(orderSubs);
-			
-			//有成功的
-			if(succPrice.compareTo(new BigDecimal(0))==1) {
-				SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
-				//生成用户账单。
-				billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
-						df.format(new Date()), succPrice.toString());
+			try {
+				//处理冻结金额(减少成功个数冻结余额，转移失败个数冻结金额到可用余额)
+				billUserAmountService.dealFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice, failPrice, (String)serviceParams.get("name"), productType);
 				
-				//服务创建成功后保存服务创建成功通知
-		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		        Date d = new Date();
-		        StringBuffer buffer = new StringBuffer();
-		        buffer.append("您在").append(sdf.format(d)).append("购买的").append(successCount).append("台").append(productType).append("已成功创建，详细信息如下:");
-		        
-		        Map<String, Object> messageModel = new HashMap<String, Object>();
-		        messageModel.put("warn", "注意：如不能正常使用，可及时联系运维人员。");
-		        messageModel.put("introduce", buffer.toString());
-		        if(Constant.OPENSTACK.equals(productType)) {
-		        	messageModel.put("isVm", true);
-		        } else {
-		        	messageModel.put("isVm", false);
-		        }
-
-				List<Map<String, Object>> resModelList = new LinkedList<Map<String, Object>>();
-				messageModel.put("resList", resModelList);
+				//更新订阅订单起始时间
+				updateSubscriptionAndOrderTime(orderSubs);
 				
-				for(String id : idNames.keySet()) {
-					//保存最近操作
-			        this.recentOperateService.saveInfo("创建"+productType, idNames.get(id), orderSubs.get(0).getCreateUser(), null);
+				//有成功的
+				if(succPrice.compareTo(new BigDecimal(0))==1) {
+					SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
+					//生成用户账单。
+					billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
+							df.format(new Date()), succPrice.toString());
+					
+					//服务创建成功后保存服务创建成功通知
+			        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			        Date d = new Date();
+			        StringBuffer buffer = new StringBuffer();
+			        buffer.append("您在").append(sdf.format(d)).append("购买的").append(successCount).append("台").append(productType).append("已成功创建，详细信息如下:");
 			        
-					Map<String, Object> resModel = new HashMap<String, Object>();
-					resModel.put("region", orderSubs.get(0).getSubscription().getBaseRegionName());
-					resModel.put("type", orderSubs.get(0).getSubscription().getProductName());
-					resModel.put("id", id);
-					resModel.put("name", idNames.get(id));
-					if(Constant.OPENSTACK.equals(productType)) {
-						resModel.put("userName", "root");
-						resModel.put("password", serviceParams.get("adminPass"));
+			        Map<String, Object> messageModel = new HashMap<String, Object>();
+			        messageModel.put("warn", "注意：如不能正常使用，可及时联系运维人员。");
+			        messageModel.put("introduce", buffer.toString());
+			        if(Constant.OPENSTACK.equals(productType)) {
+			        	messageModel.put("isVm", true);
+			        } else {
+			        	messageModel.put("isVm", false);
+			        }
+
+					List<Map<String, Object>> resModelList = new LinkedList<Map<String, Object>>();
+					messageModel.put("resList", resModelList);
+					
+					for(String id : idNames.keySet()) {
+						//保存最近操作
+				        this.recentOperateService.saveInfo("创建"+productType, idNames.get(id), orderSubs.get(0).getCreateUser(), null);
+				        
+						Map<String, Object> resModel = new HashMap<String, Object>();
+						resModel.put("region", orderSubs.get(0).getSubscription().getBaseRegionName());
+						resModel.put("type", orderSubs.get(0).getSubscription().getProductName());
+						resModel.put("id", id);
+						resModel.put("name", idNames.get(id));
+						if(Constant.OPENSTACK.equals(productType)) {
+							resModel.put("userName", "root");
+							resModel.put("password", serviceParams.get("adminPass"));
+						}
+						resModelList.add(resModel);
 					}
-					resModelList.add(resModel);
-				}
-				
-				String str = messageFormatServiceUtil.format("message/messageCreateNotice.ftl", messageModel);
-		        
-		        Message msg = new Message();
-		        msg.setMsgTitle(productType+"创建成功");
-		        msg.setMsgContent(str);
-		        msg.setMsgStatus("0");//未读
-		        msg.setMsgType("2");//个人消息
-		        msg.setCreatedTime(d);
-		        Map<String,Object> msgRet = this.messageProxyService.saveMessage(orderSubs.get(0).getCreateUser(), msg);
-		        if(!(Boolean) msgRet.get("result")) {
-		        	logger.error("保存服务创建成功通知，失败原因:"+msgRet.get("message"));
-		        }
-		    }
-			
+					
+					String str = messageFormatServiceUtil.format("message/messageCreateNotice.ftl", messageModel);
+			        
+			        Message msg = new Message();
+			        msg.setMsgTitle(productType+"创建成功");
+			        msg.setMsgContent(str);
+			        msg.setMsgStatus("0");//未读
+			        msg.setMsgType("2");//个人消息
+			        msg.setCreatedTime(d);
+			        Map<String,Object> msgRet = this.messageProxyService.saveMessage(orderSubs.get(0).getCreateUser(), msg);
+			        if(!(Boolean) msgRet.get("result")) {
+			        	logger.error("保存服务创建成功通知失败，失败原因:"+msgRet.get("message"));
+			        	this.exceptionEmailServiceUtil.sendErrorEmail("保存服务创建成功通知失败", "保存服务创建成功通知失败，返回结果:"+msgRet.toString());
+			        }
+			    }
+			} catch (Exception e) {
+				StringBuffer sb = new StringBuffer();//发生异常时参数记录
+				sb.append("orderNumber=").append(orderSubs.get(0).getOrder().getOrderNumber());
+				sb.append("&successCount=").append(successCount);
+				sb.append("&failCount=").append(failCount);
+				sb.append("&serviceParams=").append(serviceParams.toString());
+				sb.append("&productType=").append(productType);
+				sb.append("&idNames=").append(idNames);
+				this.exceptionEmailServiceUtil.sendExceptionEmail(e, productType+"全部创建完成,回调处理出现异常,需人工处理", 
+						orderSubs.get(0).getCreateUser(), sb.toString());
+			}
 			
 		}
 	}

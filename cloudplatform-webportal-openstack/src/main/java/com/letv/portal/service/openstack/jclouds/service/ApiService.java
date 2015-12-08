@@ -32,7 +32,7 @@ public interface ApiService {
 
     void clearCache(Long userId, String sessionId);
 
-    void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword);
+    void loadAllApiForCurrentSession(OpenStackUserInfo userInfo);
 
     void loadAllApiForRandomSessionFromBackend(long userId, String randomSessionId) throws NoSuchAlgorithmException, OpenStackException;
 }

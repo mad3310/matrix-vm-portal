@@ -51,11 +51,11 @@ public class LoginController {
 		if(null == session)
 			return toLogin(mav,request.getRequestURI(),request.getQueryString());
 
-        try {
-            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
-        } catch (OpenStackException e) {
-            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
-        }
+//        try {
+//            session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getEmail(),session.getUserName()));
+//        } catch (OpenStackException e) {
+//            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
+//        }
         this.loginRecordService.insert(session.getUserId(),IpUtil.getIp(request), LoginClient.APP,true);
         loginSuccess(request, session);
 

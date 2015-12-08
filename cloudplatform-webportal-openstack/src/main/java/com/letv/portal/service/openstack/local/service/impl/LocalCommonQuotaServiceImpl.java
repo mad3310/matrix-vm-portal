@@ -27,10 +27,10 @@ public class LocalCommonQuotaServiceImpl implements LocalCommonQuotaSerivce {
             throw new OpenStackException("User quota is not exists.", MessageFormat.format("用户的{0}配额不可用", type.getName()));
         }
         if (commonQuota.getValue() < value) {
-            Object[] arguments = new Object[]{type.getName(), type.getUnit(), commonQuota.getValue(), value};
+            Object[] arguments = new Object[]{type.getName(), type.getUnit(), commonQuota.getValue(), value, value - commonQuota.getValue()};
             throw new UserOperationException(
                     MessageFormat.format("{0} exceeding the quota,tenantId:{1},region:{2},value:{3}", type.toString(), userVoUserId, region, value),
-                    MessageFormat.format("{0}{3}{1}超过了配额{2}{1}", arguments));
+                    MessageFormat.format("{0}超出配额{4}{1}", arguments));
         }
     }
 
