@@ -511,7 +511,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         },
         isVmCreated=function(vm){
           //通过云硬盘是否在绑定中判断云主机是否最终创建成功
-          return !vm.taskState && !(vm.volumes && vm.volumes.length && vm.volumes.filter(function(volume){
+          return vm.vmState!=='building' && !vm.taskState && !(vm.volumes && vm.volumes.length && vm.volumes.filter(function(volume){
               return volume.status==='attaching';
             }).length);
         };
