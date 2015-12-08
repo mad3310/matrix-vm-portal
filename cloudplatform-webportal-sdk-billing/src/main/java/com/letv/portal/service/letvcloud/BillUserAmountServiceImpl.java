@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.exception.CommonException;
-import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
@@ -308,35 +307,35 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    } while (ret < 1 && count < 10);
         
         
-        //服务创建失败后保存回退金额消息通知
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date d = new Date();
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("您在");
-        buffer.append(sdf.format(d));
-        buffer.append("购买的");
-        buffer.append(productType);
-        buffer.append("【");
-        buffer.append(productName);
-        buffer.append("】");
-        buffer.append("创建失败，系统退回账户");
-        buffer.append(price);
-        buffer.append("元，当前账户余额为[￥");
-        buffer.append(billUserAmount.getAvailableAmount());
-        buffer.append("]，如有问题，可拨打客服电话。");
-        Message msg = new Message();
-        msg.setMsgTitle("退款"+price+"元");
-        msg.setMsgContent(buffer.toString());
-        msg.setMsgStatus("0");//未读
-        msg.setMsgType("2");//个人消息
-        msg.setCreatedTime(d);
-        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-        if(!(Boolean) msgRet.get("result")) {
-            logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
-            this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
-        }
-        
         if(ret==1) {
+        	//服务创建失败后保存回退金额消息通知
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date d = new Date();
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("您在");
+            buffer.append(sdf.format(d));
+            buffer.append("购买的");
+            buffer.append(productType);
+            buffer.append("【");
+            buffer.append(productName);
+            buffer.append("】");
+            buffer.append("创建失败，系统退回账户");
+            buffer.append(price);
+            buffer.append("元，当前账户余额为[￥");
+            buffer.append(billUserAmount.getAvailableAmount());
+            buffer.append("]，如有问题，可拨打客服电话。");
+            Message msg = new Message();
+            msg.setMsgTitle("退款"+price+"元");
+            msg.setMsgContent(buffer.toString());
+            msg.setMsgStatus("0");//未读
+            msg.setMsgType("2");//个人消息
+            msg.setCreatedTime(d);
+            Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
+            if(!(Boolean) msgRet.get("result")) {
+                logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
+                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
+            }
+            
         	logger.info("转移冻结余额到可用余额成功,用户id:"+userId+",金额："+price);
         	return true;
         } else {
@@ -366,34 +365,34 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	        count++;
 	    } while (ret < 1 && count < 10);
 	    
-        //续费成功后保存金额消息通知
-        StringBuffer buffer = new StringBuffer();
-        Message msg = new Message();
-        buffer.setLength(0);
-        buffer.append("您在");
-        buffer.append(date);
-        buffer.append("续费");
-        buffer.append(productType);
-        buffer.append("【");
-        buffer.append(productName);
-        buffer.append("】成功，");
-        buffer.append("消费");
-        buffer.append(price);
-        buffer.append("元，当前账户余额为[￥");
-        buffer.append(billUserAmount.getAvailableAmount());
-        buffer.append("]，如有问题，可拨打客服电话。");
-        msg.setMsgTitle("续费成功，消费金额"+price+"元");
-        msg.setMsgContent(buffer.toString());
-        msg.setMsgStatus("0");//未读
-        msg.setMsgType("2");//个人消息
-        msg.setCreatedTime(new Date());
-        Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
-        if(!(Boolean) saveRet.get("result")) {
-            logger.error("续费成功后保存金额消息通知失败，失败原因:"+saveRet.get("message"));
-            this.exceptionEmailServiceUtil.sendErrorEmail("续费成功后保存金额消息通知失败", "续费成功后保存金额消息通知失败，返回结果:"+saveRet.toString());
-        }
-
         if(ret==1) {
+        	//续费成功后保存金额消息通知
+            StringBuffer buffer = new StringBuffer();
+            Message msg = new Message();
+            buffer.setLength(0);
+            buffer.append("您在");
+            buffer.append(date);
+            buffer.append("续费");
+            buffer.append(productType);
+            buffer.append("【");
+            buffer.append(productName);
+            buffer.append("】成功，");
+            buffer.append("消费");
+            buffer.append(price);
+            buffer.append("元，当前账户余额为[￥");
+            buffer.append(billUserAmount.getAvailableAmount());
+            buffer.append("]，如有问题，可拨打客服电话。");
+            msg.setMsgTitle("续费成功，消费金额"+price+"元");
+            msg.setMsgContent(buffer.toString());
+            msg.setMsgStatus("0");//未读
+            msg.setMsgType("2");//个人消息
+            msg.setCreatedTime(new Date());
+            Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
+            if(!(Boolean) saveRet.get("result")) {
+                logger.error("续费成功后保存金额消息通知失败，失败原因:"+saveRet.get("message"));
+                this.exceptionEmailServiceUtil.sendErrorEmail("续费成功后保存金额消息通知失败", "续费成功后保存金额消息通知失败，返回结果:"+saveRet.toString());
+            }
+            
 	    	logger.info("扣除可用余额成功,用户id:"+userId+",金额："+price);
         	return true;
         } else {
@@ -423,35 +422,35 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	        count++;
 	    } while (ret < 1 && count < 10);
 	    
-        //服务创建成功后保存扣减金额消息通知
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date d = new Date();
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("您在");
-        buffer.append(sdf.format(d));
-        buffer.append("购买的");
-        buffer.append(productType);
-        buffer.append("【");
-        buffer.append(productName);
-        buffer.append("】");
-        buffer.append("消费");
-        buffer.append(price);
-        buffer.append("元，当前账户余额为[￥");
-        buffer.append(billUserAmount.getAvailableAmount());
-        buffer.append("]，如有问题，可拨打客服电话。");
-        Message msg = new Message();
-        msg.setMsgTitle("消费金额"+price+"元");
-        msg.setMsgContent(buffer.toString());
-        msg.setMsgStatus("0");//未读
-        msg.setMsgType("2");//个人消息
-        msg.setCreatedTime(d);
-        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-        if(!(Boolean) msgRet.get("result")) {
-            logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+msgRet.get("message"));
-            this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+msgRet.toString());
-        }
-        
         if(ret==1) {
+        	 //服务创建成功后保存扣减金额消息通知
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date d = new Date();
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("您在");
+            buffer.append(sdf.format(d));
+            buffer.append("购买的");
+            buffer.append(productType);
+            buffer.append("【");
+            buffer.append(productName);
+            buffer.append("】");
+            buffer.append("消费");
+            buffer.append(price);
+            buffer.append("元，当前账户余额为[￥");
+            buffer.append(billUserAmount.getAvailableAmount());
+            buffer.append("]，如有问题，可拨打客服电话。");
+            Message msg = new Message();
+            msg.setMsgTitle("消费金额"+price+"元");
+            msg.setMsgContent(buffer.toString());
+            msg.setMsgStatus("0");//未读
+            msg.setMsgType("2");//个人消息
+            msg.setCreatedTime(d);
+            Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
+            if(!(Boolean) msgRet.get("result")) {
+                logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+msgRet.get("message"));
+                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+msgRet.toString());
+            }
+        	
 	    	logger.info("扣除冻结金额成功,用户id:"+userId+",金额："+price);
         	return true;
         } else {
@@ -483,66 +482,65 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	        count++;
 	    } while (ret < 1 && count < 10);
         
-
-        //服务创建失败后保存回退金额消息通知
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date d = new Date();
-        StringBuffer buffer = new StringBuffer();
-        Message msg = new Message();
-
-        if(succPrice.doubleValue()!=0) {
-            buffer.setLength(0);
-            buffer.append("您在");
-            buffer.append(sdf.format(d));
-            buffer.append("购买的");
-            buffer.append(productType);
-            buffer.append("【");
-            buffer.append(productName);
-            buffer.append("】");
-            buffer.append("消费");
-            buffer.append(succPrice);
-            buffer.append("元，当前账户余额为[￥");
-            buffer.append(billUserAmount.getAvailableAmount());
-            buffer.append("]，如有问题，可拨打客服电话。");
-            msg.setMsgTitle("消费金额"+succPrice+"元");
-            msg.setMsgContent(buffer.toString());
-            msg.setMsgStatus("0");//未读
-            msg.setMsgType("2");//个人消息
-            msg.setCreatedTime(d);
-            Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
-            if(!(Boolean) saveRet.get("result")) {
-                logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+saveRet.get("message"));
-                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+saveRet.toString());
-            }
-        }
-
-        if(failPrice.doubleValue()!=0) {
-            buffer.append("您在");
-            buffer.append(sdf.format(d));
-            buffer.append("购买的");
-            buffer.append(productType);
-            buffer.append("【");
-            buffer.append(productName);
-            buffer.append("】");
-            buffer.append("创建失败，系统退回账户");
-            buffer.append(failPrice);
-            buffer.append("元，当前账户余额为[￥");
-            buffer.append(billUserAmount.getAvailableAmount());
-            buffer.append("]，如有问题，可拨打客服电话。");
-
-            msg.setMsgTitle("退款"+failPrice+"元");
-            msg.setMsgContent(buffer.toString());
-            msg.setMsgStatus("0");//未读
-            msg.setMsgType("2");//个人消息
-            msg.setCreatedTime(d);
-            Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-            if(!(Boolean) msgRet.get("result")) {
-                logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
-                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
-            }
-        }
-
         if(ret==1) {
+        	//服务创建失败后保存回退金额消息通知
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date d = new Date();
+            StringBuffer buffer = new StringBuffer();
+            Message msg = new Message();
+
+            if(succPrice.doubleValue()!=0) {
+                buffer.setLength(0);
+                buffer.append("您在");
+                buffer.append(sdf.format(d));
+                buffer.append("购买的");
+                buffer.append(productType);
+                buffer.append("【");
+                buffer.append(productName);
+                buffer.append("】");
+                buffer.append("消费");
+                buffer.append(succPrice);
+                buffer.append("元，当前账户余额为[￥");
+                buffer.append(billUserAmount.getAvailableAmount());
+                buffer.append("]，如有问题，可拨打客服电话。");
+                msg.setMsgTitle("消费金额"+succPrice+"元");
+                msg.setMsgContent(buffer.toString());
+                msg.setMsgStatus("0");//未读
+                msg.setMsgType("2");//个人消息
+                msg.setCreatedTime(d);
+                Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
+                if(!(Boolean) saveRet.get("result")) {
+                    logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+saveRet.get("message"));
+                    this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+saveRet.toString());
+                }
+            }
+
+            if(failPrice.doubleValue()!=0) {
+                buffer.append("您在");
+                buffer.append(sdf.format(d));
+                buffer.append("购买的");
+                buffer.append(productType);
+                buffer.append("【");
+                buffer.append(productName);
+                buffer.append("】");
+                buffer.append("创建失败，系统退回账户");
+                buffer.append(failPrice);
+                buffer.append("元，当前账户余额为[￥");
+                buffer.append(billUserAmount.getAvailableAmount());
+                buffer.append("]，如有问题，可拨打客服电话。");
+
+                msg.setMsgTitle("退款"+failPrice+"元");
+                msg.setMsgContent(buffer.toString());
+                msg.setMsgStatus("0");//未读
+                msg.setMsgType("2");//个人消息
+                msg.setCreatedTime(d);
+                Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
+                if(!(Boolean) msgRet.get("result")) {
+                    logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
+                    this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
+                }
+            }
+        	
 	    	logger.info("处理冻结金额成功,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
         	return true;
         } else {
