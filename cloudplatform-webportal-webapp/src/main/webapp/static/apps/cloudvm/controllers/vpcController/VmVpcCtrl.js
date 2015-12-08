@@ -113,7 +113,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                     return;
                 }
                 if(checkedSubnets[0].router !== null){
-                    WidgetService.notifyWarning('该子网已绑定路由');
+                    WidgetService.notifyWarning('当前子网已绑定路由器');
                     return;
                 }
                 associateRouterModal('500',{
@@ -188,7 +188,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                     return;
                 }
                 if(checkedSubnets[0].router === null){
-                    WidgetService.notifyWarning('该子网还没有绑定路由');
+                    WidgetService.notifyWarning('当前子网未绑定路由器');
                     return;
                 }
                 var data = {

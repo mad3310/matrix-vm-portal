@@ -102,7 +102,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         console.log(checkedRouters[0].subnets);
         if(checkedRouters[0].subnets.length === 0){
-          WidgetService.notifyWarning("选择路由没有关联子网");
+          WidgetService.notifyWarning("选择的路由未关联子网");
           return;
         }
         removeSubnetModal('500',{
