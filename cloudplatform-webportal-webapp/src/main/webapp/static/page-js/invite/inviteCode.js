@@ -123,7 +123,7 @@
 					}else{
 						time=setTimeout(function(){
 							window.location.href="http://matrix.letvcloud.com/profile";
-						},5000);
+						},2000);
 					}
 				}else{
 					$('.blockInputs').removeClass('hide');
