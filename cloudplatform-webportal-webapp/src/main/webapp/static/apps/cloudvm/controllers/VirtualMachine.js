@@ -502,7 +502,6 @@ define(['controllers/app.controller'], function (controllerModule) {
                 });
               }, 5000);
             });
-
           });
         },
         getCheckedVm=function(){
@@ -520,8 +519,8 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'virtualMachine',
           'state':'vmState',
-          'other':[],
-          'operations':['create','start','stop','delete','restart','createsnap','attachdisk','detachdisk']
+          'other':['volumes'],
+          'operations':['create','start','stop','delete','restart','createsnap','attachdisk','detachdisk','bindfloatIp','editpass']
         }
         $scope.$watch(function(){
           return $scope.vmList.map(function(vm) {

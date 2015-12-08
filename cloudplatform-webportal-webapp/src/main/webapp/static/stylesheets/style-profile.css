@@ -39,7 +39,6 @@ animation-duration:1s;animation-delay:.1s;animation-timing-function:ease;animati
 .operation-items.operation-noitems span{padding-left:5px;display:block;float:left;}
 .body-operation .operation-items li{padding:7px 15px 6px 20px;list-style:none;border-bottom:1px solid #ededed;}
 .body-operation .operation-items li.last{border-bottom:0;}
-.body-operation .operation-items li.third{border-bottom:0;}
 .body-operation.zhankai .operation-items li.third{border-bottom:1px solid #ededed;}
 .body-operation .operation-items li.gotop{display:none;}
 .body-operation.zhankai .operation-items li.gotop{display:block;}
