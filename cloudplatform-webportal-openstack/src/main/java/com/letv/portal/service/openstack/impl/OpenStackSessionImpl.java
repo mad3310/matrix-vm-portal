@@ -167,8 +167,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), openStackUser.getUserId(),
 				openStackUser.getPassword());
 		if (!userExists.run()) {
-			new UserRegister(openStackConf.getAdminEndpoint(), openStackUser.getUserId(), openStackUser.getPassword(), openStackUser.getEmail(),
-					openStackConf.getUserRegisterToken()).run();
+			new UserRegister(openStackConf.getAdminEndpoint(),openStackConf.getUserRegisterToken(), openStackUser.getUserId(), openStackUser.getPassword(), openStackUser.getEmail()).run();
 			userExists = new UserExists(openStackConf.getPublicEndpoint(), openStackUser.getUserId(), openStackUser.getPassword());
 			if (!userExists.run()) {
 				throw new OpenStackException(
