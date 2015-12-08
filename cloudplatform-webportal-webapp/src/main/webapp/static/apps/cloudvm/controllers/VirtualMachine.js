@@ -289,7 +289,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           return;
         }
         if(!checkedVms[0].volumes || !checkedVms[0].volumes.length){
-          WidgetService.notifyWarning('云主机还没有绑定云硬盘');
+          WidgetService.notifyWarning('云主机未绑定云硬盘');
           return;
         }
         var modalInstance = $modal.open({

@@ -62,7 +62,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.bindVm=function(size){
         var checkedIps=getCheckedIp();
         if(checkedIps.length !==1){
-          WidgetService.notifyWarning('请选中一个公网Ip');
+          WidgetService.notifyWarning('请选中一个公网IP');
           return;
         }else{
           if(checkedIps[0].bindResource){
@@ -111,7 +111,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.editIp=function(size){
         var checkedIps=getCheckedIp();
         if(checkedIps.length !==1){
-          WidgetService.notifyWarning('请选中一个公网Ip');
+          WidgetService.notifyWarning('请选中一个公网IP');
           return;
         }else{
           var modalInstance = $modal.open({
@@ -141,7 +141,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.unbindVm=function(size){
         var checkedIps=getCheckedIp();
         if(checkedIps.length !==1){
-          WidgetService.notifyWarning('请选中一个公网Ip');
+          WidgetService.notifyWarning('请选中一个公网IP');
           return;
         }else{
           if(checkedIps[0].bindResource){//解绑
@@ -177,7 +177,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.deleteIp=function(size){
         var checkedIps=getCheckedIp();
         if(checkedIps.length !==1){
-          WidgetService.notifyWarning('请选中一个公网Ip');
+          WidgetService.notifyWarning('请选中一个公网IP');
           return;
         }
         var data={
@@ -187,17 +187,17 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除公网IP','确定要删除公网IP（'+checkedIps[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('公网Ip删除执行中...');
+          WidgetService.notifyInfo('公网IP删除执行中...');
           checkedIps[0].status='DELETEING';
           HttpService.doPost(Config.urls.floatIp_delete,data).success(function (data, status, headers, config) {
             if(data.result===1){
               checkedIps[0].status='DELETED';
               modalInstance.close(data);
-              WidgetService.notifySuccess('删除公网Ip成功');
+              WidgetService.notifySuccess('删除公网IP成功');
               refreshFloatIpList();
             }
             else{
-              WidgetService.notifyError(data.msgs[0]||'删除公网Ip失败');
+              WidgetService.notifyError(data.msgs[0]||'删除公网IP失败');
             }
           });
         }, function () {
