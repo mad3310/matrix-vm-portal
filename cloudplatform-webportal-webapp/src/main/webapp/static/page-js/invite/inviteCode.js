@@ -1,6 +1,7 @@
 //点击刷新图片
 	function codeimgClick(){
 		$('.vali-codeimg').unbind('click').click(function(event) {
+			console.log('?')
 		  	$('.vali-codeimg').hide()
 		                    .attr('src', '/kaptcha?random='+Math.random()*100)
 		                    .fadeIn();
@@ -67,19 +68,12 @@
 		});
 	}
 	function inviteBtnClick(){
-		var html='';
-		$('.invitebtn').unbind('click').click(function(event){
+		$('.invitebtn').unbind('click').click(function(event){//click事件处理
 			var invitecode=$('.inviteCode').val(),code=$('.valicode-input').val(),inputdata='';
 			var ifneedcodeResult=ifneedcode();
 			ifneedcodeResult.done(function(data){
 				if(data.data){//需要验证码
-					if($('.vali-codeimg').length>0){//已加载
-					}else{//加载验证码
-						html='<input type="text" class="valicode-input formInput" id="input_idcode" placeholder="点击图片刷新验证码" onchange="codeVali($(this))" onpropertychange="codeVali($(this))"/>'
-						+'<img src="../kaptcha" class="vali-codeimg formInput" id="idcode">'
-						+'<div class="error-msg hide"></div>';
-						$('#valicode').append(html)
-					}
+					$('#valicode').removeClass('hide');
 					if(totalValify()){
 						inputdata={
 							'inviteCode':invitecode,
@@ -88,7 +82,8 @@
 						inviteajax(inputdata)
 					}
 				}else{
-					$('#valicode').html('');
+					$('#valicode').addClass('hide');
+					$('#idcode').attr('src', '');
 					if(inviteVali($('.inviteCode'))){//只需要验证邀请码
 						inputdata={
 							'inviteCode':invitecode

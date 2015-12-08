@@ -20,9 +20,9 @@
 				<input type="text" class="formInput inviteCode" placeholder="请输入邀请码" onchange="inviteVali($(this))" onpropertychange="inviteVali($(this))"/>
 				<div class="error-msg hide"></div>
 				<div class="valicode hide" id="valicode">
-					<!-- <input type="text" class="valicode-input formInput" id="input_idcode" placeholder="点击图片刷新验证码" onchange="codeVali($(this))" onpropertychange="codeVali($(this))"/>
-					<img src="../kaptcha" class="vali-codeimg formInput" id="idcode">
-					<div class="error-msg hide">验证码错误，请重新输入</div> -->
+					<input type="text" class="valicode-input formInput" id="input_idcode" placeholder="点击图片刷新验证码" onchange="codeVali($(this))" onpropertychange="codeVali($(this))"/>
+					<img src="" class="vali-codeimg formInput" id="idcode">
+					<div class="error-msg hide">验证码错误，请重新输入</div>
 				</div>
 				<div class="formBtn"><div class="btn btn-le-blue invitebtn">验证</div></div>
 			</form>
