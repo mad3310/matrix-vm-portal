@@ -8,6 +8,7 @@ import com.letv.portal.service.cloudvm.ICloudvmImageLinkService;
 import com.letv.portal.service.cloudvm.ICloudvmImagePropertyService;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
 import com.letv.portal.service.openstack.OpenStackService;
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
@@ -59,15 +60,15 @@ public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements Ima
         try {
             OpenStackConf openStackConf = OpenStackServiceImpl.getOpenStackConf();
             String basicUserName = openStackConf.getBasicUserName();
-            String basicUserPassword = passwordService.userIdToPassword(basicUserName);
-            openStackService.registerUserIfNotExists(basicUserName, basicUserPassword);
+            String password= passwordService.userIdToPassword(basicUserName);
+            openStackService.registerUserIfNotExists(basicUserName,password,"");
 
             GlanceApi glanceApi = ContextBuilder
                     .newBuilder("openstack-glance")
                     .endpoint(openStackConf.getPublicEndpoint())
                     .credentials(
                             OpenStackServiceImpl.createCredentialsIdentity(basicUserName),
-                            basicUserPassword).modules(Constants.jcloudsContextBuilderModules)
+                            password).modules(Constants.jcloudsContextBuilderModules)
                     .buildApi(GlanceApi.class);
             try {
                 for (String region : glanceApi.getConfiguredRegions()) {

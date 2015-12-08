@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.impl;
 
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.*;
+import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.billing.event.service.EventPublishService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
@@ -44,6 +45,7 @@ public class OpenStackServiceGroup {
 	private LocalCommonQuotaSerivce localCommonQuotaSerivce;
 	private LocalNetworkService localNetworkService;
 	private ResourceService resourceService;
+	private OpenStackService openStackService;
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
@@ -226,5 +228,13 @@ public class OpenStackServiceGroup {
 
 	public ResourceService getResourceService() {
 		return resourceService;
+	}
+
+	public OpenStackService getOpenStackService() {
+		return openStackService;
+	}
+
+	public void setOpenStackService(OpenStackService openStackService) {
+		this.openStackService = openStackService;
 	}
 }

@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.internal;
 
 import java.io.StringWriter;
 
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.util.HttpUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -23,17 +24,21 @@ public class UserRegister {
 //            .getLogger(UserRegister.class);
 
     private final String endpoint;
-    private final String userName;
+    private final String registerToken;
+    private final String tenantName;
     private final String password;
     private final String email;
-    private final String registerToken;
 
-    public UserRegister(String adminEndpoint, String userName, String password, String email, String registerToken) {
-        this.endpoint = adminEndpoint;
-        this.userName = userName;
+//    public UserRegister(String endpoint,String registerToken, OpenStackTenant tenant){
+//        this(endpoint, registerToken, tenant.tenantName, tenant.password, tenant.email);
+//    }
+
+    public UserRegister(String endpoint, String registerToken, String tenantName, String password, String email) {
+        this.endpoint = endpoint;
+        this.registerToken = registerToken;
+        this.tenantName = tenantName;
         this.password = password;
         this.email = email;
-        this.registerToken = registerToken;
     }
 
     @SuppressWarnings("resource")
@@ -51,12 +56,12 @@ public class UserRegister {
             Params body = new Params();
             Params bodyUser = new Params();
             body.p("user", bodyUser);
-            bodyUser.p("enabled", true).p("name", this.userName)
-                    .p("password", password).p("description", "matrix "+this.userName).p("email",this.email);
+            bodyUser.p("enabled", true).p("name", this.tenantName)
+                    .p("password", this.password).p("description", "matrix "+this.tenantName).p("email",this.email);
             Params bodyTenant = new Params();
             body.p("tenant", bodyTenant);
-            bodyTenant.p("enabled", true).p("name", this.userName)
-                    .p("description", "matrix " + this.userName);
+            bodyTenant.p("enabled", true).p("name", this.tenantName)
+                    .p("description", "matrix " + this.tenantName);
 
             ObjectMapper objectMapper = new ObjectMapper();
             StringWriter stringWriter = new StringWriter();

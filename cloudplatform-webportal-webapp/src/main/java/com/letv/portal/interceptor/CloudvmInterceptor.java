@@ -6,8 +6,10 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.portal.model.UserVo;
+import com.letv.portal.service.openstack.OpenStackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -27,6 +29,9 @@ public class CloudvmInterceptor implements HandlerInterceptor {
 
     @Autowired
     private SessionServiceImpl sessionService;
+
+    @Autowired
+    private OpenStackService openStackService;
 
     public String[] checkUrls;
     private String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
@@ -58,6 +63,17 @@ public class CloudvmInterceptor implements HandlerInterceptor {
                 if (requestUrl.contains(url)) {
                     Session session = sessionService.getSession();
                     OpenStackSession openStackSession = (OpenStackSession) session.getOpenStackSession();
+                    if (openStackSession == null) {
+                        openStackSession = openStackService.createSession(session.getUserId(), session.getEmail(), session.getUserName());
+                        session.setOpenStackSession(openStackSession);
+                        request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
+                        sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+                            @Override
+                            public Session execute() throws Throwable {
+                                return null;
+                            }
+                        });
+                    }
                     if (!openStackSession.isAuthority()) {
                         boolean isAjaxRequest = (request.getHeader("x-requested-with") != null) ? true : false;
                         if (isAjaxRequest) {

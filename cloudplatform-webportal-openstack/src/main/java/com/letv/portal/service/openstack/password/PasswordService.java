@@ -5,6 +5,6 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import java.security.NoSuchAlgorithmException;
 
 public interface PasswordService {
-	public String userIdToPassword(String userId) throws NoSuchAlgorithmException;
+	String userIdToPassword(String userId);
 	void validateUserAdminPass(String adminPass) throws OpenStackException;
 }

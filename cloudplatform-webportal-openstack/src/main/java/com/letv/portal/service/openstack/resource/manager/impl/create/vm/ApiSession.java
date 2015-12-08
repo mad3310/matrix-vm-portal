@@ -44,9 +44,8 @@ public class ApiSession implements Closeable {
 				.newBuilder(providerOrApi)
 				.endpoint(openStackConf.getPublicEndpoint())
 				.credentials(
-						openStackUser.getUserId() + ":"
-								+ openStackUser.getUserId(),
-						openStackUser.getPassword()).modules(modules)
+						openStackUser.tenant.jcloudsCredentialsIdentity,
+						openStackUser.tenant.password).modules(modules)
 				.buildApi(apiClass);
 		return api;
 	}

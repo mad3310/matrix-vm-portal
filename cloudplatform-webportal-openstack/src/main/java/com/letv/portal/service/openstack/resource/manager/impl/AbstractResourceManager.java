@@ -54,9 +54,8 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 				.newBuilder(getProviderOrApi())
 				.endpoint(openStackConf.getPublicEndpoint())
 				.credentials(
-						openStackUser.getUserId() + ":"
-								+ openStackUser.getUserId(),
-						openStackUser.getPassword()).modules(Constants.jcloudsContextBuilderModules)
+						openStackUser.tenant.jcloudsCredentialsIdentity,
+						openStackUser.tenant.password).modules(Constants.jcloudsContextBuilderModules)
 				.buildApi(getApiClass());
 		return api;
 	}
