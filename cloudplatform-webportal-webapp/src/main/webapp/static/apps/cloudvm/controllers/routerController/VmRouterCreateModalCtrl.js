@@ -56,7 +56,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           order_num: '1',
           os_router:'router'
         };
+        $scope.isCalculatingPrice=true;
         HttpService.doPost(Config.urls.route_calculate_price,data).success(function (data, status, headers, config) {
+          $scope.isCalculatingPrice=false;
           if(data.result===1){
             $scope.totalPrice=data.data;
           }

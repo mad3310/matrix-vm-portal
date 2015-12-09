@@ -111,11 +111,12 @@
                     </div>
                     <div class="le-row">
                         <div class="le-col-12 col-submit-order">
-                             <span class="order-price">
+                             <span class="order-price" ng-show="!isCalculatingPrice">
                                 <span class="title">合计：</span>
                                 <span class="price">{{totalPrice}}</span>
                                 <span class="unit">元</span>
                             </span>
+                            <span class="calculating-price" ng-show="isCalculatingPrice">价格计算中...</span>
                             <button class="btn btn-le-red" ng-click="vm_router_create_form.$valid && !isFormSubmiting && createRouter()" ng-disabled="isFormSubmiting">
                                 <span ng-if="!isFormSubmiting">提交订单</span>
                                 <span ng-if="isFormSubmiting">订单提交中...</span>
@@ -196,7 +197,7 @@
                         <span class="letv-control-label">子网：</span>
                     </div>
                     <div class="le-col-8 col-control">
-                        <le-select select-model="selectedSubnet" select-options="subnetListSelectorData"></le-select>
+                        <le-select select-model="selectedSubnet" select-options="subnetListSelectorData" select-empty-text="暂无可关联子网"></le-select>
                     </div>
                 </div>
                 <div class="le-row">
@@ -233,7 +234,7 @@
                         <span class="letv-control-label">子网：</span>
                     </div>
                     <div class="le-col-8 col-control">
-                        <le-select select-model="selectedSubnet" select-options="subnetListSelectorData"></le-select>
+                        <le-select select-model="selectedSubnet" select-options="subnetListSelectorData" select-empty-text="暂无可解除关联子网"></le-select>
                     </div>
                 </div>
                 <div class="le-row">
