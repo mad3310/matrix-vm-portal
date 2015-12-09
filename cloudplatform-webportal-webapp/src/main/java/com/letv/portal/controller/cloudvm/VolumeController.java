@@ -219,6 +219,18 @@ public class VolumeController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/volume/snapshot/{volumeSnapshotId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getVolumeSnapshot(@PathVariable String region,
+										  @PathVariable String volumeSnapshotId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(resourceServiceFacade.getVolumeSnapshot(region,volumeSnapshotId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/volume/snapshot/create", method = RequestMethod.POST)
 	public
 	@ResponseBody
