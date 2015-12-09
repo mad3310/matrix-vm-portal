@@ -15,7 +15,6 @@ import com.letv.portal.enumeration.LoginClient;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginRecordService;
 import com.letv.portal.service.openstack.OpenStackService;
-import com.letv.portal.service.openstack.exception.OpenStackException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +107,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
     }
 
     private boolean toLogin(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_ID,response,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_NAME,response,CookieUtil.LCP_COOKIE_DOMAIN);
         boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
         if (isAjaxRequest) {
             responseJson(request,response,"长时间未操作，请重新登录");
@@ -123,9 +125,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 //        } catch (OpenStackException e) {
 //            logger.error("set openstack session error when oauhtLogin:{}",e.getMessage());
 //        }
-        CookieUtil.addCookieWithDomain(response,CookieUtil.COOKIE_KEY,SessionUtil.generateSessionId(session.getOauthId(),session.getClientId(),session.getClientSecret()),CookieUtil.USER_NAME_MAX_AGE,CookieUtil.LCP_COOKIE_DOMAIN);
-        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_ID, String.valueOf(session.getUserId()), CookieUtil.USER_NAME_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
-        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_NAME, String.valueOf(session.getUserName()), CookieUtil.USER_NAME_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response,CookieUtil.COOKIE_KEY,SessionUtil.generateSessionId(session.getOauthId(),session.getClientId(),session.getClientSecret()),CookieUtil.USER_LOGIN_MAX_AGE,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_ID, String.valueOf(session.getUserId()), CookieUtil.USER_LOGIN_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_NAME, String.valueOf(session.getUserName()), CookieUtil.USER_LOGIN_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
         sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
             @Override
             public Session execute() throws Throwable {

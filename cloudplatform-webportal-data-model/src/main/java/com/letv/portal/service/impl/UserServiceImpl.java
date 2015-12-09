@@ -85,8 +85,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 
 	@Override
 	public UserModel selectByOauthId(String oauthId) {
-		return this.userDao.selectByOauthId(oauthId);
-	}
+        List<UserModel> users = this.userDao.selectByOauthId(oauthId);
+        if(null == users || users.isEmpty())
+            return null;
+        return users.get(0);
+    }
 
 	@Override
 	public UserModel selectByUcId(Long ucId) {

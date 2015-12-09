@@ -5,6 +5,8 @@ import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.UserVo;
 
+import java.util.List;
+
 
 public interface IUserService extends IBaseService<UserModel>{
 
