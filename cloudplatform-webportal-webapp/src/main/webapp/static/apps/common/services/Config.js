@@ -196,7 +196,9 @@ define(['./common.service'], function (serviceModule) {
         //前端自定义
         "deleted":{"create":1,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
         "detaching":{"create":0,"createsnap":0,"attachdisk":0,"detachdisk":0,"expandVolume":0,"delete":0,"edit":0},
-        "default":{"create":1,"createsnap":1,"attachdisk":1,"detachdisk":1,"expandVolume":1,"delete":1,"edit":1}
+        "default":{"create":1,"createsnap":1,"attachdisk":1,"detachdisk":1,"expandVolume":1,"delete":1,"edit":1},
+        "snapshots":{"create":1,"createsnap":1,"attachdisk":1,"detachdisk":1,"expandVolume":1,"delete":0,"edit":1},
+        "snapshotsnull":{"create":1,"createsnap":1,"attachdisk":1,"detachdisk":1,"expandVolume":1,"delete":1,"edit":1}
       },
       "floatIp":{
         "AVAILABLE":{"bindVm":1,"bindRouter":1,"bindBalance":1,"changeBandwidth":1,"detach":0,"bindalarm":1,"edit":1,"delete":1},
