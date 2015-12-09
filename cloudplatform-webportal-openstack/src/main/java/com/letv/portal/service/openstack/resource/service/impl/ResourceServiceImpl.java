@@ -41,6 +41,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.features.SnapshotApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -1615,6 +1616,38 @@ public class ResourceServiceImpl implements ResourceService {
         page.setData(subnetResourceList);
         page.setTotalRecords(subnetTotalCount);
         return page;
+    }
+
+    private Snapshot getVolumeSnapshot(SnapshotApi snapshotApi, String volumeSnapshotId) throws ResourceNotFoundException {
+        Snapshot snapshot = snapshotApi.get(volumeSnapshotId);
+        if (snapshot == null) {
+            throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeSnapshotId);
+        }
+        return snapshot;
+    }
+
+    @Override
+    public VolumeSnapshotResource getVolumeSnapshot(CinderApi cinderApi, long userVoUserId, String region, String volumeSnapshotId) throws OpenStackException {
+        checkRegion(region, cinderApi);
+
+        SnapshotApi snapshotApi = cinderApi.getSnapshotApi(region);
+
+        Snapshot snapshot = getVolumeSnapshot(snapshotApi, volumeSnapshotId);
+
+        String volumeId = snapshot.getVolumeId();
+        VolumeResource volumeResource = null;
+        if (StringUtils.isNotEmpty(volumeId)) {
+            CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(userVoUserId, region, volumeId);
+            if (cloudvmVolume != null) {
+                volumeResource = new LocalVolumeResource(cloudvmVolume);
+            }
+        }
+
+        if (volumeResource != null) {
+            return new VolumeSnapshotResourceImpl(region, snapshot, volumeResource);
+        } else {
+            return new VolumeSnapshotResourceImpl(region, snapshot);
+        }
     }
 
 }

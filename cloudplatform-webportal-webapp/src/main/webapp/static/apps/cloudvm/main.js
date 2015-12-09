@@ -1,19 +1,19 @@
 require.config({
   paths: {
     //vendor
-    'jquery': '/static/javascripts/jquery-1.11.3',
-    'bootstrap': '/static/javascripts/bootstrap',
-    'common': '/static/javascripts/common',
-    'browserCheck': '/static/staticPage/js/browserCheck',
-    'angular': '/static/javascripts/angular',
-    'angular-animate': '/static/javascripts/angular-animate',
-    'angular-route': '/static/javascripts/angular-route',
-    'ui-bootstrap': '/static/javascripts/ui-bootstrap-tpls-0.13.3',
-    'ng-toaster': '/static/javascripts/toaster',
-    'ng-rzslider': '/static/javascripts/rzslider',
+    'jquery':'../../javascripts/jquery-1.11.3',
+    'bootstrap':'../../javascripts/bootstrap',
+    'common': '../../javascripts/common',
+    'browserCheck': '../../staticPage/js/browserCheck',
+    'angular':'../../javascripts/angular',
+    'angular-animate': '../../javascripts/angular-animate',
+    'angular-route': '../../javascripts/angular-route',
+    'ui-bootstrap': '../../javascripts/ui-bootstrap-tpls-0.13.3',
+    'ng-toaster': '../../javascripts/toaster',
+    'ng-rzslider': '../../javascripts/rzslider',
     //js文件
-    'app': '/static/apps/cloudvm/app',
-    'app.router': '/static/apps/cloudvm/app.route'
+    'app': './app',
+    'app.router': './app.route'
   },
   shim: {
     'browserCheck':{
