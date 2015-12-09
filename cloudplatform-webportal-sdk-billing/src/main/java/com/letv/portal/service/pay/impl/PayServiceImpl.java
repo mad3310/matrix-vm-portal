@@ -398,17 +398,9 @@ public class PayServiceImpl implements IPayService {
 					}
 					
 					//发送用户通知
-<<<<<<< HEAD
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
 						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您购买云产品成功支付"+totalPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
 					}
-=======
-					//写入最近操作
-					Long createUser = orderSubs.get(0).getCreateUser();
-					UserVo ucUser = this.userService.getUcUserById(createUser);
-					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品已成功支付"+map.get("money")+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话。");
->>>>>>> branch 'develop' of ssh://git@git.letv.cn/matrix/lcp.git
 					
 					// ④创建应用实例
 					createInstance(orderSubs);
