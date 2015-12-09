@@ -464,16 +464,14 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                                     BigDecimal failPrice, String productName, String productType) {
         logger.info("开始处理冻结金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
         
-        BillUserAmount billUserAmount = null;
         int ret = 0;
 	    int count = 0;
 	    do {
-	    	billUserAmount = this.getUserAmount(userId);
-	    	if(billUserAmount.getFreezeAmount().compareTo(succPrice.add(failPrice))>=0) {
-                billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(succPrice.add(failPrice)));
-                billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(failPrice));
-                ret = billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
-	        } 
+	    	Map<String, Object> params = new HashMap<String, Object>();
+	    	params.put("userId", userId);
+	    	params.put("dealPrice", failPrice.add(succPrice));
+	    	params.put("failPrice", failPrice);
+            ret = billUserAmountMapper.dealFreezeAmount(params);
 	        try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -483,6 +481,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    } while (ret < 1 && count < 10);
         
         if(ret==1) {
+        	BillUserAmount billUserAmount = this.getUserAmount(userId);
         	//服务创建失败后保存回退金额消息通知
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date d = new Date();
@@ -544,8 +543,8 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    	logger.info("处理冻结金额成功,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
         	return true;
         } else {
-        	logger.error(MessageFormat.format("处理冻结金额异常,用户id:{0},冻结金额：{1},成功金额：{2},失败金额：{3}", userId, billUserAmount.getFreezeAmount(), succPrice, failPrice));
-            throw new ValidateException(MessageFormat.format("处理冻结金额异常,用户id:{0},冻结金额：{1},成功金额：{2},失败金额：{3}", userId, billUserAmount.getFreezeAmount(), succPrice, failPrice));
+        	logger.error(MessageFormat.format("处理冻结金额异常,用户id:{0},成功金额：{1},失败金额：{2}", userId, succPrice, failPrice));
+            throw new ValidateException(MessageFormat.format("处理冻结金额异常,用户id:{0},成功金额：{1},失败金额：{2}", userId, succPrice, failPrice));
         }
     }
 

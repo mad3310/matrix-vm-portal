@@ -284,7 +284,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var productInfo={
           'type':'disk',
           'state':'status',
-          'other':[],
+          'other':['snapshots'],
           'operations':['create','createsnap','attachdisk','edit','detachdisk','delete']
         }
         $scope.$watch(function(){

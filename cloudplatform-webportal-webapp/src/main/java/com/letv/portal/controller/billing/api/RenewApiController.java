@@ -133,6 +133,13 @@ public class RenewApiController {
 			return obj;
 		}
 		Long subscriptionId = Long.parseLong((String)map.get("subscriptionId"));
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubBySubscriptionId(subscriptionId);
+		if(orderSubs==null||orderSubs.size()==0||orderSubs.get(0).getSubscription().getValid()==0||orderSubs.get(0).getOrder().getStatus()!=2) {
+			obj.setResult(0);
+			obj.addMsg("查询原有订单失败或状态异常,订阅ID:" + subscriptionId);
+			return obj;
+		}
+		
 		Long userId = this.userService.getUserIdByUcId(Long.parseLong((String) map.get("userId")));
 		if(null == userId) {
 			obj.setResult(0);
@@ -162,13 +169,6 @@ public class RenewApiController {
 		map.put("orderTime", orderTime);
 
 		if(validateData(productId, map)) {//验证参数合法性
-			List<OrderSub> orderSubs = this.orderSubService.selectOrderSubBySubscriptionId(subscriptionId);
-			if(orderSubs==null||orderSubs.size()==0||orderSubs.get(0).getOrder().getStatus()!=2) {
-				obj.setResult(0);
-				obj.addMsg("查询原有订单失败或状态异常,订阅ID:" + subscriptionId);
-				return obj;
-			}
-
 			//生产订阅
 			Subscription sub = this.subscriptionService.createSubscription(productId, map,
 					subDetails.get(0).getSubscription().getProductInfoRecordId(), subDetails.get(0).getSubscription().getEndTime(), orderTime, userId, 1);

@@ -199,9 +199,11 @@
 	</select>
 	<select id="selectOrderSubBySubscriptionId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	    select
-	        <include refid="Base_Column_List" />,od.DESCN ORDER_DESCN,od.STATUS
+	        <include refid="Base_Column_List" />,od.DESCN ORDER_DESCN,od.STATUS,sub.VALID
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
+	    left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
 	    left join
 	    	MATRIX_BILLING_ORDER od on orderSub.ORDER_ID=od.ID
 	   	where
