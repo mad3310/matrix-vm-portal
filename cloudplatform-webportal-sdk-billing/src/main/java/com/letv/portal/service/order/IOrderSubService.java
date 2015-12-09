@@ -95,4 +95,14 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  * @date 2015年9月23日 上午10:47:13
 	  */
 	Map<String, Object> queryOrderPayInfo(String orderNumber);
+	/**
+	  * @Title: queryServiceStatus
+	  * @Description: 查询服务创建是否完成（查询product_info_record表中的instanceId是否有值）
+	  * @param orderNumber
+	  * @return boolean true完成,false未完成   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年12月9日 下午6:31:25
+	  */
+	boolean queryServiceStatus(String orderNumber);
 }

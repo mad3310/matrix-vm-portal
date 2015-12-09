@@ -269,5 +269,16 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	    return this.orderSubDao.selectDetailBySubscriptionId(params);
 	}
 
+	@Override
+	public boolean queryServiceStatus(String orderNumber) {
+		List<OrderSub> orderSubs = selectOrderSubByOrderNumber(orderNumber);
+		for (OrderSub orderSub : orderSubs) {
+			if(orderSub.getProductInfoRecord().getInstanceId()==null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 }

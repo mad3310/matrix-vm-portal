@@ -72,4 +72,20 @@ public class OrderController {
 		}
 		return obj;
 	}
+	
+	/**
+	  * @Title: queryServiceStatus
+	  * @Description: 查询服务创建是否完成
+	  * @param orderNumber
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年12月9日 下午6:30:32
+	  */
+	@RequestMapping(value="/serviceStatus/{orderNumber}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject queryServiceStatus(@PathVariable String orderNumber, ResultObject obj) {
+		obj.setData(this.orderSubService.queryServiceStatus(orderNumber));
+		return obj;
+	}
 }
