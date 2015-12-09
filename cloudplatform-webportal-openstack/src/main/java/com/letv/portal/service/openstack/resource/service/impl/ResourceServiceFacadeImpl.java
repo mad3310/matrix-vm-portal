@@ -7,6 +7,7 @@ import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import com.letv.portal.service.openstack.resource.service.ResourceService;
 import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import com.letv.portal.service.openstack.util.Ref;
@@ -197,5 +198,15 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
         NeutronApi neutronApi = getNeutronApi();
 
         return resourceService.listPrivateSubnet(neutronApi, region, name, currentPage, recordsPerPage);
+    }
+
+    @Override
+    public VolumeSnapshotResource getVolumeSnapshot(String region, String volumeSnapshotId) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+
+        CinderApi cinderApi = getCinderApi();
+
+        return resourceService.getVolumeSnapshot(cinderApi, userVoUserId, region, volumeSnapshotId);
     }
 }
