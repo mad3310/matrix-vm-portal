@@ -381,7 +381,7 @@ public class PayServiceImpl implements IPayService {
 					Long createUser = orderSubs.get(0).getCreateUser();
 					UserVo ucUser = this.userService.getUcUserById(createUser);
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品已成功支付"+map.get("money")+"元，请登录网站matrix.letvcloud.com进行体验！如有问题，可拨打客服电话。");
+					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品已成功支付"+map.get("money")+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话。");
 					
 					// ④创建应用实例
 					createInstance(orderSubs);

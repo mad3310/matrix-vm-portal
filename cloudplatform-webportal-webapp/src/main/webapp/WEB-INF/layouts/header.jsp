@@ -25,9 +25,9 @@
           <li class="dropdown">
             <a href="javascript:void(0)" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="http://uc.letvcloud.com/userView/ucOverview.do">用户中心</a></li>
-              <li><a href="http://uc.letvcloud.com/uc/bill/getMonthBillView.do">我的订单</a></li>
-              <li><a href="http://uc.letvcloud.com/userView/accountManagerView.do">账户管理</a></li>
+              <li><a href="http://lcp-uc.letvcloud.com/userView/ucOverview.do">用户中心</a></li>
+              <li><a href="http://lcp-uc.letvcloud.com/uc/bill/getMonthBillView.do">我的订单</a></li>
+              <li><a href="http://lcp-uc.letvcloud.com/userView/accountManagerView.do">账户管理</a></li>
               <li class="divider"></li>
               <li><a href="${ctx}/account/logout">退出</a></li>
             </ul>
