@@ -99,7 +99,11 @@
                         <span class="letv-control-label">可用云主机：</span>
                     </div>
                     <div class="le-col-8 col-control">
+                        <input type="hidden" name='vm' ng-model="selectedVm" required/>
                         <le-select select-model="selectedVm" select-options="vmListSelectorData" select-empty-text="暂无可用云主机"></le-select>
+                        <input-validation-tooltip class="le-select-tooltip" ng-show="vm_ip_bind_form.$submitted && vm_ip_bind_form.vm.$error.required"
+                                                  validation-message="请选择云主机">
+                        </input-validation-tooltip>
                     </div>
                 </div>
                 <div class="le-row">

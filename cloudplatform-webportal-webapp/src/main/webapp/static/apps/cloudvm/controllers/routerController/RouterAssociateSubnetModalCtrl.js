@@ -5,7 +5,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('AssociateSubnetModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, routerInfo) {
     $scope.associateRouterName = routerInfo.routerName;
-
+    $scope.selectedSubnet = null;
 
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
@@ -14,7 +14,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       var data = {
         region:routerInfo.region,
         routerId:routerInfo.routerId,
-        subnetId:$scope.selectedSubnet.value
+        subnetId:$scope.selectedSubnet && $scope.selectedSubnet.value
       };
       $scope.isFormSubmiting=true;
       HttpService.doPost(Config.urls.subnet_associate, data).success(function (data, status, headers, config) {
