@@ -3,7 +3,7 @@ var redirects={
     '3':'/cvm/#/vm-disk',
     '4':'/cvm/#/vm-floatIP',
     '5':'/cvm/#/vm-router',
-    'renew':'http://uc.letvcloud.com/uc/renew/getRenewView.do'
+    'renew':'http://lcp-uc.letvcloud.com/uc/renew/getRenewView.do'
 }
 //余额选择
 function remainChose(){
@@ -40,7 +40,8 @@ function moneyInputVali(){//老方法
     var reg=/^-?\d+(\.\d{1,2})?$/;
     var remain=orderDetail();
     remain.done(function(){
-        var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+        // var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+        var orderPaynum=$('#orderpay').text();
         var remain=$('.remain').text().substring(1);
         var compare=(orderPaynum>remain)?remain:orderPaynum;
         _target.unbind('change').change(function(event){
@@ -99,7 +100,8 @@ function moneyInput(){
     var _paybtn=$('#pay');
     var _errordesc=$('.error-desc');
     var reg=/^([1-9]+(\.[0-9]{1,2})?|0\.[1-9][0-9]|0\.0[1-9]|0\.[1-9]|[1-9]+\d)$/
-    var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+    // var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+    var orderPaynum=$('#orderpay').text();
     var remain=$('.remain').text().substring(1);
     var compare=(orderPaynum>remain)?remain:orderPaynum;
     var money=_target.val();
@@ -119,7 +121,7 @@ function moneyInput(){
                     $('.payoption').removeClass('active');
                     _paybtn.attr('disabled', 'true');
                 }else{
-                    if(money==compare&&money==orderPaynum){//fit
+                    if(money==Number(compare)&&money==Number(orderPaynum)){//fit
                         $('.payoption').removeClass('active');
                     }else{
                         $('.payoption:eq(0)').addClass('active'); 
@@ -279,7 +281,7 @@ function orderDetail(){
                                          +'<td></td>'
                                          +'<td><div style="width:50%;text-align:right;">'+order.productName+'</div></td>'
                                          +'<td>'+order.orderNum+'</td>'
-                                         +'<td>1个月</td>'
+                                         +'<td>'+order.orderTime+'个月</td>'
                                          +'<td class="price">¥'+order.price+'</td>'
                                      +'</tr>'
                                     +'<tr>'
@@ -298,15 +300,16 @@ function orderDetail(){
                              +'<td>'+orderArray[0].orderNumber+'</td>'
                              +'<td><div style="width:50%;text-align:right;">云服务产品</div></td>'
                              +'<td>'+productnum+'</td>'
-                             +'<td>1个月</td>'
+                             +'<td>'+orderArray[0].orderTime+'个月</td>'
                              +'<td class="price">¥'+orderArray[0].totalPrice+'</td>'
                          +'</tr>';
             _target.append(temphtml);
-            $('#orderpay').text('¥'+totalprice);
+            // $('#orderpay').text('¥'+totalprice);
+            $('#orderpay').text(totalprice.toFixed(2));
             var userRemain=userRemainInfo();
             userRemain.done(function(data){
                 if(Number(data.data)>=Number(totalprice)){
-                    $('.remainPay').val(totalprice);
+                    $('.remainPay').val(totalprice.toFixed(2));
                 }else{
                     $('.remainPay').val(data.data);
                     $('.payoption:eq(0)').addClass('active'); 

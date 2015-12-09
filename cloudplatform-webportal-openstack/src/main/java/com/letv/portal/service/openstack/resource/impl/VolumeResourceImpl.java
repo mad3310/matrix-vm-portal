@@ -1,8 +1,10 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
@@ -98,6 +100,11 @@ public class VolumeResourceImpl extends AbstractResource implements
 	@Override
 	public String getRegionDisplayName() {
 		return regionDisplayName;
+	}
+
+	@Override
+	public List<VolumeSnapshotResource> getSnapshots() {
+		return null;
 	}
 
 }

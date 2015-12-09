@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.service;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
 
@@ -46,4 +47,8 @@ public interface ResourceServiceFacade {
 
     Page listPrivateSubnet(String region, String name, Integer currentPage,
                            Integer recordsPerPage) throws OpenStackException;
+
+    VolumeSnapshotResource getVolumeSnapshot(String region, String volumeSnapshotId) throws OpenStackException;
+
+    Page listVolume(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 }

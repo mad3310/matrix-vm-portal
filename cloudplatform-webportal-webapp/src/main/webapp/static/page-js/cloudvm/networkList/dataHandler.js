@@ -247,7 +247,7 @@ define(function(require,exports,module){
             		break;
         		case 'subnet-remove':
         			text='您确定要删除该子网吗？';
-        			operatingTip="子网删除执行中...";
+        			operatingTip="删除子网执行中...";
         			operationUrl='/osn/subnet/private/delete';
         			operationCallback=function(data){
         		    	if(data.result===1){

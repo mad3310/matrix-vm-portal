@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
@@ -21,6 +22,7 @@ import com.letv.portal.service.openstack.local.resource.LocalImageResource;
 import com.letv.portal.service.openstack.local.resource.LocalVolumeResource;
 import com.letv.portal.service.openstack.local.service.LocalCommonQuotaSerivce;
 import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
+import com.letv.portal.service.openstack.local.service.LocalRegionService;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.*;
 import com.letv.portal.service.openstack.resource.impl.*;
@@ -41,6 +43,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.features.SnapshotApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -101,6 +104,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private EventPublishService eventPublishService;
+
+    @Autowired
+    private LocalRegionService localRegionService;
 
     private void checkRegion(NovaApi novaApi, String region) throws RegionNotFoundException {
         if (!novaApi.getConfiguredRegions().contains(region)) {
@@ -1614,6 +1620,90 @@ public class ResourceServiceImpl implements ResourceService {
         }
         page.setData(subnetResourceList);
         page.setTotalRecords(subnetTotalCount);
+        return page;
+    }
+
+    private Snapshot getVolumeSnapshot(SnapshotApi snapshotApi, String volumeSnapshotId) throws ResourceNotFoundException {
+        Snapshot snapshot = snapshotApi.get(volumeSnapshotId);
+        if (snapshot == null) {
+            throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", volumeSnapshotId);
+        }
+        return snapshot;
+    }
+
+    @Override
+    public VolumeSnapshotResource getVolumeSnapshot(CinderApi cinderApi, long userVoUserId, String region, String volumeSnapshotId) throws OpenStackException {
+        checkRegion(region, cinderApi);
+
+        SnapshotApi snapshotApi = cinderApi.getSnapshotApi(region);
+
+        Snapshot snapshot = getVolumeSnapshot(snapshotApi, volumeSnapshotId);
+
+        String volumeId = snapshot.getVolumeId();
+        VolumeResource volumeResource = null;
+        if (StringUtils.isNotEmpty(volumeId)) {
+            CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(userVoUserId, region, volumeId);
+            if (cloudvmVolume != null) {
+                volumeResource = new LocalVolumeResource(cloudvmVolume);
+            }
+        }
+
+        if (volumeResource != null) {
+            return new VolumeSnapshotResourceImpl(region, snapshot, volumeResource);
+        } else {
+            return new VolumeSnapshotResourceImpl(region, snapshot);
+        }
+    }
+
+    @Override
+    public Page listVolume(CinderApi cinderApi, long userVoUserId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+        localRegionService.get(region);
+
+        Page page = null;
+        if (currentPage != null && recordsPerPage != null) {
+            if (currentPage <= 0) {
+                throw new ValidateException("当前页数不能小于或等于0");
+            }
+            if (recordsPerPage <= 0) {
+                throw new ValidateException("每页记录数不能小于或等于0");
+            }
+            page = new Page(currentPage, recordsPerPage);
+        }
+        List<CloudvmVolume> cloudvmVolumes = cloudvmVolumeService.selectByName(userVoUserId, region, name, page);
+
+        List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
+        Map<String, LocalVolumeResource> idToLocalVolumeResource = new HashMap<String, LocalVolumeResource>();
+        for (CloudvmVolume cloudvmVolume : cloudvmVolumes) {
+            LocalVolumeResource localVolumeResource = new LocalVolumeResource(cloudvmVolume);
+            volumeResources.add(localVolumeResource);
+            idToLocalVolumeResource.put(localVolumeResource.getId(), localVolumeResource);
+        }
+
+        if (!cloudvmVolumes.isEmpty()) {
+            checkRegion(region, cinderApi);
+
+            SnapshotApi snapshotApi = cinderApi.getSnapshotApi(region);
+            for (Snapshot snapshot : snapshotApi.list().toList()) {
+                String snapshotVolumeId = snapshot.getVolumeId();
+                if (StringUtils.isNotEmpty(snapshotVolumeId)) {
+                    LocalVolumeResource localVolumeResource = idToLocalVolumeResource.get(snapshotVolumeId);
+                    if (localVolumeResource != null) {
+                        List<VolumeSnapshotResource> volumeSnapshotResources = localVolumeResource.getSnapshots();
+                        if (volumeSnapshotResources == null) {
+                            volumeSnapshotResources = new LinkedList<VolumeSnapshotResource>();
+                            localVolumeResource.setSnapshots(volumeSnapshotResources);
+                        }
+                        volumeSnapshotResources.add(new VolumeSnapshotResourceImpl(region, snapshot));
+                    }
+                }
+            }
+        }
+
+        if (page == null) {
+            page = new Page();
+        }
+        page.setTotalRecords(cloudvmVolumeService.selectCountByName(userVoUserId, region, name));
+        page.setData(volumeResources);
         return page;
     }
 

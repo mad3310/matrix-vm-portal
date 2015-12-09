@@ -24,7 +24,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.subnet_edit, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close({result:1});
-          WidgetService.notifySuccess(data.msgs[0]||'编辑子网完成');
+          WidgetService.notifySuccess(data.msgs[0]||'编辑子网成功');
         }
         else{
           $scope.isFormSubmiting=false;

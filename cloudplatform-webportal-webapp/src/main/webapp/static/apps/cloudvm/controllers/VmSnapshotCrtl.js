@@ -171,7 +171,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除云硬盘快照','确定要删除云硬盘快照（'+checkedSnapshots[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云硬盘快照删除执行中...');
+          WidgetService.notifyInfo('删除云硬盘快照执行中...');
           checkedSnapshots[0].status='deleting';
           HttpService.doPost(Config.urls.snapshot_disk_delete, data).success(function (data, status, headers, config) {
             if(data.result===1){
@@ -209,7 +209,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除云主机快照','确定要删除云主机快照（'+checkedSnapshots[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云主机快照删除执行中...');
+          WidgetService.notifyInfo('删除云主机快照执行中...');
           checkedSnapshots[0].status='PENDING_DELETE';
           HttpService.doPost(Config.urls.snapshot_vm_delete, data).success(function (data, status, headers, config) {
             if(data.result===1){

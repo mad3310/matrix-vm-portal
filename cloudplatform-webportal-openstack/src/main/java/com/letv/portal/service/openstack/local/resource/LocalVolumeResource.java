@@ -5,9 +5,11 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,6 +21,7 @@ public class LocalVolumeResource implements VolumeResource {
 
     private CloudvmVolume cloudvmVolume;
     private Set<VolumeAttachmentResource> attachments;
+    private List<VolumeSnapshotResource> snapshots;
 
     public LocalVolumeResource(CloudvmVolume cloudvmVolume) {
         this.cloudvmVolume = cloudvmVolume;
@@ -94,6 +97,15 @@ public class LocalVolumeResource implements VolumeResource {
     @Override
     public String getRegionDisplayName() {
         return null;
+    }
+
+    public void setSnapshots(List<VolumeSnapshotResource> snapshots) {
+        this.snapshots = snapshots;
+    }
+
+    @Override
+    public List<VolumeSnapshotResource> getSnapshots() {
+        return snapshots;
     }
 
     @Override

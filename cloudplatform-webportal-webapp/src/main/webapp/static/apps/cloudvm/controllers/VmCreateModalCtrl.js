@@ -151,7 +151,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         if (resultData) {
           $scope.keypairDownloadUrl=$sce.trustAsResourceUrl(Config.urls.keypair_create+'?'+$httpParamSerializerJQLike(resultData));
           $timeout(function(){
-            WidgetService.notifySuccess('密钥创建成功');
+            WidgetService.notifySuccess('创建密钥成功');
             initVmSecurityKeypairSelector();
           },2000);
         }
@@ -305,7 +305,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.vmTotalPrice=data.data;
           }
           else{
-            WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+            WidgetService.notifyError(data.msgs[0]||'计算价格失败');
           }
         });
       },

@@ -163,10 +163,10 @@ public class VMCreate {
 
     private void notifyListener(final MultiVmCreateContext context, final String reason) {
         if (context.getVmCreateListener() != null) {
-            ThreadUtil.asyncExec(new Function0<Void>() {
-
-                @Override
-                public Void apply() {
+//            ThreadUtil.asyncExec(new Function0<Void>() {
+//
+//                @Override
+//                public Void apply() {
                     for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
                         try {
                             final int vmIndex = i;
@@ -199,9 +199,9 @@ public class VMCreate {
                             ExceptionUtil.processBillingException(ex);
                         }
                     }
-                    return null;
-                }
-            });
+//                    return null;
+//                }
+//            });
         }
     }
 

@@ -73,7 +73,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           $scope.totalPrice=data.data;
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+          WidgetService.notifyError(data.msgs[0]||'计算价格失败');
         }
       });
     },

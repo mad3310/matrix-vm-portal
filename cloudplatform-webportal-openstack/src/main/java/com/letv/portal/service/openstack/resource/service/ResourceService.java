@@ -4,6 +4,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import org.jclouds.openstack.cinder.v1.CinderApi;
@@ -56,4 +57,8 @@ public interface ResourceService {
     void createDefaultSecurityGroupAndRule(NeutronApi neutronApi) throws OpenStackException;
 
     Page listPrivateSubnet(NeutronApi neutronApi, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
+
+    VolumeSnapshotResource getVolumeSnapshot(CinderApi cinderApi, long userVoUserId, String region, String volumeSnapshotId) throws OpenStackException;
+
+    Page listVolume(CinderApi cinderApi, long userVoUserId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 }

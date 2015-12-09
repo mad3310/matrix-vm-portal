@@ -187,7 +187,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除公网IP','确定要删除公网IP（'+checkedIps[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('公网IP删除执行中...');
+          WidgetService.notifyInfo('删除公网IP执行中...');
           checkedIps[0].status='DELETEING';
           HttpService.doPost(Config.urls.floatIp_delete,data).success(function (data, status, headers, config) {
             if(data.result===1){
@@ -267,7 +267,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.floatIp_bindVm,data).success(function(data){
         if(data.result==0){//error
           $scope.isFormSubmiting=false;
-          WidgetService.notifyError(data.msgs[0]||'绑定云主机出错');
+          WidgetService.notifyError(data.msgs[0]||'绑定云主机失败');
         }else{
           $modalInstance.close(data);
           WidgetService.notifySuccess('绑定云主机成功');

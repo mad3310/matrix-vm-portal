@@ -41,7 +41,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云主机启动执行中...');
+          WidgetService.notifyInfo('启动云主机执行中....');
           checkedVms[0].vmState=null;
           checkedVms[0].taskState='starting';
           HttpService.doPost(Config.urls.vm_start.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
@@ -82,7 +82,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云主机关机执行中...');
+          WidgetService.notifyInfo('关机云主机执行中...');
           checkedVms[0].vmState=null;
           checkedVms[0].taskState='stopping';
           HttpService.doPost(Config.urls.vm_stop.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
@@ -90,13 +90,13 @@ define(['controllers/app.controller'], function (controllerModule) {
               checkedVms[0].vmState='stopped';
               checkedVms[0].taskState=null;
               modalInstance.close(data);
-              WidgetService.notifySuccess('云主机关机成功');
+              WidgetService.notifySuccess('关机云主机成功');
               refreshVmList();
             }
             else{
               checkedVms[0].vmState=originalVmState;
               checkedVms[0].taskState=originalTaskState;
-              WidgetService.notifyError(data.msgs[0]||'云主机关机失败');
+              WidgetService.notifyError(data.msgs[0]||'关机云主机失败');
             }
           });
         }, function () {
@@ -122,7 +122,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除云主机','确定要删除云主机（'+checkedVms[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云主机删除执行中...');
+          WidgetService.notifyInfo('删除云主机执行中...');
           checkedVms[0].vmState=null;
           checkedVms[0].taskState='deleting';
           HttpService.doPost(Config.urls.vm_delete.replace('{region}', checkedVms[0].region), data).success(function (data, status, headers, config) {
@@ -163,7 +163,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('重启云主机','确定要重启云主机（'+checkedVms[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云主机重启执行中...');
+          WidgetService.notifyInfo('重启云主机执行中....');
           checkedVms[0].vmState=null;
           checkedVms[0].taskState='rebooting';
           HttpService.doPost(Config.urls.vm_reboot,data).success(function (data, status, headers, config) {
@@ -559,11 +559,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云硬盘挂载成功');
+          WidgetService.notifySuccess('挂载云硬盘成功');
         }
         else{
           $scope.isFormSubmiting=false;
-          WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+          WidgetService.notifyError(data.msgs[0]||'挂载云硬盘失败');
           $scope.isFormSubmiting=false;
         }
       });
@@ -608,11 +608,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.disk_detach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云硬盘卸载成功');
+          WidgetService.notifySuccess('卸载云硬盘成功');
         }
         else{
           $scope.isFormSubmiting=false;
-          WidgetService.notifyError(data.msgs[0]||'云硬盘卸载失败');
+          WidgetService.notifyError(data.msgs[0]||'卸载云硬盘失败');
           $scope.isFormSubmiting=false;
         }
       });
@@ -704,10 +704,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.snapshot_vm_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云主机快照创建成功');
+          WidgetService.notifySuccess('创建云主机快照成功，请前往快照页面查看。');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'云主机快照创建失败');
+          WidgetService.notifyError(data.msgs[0]||'创建云主机快照失败');
           $scope.isFormSubmiting=false;
         }
       });
@@ -734,10 +734,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.vm_password_change, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('修改云主机密码成功');
+          WidgetService.notifySuccess('修改密码成功');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'修改云主机密码失败');
+          WidgetService.notifyError(data.msgs[0]||'修改密码失败');
           $scope.isFormSubmiting=false;
         }
       });
@@ -763,10 +763,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.vm_rename, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云主机编辑成功');
+          WidgetService.notifySuccess('编辑云主机成功');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'云主机编辑失败');
+          WidgetService.notifyError(data.msgs[0]||'编辑云主机失败');
           $scope.isFormSubmiting=false;
         }
       });

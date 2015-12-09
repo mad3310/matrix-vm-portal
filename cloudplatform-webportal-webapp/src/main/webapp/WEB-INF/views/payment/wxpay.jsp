@@ -24,9 +24,9 @@
     </div>
     <div class="WeChatQR_Buttom" style="border:none">
         <div class="WeChatPay">
-            <img src="http://static.uc.letvcloud.com/images/WeChatPay_Right.png" ><span>微信支付</span>
+            <img src="http://static.lcp-uc.letvcloud.com/images/WeChatPay_Right.png" ><span>微信支付</span>
         </div>
-        <div class="WeChat_Line"><img src="http://static.uc.letvcloud.com/images/WeChat_Line.png"></div>
+        <div class="WeChat_Line"><img src="http://static.lcp-uc.letvcloud.com/images/WeChat_Line.png"></div>
         <div class="WeChat_Money">
             ￥&nbsp;<span>${money}</span>
         </div>
@@ -40,10 +40,10 @@
         <input type="hidden" id="corderId" value="${orderNum}">
         <div style="width:220px;height:2px;margin:0 auto;" id="code"></div>
         <div class="WeChat_Line WeChat_Line_MarginTop">
-            <img src="http://static.uc.letvcloud.com/images/WeChat_Line.png">
+            <img src="http://static.lcp-uc.letvcloud.com/images/WeChat_Line.png">
         </div>
         <div class="WeChat_PlayCode">
-            <img src="http://static.uc.letvcloud.com/images/WeChat_Scan.png"><span>请使用微信扫码支付</span>
+            <img src="http://static.lcp-uc.letvcloud.com/images/WeChat_Scan.png"><span>请使用微信扫码支付</span>
         </div>
     </div>
   </div>

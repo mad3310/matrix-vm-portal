@@ -126,7 +126,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除路由器','确定要删除路由器（'+checkedRouters[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('路由器删除执行中...');
+          WidgetService.notifyInfo('删除路由器执行中...');
           checkedRouters[0].status='DELETEING';
           HttpService.doPost(Config.urls.router_delete, data).success(function (data, status, headers, config) {
             if(data.result===1){
