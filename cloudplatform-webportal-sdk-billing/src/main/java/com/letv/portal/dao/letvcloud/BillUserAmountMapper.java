@@ -1,6 +1,7 @@
 package com.letv.portal.dao.letvcloud;
 
 import java.util.Date;
+import java.util.Map;
 
 import com.letv.portal.model.letvcloud.BillUserAmount;
 
@@ -24,6 +25,8 @@ public interface BillUserAmountMapper {
     Date getLastUpdateTime(long userId);
     //账户余额转为冻结余额
     int updateUserAmountFromAvailableToFreeze(BillUserAmount userAmount);
+    //处理冻结金额
+    int dealFreezeAmount(Map<String, Object> params);
     //扣除冻结余额
     int reduceFreezeAmount(BillUserAmount userAmount);
     //扣除可用余额

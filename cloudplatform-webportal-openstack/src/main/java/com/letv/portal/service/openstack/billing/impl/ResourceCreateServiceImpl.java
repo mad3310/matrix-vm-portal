@@ -108,7 +108,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //        Util.throwMatrixException(e);
     }
 
-    @Async
+//    @Async
     @Override
     public void createVm(long userId, String reqParaJson, VmCreateListener vmCreateListener, Object listenerUserData) throws MatrixException {
         try {
@@ -149,6 +149,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getVMManager().checkCreate2(vmCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
@@ -186,7 +187,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         }
     }
 
-    @Async
+//    @Async
     @Override
     public void createVolume(long userId, String reqParaJson, VolumeCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
@@ -216,6 +217,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getVolumeManager().checkCreate(volumeCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
@@ -230,7 +232,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         }
     }
 
-    @Async
+//    @Async
     @Override
     public void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
@@ -260,11 +262,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getNetworkManager().checkCreateFloatingIp(floatingIpCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
 
-    @Async
+//    @Async
     @Override
     public void createRouter(long userId, String reqParaJson, RouterCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
@@ -294,11 +297,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getNetworkManager().checkCreateRouter(routerCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
 
-    @Async
+//    @Async
     @Override
     public void createVmSnapshot(long userId, String reqParaJson, VmSnapshotCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
@@ -329,6 +333,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getVMManager().checkCreateImageFromVm(vmSnapshotCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }

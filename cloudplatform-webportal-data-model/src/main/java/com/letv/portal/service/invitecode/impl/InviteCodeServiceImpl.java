@@ -66,6 +66,8 @@ public class InviteCodeServiceImpl extends BaseServiceImpl<InviteCode>  implemen
 		if(!validate(kaptcha) || StringUtils.isEmpty(inviteC)) {
 			return 0;
 		}
+		//删除缓存
+		cacheService.delete(Constant.KAPTCHA_COOKIE_NAME + this.sessionService.getSession().getUserId());
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("inviteCode", inviteC);
 		List<InviteCode> invites = this.inviteCodeDao.selectByMap(params);
@@ -77,7 +79,6 @@ public class InviteCodeServiceImpl extends BaseServiceImpl<InviteCode>  implemen
 					int ret = this.inviteCodeDao.updateInviteCode(inviteCode);
 					if(ret==1) {
 						//删除缓存
-						cacheService.delete(Constant.KAPTCHA_COOKIE_NAME + this.sessionService.getSession().getUserId());
 						cacheService.delete(Constant.KAPTCHA_VERIFY_COUNT + this.sessionService.getSession().getUserId());
 						return 1;//验证通过
 					}

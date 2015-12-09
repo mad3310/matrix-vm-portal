@@ -163,6 +163,9 @@ public class PayServiceImpl implements IPayService {
 			}
 			
 			if (price.doubleValue() == 0) {
+				Long createUser = orderSubs.get(0).getCreateUser();
+				UserVo ucUser = this.userService.getUcUserById(createUser);
+				
 				if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
 					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));
 					updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, accountMoney);
@@ -170,6 +173,10 @@ public class PayServiceImpl implements IPayService {
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 					} catch (IOException e) {
 						logger.error("pay inteface sendRedirect had error, ", e);
+					}
+					//发送用户通知
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
+						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您成功续费"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
 					}
 					return ret;
 				}
@@ -186,6 +193,11 @@ public class PayServiceImpl implements IPayService {
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 					} catch (IOException e) {
 						logger.error("pay inteface sendRedirect had error, ", e);
+					}
+					
+					//发送用户通知
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
+						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您购买云产品成功支付"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
 					}
 					return ret;
 				} else {
@@ -355,10 +367,12 @@ public class PayServiceImpl implements IPayService {
 				&& orderSubs.get(0).getOrder().getStatus() == 2) {
 			return true;
 		}
+		
+		BigDecimal totalPrice = getValidOrderPrice(orderSubs);
 
 		// ③验证请求是否合法，规则：corderid=xxx&key&money=xxx&companyid=4
 		String sign = getSign("4", Constants.SIGN_KEY, orderSubs.get(0)
-				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).doubleValue()+"");
+				.getOrder().getOrderNumber(), totalPrice.subtract(orderSubs.get(0).getOrder().getAccountPrice()).doubleValue()+"");
 		if (sign != null && sign.equals(map.get("sign"))) {
 			
 			if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), CalendarUtil.parseCalendar((String)map.get("paytime")).getTime(), 2, null)) {
@@ -367,25 +381,31 @@ public class PayServiceImpl implements IPayService {
 				//this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
 				this.billUserAmountService.rechargeSuccessByOrderCode(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getOrder().getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")));
 				
+				Long createUser = orderSubs.get(0).getCreateUser();
+				UserVo ucUser = this.userService.getUcUserById(createUser);
+				
 				if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
 					//扣除用户余额
-					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));;
+					reNewOperate(orderSubs, totalPrice);
+					//发送用户通知
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
+						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您成功续费"+totalPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+					}
 				} else {
 					//设置用户支付部分余额为冻结余额
-					if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
+					if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), totalPrice)) {
 						return false;
 					}
 					
 					//发送用户通知
-					//写入最近操作
-					Long createUser = orderSubs.get(0).getCreateUser();
-					UserVo ucUser = this.userService.getUcUserById(createUser);
-					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品已成功支付"+map.get("money")+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话。");
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
+						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您购买云产品成功支付"+totalPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+					}
 					
 					// ④创建应用实例
 					createInstance(orderSubs);
 				}
+				
 				return true;
 			}
 		}
@@ -683,6 +703,14 @@ public class PayServiceImpl implements IPayService {
 				
 				//更新订阅订单起始时间
 				updateSubscriptionAndOrderTime(orderSubs);
+				
+				if(failPrice.compareTo(new BigDecimal(0))==1) {
+					//发送用户通知
+					Long createUser = orderSubs.get(0).getCreateUser();
+					UserVo ucUser = this.userService.getUcUserById(createUser);
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
+					this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
+				}
 				
 				//有成功的
 				if(succPrice.compareTo(new BigDecimal(0))==1) {

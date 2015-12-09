@@ -21,6 +21,16 @@
         </set>
         where userId = #{userId}  and lastUpdateTime = #{lastUpdateTime}
     </update>
+
+    <update id="dealFreezeAmount" parameterType="java.util.Map">
+        update bill_user_amount
+        <set>
+            availableAmount = availableAmount - #{failPrice},
+            freezeAmount = freezeAmount - #{dealPrice},
+            lastUpdateTime = NOW()
+        </set>
+        where userId = #{userId}
+    </update>
     
     <update id="reduceFreezeAmount" parameterType="com.letv.portal.model.letvcloud.BillUserAmount">
         update bill_user_amount
