@@ -101,7 +101,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('卸载云硬盘','确定要从云主机（'+(checkedDisks[0].attachments[0] && checkedDisks[0].attachments[0].vmName)+'）卸载云硬盘（'+checkedDisks[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云硬盘卸载执行中...');
+          WidgetService.notifyInfo('卸载云硬盘执行中...');
           checkedDisks[0].status='detaching';
           HttpService.doPost(Config.urls.disk_detach.replace('{region}', checkedDisks[0].region), data).success(function (data, status, headers, config) {
             if(data.result===1){
@@ -138,7 +138,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除云硬盘','确定要删除云硬盘（'+checkedDisks[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          WidgetService.notifyInfo('云硬盘删除执行中...');
+          WidgetService.notifyInfo('删除云硬盘执行中...');
           checkedDisks[0].status='deleting';
           HttpService.doPost(Config.urls.disk_delete.replace('{region}', checkedDisks[0].region), data).success(function (data, status, headers, config) {
             if(data.result===1){
@@ -326,10 +326,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         if(data.result===1){
           $modalInstance.close(data);
           disk.status='in-use';
-          WidgetService.notifySuccess('云硬盘挂载成功');
+          WidgetService.notifySuccess('挂载云硬盘成功');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+          WidgetService.notifyError(data.msgs[0]||'挂载云硬盘失败');
           disk.status=originalStatus;
           $scope.isFormSubmiting=false;
         }
@@ -373,10 +373,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.disk_edit, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云硬盘编辑成功');
+          WidgetService.notifySuccess('编辑云硬盘成功');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'云硬盘编辑失败');
+          WidgetService.notifyError(data.msgs[0]||'编辑云硬盘失败');
           $scope.isFormSubmiting=false;
         }
       });
@@ -403,10 +403,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.snapshot_disk_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('云硬盘快照创建成功，请前往快照页面查看。');
+          WidgetService.notifySuccess('创建云硬盘快照成功，请前往快照页面查看。');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'云硬盘快照创建失败');
+          WidgetService.notifyError(data.msgs[0]||'创建云硬盘快照失败');
           $scope.isFormSubmiting=false;
         }
       });

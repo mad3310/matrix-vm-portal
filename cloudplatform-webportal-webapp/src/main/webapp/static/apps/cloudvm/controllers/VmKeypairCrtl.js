@@ -39,7 +39,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           if (resultData) {
             $scope.keypairDownloadUrl=$sce.trustAsResourceUrl(Config.urls.keypair_create+'?'+$httpParamSerializerJQLike(resultData));
             $timeout(function(){
-              WidgetService.notifySuccess('密钥创建成功');
+              WidgetService.notifySuccess('创建密钥成功');
               refreshKeypairList();
             },2000);
           }
@@ -60,7 +60,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         var modalInstance = WidgetService.openConfirmModal('删除密钥', '确定要删除密钥（' + checkedKeypairs[0].name + '）吗？');
         modalInstance.result.then(function (resultData) {
           if (!resultData) return resultData;
-          WidgetService.notifyInfo('密钥删除执行中...');
+          WidgetService.notifyInfo('删除密钥执行中...');
           HttpService.doPost(Config.urls.keypair_delete, data).success(function (data, status, headers, config) {
             if (data.result === 1) {
               modalInstance.close(data);

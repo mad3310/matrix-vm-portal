@@ -197,7 +197,11 @@
                         <span class="letv-control-label">子网：</span>
                     </div>
                     <div class="le-col-8 col-control">
+                        <input type="hidden" name='subnet' ng-model="selectedSubnet" required/>
                         <le-select select-model="selectedSubnet" select-options="subnetListSelectorData" select-empty-text="暂无可关联子网"></le-select>
+                        <input-validation-tooltip class="le-select-tooltip" ng-show="associate_subnet_form.$submitted && associate_subnet_form.subnet.$error.required"
+                                                  validation-message="请选择子网">
+                        </input-validation-tooltip>
                     </div>
                 </div>
                 <div class="le-row">
@@ -234,7 +238,11 @@
                         <span class="letv-control-label">子网：</span>
                     </div>
                     <div class="le-col-8 col-control">
+                        <input type="hidden" name='subnet' ng-model="selectedSubnet" required/>
                         <le-select select-model="selectedSubnet" select-options="subnetListSelectorData" select-empty-text="暂无可解除关联子网"></le-select>
+                        <input-validation-tooltip class="le-select-tooltip" ng-show="remove_subnet_form.$submitted && remove_subnet_form.subnet.$error.required"
+                                                  validation-message="请选择子网">
+                        </input-validation-tooltip>
                     </div>
                 </div>
                 <div class="le-row">

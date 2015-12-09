@@ -12,8 +12,8 @@ require.config({
     'ng-toaster': '../../javascripts/toaster',
     'ng-rzslider': '../../javascripts/rzslider',
     //js文件
-    'app': '../../apps/cloudvm/app',
-    'app.router': '../../apps/cloudvm/app.route'
+    'app': './app',
+    'app.router': './app.route'
   },
   shim: {
     'browserCheck':{

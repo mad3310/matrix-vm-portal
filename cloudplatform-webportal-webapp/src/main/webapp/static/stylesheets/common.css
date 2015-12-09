@@ -1255,6 +1255,7 @@ le-select .le-select-menu li a{
 .le-modal-body .col-control > input,
 .le-modal-body .col-control > le-select{
     width: 250px;
+    display: inline-block;
 }
 /*end le-modal style*/
 .unselectable{-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;}
@@ -1295,4 +1296,9 @@ le-select .le-select-menu li a{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/*end le-text-ellipsis style
+/*end le-text-ellipsis style*/
+
+.le-select-tooltip{
+    position: relative;
+    top: -10px;
+}

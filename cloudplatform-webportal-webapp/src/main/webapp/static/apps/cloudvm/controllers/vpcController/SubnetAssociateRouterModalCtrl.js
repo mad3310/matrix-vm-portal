@@ -19,12 +19,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.subnet_associate, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close({result:1});
-          WidgetService.notifySuccess(data.msgs[0]||'路由绑定成功');
+          WidgetService.notifySuccess(data.msgs[0]||'绑定路由器成功');
         }
         else{
           $scope.isFormSubmiting=false;
           $modalInstance.dismiss('cancel');
-          WidgetService.notifyError(data.msgs[0]||'路由绑定失败');
+          WidgetService.notifyError(data.msgs[0]||'绑定路由器失败');
         }
       });
     };
