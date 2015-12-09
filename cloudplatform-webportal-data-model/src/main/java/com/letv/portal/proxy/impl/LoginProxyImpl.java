@@ -145,6 +145,8 @@ public class LoginProxyImpl  implements ILoginProxy{
         Session session  = (Session) this.cacheService.get(SessionUtil.getUuidBySessionId(sessionId), null);
         if(null == session) {
             UserModel userModel = this.userService.selectByOauthId(SessionUtil.getUuidBySessionId(sessionId));
+            if(null == userModel)
+                return null;
             session =  createUserSession(userModel);
             session.setClientId(SessionUtil.getClientIdAndClientSecretBySessionId(sessionId).getClient_id());
             session.setClientSecret(SessionUtil.getClientIdAndClientSecretBySessionId(sessionId).getClient_secret());
