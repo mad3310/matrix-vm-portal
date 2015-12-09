@@ -21,7 +21,7 @@
 			<div class="order-title">订单支付</div>
 			<div class="order-pay">
 				<div class="pay-item"><span class="item-title">账号名称：</span><span class="item-desc account">letvcloud@letv.com</span></div>
-				<div class="pay-item"><span class="item-title">本次需支付：</span><span class="text-red item-desc" id="orderpay">¥1000</span></div>
+				<div class="pay-item"><span class="item-title">本次需支付：</span><span class="text-red item-desc">¥<span id="orderpay">1000</span></span></div>
 				<div class="pay-item" style="position:relative;z-index:200">
 					<span class="item-title">可用余额：</span><span class="item-desc remain">¥100</span>
 					<span class="item-desc">

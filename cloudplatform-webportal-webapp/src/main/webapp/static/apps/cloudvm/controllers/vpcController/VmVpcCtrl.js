@@ -136,7 +136,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                 var modalInstance = WidgetService.openConfirmModal('删除VPC', '确定要删除VPC（' + checkedVpcs[0].name + '）吗？');
                 modalInstance.result.then(function (resultData) {
                     if (!resultData) return resultData;
-                    WidgetService.notifyInfo('VPC删除执行中...');
+                    WidgetService.notifyInfo('删除VPC执行中...');
                     HttpService.doPost(Config.urls.vpc_delete, data).success(function (data, status, headers, config) {
                         if (data.result === 1) {
                             modalInstance.close(data);
@@ -163,7 +163,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                 var modalInstance = WidgetService.openConfirmModal('删除子网', '确定要删除子网（' + checkedSubnets[0].name + '）吗？');
                 modalInstance.result.then(function (resultData) {
                     if (!resultData) return resultData;
-                    WidgetService.notifyInfo('子网删除执行中...');
+                    WidgetService.notifyInfo('删除子网执行中...');
                     checkedSubnets[0].status = 'DELETEING';
                     HttpService.doPost(Config.urls.subnet_delete, data).success(function (data, status, headers, config) {
                         if (data.result === 1) {
@@ -197,13 +197,13 @@ define(['controllers/app.controller'], function (controllerModule) {
                 var modalInstance = WidgetService.openConfirmModal('解绑路由器', '确定要对子网（' + checkedSubnets[0].name + '）路由器解绑吗？');
                 modalInstance.result.then(function (resultData) {
                     if (!resultData) return resultData;
-                    WidgetService.notifyInfo('子网路由解绑执行中...');
+                    WidgetService.notifyInfo('解绑路由器执行中....');
                     checkedSubnets[0].status = 'UNBUNDLING';
                     HttpService.doPost(Config.urls.subnet_remove, data).success(function (data, status, headers, config) {
                         if (data.result === 1) {
                             checkedSubnets[0].status = 'UNBUNDED';
                             modalInstance.close(data);
-                            WidgetService.notifySuccess('子网路由解绑成功');
+                            WidgetService.notifySuccess('解绑路由器成功');
                             refreshSubnetList();
                         }
                         else {
