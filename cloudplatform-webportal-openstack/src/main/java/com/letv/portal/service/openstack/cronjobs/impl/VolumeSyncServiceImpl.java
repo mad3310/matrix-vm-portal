@@ -5,11 +5,13 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
+import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.cronjobs.VolumeSyncService;
 import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.erroremail.impl.ErrorMailMessageModel;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.jclouds.cache.UserApiCache;
 import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 import com.letv.portal.service.openstack.util.ExceptionUtil;
@@ -62,6 +64,47 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements Vo
             throw e.matrixException();
         } finally {
             apiCache.close();
+        }
+    }
+
+    @Override
+    public void syncVolumeCreated(final OpenStackTenant tenant, final String region, final List<Volume> volumes
+            , final Checker<Volume> checker) {
+        if (volumes != null && !volumes.isEmpty()) {
+            ThreadUtil.asyncExec(new Function0<Void>() {
+                @Override
+                public Void apply() throws Exception {
+                    for (Volume volume : volumes) {
+                        localVolumeService.create(tenant.userId, tenant.userId, region, volume);
+                    }
+
+                    UserApiCache apiCache = new UserApiCache(tenant);
+                    try {
+                        List<Volume> unFinishedVolumes = new LinkedList<Volume>();
+                        unFinishedVolumes.addAll(volumes);
+                        while (!unFinishedVolumes.isEmpty()) {
+                            for (Volume volume : unFinishedVolumes
+                                    .toArray(new Volume[0])) {
+                                Volume latestVolume = apiCache.getApi(CinderApi.class)
+                                        .getVolumeApi(
+                                                region).get(volume.getId());
+                                if (latestVolume == null) {
+                                    unFinishedVolumes.remove(volume);
+                                } else if (checker.check(latestVolume)) {
+                                    unFinishedVolumes.remove(volume);
+                                    localVolumeService.update(tenant.userId, tenant.userId, region, latestVolume);
+                                }
+                            }
+                            Thread.sleep(1000);
+                        }
+                    } catch (Exception e) {
+                        ExceptionUtil.logAndEmail(e);
+                    } finally {
+                        apiCache.close();
+                    }
+                    return null;
+                }
+            });
         }
     }
 
