@@ -149,6 +149,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getVMManager().checkCreate2(vmCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
@@ -216,6 +217,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getVolumeManager().checkCreate(volumeCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
@@ -260,6 +262,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getNetworkManager().checkCreateFloatingIp(floatingIpCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
@@ -294,6 +297,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getNetworkManager().checkCreateRouter(routerCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
@@ -329,6 +333,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             openStackSession.getVMManager().checkCreateImageFromVm(vmSnapshotCreateConf);
             return new CheckResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new CheckResult(ExceptionUtil.getUserMessage(e));
         }
     }
