@@ -49,4 +49,6 @@ public interface ResourceServiceFacade {
                            Integer recordsPerPage) throws OpenStackException;
 
     VolumeSnapshotResource getVolumeSnapshot(String region, String volumeSnapshotId) throws OpenStackException;
+
+    Page listVolume(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 }

@@ -209,4 +209,14 @@ public class ResourceServiceFacadeImpl implements ResourceServiceFacade {
 
         return resourceService.getVolumeSnapshot(cinderApi, userVoUserId, region, volumeSnapshotId);
     }
+
+    @Override
+    public Page listVolume(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+        OpenStackUser openStackUser = getOpenStackUser();
+        long userVoUserId = openStackUser.getUserVoUserId();
+
+        CinderApi cinderApi = getCinderApi();
+
+        return resourceService.listVolume(cinderApi, userVoUserId, region, name, currentPage, recordsPerPage);
+    }
 }

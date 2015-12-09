@@ -59,4 +59,6 @@ public interface ResourceService {
     Page listPrivateSubnet(NeutronApi neutronApi, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 
     VolumeSnapshotResource getVolumeSnapshot(CinderApi cinderApi, long userVoUserId, String region, String volumeSnapshotId) throws OpenStackException;
+
+    Page listVolume(CinderApi cinderApi, long userVoUserId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 }
