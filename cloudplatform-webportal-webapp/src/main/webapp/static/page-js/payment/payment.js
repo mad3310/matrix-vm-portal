@@ -323,7 +323,7 @@ function orderDetail(){
 //支付按钮状态
 function alloptionsHandle(){
     var _paybtn=$('#pay');
-    var orderPaynum=Number($('#orderpay').text().substring(1));
+    var orderPaynum=Number($('#orderpay').text());
     var remainpay=$('.remainPay').val();
     // 检查当前的支付方式
     var _alloption=$('.alloption.active');
@@ -354,7 +354,7 @@ function goPay(){
     var remain=orderDetail();
     $('#pay').unbind('click').click(function(event){//窗口&跳转支付
         remain.done(function(){
-            var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+            var orderPaynum=Number($('#orderpay').text());//订单金额
             var remainPaynum=$('.remainPay').val();
             var money=orderPaynum-remainPaynum;
             // 检查当前的支付方式
