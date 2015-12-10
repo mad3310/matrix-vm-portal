@@ -211,9 +211,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 											* recordsPerPage) {
 										volumeResources
 												.add(new VolumeResourceImpl(
-														region,
-														regionDisplayName,
-														volume));
+                                                        region,
+                                                        regionDisplayName,
+                                                        volume));
 									}
 									volumeCount++;
 								}
@@ -320,9 +320,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 														* recordsPerPage) {
 													volumeResources
 															.add(new VolumeResourceImpl(
-																	region,
-																	regionDisplayName,
-																	volume));
+                                                                    region,
+                                                                    regionDisplayName,
+                                                                    volume));
 												}
 											}
 										}
@@ -658,29 +658,34 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			}
 		}
 
-		for (int i = 0; i < count; i++) {
-			final String volumeName;
-			if (count > 1) {
-				volumeName = NameUtil.nameAddNumber(name, i + 1);
-			} else {
-				volumeName = name;
+		final List<Volume> toSyncCloudvmVolumeList = new LinkedList<Volume>();
+		try {
+			for (int i = 0; i < count; i++) {
+				final String volumeName;
+				if (count > 1) {
+					volumeName = NameUtil.nameAddNumber(name, i + 1);
+				} else {
+					volumeName = name;
+				}
+				createVolumeOptions.name(volumeName);
+				Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
+//				CloudvmVolume cloudvmVolume = OpenStackServiceImpl.getOpenStackServiceGroup()
+//						.getLocalVolumeService()
+//						.create
+//                                (openStackUser.getUserVoUserId(), openStackUser.getUserVoUserId(), volumeCreateConf.getRegion(), volume);
+				toSyncCloudvmVolumeList.add(volume);
+				if (successCreatedVolumes != null) {
+					successCreatedVolumes.add(volume);
+				}
 			}
-			createVolumeOptions.name(volumeName);
-			Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
-			CloudvmVolume cloudvmVolume = OpenStackServiceImpl.getOpenStackServiceGroup()
-					.getLocalVolumeService()
-					.create
-							(openStackUser.getUserVoUserId(), openStackUser.getUserVoUserId(), volumeCreateConf.getRegion(), volume);
-			OpenStackServiceImpl.getOpenStackServiceGroup().getVolumeSyncService().syncStatus
-					(cloudvmVolume, new Checker<Volume>() {
+		} finally {
+			OpenStackServiceImpl.getOpenStackServiceGroup().getVolumeSyncService().syncVolumeCreated
+					(openStackUser.tenant, volumeCreateConf.getRegion(), toSyncCloudvmVolumeList, new Checker<Volume>() {
 						@Override
 						public boolean check(Volume volume) throws Exception {
 							return volume.getStatus() != Status.CREATING;
 						}
 					});
-			if (successCreatedVolumes != null) {
-				successCreatedVolumes.add(volume);
-			}
 		}
 	}
 

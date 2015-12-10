@@ -14,6 +14,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.ObjectError;
 
 /**
  * Created by zhouxianguang on 2015/10/30.
@@ -68,6 +70,12 @@ public class ExceptionUtil {
     public static void logAndEmail(Exception e) {
         logger.error(e.getMessage(), e);
         OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(e, "", null, "");
+    }
+
+    public static void emailByExceptionType(Exception e) {
+        if (!(e instanceof UserOperationException) && !(e instanceof BindException)) {
+            OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(e, "", null, "");
+        }
     }
 
     public static ResponseEntity<String> getResponseEntityFromException(Exception ex) {
