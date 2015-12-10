@@ -262,7 +262,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 				instanceInfo.put("regionName", subscription.getBaseRegionName());
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(subscription.getEndTime());
-				cal.add(Calendar.DATE, 4);
+				cal.add(Calendar.DATE, Math.abs(deleteDay));
 				cal.add(Calendar.HOUR, 9);
 				instanceInfo.put("deleteTime", sdf.format(cal.getTime()));
 				products.get(day).add(instanceInfo);
