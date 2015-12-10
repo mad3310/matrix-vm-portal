@@ -73,7 +73,7 @@
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
                         <span>{{vm | vmStatusFilter}}</span>
-                        <span ng-show="vm.vmState!=='building' && !!vm.taskState" class="status-loading"></span>
+                        <span ng-show="vm.vmState ==='building' || !!vm.taskState" class="status-loading"></span>
                     </td>
                     <td><span>{{vm.image.name || EMPTY_TEXT}}</span></td>
                     <td><span>{{vm | vmFlavorFilter}}</span></td>
