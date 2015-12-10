@@ -26,6 +26,21 @@ public interface ISubscriptionService extends IBaseService<Subscription> {
 	  * @date 2015年9月6日 下午3:58:11
 	  */
 	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date d, String orderTime, List<BaseStandard> baseStandards);
+	/**
+	  * @Title: createSubscription
+	  * @Description: 续费保存订阅接口
+	  * @param id
+	  * @param map
+	  * @param productInfoRecordId
+	  * @param d
+	  * @param orderTime
+	  * @param userId
+	  * @param buyType
+	  * @return Subscription   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年12月10日 上午10:52:02
+	  */
 	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date d, String orderTime, Long userId, Integer buyType);
 	/**
 	  * @Title: selectValidSubscription

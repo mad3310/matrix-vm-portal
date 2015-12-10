@@ -27,6 +27,16 @@ public interface IOrderSubDao extends IBaseDao<OrderSub> {
 	  */
 	List<OrderSub> selectOrderSubBySubscriptionId(long subscriptionId);
 	/**
+	  * @Title: selectOrderSubByProductInfoRecordId
+	  * @Description: 根据产品信息记录表id查询有效订单
+	  * @param productInfoRecordId
+	  * @return List<OrderSub>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年12月10日 上午11:19:33
+	  */
+	List<OrderSub> selectOrderSubByProductInfoRecordId(long productInfoRecordId);
+	/**
 	  * @Title: selectDetailBySubscriptionId
 	  * @Description: 获取订单订阅相关信息
 	  * @param params

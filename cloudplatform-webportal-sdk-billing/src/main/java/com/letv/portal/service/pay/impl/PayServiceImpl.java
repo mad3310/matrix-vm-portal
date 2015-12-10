@@ -533,7 +533,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("路由器创建成功回调! num="+event.getRouterIndex());
 				successCount.incrementAndGet();
 				idNames.put(event.getRouterId(), event.getName());
-				serviceCallback(event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
+				serviceCallback(orderSubs, event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.ROUTER, idNames);
 			}
 			
@@ -542,7 +542,6 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("路由器创建失败回调! num="+event.getRouterIndex());
 				failCount.incrementAndGet();
-				serviceCallbackWithFailed(orderSubs, event.getRouterIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.ROUTER, idNames);
 			}
 		}, records);
@@ -563,7 +562,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("公网IP创建成功回调! num="+event.getFloatingIpIndex());
 				successCount.incrementAndGet();
 				idNames.put(event.getFloatingIpId(), event.getName());
-				serviceCallback(event.getRegion(), event.getFloatingIpId(), event.getFloatingIpIndex(), event.getUserData());
+				serviceCallback(orderSubs, event.getRegion(), event.getFloatingIpId(), event.getFloatingIpIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.FLOATINGIP, idNames);
 			}
 			
@@ -572,7 +571,6 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("公网IP创建失败回调! num="+event.getFloatingIpIndex());
 				failCount.incrementAndGet();
-				serviceCallbackWithFailed(orderSubs, event.getFloatingIpIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.FLOATINGIP, idNames);
 			}
 			
@@ -594,7 +592,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("云硬盘创建成功回调! num="+event.getVolumeIndex());
 				successCount.incrementAndGet();
 				idNames.put(event.getVolumeId(), event.getName());
-				serviceCallback(event.getRegion(), event.getVolumeId(), event.getVolumeIndex(), event.getUserData());
+				serviceCallback(orderSubs, event.getRegion(), event.getVolumeId(), event.getVolumeIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.VOLUME, idNames);
 			}
 			@Override
@@ -602,7 +600,6 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("云硬盘创建失败回调! num="+event.getVolumeIndex());
 				failCount.incrementAndGet();
-				serviceCallbackWithFailed(orderSubs, event.getVolumeIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.VOLUME, idNames);
 			}
 			
@@ -624,7 +621,7 @@ public class PayServiceImpl implements IPayService {
 				logger.info("云主机创建成功回调! num="+event.getVmIndex());
 				successCount.incrementAndGet();
 				idNames.put(event.getVmId(), event.getName());
-				vmServiceCallback(event.getRegion(), event.getVmId(), event.getVolumeId(), event.getFloatingIpId(), event.getVmIndex(), event.getUserData());
+				vmServiceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVolumeId(), event.getFloatingIpId(), event.getVmIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.OPENSTACK, idNames);
 			}
 
@@ -632,25 +629,15 @@ public class PayServiceImpl implements IPayService {
 			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
 				logger.info("云主机创建失败回调! num="+event.getVmIndex());
 				failCount.incrementAndGet();
-				vmServiceCallbackWithFailed(orderSubs, event.getVmIndex());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.OPENSTACK, idNames);
 			}
 		}, records);
 		logger.info("调用创建云主机成功!");
 	}
 	
-	//服务创建失败后回调
-	private void vmServiceCallbackWithFailed(List<OrderSub> orderSubs, int index) {
-		for (OrderSub orderSub : orderSubs) {
-			if(orderSub.getProductInfoRecord().getBatch()==index) {
-				orderSub.getSubscription().setValid(0);//更改该订阅为0-无效
-			}
-		}
-	}
-	
 	//服务创建成功后回调
 	@SuppressWarnings("unchecked")
-	private void vmServiceCallback(String region, String vmId, String volumeId, String floatingIpId, int index, Object userData) {
+	private void vmServiceCallback(List<OrderSub> orderSubs, String region, String vmId, String volumeId, String floatingIpId, int index, Object userData) {
 		List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
 		if(index>records.size()) {
 			throw new ValidateException("服务回调index超出List范围！");
@@ -671,6 +658,12 @@ public class PayServiceImpl implements IPayService {
 					record.setInstanceId(region+"_"+floatingIpId);
 					productInfoRecordService.updateBySelective(record);
 				}
+			}
+		}
+		
+		for (OrderSub orderSub : orderSubs) {
+			if(orderSub.getProductInfoRecord().getBatch()==index) {
+				orderSub.getSubscription().setValid(1);//更改该订阅为1-有效
 			}
 		}
 		
@@ -784,7 +777,7 @@ public class PayServiceImpl implements IPayService {
 	
 	//服务创建成功后回调
 	@SuppressWarnings("unchecked")
-	private void serviceCallback(String region, String id, int index, Object userData) {
+	private void serviceCallback(List<OrderSub> orderSubs, String region, String id, int index, Object userData) {
 		List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
 		if(index>records.size()) {
 			throw new ValidateException("服务回调index超出List范围！");
@@ -797,13 +790,10 @@ public class PayServiceImpl implements IPayService {
 		record.setDescn(null);
 		record.setInstanceId(region+"_"+id);
 		productInfoRecordService.updateBySelective(record);
+		//②更改该条订阅为1-有效
+		orderSubs.get(index).getSubscription().setValid(1);
 	}
 	
-	//服务创建失败后回调
-	private void serviceCallbackWithFailed(List<OrderSub> orderSubs, int index) {
-		//①更改该条订阅为0-无效
-		orderSubs.get(index).getSubscription().setValid(0);
-	}
 	
 	private void updateSubscriptionAndOrderTime(List<OrderSub> orderSubs) {
 		Date date = new Date();
