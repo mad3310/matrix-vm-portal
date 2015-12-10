@@ -133,11 +133,20 @@ public class RenewApiController {
 			return obj;
 		}
 		Long subscriptionId = Long.parseLong((String)map.get("subscriptionId"));
-		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubBySubscriptionId(subscriptionId);
-		if(orderSubs==null||orderSubs.size()==0||orderSubs.get(0).getSubscription().getValid()==0||orderSubs.get(0).getOrder().getStatus()!=2) {
+		//List<OrderSub> orderSubs = this.orderSubService.selectOrderSubBySubscriptionId(subscriptionId);
+		Subscription s = this.subscriptionService.selectById(subscriptionId);
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByProductInfoRecordId(s.getProductInfoRecordId());
+		if(s==null || s.getValid()==0 || orderSubs==null || orderSubs.size()==0) {
 			obj.setResult(0);
-			obj.addMsg("查询原有订单失败或状态异常,订阅ID:" + subscriptionId);
+			obj.addMsg("查询原有订阅失败或状态异常,订阅ID:" + subscriptionId);
 			return obj;
+		}
+		for (OrderSub orderSub : orderSubs) {
+			if(s.getEndTime().getTime()<orderSub.getEndTime().getTime()) {
+				obj.setResult(0);
+				obj.addMsg("该订阅已续费,订阅ID:" + subscriptionId);
+				return obj;
+			}
 		}
 		
 		Long userId = this.userService.getUserIdByUcId(Long.parseLong((String) map.get("userId")));
