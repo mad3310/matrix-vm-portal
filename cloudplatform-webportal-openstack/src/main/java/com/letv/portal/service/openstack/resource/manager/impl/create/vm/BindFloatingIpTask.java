@@ -4,8 +4,11 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 
+import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
+import org.jclouds.openstack.nova.v2_0.domain.InterfaceAttachment;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,13 +28,23 @@ public class BindFloatingIpTask extends VmsCreateSubTask {
 				Server server = context.getApiCache().getServerApi().get(vmCreateContext.getServerCreated().getId());
 				FloatingIP floatingIP = context.getApiCache().getNovaFloatingIPApi().get(vmCreateContext.getFloatingIp().getId());
 				if (server != null && server.getStatus() != Server.Status.ERROR && floatingIP != null && floatingIP.getInstanceId() == null) {
-					context.getApiCache()
-							.getNovaFloatingIPApi()
-							.addToServer(
-									vmCreateContext.getFloatingIp()
-											.getFloatingIpAddress(),
-									vmCreateContext.getServerCreated().getId());
-					vmCreateContext.setFloatingIpBindDate(new Date());
+//					context.getApiCache()
+//							.getNovaFloatingIPApi()
+//							.addToServer(
+//									vmCreateContext.getFloatingIp()
+//											.getFloatingIpAddress(),
+//									vmCreateContext.getServerCreated().getId());
+					AttachInterfaceApi attachInterfaceApi = context.getApiCache().getAttachInterfaceApi();
+					FloatingIPApi floatingIPApi = context.getApiCache().getNeutronFloatingIpApi();
+					String floatingIpId = floatingIP.getId();
+					List<InterfaceAttachment> interfaceAttachmentList = attachInterfaceApi.list(server.getId()).toList();
+					if (!interfaceAttachmentList.isEmpty()) {
+						String portId = interfaceAttachmentList.get(0).getPortId();
+						floatingIPApi.update(floatingIpId
+								, org.jclouds.openstack.neutron.v2.domain.FloatingIP.UpdateFloatingIP.updateBuilder().portId(
+								portId).build());
+						vmCreateContext.setFloatingIpBindDate(new Date());
+					}
 				}
 			}
 

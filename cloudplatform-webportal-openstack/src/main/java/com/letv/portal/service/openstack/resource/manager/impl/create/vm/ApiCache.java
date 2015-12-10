@@ -13,6 +13,7 @@ import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
+import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
 import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
@@ -194,7 +195,7 @@ public class ApiCache {
 			floatingIPApi = floatingIPApiOptional.get();
 			this.cache
 					.put(org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi.class,
-							floatingIPApi);
+                            floatingIPApi);
 		}
 		return floatingIPApi;
 	}
@@ -255,4 +256,17 @@ public class ApiCache {
 		}
 		return snapshotApi;
 	}
+
+    public AttachInterfaceApi getAttachInterfaceApi() throws APINotAvailableException {
+        AttachInterfaceApi attachInterfaceApi = (AttachInterfaceApi) this.cache.get(AttachInterfaceApi.class);
+        if (attachInterfaceApi == null) {
+            Optional<AttachInterfaceApi> attachInterfaceApiOptional = apiSession.getNovaApi().getAttachInterfaceApi(region);
+            if (!attachInterfaceApiOptional.isPresent()) {
+                throw new APINotAvailableException(AttachInterfaceApi.class);
+            }
+            attachInterfaceApi = attachInterfaceApiOptional.get();
+            this.cache.put(AttachInterfaceApi.class, attachInterfaceApi);
+        }
+        return attachInterfaceApi;
+    }
 }

@@ -1043,7 +1043,12 @@ public class ResourceServiceImpl implements ResourceService {
 //            }
         }
 
-        floatingIPApi.addToServer(floatingIP.getIp(), vmId);
+//        floatingIPApi.addToServer(floatingIP.getIp(), vmId);
+        org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi neutronFloatingIPApi =
+                getNeutronFloatingIPApi(neutronApi, region);
+        neutronFloatingIPApi.update(floatingIpId
+                , org.jclouds.openstack.neutron.v2.domain.FloatingIP.UpdateFloatingIP.updateBuilder().portId(
+                interfaceAttachments.get(0).getPortId()).build());
 
         ThreadUtil.asyncExec(new Function0<Void>() {
             @Override
