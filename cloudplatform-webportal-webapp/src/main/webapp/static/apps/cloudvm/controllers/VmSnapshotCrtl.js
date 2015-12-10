@@ -37,6 +37,18 @@ define(['controllers/app.controller'], function (controllerModule) {
             else{
               $scope.diskSnapshotList = data.data.data;
               $scope.diskTotalItems = data.data.totalRecords;
+              $scope.diskSnapshotList.filter(function(diskSnapshot){return diskSnapshot.status=='creating'}).forEach(function(diskSnapshot) {
+                var diskSnapshotDetailUrl = Config.urls.snapshot_disk_detail.replace('{region}',CurrentContext.regionId).replace('{volumeSnapshotId}',diskSnapshot.id);
+                var pendingStatusInterval = $interval(function () {
+                  HttpService.doGet(diskSnapshotDetailUrl).then(function (data, status, headers, config) {
+                    if (data.result === 1 && data.data.status != 'creating') {
+                      diskSnapshot.status = data.data.status;
+                      $interval.cancel(pendingStatusInterval);
+                      refreshSnapshotList();
+                    }
+                  });
+                }, 5000);
+              });
             }
 
           });
