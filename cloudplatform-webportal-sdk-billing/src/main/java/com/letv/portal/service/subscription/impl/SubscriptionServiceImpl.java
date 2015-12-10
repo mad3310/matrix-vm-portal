@@ -217,7 +217,9 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		Map<Long, Map<Long, List<Map<String, Object>>>> deletes = new HashMap<Long, Map<Long, List<Map<String, Object>>>>();
 		for (Subscription subscription : subscriptions) {
 			long day = (subscription.getEndTime().getTime()-now.getTime())/(1000*3600*24);
-			day++;//算计算当天
+			if(day>0) {
+				day++;//算计算当天
+			}
 			logger.info(day+":"+subscription.getProductInfoRecord().getParams());
 			//day<=ORDER_DELETE天数后删除服务并置订阅状态为无效
 			String delete = ORDER_DELETE;
@@ -260,7 +262,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 				instanceInfo.put("regionName", subscription.getBaseRegionName());
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(subscription.getEndTime());
-				cal.add(Calendar.DATE, 7);
+				cal.add(Calendar.DATE, 4);
 				cal.add(Calendar.HOUR, 9);
 				instanceInfo.put("deleteTime", sdf.format(cal.getTime()));
 				products.get(day).add(instanceInfo);
