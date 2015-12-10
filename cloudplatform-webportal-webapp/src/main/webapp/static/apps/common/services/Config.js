@@ -66,6 +66,7 @@ define(['./common.service'], function (serviceModule) {
       floatIp_bindVm:'/ecs/vm/floatingip/bind',
       floatIp_unbindVm:'/ecs/vm/floatingip/unbind',
       snapshot_disk_list:'/osv/volume/snapshot/list',
+      snapshot_disk_detail:'/osv/region/{region}/volume/snapshot/{volumeSnapshotId}',
       snapshot_disk_create:'/osv/volume/snapshot/create',
       snapshot_disk_delete:'/osv/volume/snapshot/delete',
       snapshot_vm_list:'/ecs/vm/snapshot/list',
