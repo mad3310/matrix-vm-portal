@@ -280,5 +280,10 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		return true;
 	}
 
+	@Override
+	public List<OrderSub> selectOrderSubByProductInfoRecordId(long productInfoRecordId) {
+		return this.orderSubDao.selectOrderSubByProductInfoRecordId(productInfoRecordId);
+	}
+
 
 }

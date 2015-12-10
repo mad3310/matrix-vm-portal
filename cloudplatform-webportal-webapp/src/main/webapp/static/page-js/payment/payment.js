@@ -101,8 +101,8 @@ function moneyInput(){
     var _errordesc=$('.error-desc');
     var reg=/^([1-9]+(\.[0-9]{1,2})?|0\.[1-9][0-9]|0\.0[1-9]|0\.[1-9]|[1-9]+\d)$/
     // var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
-    var orderPaynum=$('#orderpay').text();
-    var remain=$('.remain').text().substring(1);
+    var orderPaynum=Number($('#orderpay').text());
+    var remain=Number($('.remain').text().substring(1));
     var compare=(orderPaynum>remain)?remain:orderPaynum;
     var money=_target.val();
     if(money){
@@ -121,7 +121,7 @@ function moneyInput(){
                     $('.payoption').removeClass('active');
                     _paybtn.attr('disabled', 'true');
                 }else{
-                    if(money==Number(compare)&&money==Number(orderPaynum)){//fit
+                    if(money==compare&&money==orderPaynum){//fit
                         $('.payoption').removeClass('active');
                     }else{
                         $('.payoption:eq(0)').addClass('active'); 
@@ -323,7 +323,7 @@ function orderDetail(){
 //支付按钮状态
 function alloptionsHandle(){
     var _paybtn=$('#pay');
-    var orderPaynum=Number($('#orderpay').text().substring(1));
+    var orderPaynum=Number($('#orderpay').text());
     var remainpay=$('.remainPay').val();
     // 检查当前的支付方式
     var _alloption=$('.alloption.active');
@@ -354,7 +354,7 @@ function goPay(){
     var remain=orderDetail();
     $('#pay').unbind('click').click(function(event){//窗口&跳转支付
         remain.done(function(){
-            var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+            var orderPaynum=Number($('#orderpay').text());//订单金额
             var remainPaynum=$('.remainPay').val();
             var money=orderPaynum-remainPaynum;
             // 检查当前的支付方式
