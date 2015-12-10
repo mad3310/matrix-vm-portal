@@ -20,12 +20,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.subnet_associate, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close({result:1});
-          WidgetService.notifySuccess(data.msgs[0]||'子网关联成功');
+          WidgetService.notifySuccess(data.msgs[0]||'关联子网成功');
         }
         else{
           $scope.isFormSubmiting=false;
           $modalInstance.dismiss('cancel');
-          WidgetService.notifyError(data.msgs[0]||'子网关联失败');
+          WidgetService.notifyError(data.msgs[0]||'关联子网失败');
         }
       });
     };
