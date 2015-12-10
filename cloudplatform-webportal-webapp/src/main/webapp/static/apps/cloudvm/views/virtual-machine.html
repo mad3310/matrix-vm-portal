@@ -134,6 +134,7 @@
     </script>
     <script type="text/ng-template" id="DiskAttachModalTpl">
         <div class="modal-vm-disk-attach">
+            <form novalidate class="form-vm-disk-attach" name="vm_disk_attach_form">
             <div class="le-modal-header">
                 <span class="header-title">挂载云硬盘</span>
                 <a class="close" ng-click="closeModal()">
@@ -146,22 +147,28 @@
                         <span class="letv-control-label">云硬盘：</span>
                     </div>
                     <div class="le-col-9 col-control">
+                        <input type="hidden" name='selected_disk' ng-model="selectedDisk" required/>
                         <le-select select-model="selectedDisk" select-options="diskListSelectorData" select-empty-text="暂无可挂载的云硬盘"></le-select>
+                        <input-validation-tooltip class="le-select-tooltip" ng-show="vm_disk_attach_form.$submitted && vm_disk_attach_form.selected_disk.$error.required"
+                                                  validation-message="请选择云硬盘">
+                        </input-validation-tooltip>
                     </div>
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="!isFormSubmiting && attachDisk()" ng-disabled="isFormSubmiting">
+                        <button class="btn btn-le-blue" ng-click="vm_disk_attach_form.$valid && !isFormSubmiting && attachDisk()" ng-disabled="isFormSubmiting">
                             <span ng-if="!isFormSubmiting">挂载</span>
                             <span ng-if="isFormSubmiting">挂载执行中...</span>
                         </button>
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </script>
     <script type="text/ng-template" id="DiskDetachModalTpl">
-        <div class="modal-vm-disk-attach">
+        <div class="modal-vm-disk-detach">
+            <form novalidate class="form-vm-disk-detach" name="vm_disk_detach_form">
             <div class="le-modal-header">
                 <span class="header-title">卸载云硬盘</span>
                 <a class="close" ng-click="closeModal()">
@@ -174,22 +181,28 @@
                         <span class="letv-control-label">云硬盘：</span>
                     </div>
                     <div class="le-col-9 col-control">
+                        <input type="hidden" name='selected_disk' ng-model="selectedDisk" required />
                         <le-select select-model="selectedDisk" select-options="diskListSelectorData" select-empty-text="暂无可卸载的云硬盘"></le-select>
+                        <input-validation-tooltip class="le-select-tooltip" ng-show="vm_disk_detach_form.$submitted && vm_disk_detach_form.selected_disk.$error.required"
+                                                  validation-message="请选择云硬盘">
+                        </input-validation-tooltip>
                     </div>
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="!isFormSubmiting && detachDisk()" ng-disabled="isFormSubmiting">
+                        <button class="btn btn-le-blue" ng-click="vm_disk_detach_form.$valid && !isFormSubmiting && detachDisk()" ng-disabled="isFormSubmiting">
                             <span ng-if="!isFormSubmiting">卸载</span>
                             <span ng-if="isFormSubmiting">卸载执行中...</span>
                         </button>
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </script>
     <script type="text/ng-template" id="FloatingIpBindModalTpl">
-        <div class="modal-vm-disk-attach">
+        <div class="modal-vm-floatingIp-bind">
+            <form novalidate class="form-vm-floatingIp-bind" name="vm_floatingIp_bind_form">
             <div class="le-modal-header">
                 <span class="header-title">绑定公网IP</span>
                 <a class="close" ng-click="closeModal()">
@@ -202,18 +215,23 @@
                         <span class="letv-control-label">公网IP：</span>
                     </div>
                     <div class="le-col-9 col-control">
+                        <input type="hidden" name='selected_floatingIp' ng-model="selectedFloatingIp" required />
                         <le-select select-model="selectedFloatingIp" select-options="floatingIpListSelectorData" select-empty-text="暂无可绑定的公网IP"></le-select>
+                        <input-validation-tooltip class="le-select-tooltip" ng-show="vm_floatingIp_bind_form.$submitted && vm_floatingIp_bind_form.selected_floatingIp.$error.required"
+                                                  validation-message="请选择公网ip">
+                        </input-validation-tooltip>
                     </div>
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
-                        <button class="btn btn-le-blue" ng-click="!isFormSubmiting && bindFloatingIp()" ng-disabled="isFormSubmiting">
+                        <button class="btn btn-le-blue" ng-click="vm_floatingIp_bind_form.$valid && !isFormSubmiting && bindFloatingIp()" ng-disabled="isFormSubmiting">
                             <span ng-if="!isFormSubmiting">绑定</span>
                             <span ng-if="isFormSubmiting">绑定执行中...</span>
                         </button>
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </script>
     <script type="text/ng-template" id="VmSnapshotCreateModalTpl">
