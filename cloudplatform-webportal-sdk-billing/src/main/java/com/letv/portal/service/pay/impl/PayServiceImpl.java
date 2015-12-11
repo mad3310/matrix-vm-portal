@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -124,6 +125,8 @@ public class PayServiceImpl implements IPayService {
 	@Autowired
     ExceptionEmailServiceUtil exceptionEmailServiceUtil;
 	private ICacheService<?> cacheService = CacheFactory.getCache();
+	@Autowired
+    private TaskExecutor threadPoolTaskExecutor;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -499,29 +502,33 @@ public class PayServiceImpl implements IPayService {
 		return m.getMD5ofStr(sb.toString()).toLowerCase();
 	}
 
-	@Async
 	private void createInstance(final List<OrderSub> orderSubs) {
-		List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
-		for (OrderSub orders : orderSubs) {
-			records.add(orders.getProductInfoRecord());
-		}
-		for (OrderSub orderSub : orderSubs) {
-			// 进行服务创建
-			if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
-				//真正服务创建所需参数
-				Map<String, Object> serviceParams = transResult(orderSubs.get(0).getProductInfoRecord().getParams());
-				if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
-					createVm(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
-					createVolume(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
-					createFloatingIp(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_ROUTER) {//路由
-					createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+		this.threadPoolTaskExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
+				for (OrderSub orders : orderSubs) {
+					records.add(orders.getProductInfoRecord());
+				}
+				for (OrderSub orderSub : orderSubs) {
+					// 进行服务创建
+					if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
+						//真正服务创建所需参数
+						Map<String, Object> serviceParams = transResult(orderSubs.get(0).getProductInfoRecord().getParams());
+						if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
+							createVm(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
+							createVolume(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
+							createFloatingIp(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_ROUTER) {//路由
+							createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						}
+					}
+					
 				}
 			}
-			
-		}
+		});
 	}
 	
 	//创建路由器
