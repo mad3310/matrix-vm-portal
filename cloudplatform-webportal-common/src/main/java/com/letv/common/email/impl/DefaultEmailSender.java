@@ -19,11 +19,13 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.letv.common.exception.CommonException;
-
 import com.letv.common.email.ITemplateMessageSender;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.letv.common.email.bean.MailMessage;
+
 import freemarker.template.Template;
 
 @Component("defaultEmailSender")
@@ -150,7 +152,11 @@ public class DefaultEmailSender implements ITemplateMessageSender {
 	public void sendMessage(Object msg) {
 		MailMessage[] mails = new MailMessage[1];
 		mails[0] = (MailMessage) msg;
-		sendMessage(mails);
+		try {
+			sendMessage(mails);
+		} catch (Exception e) {
+			logger.error("send message has error!", e);
+		}
 	}
 
 	@Override

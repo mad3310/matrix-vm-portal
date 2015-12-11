@@ -211,7 +211,7 @@
 	</select>
 	<select id="selectOrderSubByProductInfoRecordId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	    select
-	        <include refid="Base_Column_List" />
+	        <include refid="Base_Column_List" />,sub.END_TIME SUB_END_TIME
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
 	    left join
