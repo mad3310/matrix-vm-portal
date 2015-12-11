@@ -105,7 +105,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
     @Override
     public void insertByUcId(Long ucId,UserModel userModel) {
         Map<String, Object> userMap = this.ucService.getUserByUserId(ucId);
-        if(null == userMap && userMap.isEmpty())
+        if(null == userMap || userMap.isEmpty())
             throw new CommonException("getUserByUserId:user is null by ucId:{}"+ucId);
         userModel.setUcId(ucId);
         userModel.setOauthId((String) userMap.get("uuid"));
