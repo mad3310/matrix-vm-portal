@@ -11,7 +11,7 @@
             <link rel="stylesheet" href="/static/stylesheets/font-awesome-81ce96f2e2.css">
             <link rel="stylesheet" href="/static/stylesheets/toaster-4f7c5e6480.css">
             <link rel="stylesheet" href="/static/stylesheets/rzslider-7c3df6f208.css">
-            <link rel="stylesheet" href="/static/stylesheets/common-41332a641a.css">
+            <link rel="stylesheet" href="/static/stylesheets/common-313aa6550a.css">
             <link rel="stylesheet" href="/static/stylesheets/style-cloudvm-86873e957c.css">
         </head>
         <style>
