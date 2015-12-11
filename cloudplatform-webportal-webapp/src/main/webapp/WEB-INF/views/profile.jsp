@@ -26,6 +26,6 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <script type="text/javascript" src="/static/javascripts/dist/require.min.js" data-main="/static/apps/dashboard/main.js"></script>
+    <script type="text/javascript" src="/static/javascripts/dist/require.min.js" data-main="/static/javascripts/dist/dashboard-main-1449801011067.js"></script>
 </body>
 </html>
