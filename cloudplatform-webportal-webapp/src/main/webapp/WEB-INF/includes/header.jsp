@@ -23,7 +23,7 @@
         <div class="header-separator pull-right">
             <i class="separator"></i>
         </div>
-        <a href="http://lcp-uc.letvcloud.com/userView/ucOverview.do" class="header-account pull-right">
+        <a href="https://lcp-uc.letvcloud.com/userView/ucOverview.do" class="header-account pull-right">
             <img src="/static/images/nav-account.png" class="account-icon" />
             <span class="header-username"></span>
         </a>
