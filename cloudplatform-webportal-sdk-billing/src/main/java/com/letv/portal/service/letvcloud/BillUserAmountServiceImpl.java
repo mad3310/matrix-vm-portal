@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.exception.CommonException;
@@ -91,7 +92,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public long rechargeSuccess(Long userId, String tradeNum, String orderNum, BigDecimal amount) {
         Map<String, Object> recordSuc = new HashMap<String, Object>();
         recordSuc.put("tradeNum", tradeNum);
@@ -266,12 +267,14 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                 billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().add(price));
 	            ret = billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
 	        }
-	        try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				logger.error("updateUserAmountFromAvailableToFreeze sleep had error : ", e);
-			}
-	        count++;
+	        if(ret!=1) {
+		        try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					logger.error("updateUserAmountFromAvailableToFreeze sleep had error : ", e);
+				}
+		        count++;
+	        }
 	    } while (ret < 1 && count < 10);
         
         if(ret==1) {
@@ -298,12 +301,14 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	            billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
 	            ret = billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
 	        } 
-	        try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				logger.error("updateUserAmountFromFreezeToAvailable sleep had error : ", e);
-			}
-	        count++;
+	        if(ret!=1) {
+	        	try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					logger.error("updateUserAmountFromFreezeToAvailable sleep had error : ", e);
+				}
+		        count++;
+	        }
 	    } while (ret < 1 && count < 10);
         
         
@@ -357,12 +362,14 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	            billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
 	            ret = billUserAmountMapper.reduceAvailableAmount(billUserAmount);
 	        } 
-	        try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				logger.error("reduceAvailableAmount sleep had error : ", e);
-			}
-	        count++;
+	    	if(ret!=1) {
+	    		try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					logger.error("reduceAvailableAmount sleep had error : ", e);
+				}
+		        count++;
+	    	}
 	    } while (ret < 1 && count < 10);
 	    
         if(ret==1) {
@@ -414,12 +421,14 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	            billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
 	            ret = billUserAmountMapper.reduceFreezeAmount(billUserAmount);
 	        } 
-	        try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				logger.error("reduceFreezeAmount sleep had error : ", e);
-			}
-	        count++;
+	    	if(ret!=1) {
+	    		try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					logger.error("reduceFreezeAmount sleep had error : ", e);
+				}
+		        count++;
+	    	}
 	    } while (ret < 1 && count < 10);
 	    
         if(ret==1) {
@@ -472,12 +481,14 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    	params.put("dealPrice", failPrice.add(succPrice));
 	    	params.put("failPrice", failPrice);
             ret = billUserAmountMapper.dealFreezeAmount(params);
-	        try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				logger.error("reduceFreezeAmount sleep had error : ", e);
-			}
-	        count++;
+            if(ret!=1) {
+            	try {
+    				Thread.sleep(1000);
+    			} catch (InterruptedException e) {
+    				logger.error("reduceFreezeAmount sleep had error : ", e);
+    			}
+    	        count++;
+            }
 	    } while (ret < 1 && count < 10);
         
         if(ret==1) {

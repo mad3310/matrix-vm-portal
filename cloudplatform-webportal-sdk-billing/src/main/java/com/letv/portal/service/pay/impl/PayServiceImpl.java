@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
@@ -129,6 +131,7 @@ public class PayServiceImpl implements IPayService {
 	@Value("${pay.success}")
 	private String PAY_SUCCESS;
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Map<String, Object> pay(String orderNumber, Map<String, Object> map, HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		
@@ -176,7 +179,7 @@ public class PayServiceImpl implements IPayService {
 					}
 					//发送用户通知
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
-						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您成功续费"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+						this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您成功续费"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
 					}
 					return ret;
 				}
@@ -197,7 +200,7 @@ public class PayServiceImpl implements IPayService {
 					
 					//发送用户通知
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
-						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您购买云产品成功支付"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+						this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买云产品成功支付"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
 					}
 					return ret;
 				} else {
@@ -346,6 +349,7 @@ public class PayServiceImpl implements IPayService {
 		return jsonResult;
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public boolean callback(Map<String, Object> map) {
 		// ①验证必须字段
 		if ((map.get("corderid") == null) || (map.get("stat") == null)
@@ -389,7 +393,7 @@ public class PayServiceImpl implements IPayService {
 					reNewOperate(orderSubs, totalPrice);
 					//发送用户通知
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
-						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您成功续费"+totalPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+						this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您成功续费"+totalPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
 					}
 				} else {
 					//设置用户支付部分余额为冻结余额
@@ -399,7 +403,7 @@ public class PayServiceImpl implements IPayService {
 					
 					//发送用户通知
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
-						this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您购买云产品成功支付"+totalPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+						this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买云产品成功支付"+totalPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
 					}
 					
 					// ④创建应用实例
@@ -702,7 +706,7 @@ public class PayServiceImpl implements IPayService {
 					Long createUser = orderSubs.get(0).getCreateUser();
 					UserVo ucUser = this.userService.getUcUserById(createUser);
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-					this.sendMessage.sendMessage(ucUser.getMobile(), "【乐视云平台】尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
+					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
 				}
 				
 				//有成功的

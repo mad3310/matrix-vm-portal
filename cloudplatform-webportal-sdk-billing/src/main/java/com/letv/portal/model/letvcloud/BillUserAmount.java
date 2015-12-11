@@ -70,4 +70,13 @@ public class BillUserAmount implements Serializable{
     public void setArrearageTime(Date arrearageTime) {
         this.arrearageTime = arrearageTime;
     }
+
+	@Override
+	public String toString() {
+		return "BillUserAmount [userId=" + userId + ", availableAmount="
+				+ availableAmount + ", freezeAmount=" + freezeAmount
+				+ ", lastUpdateTime=" + lastUpdateTime + ", arrearageTime="
+				+ arrearageTime + ", fee=" + fee + "]";
+	}
+   
 }
