@@ -142,7 +142,7 @@ public class RenewApiController {
 			return obj;
 		}
 		for (OrderSub orderSub : orderSubs) {
-			if(s.getEndTime().getTime()<orderSub.getEndTime().getTime()) {
+			if(s.getEndTime().getTime()<orderSub.getSubscription().getEndTime().getTime()) {
 				obj.setResult(0);
 				obj.addMsg("该订阅已续费,订阅ID:" + subscriptionId);
 				return obj;
