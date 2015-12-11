@@ -209,6 +209,7 @@ function userInfo(){
         success:function(data){
             var _data=data.data;
             if(data.result==0){//error
+                toastr.warning('','获取账户信息失败!');
             }else{
                 $('.account').text(_data.email);
             }
@@ -238,6 +239,7 @@ function userRemainInfo(){
         success:function(data){
             var _data=data.data;
             if(data.result==0){//error
+                toastr.warning('','获取账户余额失败!');
             }else{
                 $('.remain').text('¥'+_data);
             }
@@ -246,6 +248,7 @@ function userRemainInfo(){
 }
 //订单详情
 function orderDetail(){
+
     var orderNum=$('#orderNum').val();
     var orderurl='/order/'+orderNum
     return $.ajax({
@@ -254,15 +257,15 @@ function orderDetail(){
     type: 'get',
     success:function(data){
          if(data.result==0){//error
-             alert(data.msgs)
+            toastr.warning('','获取订单详情失败!');
          }else{
-             var _target=$('#order-tbody');
-             _target.html('');
-             var orderArray=data.data;
-             var totalprice=0;
-             var order,orderHtml='',productnum=0,params='',paramsArray='';
-             var index='',title='',desc='';
-             for(var i in orderArray){
+            var _target=$('#order-tbody');
+            _target.html('');
+            var orderArray=data.data;
+            var totalprice=0;
+            var order,orderHtml='',productnum=0,params='',paramsArray='';
+            var index='',title='',desc='';
+            for(var i in orderArray){
                 var paramsHtml='';
                 order=orderArray[i];
                 totalprice=totalprice+order.price;
@@ -302,7 +305,7 @@ function orderDetail(){
                              +'<td>'+productnum+'</td>'
                              +'<td>'+orderArray[0].orderTime+'个月</td>'
                              +'<td class="price">¥'+orderArray[0].totalPrice+'</td>'
-                         +'</tr>';
+                        +'</tr>';
             _target.append(temphtml);
             // $('#orderpay').text('¥'+totalprice);
             $('#orderpay').text(totalprice.toFixed(2));
@@ -375,6 +378,7 @@ function goPay(){
                     success:function(data){
                         var height=document.body.scrollHeight;
                         if(data.result==0){//error
+                            toastr.warning('','获取订单信息失败!');
                         }else{
                             if(data.data.status==1){//已失效
                                 $('.modal-container').find('.modal-title .title').text('温馨提示');
@@ -427,15 +431,38 @@ function goPay(){
                 success:function(data){
                     var url='/cvm/#/vm';
                     if(data.result==0){//error
-
+                        toastr.warning('','获取订单信息失败!');
                     }else{
-                        if(data.data.status==2||data.data.status==1){//已付款或订单已失效
+                        if(data.data.status==2){//已付款
+                            //服务状态
+                            $.ajax({
+                                url: '/order/serviceStatus/'+orderNum,
+                                type: 'get',
+                                cache:false,
+                                success:function(data){
+                                    if(data.result==0){//error
+                                        toastr.warning('','获取服务创建信息失败!');
+                                    }else{
+                                        if(data.data){//all service ready
+                                        }else{
+                                            document.cookie="serviceStatus"+redirect+"=notready";
+                                        }
+                                        if(redirects[redirect]){
+                                            url=redirects[redirect]
+                                        }
+                                        window.location.href=url;
+                                        $('.modal-container').addClass('hide');
+                                    }
+
+                                }
+                            });
+                        }else if(data.data.status==1){//订单已失效
                             if(redirects[redirect]){
                                 url=redirects[redirect]
                             }
                             window.location.href=url;
                             $('.modal-container').addClass('hide');
-                        }else{
+                        }else{//订单未付款
                             $('.modal-container').addClass('hide');
                         }
                     }
@@ -460,7 +487,8 @@ function queryStatus(){
         success:function(data){
             _tip.html('');
             if(data.result==0){//error
-                alert(data.msgs)
+                var errmsg=data.msgs?data.msgs:'获取订单支付信息失败';
+                toastr.warning('',errmsg);
             }else{
                 var _target=data.data;
                 if(_target.status==0){//支付不成功

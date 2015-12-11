@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/19.
  */
 define(['./common.service'],function (serviceModule) {
-  serviceModule.factory('Utility', ['$timeout',
-    function ($timeout) {
+  serviceModule.factory('Utility', ['$timeout','$document',
+    function ($timeout,$document) {
       var service = {};
       service.getRzSliderHack=function(scope){
          return function(){
@@ -111,7 +111,33 @@ define(['./common.service'],function (serviceModule) {
           }
           return operationArraycopy
       };
-
+      var getCookie=function(name){
+        var arr=$document[0].cookie.split(';');
+        for(var i=0; i<arr.length; i++){
+          var arr2=arr[i].split('=');
+          if(arr2[0]==name){
+            return arr2[1];
+          }
+        }
+        return '';
+      };
+      var setCookie=function(name,value){
+        $document[0].cookie=name+"="+value + ";";
+      }
+      service.isServiceReady=function(name){
+        var flag=false;
+        var serviceStatus=getCookie(name);
+        if(serviceStatus){
+          if(serviceStatus=="notready"){//service not ready
+            setCookie(name,'');
+          }else{//service ready
+            flag=true;
+          }
+        }else{//非支付返回
+          flag=true;
+        }
+        return flag;
+      }
       service.isInt=function (input) {
         return Number(input) % 1 === 0;
       };

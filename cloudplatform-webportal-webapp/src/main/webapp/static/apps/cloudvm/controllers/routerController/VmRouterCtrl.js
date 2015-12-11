@@ -155,6 +155,9 @@ define(['controllers/app.controller'], function (controllerModule) {
             };
           $scope.isListLoading=true;
             HttpService.doGet(Config.urls.router_list, queryParams).then(function (data, status, headers, config) {
+              if(!Utility.isServiceReady('serviceStatus5')){
+                WidgetService.notifyWarning('服务未完全创建，请刷新试试看！');
+              }
               $scope.isListLoading=false;
               $scope.routerList = data.data.data;
               $scope.totalItems = data.data.totalRecords;

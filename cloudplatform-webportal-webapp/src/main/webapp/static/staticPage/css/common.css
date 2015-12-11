@@ -95,6 +95,43 @@ input.has-error:focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rg
 .col-md-offset-2{margin-left:16.66666667%;}
 .col-md-offset-1{margin-left:8.33333333%;}
 .col-md-offset-0{margin-left:0;}
+
+
+/*begin override toaster style*/
+.toast-bottom-right {
+    bottom: 30px;
+}
+.toast-top-right {
+    top: 10px;
+}
+.close{
+    opacity: 0.6;
+}
+.close:hover, .close:focus{
+    opacity: 1;
+}
+.toast-warning {
+    background-color: #f5c131;
+}
+.toast-error {
+    background-color: #ff3c37;
+}
+.toast-success {
+    background-color: #08c2b3;
+}
+.toast-info {
+    background-color: #088ac2;
+}
+#toast-container > div {
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    box-shadow: none;
+}
+#toast-container > div:hover {
+    box-shadow: none;
+}
+/*end override toaster style*/
 /* font-face */
 
 @font-face {font-family: "iconfont";

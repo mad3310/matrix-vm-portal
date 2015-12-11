@@ -1,10 +1,10 @@
 //点击刷新图片
 	function codeimgClick(){
-		$('.vali-codeimg').unbind('click').click(function(event) {
-			console.log('?')
-		  	$('.vali-codeimg').hide()
-		                    .attr('src', '/kaptcha?random='+Math.random()*100)
-		                    .fadeIn();
+		var _target=$('.vali-codeimg');
+		_target.unbind('click').click(function(event) {
+			_target.hide()
+                .attr('src', '/kaptcha?random='+Math.random()*100)
+                .fadeIn();
 		});
 	}
 	function inviteVali(obj){
@@ -69,7 +69,8 @@
 	}
 	function inviteBtnClick(){
 		$('.invitebtn').unbind('click').click(function(event){//click事件处理
-			var invitecode=$('.inviteCode').val(),code=$('.valicode-input').val(),inputdata='';
+			var invitecode=$('.inviteCode').val(),code=$('.valicode-input').val();
+			var inputdata='';
 			var ifneedcodeResult=ifneedcode();
 			ifneedcodeResult.done(function(data){
 				if(data.data){//需要验证码
@@ -96,22 +97,26 @@
 	}
 	function inviteajax(inputdata){
 		var time='';
+		var _idcode=$('#idcode'),
+			_blockInput=$('.blockInputs'),
+			_blockSuccess=$('.blockSuccess'),
+			_inviteCode=$('.inviteCode');
 		$.ajax({
 			url:'/inviteCode/verify',
 			type:'post',
 			data:inputdata,
 			success:function(data){
 				if(data.data==0){
-					if($('#idcode').length>0){//有验证码,刷新验证码
-						$('#idcode').attr('src', '../kaptcha');
+					if(_idcode.attr('src')){//有验证码,刷新验证码
+						_idcode.attr('src', '../kaptcha');
 					}
-					$('.blockInputs').removeClass('hide');
-					$('.blockSuccess').addClass('hide');
-					$('.inviteCode').addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
+					_blockInput.removeClass('hide');
+					_blockSuccess.addClass('hide');
+					_inviteCode.addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
 				}else if(data.data==1){//验证通过
-					$('.inviteCode').removeClass('has-error').next('.error-msg').addClass('hide');
-					$('.blockInputs').addClass('hide');
-					$('.blockSuccess').removeClass('hide');
+					_inviteCode.removeClass('has-error').next('.error-msg').addClass('hide');
+					_blockInput.addClass('hide');
+					_blockSuccess.removeClass('hide');
 					//初始化定时器
 					if(time){
 						clearTimeout(time)
@@ -121,9 +126,12 @@
 						},2000);
 					}
 				}else{
-					$('.blockInputs').removeClass('hide');
-					$('.blockSuccess').addClass('hide');
-					$('.inviteCode').addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
+					if(_idcode.attr('src')){//有验证码,刷新验证码
+						_idcode.attr('src', '../kaptcha');
+					}
+					_blockInput.removeClass('hide');
+					_blockSuccess.addClass('hide');
+					_inviteCode.addClass('has-error').next('.error-msg').removeClass('hide').text(data.msgs);
 				}
 			}
 		})

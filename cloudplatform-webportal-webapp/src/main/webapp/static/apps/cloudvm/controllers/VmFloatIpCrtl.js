@@ -216,6 +216,9 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.isListLoading=false;
             $scope.floatIpList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
+            if(!Utility.isServiceReady('serviceStatus4')){
+              WidgetService.notifyWarning('服务未完全创建，请刷新试试看！');
+            }
           });
       };
       getCheckedIp=function(){

@@ -485,6 +485,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           };
           $scope.isListLoading=true;
           HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), queryParams).then(function (data, status, headers, config) {
+            if(!Utility.isServiceReady('serviceStatus2')){
+              WidgetService.notifyWarning('服务未完全创建，请刷新试试看！');
+            }
             $scope.isListLoading=false;
             $scope.vmList = data.data.data;
             $scope.totalItems = data.data.totalRecords;

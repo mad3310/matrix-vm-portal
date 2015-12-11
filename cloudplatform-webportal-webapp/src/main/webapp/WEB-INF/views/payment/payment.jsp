@@ -9,6 +9,7 @@
 	<title>乐视云计算-最专业的VaaS云平台</title>
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
 	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
+	<link rel="stylesheet" href="/static/staticPage/css/toastr.css">
 	<link rel="stylesheet" href="/static/staticPage/css/common.css">
 	<link rel="stylesheet" href="/static/staticPage/css/style.css">
 </head>
@@ -100,7 +101,8 @@
 		</div>
 	</div>
 </body>
-<script src="/static/javascripts/jquery-1.11.3.js"></script>
+<script src="${ctx}/static/javascripts/jquery-1.11.3.js"></script>
+<script src="${ctx}/static/staticPage/js/toastr.js"></script>
 <script src="${ctx}/static/page-js/payment/payment.js"></script>
 <script>
 remainChose();//余额支付

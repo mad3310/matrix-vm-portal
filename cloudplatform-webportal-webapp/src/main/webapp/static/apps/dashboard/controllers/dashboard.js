@@ -81,7 +81,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 						}
 						$scope.mobileStatus=_data.mobileStatus;
 						$scope.emailStatus=_data.emailStatus;
-						$scope.userStatus=_data.examineStatus;
+						$scope.userStatus=_data.userStatus;
 					}
 				})
 			}
