@@ -28,5 +28,10 @@ public class ProductInfoRecordServiceImpl extends BaseServiceImpl<ProductInfoRec
 		return this.productInfoRecordDao;
 	}
 
+	@Override
+	public Long selectIdByInstanceId(String instanceId) {
+		return this.productInfoRecordDao.selectIdByInstanceId(instanceId);
+	}
+
 
 }

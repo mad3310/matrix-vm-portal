@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +53,7 @@ import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.IMessageProxyService;
 import com.letv.portal.service.message.SendMsgUtils;
+import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateAdapter;
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateAdapter;
@@ -73,6 +73,7 @@ import com.letv.portal.service.order.IOrderSubDetailService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
+import com.letv.portal.service.product.IProductManageService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 import com.letv.portal.util.ExceptionEmailServiceUtil;
@@ -127,6 +128,8 @@ public class PayServiceImpl implements IPayService {
 	private ICacheService<?> cacheService = CacheFactory.getCache();
 	@Autowired
     private TaskExecutor threadPoolTaskExecutor;
+	@Autowired
+	IProductManageService productManageService;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -139,6 +142,18 @@ public class PayServiceImpl implements IPayService {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		
 		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
+		for (OrderSub orderSub : orderSubs) {
+			if(orderSub.getSubscription().getBuyType()==0 && "1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
+				//去服务提供方验证参数是否合法
+				CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(orderSub.getSubscription().getProductId(), 
+						orderSub.getProductInfoRecord().getParams());
+				if(!validateResult.isSuccess()) {
+					logger.info("服务接口提供方验证失败：{}", validateResult.getFailureReason());
+					ret.put("alert", validateResult.getFailureReason());
+					return ret;
+				}
+			}
+		}
 		if (orderSubs == null || orderSubs.size() == 0) {
 			throw new ValidateException("参数未查出订单数据,orderNumber=" + orderNumber);
 		}
@@ -273,6 +288,14 @@ public class PayServiceImpl implements IPayService {
 		//生成用户账单。
 		billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
 				df.format(d), price.toString());
+		
+		//更新订阅状态为1-有效
+		for (OrderSub orderSub : orderSubs) {
+			Subscription subscription = new Subscription();
+			subscription.setId(orderSub.getSubscriptionId());
+			subscription.setValid(1);
+			subscriptionService.updateBySelective(subscription);
+		}
 		
 		//续费成功后发送邮件
 	    UserVo user = this.userService.getUcUserById(orderSubs.get(0).getCreateUser());
@@ -503,14 +526,14 @@ public class PayServiceImpl implements IPayService {
 	}
 
 	private void createInstance(final List<OrderSub> orderSubs) {
-		this.threadPoolTaskExecutor.execute(new Runnable() {
-			@Override
-			public void run() {
-				List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
-				for (OrderSub orders : orderSubs) {
-					records.add(orders.getProductInfoRecord());
-				}
-				for (OrderSub orderSub : orderSubs) {
+		final List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
+		for (OrderSub orders : orderSubs) {
+			records.add(orders.getProductInfoRecord());
+		}
+		for (final OrderSub orderSub : orderSubs) {
+			this.threadPoolTaskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
 					// 进行服务创建
 					if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
 						//真正服务创建所需参数
@@ -525,10 +548,10 @@ public class PayServiceImpl implements IPayService {
 							createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
 						}
 					}
-					
 				}
-			}
-		});
+			});
+			
+		}
 	}
 	
 	//创建路由器
@@ -705,19 +728,11 @@ public class PayServiceImpl implements IPayService {
 				//处理冻结金额(减少成功个数冻结余额，转移失败个数冻结金额到可用余额)
 				billUserAmountService.dealFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice, failPrice, (String)serviceParams.get("name"), productType);
 				
-				//更新订阅订单起始时间
-				updateSubscriptionAndOrderTime(orderSubs);
-				
-				if(failPrice.compareTo(new BigDecimal(0))==1) {
-					//发送用户通知
-					Long createUser = orderSubs.get(0).getCreateUser();
-					UserVo ucUser = this.userService.getUcUserById(createUser);
-					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
-				}
-				
 				//有成功的
 				if(succPrice.compareTo(new BigDecimal(0))==1) {
+					//更新订阅订单起始时间
+					updateSubscriptionAndOrderTime(orderSubs);
+					
 					SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 					//生成用户账单。
 					billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
@@ -771,6 +786,15 @@ public class PayServiceImpl implements IPayService {
 			        	this.exceptionEmailServiceUtil.sendErrorEmail("保存服务创建成功通知失败", "保存服务创建成功通知失败，返回结果:"+msgRet.toString());
 			        }
 			    }
+				
+				if(failPrice.compareTo(new BigDecimal(0))==1) {
+					//发送用户通知
+					Long createUser = orderSubs.get(0).getCreateUser();
+					UserVo ucUser = this.userService.getUcUserById(createUser);
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
+					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
+				}
+				
 			} catch (Exception e) {
 				StringBuffer sb = new StringBuffer();//发生异常时参数记录
 				sb.append("orderNumber=").append(orderSubs.get(0).getOrder().getOrderNumber());

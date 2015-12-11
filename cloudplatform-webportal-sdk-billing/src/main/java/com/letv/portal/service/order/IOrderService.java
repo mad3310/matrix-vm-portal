@@ -11,6 +11,6 @@ import com.letv.portal.service.IBaseService;
 public interface IOrderService extends IBaseService<Order> {
 	Order selectOrderById(Long orderId);
 
-	void updateOrderStatus(Long orderId);
+	void updateOrderStatus(Long orderId, Integer status);
 	
 }
