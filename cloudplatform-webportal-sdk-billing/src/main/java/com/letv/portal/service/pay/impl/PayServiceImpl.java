@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
@@ -155,7 +156,8 @@ public class PayServiceImpl implements IPayService {
 			}
 		}
 		if (orderSubs == null || orderSubs.size() == 0) {
-			throw new ValidateException("参数未查出订单数据,orderNumber=" + orderNumber);
+			ret.put("alert", "参数未查出订单数据,orderNumber=" + orderNumber);
+			return ret;
 		}
 		Order order = orderSubs.get(0).getOrder();
 		if (order.getStatus().intValue() == 1) {
@@ -174,12 +176,14 @@ public class PayServiceImpl implements IPayService {
 				//验证账户金额>=accountaccountMoney
 				BillUserAmount userAmount = this.billUserAmountService.getUserAmount(this.sessionService.getSession().getUserId());
 				if(userAmount.getAvailableAmount().compareTo(accountMoney)==-1) {
-					throw new ValidateException("账户余额小于传入金额!");
+					ret.put("alert", "账户余额小于传入金额!");
+					return ret;
 				}
 				
 				price = price.subtract(accountMoney);//需要支付的金额=总价-账户所选余额
 				if(price.doubleValue()<0) {
-					throw new ValidateException("传入金额不合法!");
+					ret.put("alert", "传入金额不合法!");
+					return ret;
 				}
 			}
 			
@@ -194,6 +198,7 @@ public class PayServiceImpl implements IPayService {
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 					} catch (IOException e) {
 						logger.error("pay inteface sendRedirect had error, ", e);
+						throw new CommonException(e);
 					}
 					//发送用户通知
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
@@ -214,6 +219,7 @@ public class PayServiceImpl implements IPayService {
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 					} catch (IOException e) {
 						logger.error("pay inteface sendRedirect had error, ", e);
+						throw new CommonException(e);
 					}
 					
 					//发送用户通知
@@ -228,7 +234,8 @@ public class PayServiceImpl implements IPayService {
 			
 			String pattern = (String) map.get("pattern");
 			if(pattern==null || (!Constants.ALI_PAY_PATTERN.equals(pattern) && !Constants.WX_PAY_PATTERN.equals(pattern))) {
-				throw new ValidateException("传入的支付方式异常，支付方式："+pattern);
+				ret.put("alert", "传入的支付方式异常，支付方式："+pattern);
+				return ret;
 			}
 			
 			//增加用户充值信息
@@ -253,6 +260,7 @@ public class PayServiceImpl implements IPayService {
 					response.sendRedirect(getPayUrl(url, params));
 				} catch (IOException e) {
 					logger.error("pay inteface sendRedirect had error, ", e);
+					throw new CommonException(e);
 				}
 			} else if (Constants.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
 				logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);

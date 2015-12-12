@@ -1624,7 +1624,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
 							return true;
 						}
-					}, 3, "路由器监听器实现方错误：重试超过3次");
+					}, 1, "路由器监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -1640,7 +1640,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.routerCreateFailed(new RouterCreateFailEvent(routerCreateConf.getRegion(), routerIndexRef, reason, listenerUserData));
 							return true;
 						}
-					}, 3, "路由器监听器实现方错误：重试超过3次");
+					}, 1, "路由器监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -2884,7 +2884,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
 							return true;
 						}
-					}, 3, "公网IP监听器实现方错误：重试超过3次");
+					}, 1, "公网IP监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -2900,7 +2900,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndexRef, reason, listenerUserData));
 							return true;
 						}
-					}, 3, "公网IP监听器实现方错误：重试超过3次");
+					}, 1, "公网IP监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
