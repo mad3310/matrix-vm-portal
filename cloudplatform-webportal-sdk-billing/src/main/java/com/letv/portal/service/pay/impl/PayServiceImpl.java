@@ -35,10 +35,9 @@ import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
+import com.letv.common.util.ExceptionEmailServiceUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
-import com.letv.mms.cache.ICacheService;
-import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.model.UserVo;
@@ -78,7 +77,6 @@ import com.letv.portal.service.product.IProductManageService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
-import com.letv.portal.util.ExceptionEmailServiceUtil;
 import com.letv.portal.util.MessageFormatServiceUtil;
 import com.letv.portal.util.SerialNumberUtil;
 import com.mysql.jdbc.StringUtils;
@@ -790,11 +788,7 @@ public class PayServiceImpl implements IPayService {
 			        msg.setMsgStatus("0");//未读
 			        msg.setMsgType("2");//个人消息
 			        msg.setCreatedTime(d);
-			        Map<String,Object> msgRet = this.messageProxyService.saveMessage(orderSubs.get(0).getCreateUser(), msg);
-			        if(!(Boolean) msgRet.get("result")) {
-			        	logger.error("保存服务创建成功通知失败，失败原因:"+msgRet.get("message"));
-			        	this.exceptionEmailServiceUtil.sendErrorEmail("保存服务创建成功通知失败", "保存服务创建成功通知失败，返回结果:"+msgRet.toString());
-			        }
+			        messageProxyService.saveMessage(orderSubs.get(0).getCreateUser(), msg);
 			    }
 				
 				if(failPrice.compareTo(new BigDecimal(0))==1) {

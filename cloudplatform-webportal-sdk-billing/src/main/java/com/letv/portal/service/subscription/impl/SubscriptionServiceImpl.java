@@ -369,10 +369,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	        msg.setMsgContent(str);
 	        msg.setMsgStatus("0");//未读
 	        msg.setMsgType("2");//个人消息
-	        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-	        if(!(Boolean) msgRet.get("result")) {
-	        	logger.error("保存云产品消息通知失败，失败原因:"+msgRet.get("message"));
-	        }
+	        messageProxyService.saveMessage(userId, msg);
 		}
 	}
 	

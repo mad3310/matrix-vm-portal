@@ -316,9 +316,9 @@ public class HttpsClient {
 		return xmString.toString();
 	}
 	
-	public static void main(String[] args) {
-		/*String result = HttpsClient.sendXMLDataByGet("https://oauthtest.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
-		System.out.println(result);*/
+	/*public static void main(String[] args) {
+		String result = HttpsClient.sendXMLDataByGet("https://oauthtest.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
+		System.out.println(result);
 		System.out.println("in");
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("x-auth-key", "swauthkey");
@@ -344,5 +344,19 @@ public class HttpsClient {
 			e.printStackTrace();
 		}
 		
+	}*/
+	
+	public static void main(String[] args) {
+		StringBuffer buffer = new StringBuffer();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("msgTitle", "1");
+		map.put("msgContent", "1");
+		map.put("msgStatus", "1");
+		map.put("msgType", "1");
+		buffer.append("https://lcp-uc.letvcloud.com/uc-http-api").append("/message/pubMessage.do?userid=").append("100");
+		//buffer.append("http://10.150.146.171/uc-http-api/pubMessage.do?userid=").append(userId);
+//		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
+		String result = HttpsClient.sendMapDataByPost(buffer.toString(), map, 1000, 2000);
+		System.out.println(result);
 	}
 }
