@@ -3,19 +3,15 @@ package com.letv.common.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.cert.CertificateException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -25,6 +21,7 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
@@ -238,8 +235,7 @@ public class HttpsClient {
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 */
-	public static String sendXMLDataByPost(String url, String xmlData,int connectionTimeout,int soTimeout)
-			throws ClientProtocolException, IOException {
+	public static String sendMapDataByPost(String url, Map<String,String> params,int connectionTimeout,int soTimeout) {
 		DefaultHttpClient client = getHttpclient(connectionTimeout, soTimeout);
 		enableSSL(client);
 		client.getParams().setParameter("http.protocol.content-charset",
@@ -249,41 +245,42 @@ public class HttpsClient {
 		client.getParams().setParameter(HTTP.DEFAULT_PROTOCOL_CHARSET,
 				HTTP.UTF_8);
 
-		// System.out.println(HTTP.UTF_8);
-		// Send data by post method in HTTP protocol,use HttpPost instead of
-		// PostMethod which was occurred in former version
-		// System.out.println(url);
 		HttpPost post = new HttpPost(url);
-		post.getParams().setParameter("http.protocol.content-charset",
-				HTTP.UTF_8);
-		post.getParams().setParameter(HTTP.CONTENT_ENCODING, HTTP.UTF_8);
-		post.getParams().setParameter(HTTP.CHARSET_PARAM, HTTP.UTF_8);
-		post.getParams()
-				.setParameter(HTTP.DEFAULT_PROTOCOL_CHARSET, HTTP.UTF_8);
-
-		// Construct a string entity
-		StringEntity entity = new StringEntity(getUTF8XMLString(xmlData),
-				"UTF-8");
-		entity.setContentType("text/xml;charset=UTF-8");
-		entity.setContentEncoding("UTF-8");
-		// Set XML entity
-		post.setEntity(entity);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		if (params != null && !params.isEmpty()) {
+			Set<String> keySet = params.keySet();
+			for (String key : keySet) {
+				nvps.add(new BasicNameValuePair(key, params.get(key)));
+			}
+		}
+		try {
+			post.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		// Set content type of request header
 		post.setHeader("Content-Type", "text/xml;charset=UTF-8");
 		// Execute request and get the response
-		HttpResponse response = client.execute(post);
-		HttpEntity entityRep = response.getEntity();
-		String strrep = "";
-		if (entityRep != null) {
-			strrep = EntityUtils.toString(response.getEntity());
-			// Do not need the rest
-			post.abort();
-		}
-		client.getConnectionManager().shutdown();
+        String strrep = null;
+        try {
+            HttpResponse response = client.execute(post);
+            HttpEntity entityRep = response.getEntity();
+            strrep = "";
+            if (entityRep != null) {
+                strrep = EntityUtils.toString(response.getEntity());
+                // Do not need the rest
+                post.abort();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            client.getConnectionManager().shutdown();
+        }
 		// Response Header - StatusLine - status code
 		// statusCode = response.getStatusLine().getStatusCode();
 		return strrep;
 	}
+
 	
 	private static DefaultHttpClient getHttpclient(int connectionTimeout,int soTimeout){
 		
@@ -319,9 +316,9 @@ public class HttpsClient {
 		return xmString.toString();
 	}
 	
-	public static void main(String[] args) {
-		/*String result = HttpsClient.sendXMLDataByGet("https://oauthtest.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
-		System.out.println(result);*/
+	/*public static void main(String[] args) {
+		String result = HttpsClient.sendXMLDataByGet("https://oauthtest.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
+		System.out.println(result);
 		System.out.println("in");
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("x-auth-key", "swauthkey");
@@ -347,5 +344,19 @@ public class HttpsClient {
 			e.printStackTrace();
 		}
 		
+	}*/
+	
+	public static void main(String[] args) {
+		StringBuffer buffer = new StringBuffer();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("msgTitle", "1");
+		map.put("msgContent", "1");
+		map.put("msgStatus", "1");
+		map.put("msgType", "1");
+		buffer.append("https://lcp-uc.letvcloud.com/uc-http-api").append("/message/pubMessage.do?userid=").append("100");
+		//buffer.append("http://10.150.146.171/uc-http-api/pubMessage.do?userid=").append(userId);
+//		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
+		String result = HttpsClient.sendMapDataByPost(buffer.toString(), map, 1000, 2000);
+		System.out.println(result);
 	}
 }

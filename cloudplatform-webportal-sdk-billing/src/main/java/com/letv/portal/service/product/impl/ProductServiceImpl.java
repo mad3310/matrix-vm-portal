@@ -429,19 +429,23 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	
 	/**
 	  * @Title: getProductInfo
-	  * @Description: 系统启动时保存产品信息到内存常量  
+	  * @Description: 保存产品信息到内存常量  
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年11月13日 下午3:09:14
 	  */
-	@PostConstruct
-	private void getProductInfo() {
-		List<Product> products = this.productDao.selectByMap(null);
-		Map<Long, String> productInfo = new HashMap<Long, String>();
-		for (Product product : products) {
-			productInfo.put(product.getId(), product.getName());
+	@SuppressWarnings("unchecked")
+	public Map<Long, String> getProductInfo() {
+		Map<Long, String> productInfo = (Map<Long, String>) this.cacheService.get(Constants.PRODUCT_INFO_ID_NAME, null);
+		if(null == productInfo) {
+			List<Product> products = this.productDao.selectByMap(null);
+			productInfo = new HashMap<Long, String>();
+			for (Product product : products) {
+				productInfo.put(product.getId(), product.getName());
+			}
+			this.cacheService.set(Constants.PRODUCT_INFO_ID_NAME, productInfo);
 		}
-		this.cacheService.set(Constants.PRODUCT_INFO_ID_NAME, productInfo);
+		return productInfo;
 	}
 
 	@Override

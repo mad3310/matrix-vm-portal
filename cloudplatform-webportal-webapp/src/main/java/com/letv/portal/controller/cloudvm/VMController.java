@@ -768,7 +768,7 @@ public class VMController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDispositionFormData("attachment", form.getName() + ".pem");
-            return new ResponseEntity<String>(privateKey, headers, HttpStatus.CREATED);
+            return new ResponseEntity<String>(privateKey, headers, HttpStatus.OK);
         } catch (Exception ex){
             return ExceptionUtil.getResponseEntityFromException(ex);
         }

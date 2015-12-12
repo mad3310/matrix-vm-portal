@@ -3,6 +3,7 @@ package com.letv.portal.interceptor;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -69,7 +70,8 @@ public class InviteCodeInterceptor implements HandlerInterceptor{
 		if (isAjaxRequest) {
 			responseJson(request,response,"未验证邀请码！");
 		} else {
-			response.sendRedirect("/invite/inviteCode");
+			RequestDispatcher rd = request.getRequestDispatcher("/invite/inviteCode");
+			rd.forward(request, response);
 		}
 		return false;
 	}
