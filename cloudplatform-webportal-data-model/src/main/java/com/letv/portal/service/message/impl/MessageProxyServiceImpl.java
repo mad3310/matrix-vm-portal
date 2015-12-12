@@ -3,6 +3,7 @@ package com.letv.portal.service.message.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.letv.common.util.HttpsClient;
 import com.letv.portal.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -76,7 +77,8 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 		buffer.append(UC_AUTH_API_HTTP).append("/message/pubMessage.do?userid=").append(ucId);
 		//buffer.append("http://10.150.146.171/uc-http-api/pubMessage.do?userid=").append(userId);
 		logger.info("saveMessage url:{}",buffer.toString());
-		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
+//		String result = HttpClient.post(buffer.toString(), map, 1000, 2000, null, null);
+		String result = HttpsClient.sendMapDataByPost(buffer.toString(), map, 1000, 2000);
 		logger.info("保存消息:"+map.toString());
 		return analyzeRestServiceResult(result, buffer.toString());
 		
