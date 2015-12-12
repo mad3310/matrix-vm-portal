@@ -122,7 +122,7 @@
 						clearTimeout(time)
 					}else{
 						time=setTimeout(function(){
-							window.location.href="http://lcp.letvcloud.com/profile";
+							window.location.href="/profile";
 						},2000);
 					}
 				}else{
