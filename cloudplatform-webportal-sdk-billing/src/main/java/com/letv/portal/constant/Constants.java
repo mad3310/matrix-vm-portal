@@ -1,11 +1,7 @@
 package com.letv.portal.constant;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class Constants {
-
-	public static final String KAPTCHA_COOKIE_NAME = "captcha_cache_id_";
 
 	public static final String PAY_URL = "http://api.zhifu.letv.com/pay/6";//支付宝支付接口&银行卡支付接口
 	

@@ -75,6 +75,7 @@ import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
 import com.letv.portal.service.product.IProductManageService;
+import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 import com.letv.portal.util.ExceptionEmailServiceUtil;
@@ -126,7 +127,8 @@ public class PayServiceImpl implements IPayService {
 	private ITemplateMessageSender defaultEmailSender;
 	@Autowired
     ExceptionEmailServiceUtil exceptionEmailServiceUtil;
-	private ICacheService<?> cacheService = CacheFactory.getCache();
+	@Autowired
+	private IProductService productService;
 	@Autowired
     private TaskExecutor threadPoolTaskExecutor;
 	@Autowired
@@ -282,8 +284,7 @@ public class PayServiceImpl implements IPayService {
 		String productName = this.cloudvmResourceInfoService.getCloudvmResourceNameById(orderSubs.get(0).getCreateUser()
 				, orderSubs.get(0).getSubscription().getProductId(), orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[0], 
 				orderSubs.get(0).getProductInfoRecord().getInstanceId().split("_")[1]);
-		@SuppressWarnings("unchecked")
-		Map<Long, String> productInfo = (Map<Long, String>) this.cacheService.get(Constants.PRODUCT_INFO_ID_NAME, null);
+		Map<Long, String> productInfo = this.productService.getProductInfo();
 		String productType = productInfo.get(orderSubs.get(0).getSubscription().getProductId());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    Date d = new Date();
@@ -544,16 +545,15 @@ public class PayServiceImpl implements IPayService {
 				public void run() {
 					// 进行服务创建
 					if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
-						//真正服务创建所需参数
-						Map<String, Object> serviceParams = transResult(orderSubs.get(0).getProductInfoRecord().getParams());
+						logger.debug("调用服务创建：{}-{}", orderSub.getSubscription().getProductId(), orderSub.getProductInfoRecord().getParams());
 						if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
-							createVm(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+							createVm(orderSubs, orderSub.getProductInfoRecord().getParams(), records);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
-							createVolume(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+							createVolume(orderSubs, orderSub.getProductInfoRecord().getParams(), records);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
-							createFloatingIp(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+							createFloatingIp(orderSubs, orderSub.getProductInfoRecord().getParams(), records);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_ROUTER) {//路由
-							createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+							createRouter(orderSubs, orderSub.getProductInfoRecord().getParams(), records);
 						}
 					}
 				}
@@ -563,9 +563,9 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	//创建路由器
-	private void createRouter(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records, final Map<String, Object> serviceParams) {
+	private void createRouter(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建路由器！");
-		this.resourceCreateService.createRouter(createUser, params, new RouterCreateAdapter() {
+		this.resourceCreateService.createRouter(orderSubs.get(0).getCreateUser(), params, new RouterCreateAdapter() {
 			private AtomicInteger successCount = new AtomicInteger();
 			private AtomicInteger failCount = new AtomicInteger();
 			private Map<String, String> idNames = new HashMap<String, String>();
@@ -576,7 +576,7 @@ public class PayServiceImpl implements IPayService {
 				successCount.incrementAndGet();
 				idNames.put(event.getRouterId(), event.getName());
 				serviceCallback(orderSubs, event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.ROUTER, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.ROUTER, idNames);
 			}
 			
 			@Override
@@ -584,7 +584,7 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("路由器创建失败回调! num="+event.getRouterIndex());
 				failCount.incrementAndGet();
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.ROUTER, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.ROUTER, idNames);
 			}
 		}, records);
 		
@@ -592,9 +592,9 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	//创建公网IP
-	private void createFloatingIp(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records, final Map<String, Object> serviceParams) {
+	private void createFloatingIp(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建公网IP！");
-		this.resourceCreateService.createFloatingIp(createUser, params, new FloatingIpCreateAdapter() {
+		this.resourceCreateService.createFloatingIp(orderSubs.get(0).getCreateUser(), params, new FloatingIpCreateAdapter() {
 			private AtomicInteger successCount = new AtomicInteger();
 			private AtomicInteger failCount = new AtomicInteger();
 			private Map<String, String> idNames = new HashMap<String, String>();
@@ -605,7 +605,7 @@ public class PayServiceImpl implements IPayService {
 				successCount.incrementAndGet();
 				idNames.put(event.getFloatingIpId(), event.getName());
 				serviceCallback(orderSubs, event.getRegion(), event.getFloatingIpId(), event.getFloatingIpIndex(), event.getUserData());
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.FLOATINGIP, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.FLOATINGIP, idNames);
 			}
 			
 			@Override
@@ -613,7 +613,7 @@ public class PayServiceImpl implements IPayService {
 					throws Exception {
 				logger.info("公网IP创建失败回调! num="+event.getFloatingIpIndex());
 				failCount.incrementAndGet();
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.FLOATINGIP, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.FLOATINGIP, idNames);
 			}
 			
 		}, records);
@@ -622,9 +622,9 @@ public class PayServiceImpl implements IPayService {
 	}
 
 	//创建云硬盘
-	private void createVolume(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records, final Map<String, Object> serviceParams) {
+	private void createVolume(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建云硬盘！");
-		this.resourceCreateService.createVolume(createUser, params, new VolumeCreateAdapter(){
+		this.resourceCreateService.createVolume(orderSubs.get(0).getCreateUser(), params, new VolumeCreateAdapter(){
 			private AtomicInteger successCount = new AtomicInteger();
 			private AtomicInteger failCount = new AtomicInteger();
 			private Map<String, String> idNames = new HashMap<String, String>();
@@ -635,14 +635,14 @@ public class PayServiceImpl implements IPayService {
 				successCount.incrementAndGet();
 				idNames.put(event.getVolumeId(), event.getName());
 				serviceCallback(orderSubs, event.getRegion(), event.getVolumeId(), event.getVolumeIndex(), event.getUserData());
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.VOLUME, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.VOLUME, idNames);
 			}
 			@Override
 			public void volumeCreateFailed(VolumeCreateFailEvent event)
 					throws Exception {
 				logger.info("云硬盘创建失败回调! num="+event.getVolumeIndex());
 				failCount.incrementAndGet();
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.VOLUME, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.VOLUME, idNames);
 			}
 			
 		}, records);
@@ -651,9 +651,9 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	//创建云主机
-	private void createVm(final List<OrderSub> orderSubs, long createUser, String params, final List<ProductInfoRecord> records, final Map<String, Object> serviceParams) {
+	private void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records) {
 		logger.info("开始创建云主机！");
-		this.resourceCreateService.createVm(createUser, params, new VmCreateAdapter() {
+		this.resourceCreateService.createVm(orderSubs.get(0).getCreateUser(), params, new VmCreateAdapter() {
 			private AtomicInteger successCount = new AtomicInteger();
 			private AtomicInteger failCount = new AtomicInteger();
 			private Map<String, String> idNames = new HashMap<String, String>();
@@ -664,14 +664,14 @@ public class PayServiceImpl implements IPayService {
 				successCount.incrementAndGet();
 				idNames.put(event.getVmId(), event.getName());
 				vmServiceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVolumeId(), event.getFloatingIpId(), event.getVmIndex(), event.getUserData());
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.OPENSTACK, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
 			}
 
 			@Override
 			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
 				logger.info("云主机创建失败回调! num="+event.getVmIndex());
 				failCount.incrementAndGet();
-				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), serviceParams, Constant.OPENSTACK, idNames);
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
 			}
 		}, records);
 		logger.info("调用创建云主机成功!");
@@ -721,13 +721,15 @@ public class PayServiceImpl implements IPayService {
 	  * @author lisuxiao
 	  * @date 2015年10月20日 下午2:37:43
 	  */
-	private void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, Map<String, Object> serviceParams, String productType, Map<String, String> idNames){
+	private void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, String params, String productType, Map<String, String> idNames){
 		Set<Integer> batch = new HashSet<Integer>();
 		for (OrderSub orderSub : orderSubs) {
 			batch.add(orderSub.getProductInfoRecord().getBatch());
 		}
 		if(successCount+failCount==batch.size()){
 			logger.info(productType+"创建全部回调完成.");
+			
+			Map<String, Object> serviceParams = transResult(params);
 			
 			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(successCount));
 			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(failCount));

@@ -81,4 +81,14 @@ public interface IProductService extends IBaseService<Product> {
 	  * @date 2015年10月21日 下午2:20:14
 	  */
 	Map<Long, BigDecimal> dailyConsume();
+	
+	/**
+	  * @Title: getProductInfo
+	  * @Description: 获取产品信息
+	  * @return Map<Long,String> key-产品id，value-产品名称   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年12月12日 下午1:23:20
+	  */
+	Map<Long, String> getProductInfo();
 }

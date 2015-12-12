@@ -473,14 +473,22 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                                     BigDecimal failPrice, String productName, String productType) {
         logger.info("开始处理冻结金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
         
+        BillUserAmount billUserAmount = null;
         int ret = 0;
 	    int count = 0;
 	    do {
+//            billUserAmount = this.getUserAmount(userId);
+//	    	if(billUserAmount.getFreezeAmount().compareTo(failPrice.add(succPrice))>=0) {
+//	    		billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(failPrice));
+//	            billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(failPrice.add(succPrice)));
+//	            ret = billUserAmountMapper.dealFreezeAmount(billUserAmount);
+//	        } 
 	    	Map<String, Object> params = new HashMap<String, Object>();
 	    	params.put("userId", userId);
 	    	params.put("dealPrice", failPrice.add(succPrice));
 	    	params.put("failPrice", failPrice);
             ret = billUserAmountMapper.dealFreezeAmount(params);
+            
             if(ret!=1) {
             	try {
     				Thread.sleep(1000);
@@ -492,7 +500,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    } while (ret < 1 && count < 10);
         
         if(ret==1) {
-        	BillUserAmount billUserAmount = this.getUserAmount(userId);
+        	billUserAmount = this.getUserAmount(userId);
         	//服务创建失败后保存回退金额消息通知
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date d = new Date();
