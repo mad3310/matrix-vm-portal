@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.mms.cache.ICacheService;
@@ -22,6 +23,7 @@ import com.letv.portal.dao.letvcloud.BillUserBillingMapper;
 import com.letv.portal.letvcloud.bill.vo.BillMonthBilling;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.model.letvcloud.BillUserBilling;
+import com.letv.portal.service.product.IProductService;
 
 /**
  * Created by chenliusong on 2015/6/29.
@@ -34,7 +36,8 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
     private BillUserBillingMapper billUserBillingDao;
     @Resource
     private BillUserAmountMapper billUserAmountMapper;
-    private ICacheService<?> cacheService = CacheFactory.getCache();
+    @Autowired
+	private IProductService productService;
 
     @Override
     public BillMonthBilling queryUserServiceBilling(Long userId, String month) {
@@ -43,8 +46,7 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
         //获取用户订单
         BigDecimal totalMoney = new BigDecimal(0);
         List<BillUserBilling> billUserBillingList = billUserBillingDao.getUserBillings(userId, month);
-        @SuppressWarnings("unchecked")
-		Map<Long, String> productInfo = (Map<Long, String>) this.cacheService.get(Constants.PRODUCT_INFO_ID_NAME, null);
+		Map<Long, String> productInfo = this.productService.getProductInfo();
         for (BillUserBilling billUserBilling : billUserBillingList) {
         	billUserBilling.setProductName(productInfo.get(Long.parseLong(billUserBilling.getServiceCode())));
             totalMoney = totalMoney.add(new BigDecimal(billUserBilling.getBillingMoney()));

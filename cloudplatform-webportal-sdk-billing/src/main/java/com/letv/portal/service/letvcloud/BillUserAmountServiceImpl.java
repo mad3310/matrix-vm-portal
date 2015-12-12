@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
+import com.letv.common.util.ExceptionEmailServiceUtil;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.dao.letvcloud.BillRechargeRecordMapper;
 import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
@@ -26,7 +27,6 @@ import com.letv.portal.model.letvcloud.BillRechargeRecord;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.model.message.Message;
 import com.letv.portal.service.message.IMessageProxyService;
-import com.letv.portal.util.ExceptionEmailServiceUtil;
 
 /**
  * Created by wanglei14 on 2015/6/28.
@@ -183,11 +183,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         msg.setMsgStatus("0");//未读
         msg.setMsgType("2");//个人消息
         msg.setCreatedTime(d);
-        Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-        if(!(Boolean) msgRet.get("result")) {
-            logger.error("充值成功后保存消息通知失败，失败原因:"+msgRet.get("message"));
-            this.exceptionEmailServiceUtil.sendErrorEmail("充值成功后保存消息通知失败", "充值成功后保存消息通知失败，返回结果:"+msgRet.toString());
-        }
+        this.messageProxyService.saveMessage(userId, msg);
 
         return ret;
 
@@ -335,11 +331,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             msg.setMsgStatus("0");//未读
             msg.setMsgType("2");//个人消息
             msg.setCreatedTime(d);
-            Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-            if(!(Boolean) msgRet.get("result")) {
-                logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
-                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
-            }
+            messageProxyService.saveMessage(userId, msg);
             
         	logger.info("转移冻结余额到可用余额成功,用户id:"+userId+",金额："+price);
         	return true;
@@ -394,11 +386,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             msg.setMsgStatus("0");//未读
             msg.setMsgType("2");//个人消息
             msg.setCreatedTime(new Date());
-            Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
-            if(!(Boolean) saveRet.get("result")) {
-                logger.error("续费成功后保存金额消息通知失败，失败原因:"+saveRet.get("message"));
-                this.exceptionEmailServiceUtil.sendErrorEmail("续费成功后保存金额消息通知失败", "续费成功后保存金额消息通知失败，返回结果:"+saveRet.toString());
-            }
+            this.messageProxyService.saveMessage(userId, msg);
             
 	    	logger.info("扣除可用余额成功,用户id:"+userId+",金额："+price);
         	return true;
@@ -454,11 +442,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
             msg.setMsgStatus("0");//未读
             msg.setMsgType("2");//个人消息
             msg.setCreatedTime(d);
-            Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-            if(!(Boolean) msgRet.get("result")) {
-                logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+msgRet.get("message"));
-                this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+msgRet.toString());
-            }
+            this.messageProxyService.saveMessage(userId, msg);
         	
 	    	logger.info("扣除冻结金额成功,用户id:"+userId+",金额："+price);
         	return true;
@@ -473,14 +457,22 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                                     BigDecimal failPrice, String productName, String productType) {
         logger.info("开始处理冻结金额,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});
         
+        BillUserAmount billUserAmount = null;
         int ret = 0;
 	    int count = 0;
 	    do {
+//            billUserAmount = this.getUserAmount(userId);
+//	    	if(billUserAmount.getFreezeAmount().compareTo(failPrice.add(succPrice))>=0) {
+//	    		billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(failPrice));
+//	            billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(failPrice.add(succPrice)));
+//	            ret = billUserAmountMapper.dealFreezeAmount(billUserAmount);
+//	        } 
 	    	Map<String, Object> params = new HashMap<String, Object>();
 	    	params.put("userId", userId);
 	    	params.put("dealPrice", failPrice.add(succPrice));
 	    	params.put("failPrice", failPrice);
             ret = billUserAmountMapper.dealFreezeAmount(params);
+            
             if(ret!=1) {
             	try {
     				Thread.sleep(1000);
@@ -492,7 +484,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    } while (ret < 1 && count < 10);
         
         if(ret==1) {
-        	BillUserAmount billUserAmount = this.getUserAmount(userId);
+        	billUserAmount = this.getUserAmount(userId);
         	//服务创建失败后保存回退金额消息通知
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date d = new Date();
@@ -518,11 +510,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                 msg.setMsgStatus("0");//未读
                 msg.setMsgType("2");//个人消息
                 msg.setCreatedTime(d);
-                Map<String,Object> saveRet = this.messageProxyService.saveMessage(userId, msg);
-                if(!(Boolean) saveRet.get("result")) {
-                    logger.error("服务创建成功后保存扣减金额消息通知失败，失败原因:"+saveRet.get("message"));
-                    this.exceptionEmailServiceUtil.sendErrorEmail("服务创建成功后保存扣减金额消息通知失败", "服务创建成功后保存扣减金额消息通知失败，返回结果:"+saveRet.toString());
-                }
+                this.messageProxyService.saveMessage(userId, msg);
             }
 
             if(failPrice.doubleValue()!=0) {
@@ -544,11 +532,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
                 msg.setMsgStatus("0");//未读
                 msg.setMsgType("2");//个人消息
                 msg.setCreatedTime(d);
-                Map<String,Object> msgRet = this.messageProxyService.saveMessage(userId, msg);
-                if(!(Boolean) msgRet.get("result")) {
-                    logger.error("服务创建失败后保存回退金额消息通知失败，失败原因:"+msgRet.get("message"));
-                    this.exceptionEmailServiceUtil.sendErrorEmail("服务创建失败后保存回退金额消息通知失败", "服务创建失败后保存回退金额消息通知失败，返回结果:"+msgRet.toString());
-                }
+                this.messageProxyService.saveMessage(userId, msg);
             }
         	
 	    	logger.info("处理冻结金额成功,用户id:{},成功金额：{},失败金额：{}", new Object[]{userId, succPrice, failPrice});

@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.mms.cache.ICacheService;
-import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.order.IOrderSubDao;
 import com.letv.portal.dao.order.IOrderSubDetailDao;
@@ -27,6 +25,7 @@ import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.order.IOrderSubService;
+import com.letv.portal.service.product.IProductService;
 
 @Service("orderSubService")
 public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IOrderSubService {
@@ -37,7 +36,8 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	private IOrderSubDetailDao orderDetailDao;
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
-	private ICacheService<?> cacheService = CacheFactory.getCache();
+	@Autowired
+	private IProductService productService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(OrderSubServiceImpl.class);
 	
@@ -123,7 +123,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 		
 		List<Map<String, Object>> retList = new ArrayList<Map<String, Object>>();
 		Set<String> judgeParam = new HashSet<String>();
-		Map<Long, String> productInfo = (Map<Long, String>) this.cacheService.get(Constants.PRODUCT_INFO_ID_NAME, null);
+		Map<Long, String> productInfo = productService.getProductInfo();
 		
 		for (OrderSub orderSub : orderSubs) {
 			if(judgeParam.contains(orderSub.getSubscription().getProductId()+orderSub.getProductInfoRecord().getParams())) {

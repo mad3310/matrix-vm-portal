@@ -25,7 +25,7 @@
     <update id="dealFreezeAmount" parameterType="java.util.Map">
         update bill_user_amount
         <set>
-            availableAmount = availableAmount - #{failPrice},
+            availableAmount = availableAmount + #{failPrice},
             freezeAmount = freezeAmount - #{dealPrice},
             lastUpdateTime = NOW()
         </set>
