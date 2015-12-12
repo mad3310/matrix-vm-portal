@@ -24,13 +24,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
@@ -53,6 +54,7 @@ import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.IMessageProxyService;
 import com.letv.portal.service.message.SendMsgUtils;
+import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateAdapter;
 import com.letv.portal.service.openstack.billing.listeners.RouterCreateAdapter;
@@ -72,6 +74,7 @@ import com.letv.portal.service.order.IOrderSubDetailService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
+import com.letv.portal.service.product.IProductManageService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 import com.letv.portal.util.ExceptionEmailServiceUtil;
@@ -124,6 +127,10 @@ public class PayServiceImpl implements IPayService {
 	@Autowired
     ExceptionEmailServiceUtil exceptionEmailServiceUtil;
 	private ICacheService<?> cacheService = CacheFactory.getCache();
+	@Autowired
+    private TaskExecutor threadPoolTaskExecutor;
+	@Autowired
+	IProductManageService productManageService;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -136,8 +143,21 @@ public class PayServiceImpl implements IPayService {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		
 		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
+		for (OrderSub orderSub : orderSubs) {
+			if(orderSub.getSubscription().getBuyType()==0 && "1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
+				//去服务提供方验证参数是否合法
+				CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(orderSub.getSubscription().getProductId(), 
+						orderSub.getProductInfoRecord().getParams());
+				if(!validateResult.isSuccess()) {
+					logger.info("服务接口提供方验证失败：{}", validateResult.getFailureReason());
+					ret.put("alert", validateResult.getFailureReason());
+					return ret;
+				}
+			}
+		}
 		if (orderSubs == null || orderSubs.size() == 0) {
-			throw new ValidateException("参数未查出订单数据,orderNumber=" + orderNumber);
+			ret.put("alert", "参数未查出订单数据,orderNumber=" + orderNumber);
+			return ret;
 		}
 		Order order = orderSubs.get(0).getOrder();
 		if (order.getStatus().intValue() == 1) {
@@ -156,12 +176,14 @@ public class PayServiceImpl implements IPayService {
 				//验证账户金额>=accountaccountMoney
 				BillUserAmount userAmount = this.billUserAmountService.getUserAmount(this.sessionService.getSession().getUserId());
 				if(userAmount.getAvailableAmount().compareTo(accountMoney)==-1) {
-					throw new ValidateException("账户余额小于传入金额!");
+					ret.put("alert", "账户余额小于传入金额!");
+					return ret;
 				}
 				
 				price = price.subtract(accountMoney);//需要支付的金额=总价-账户所选余额
 				if(price.doubleValue()<0) {
-					throw new ValidateException("传入金额不合法!");
+					ret.put("alert", "传入金额不合法!");
+					return ret;
 				}
 			}
 			
@@ -176,6 +198,7 @@ public class PayServiceImpl implements IPayService {
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 					} catch (IOException e) {
 						logger.error("pay inteface sendRedirect had error, ", e);
+						throw new CommonException(e);
 					}
 					//发送用户通知
 					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
@@ -196,6 +219,7 @@ public class PayServiceImpl implements IPayService {
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 					} catch (IOException e) {
 						logger.error("pay inteface sendRedirect had error, ", e);
+						throw new CommonException(e);
 					}
 					
 					//发送用户通知
@@ -210,7 +234,8 @@ public class PayServiceImpl implements IPayService {
 			
 			String pattern = (String) map.get("pattern");
 			if(pattern==null || (!Constants.ALI_PAY_PATTERN.equals(pattern) && !Constants.WX_PAY_PATTERN.equals(pattern))) {
-				throw new ValidateException("传入的支付方式异常，支付方式："+pattern);
+				ret.put("alert", "传入的支付方式异常，支付方式："+pattern);
+				return ret;
 			}
 			
 			//增加用户充值信息
@@ -235,6 +260,7 @@ public class PayServiceImpl implements IPayService {
 					response.sendRedirect(getPayUrl(url, params));
 				} catch (IOException e) {
 					logger.error("pay inteface sendRedirect had error, ", e);
+					throw new CommonException(e);
 				}
 			} else if (Constants.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
 				logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
@@ -270,6 +296,14 @@ public class PayServiceImpl implements IPayService {
 		//生成用户账单。
 		billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
 				df.format(d), price.toString());
+		
+		//更新订阅状态为1-有效
+		for (OrderSub orderSub : orderSubs) {
+			Subscription subscription = new Subscription();
+			subscription.setId(orderSub.getSubscriptionId());
+			subscription.setValid(1);
+			subscriptionService.updateBySelective(subscription);
+		}
 		
 		//续费成功后发送邮件
 	    UserVo user = this.userService.getUcUserById(orderSubs.get(0).getCreateUser());
@@ -499,27 +533,31 @@ public class PayServiceImpl implements IPayService {
 		return m.getMD5ofStr(sb.toString()).toLowerCase();
 	}
 
-	@Async
 	private void createInstance(final List<OrderSub> orderSubs) {
-		List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
+		final List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
 		for (OrderSub orders : orderSubs) {
 			records.add(orders.getProductInfoRecord());
 		}
-		for (OrderSub orderSub : orderSubs) {
-			// 进行服务创建
-			if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
-				//真正服务创建所需参数
-				Map<String, Object> serviceParams = transResult(orderSubs.get(0).getProductInfoRecord().getParams());
-				if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
-					createVm(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
-					createVolume(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
-					createFloatingIp(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
-				} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_ROUTER) {//路由
-					createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+		for (final OrderSub orderSub : orderSubs) {
+			this.threadPoolTaskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					// 进行服务创建
+					if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
+						//真正服务创建所需参数
+						Map<String, Object> serviceParams = transResult(orderSubs.get(0).getProductInfoRecord().getParams());
+						if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
+							createVm(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
+							createVolume(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
+							createFloatingIp(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_ROUTER) {//路由
+							createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records, serviceParams);
+						}
+					}
 				}
-			}
+			});
 			
 		}
 	}
@@ -698,19 +736,11 @@ public class PayServiceImpl implements IPayService {
 				//处理冻结金额(减少成功个数冻结余额，转移失败个数冻结金额到可用余额)
 				billUserAmountService.dealFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice, failPrice, (String)serviceParams.get("name"), productType);
 				
-				//更新订阅订单起始时间
-				updateSubscriptionAndOrderTime(orderSubs);
-				
-				if(failPrice.compareTo(new BigDecimal(0))==1) {
-					//发送用户通知
-					Long createUser = orderSubs.get(0).getCreateUser();
-					UserVo ucUser = this.userService.getUcUserById(createUser);
-					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
-				}
-				
 				//有成功的
 				if(succPrice.compareTo(new BigDecimal(0))==1) {
+					//更新订阅订单起始时间
+					updateSubscriptionAndOrderTime(orderSubs);
+					
 					SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 					//生成用户账单。
 					billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
@@ -764,6 +794,15 @@ public class PayServiceImpl implements IPayService {
 			        	this.exceptionEmailServiceUtil.sendErrorEmail("保存服务创建成功通知失败", "保存服务创建成功通知失败，返回结果:"+msgRet.toString());
 			        }
 			    }
+				
+				if(failPrice.compareTo(new BigDecimal(0))==1) {
+					//发送用户通知
+					Long createUser = orderSubs.get(0).getCreateUser();
+					UserVo ucUser = this.userService.getUcUserById(createUser);
+					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
+					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
+				}
+				
 			} catch (Exception e) {
 				StringBuffer sb = new StringBuffer();//发生异常时参数记录
 				sb.append("orderNumber=").append(orderSubs.get(0).getOrder().getOrderNumber());

@@ -721,7 +721,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), volumeIndexRef, volume.getName(), listenerUserData));
 							return true;
 						}
-					}, 3, "云硬盘监听器实现方错误：重试超过3次");
+					}, 1, "云硬盘监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -737,7 +737,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							listener.volumeCreateFailed(new VolumeCreateFailEvent(volumeCreateConf.getRegion(), volumeIndexRef, reason, listenerUserData));
 							return true;
 						}
-					}, 3, "云硬盘监听器实现方错误：重试超过3次");
+					}, 1, "云硬盘监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}

@@ -160,7 +160,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		cal.setTimeInMillis(date.getTime());
 		cal.add(Calendar.MONTH, t);
 		sub.setEndTime(cal.getTime());
-		sub.setValid(1);
+		sub.setValid(0);
 		sub.setUserId(userId);
 		sub.setCreateUser(userId);
 		sub.setDeleted(false);

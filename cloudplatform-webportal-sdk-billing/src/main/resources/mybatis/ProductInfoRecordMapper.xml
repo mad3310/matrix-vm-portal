@@ -81,6 +81,15 @@
 	        <include refid="Common_Where_Clause" />
 	</select>
 	
+	<select id="selectIdByInstanceId" resultType="java.lang.Long" parameterType="java.lang.Long">
+	    select
+	        record.ID
+	    from
+	        MATRIX_PRODUCT_INFO_RECORD record
+	    where
+	    	record.INSTANCE_ID=#{instanceId}
+	</select>
+	
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="ProductInfoRecord">
 		update MATRIX_PRODUCT_INFO_RECORD

@@ -1624,7 +1624,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
 							return true;
 						}
-					}, 3, "路由器监听器实现方错误：重试超过3次");
+					}, 1, "路由器监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -1640,7 +1640,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.routerCreateFailed(new RouterCreateFailEvent(routerCreateConf.getRegion(), routerIndexRef, reason, listenerUserData));
 							return true;
 						}
-					}, 3, "路由器监听器实现方错误：重试超过3次");
+					}, 1, "路由器监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -2708,7 +2708,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 		QuotaApi quotaApi = quotaApiOptional.get();
 
-		Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
 				.getFloatingIPApi(region);
 		if (!floatingIPApiOptional.isPresent()) {
 			throw new APINotAvailableException(FloatingIPApi.class);
@@ -2732,19 +2732,16 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					"User quota is not available.", "用户配额不可用");
 		}
 
-		final int floatingIpCountQuota = quota.getFloatingIp()
-				- quota.getRouter();
+		final int floatingIpCountQuota = quota.getFloatingIp();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.",
-					"公网IP数量超过配额");
-		}
+				"公网IP数量超过配额");
+	}
 
-		final int floatingIpBandWidthQuota = quota.getBandWidth()
-				- quota.getRouter()
-				* openStackConf.getRouterGatewayBandWidth();
+		final int floatingIpBandWidthQuota = quota.getBandWidth();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
@@ -2813,8 +2810,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					"User quota is not available.", "用户配额不可用");
 		}
 
-		final int floatingIpCountQuota = quota.getFloatingIp()
-				- quota.getRouter();
+		final int floatingIpCountQuota = quota.getFloatingIp();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
@@ -2823,9 +2819,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					"公网IP数量超过配额");
 		}
 
-		final int floatingIpBandWidthQuota = quota.getBandWidth()
-				- quota.getRouter()
-				* openStackConf.getRouterGatewayBandWidth();
+		final int floatingIpBandWidthQuota = quota.getBandWidth();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
@@ -2884,7 +2878,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
 							return true;
 						}
-					}, 3, "公网IP监听器实现方错误：重试超过3次");
+					}, 1, "公网IP监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}
@@ -2900,7 +2894,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							listener.floatingIpCreateFailed(new FloatingIpCreateFailEvent(createConf.getRegion(), floatingIpIndexRef, reason, listenerUserData));
 							return true;
 						}
-					}, 3, "公网IP监听器实现方错误：重试超过3次");
+					}, 1, "公网IP监听器实现方错误：重试超过1次");
 				} catch (Exception e) {
 					ExceptionUtil.processBillingException(e);
 				}

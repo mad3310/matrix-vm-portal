@@ -45,10 +45,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements IOrderSe
 	}
 
 	@Override
-	public void updateOrderStatus(Long orderId) {
+	public void updateOrderStatus(Long orderId, Integer status) {
 		Order o = new Order();
 		o.setId(orderId);
-		o.setStatus(2);//已付款
+		o.setStatus(status);
 		this.orderDao.updateBySelective(o);
 	}
 

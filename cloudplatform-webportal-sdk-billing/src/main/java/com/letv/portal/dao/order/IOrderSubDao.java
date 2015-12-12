@@ -46,4 +46,15 @@ public interface IOrderSubDao extends IBaseDao<OrderSub> {
 	  * @date 2015年11月2日 下午3:55:10
 	  */
 	OrderSub selectDetailBySubscriptionId(Map<String, Object> params);
+	
+	/**
+	  * @Title: selectOrderIdByProductInfoRecordId
+	  * @Description: 根据产品信息记录表id查询待支付订单id
+	  * @param productInfoRecordId
+	  * @return List<Long>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年12月11日 下午3:33:54
+	  */
+	List<Long> selectOrderIdByProductInfoRecordId(Long productInfoRecordId);
 }

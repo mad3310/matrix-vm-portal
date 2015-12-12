@@ -115,4 +115,15 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  * @date 2015年12月9日 下午6:31:25
 	  */
 	boolean queryServiceStatus(String orderNumber);
+	
+	/**
+	  * @Title: selectOrderIdByProductInfoRecordId
+	  * @Description: 根据产品信息id查询待支付订单id
+	  * @param productInfoRecordId
+	  * @return List<Long>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年12月11日 下午3:21:22
+	  */
+	List<Long> selectOrderIdByProductInfoRecordId(Long productInfoRecordId);
 }
