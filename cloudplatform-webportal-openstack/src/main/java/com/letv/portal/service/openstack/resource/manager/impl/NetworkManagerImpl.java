@@ -2708,7 +2708,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 		QuotaApi quotaApi = quotaApiOptional.get();
 
-		Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
 				.getFloatingIPApi(region);
 		if (!floatingIPApiOptional.isPresent()) {
 			throw new APINotAvailableException(FloatingIPApi.class);
@@ -2732,19 +2732,16 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					"User quota is not available.", "用户配额不可用");
 		}
 
-		final int floatingIpCountQuota = quota.getFloatingIp()
-				- quota.getRouter();
+		final int floatingIpCountQuota = quota.getFloatingIp();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.",
-					"公网IP数量超过配额");
-		}
+				"公网IP数量超过配额");
+	}
 
-		final int floatingIpBandWidthQuota = quota.getBandWidth()
-				- quota.getRouter()
-				* openStackConf.getRouterGatewayBandWidth();
+		final int floatingIpBandWidthQuota = quota.getBandWidth();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
@@ -2813,8 +2810,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					"User quota is not available.", "用户配额不可用");
 		}
 
-		final int floatingIpCountQuota = quota.getFloatingIp()
-				- quota.getRouter();
+		final int floatingIpCountQuota = quota.getFloatingIp();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
@@ -2823,9 +2819,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					"公网IP数量超过配额");
 		}
 
-		final int floatingIpBandWidthQuota = quota.getBandWidth()
-				- quota.getRouter()
-				* openStackConf.getRouterGatewayBandWidth();
+		final int floatingIpBandWidthQuota = quota.getBandWidth();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
