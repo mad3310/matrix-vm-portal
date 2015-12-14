@@ -7,12 +7,12 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <title>控制台-乐视云平台</title>
             <link rel="shortcut icon" href="/static/images/favicon.ico">
-            <link rel="stylesheet" href="/static/stylesheets/bootstrap-f2d483c4e9.css">
-            <link rel="stylesheet" href="/static/stylesheets/font-awesome-81ce96f2e2.css">
-            <link rel="stylesheet" href="/static/stylesheets/toaster-4f7c5e6480.css">
-            <link rel="stylesheet" href="/static/stylesheets/rzslider-7c3df6f208.css">
-            <link rel="stylesheet" href="/static/stylesheets/common-313aa6550a.css">
-            <link rel="stylesheet" href="/static/stylesheets/style-cloudvm-86873e957c.css">
+            <link rel="stylesheet" href="/static/stylesheets/bootstrap.css">
+            <link rel="stylesheet" href="/static/stylesheets/font-awesome.css">
+            <link rel="stylesheet" href="/static/stylesheets/toaster.css">
+            <link rel="stylesheet" href="/static/stylesheets/rzslider.css">
+            <link rel="stylesheet" href="/static/stylesheets/common.css">
+            <link rel="stylesheet" href="/static/stylesheets/style-cloudvm.css">
         </head>
         <style>
         .main .side-bar{height:100%;margin-top:0;padding-top:10px;z-index:200;background:#ebebeb;}

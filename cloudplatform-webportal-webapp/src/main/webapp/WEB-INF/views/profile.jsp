@@ -7,11 +7,11 @@
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="shortcut icon" href="/static/images/favicon.ico">
-	<link rel="stylesheet" href="/static/stylesheets/bootstrap-f2d483c4e9.css">
-    <link rel="stylesheet" href="/static/stylesheets/toaster-4f7c5e6480.css">
-    <link rel="stylesheet" href="/static/stylesheets/common-313aa6550a.css">
-    <link rel="stylesheet" type="text/css" href="/static/stylesheets/style-profile-951f1e9b5e.css">
-	<title>控制台-乐视云平台</title>
+	<link rel="stylesheet" href="/static/stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="/static/stylesheets/toaster.css">
+    <link rel="stylesheet" href="/static/stylesheets/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/style-profile.css">
+    <title>控制台-乐视云平台</title>
 </head>
 <style>
 .main .side-bar{height:100%;margin-top:0;padding-top:10px;z-index:200;background:#ebebeb;}
