@@ -45,7 +45,7 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
 				.checkQuota(context.getUserId(), context.getVmCreateConf().getRegion(), CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpTotalCount + context.getVmCreateConf().getCount());
 		if (floatingIpTotalCount + context.getVmCreateConf().getCount() > quota
-				.getFloatingIp() - quota.getRouter()) {
+				.getFloatingIp()) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.", "公网IP数量超过配额。");
 		}
@@ -54,10 +54,7 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
 						* context.getVmCreateConf().getBandWidth());
 		if (floatingIpTotalBandWidth + context.getVmCreateConf().getCount()
 				* context.getVmCreateConf().getBandWidth() > quota
-				.getBandWidth()
-				- quota.getRouter()
-				* context.getVmManager().getOpenStackConf()
-						.getRouterGatewayBandWidth()) {
+				.getBandWidth()) {
 			throw new UserOperationException(
 					"Floating IP band width exceeding the quota.",
 					"公网IP带宽超过配额。");
