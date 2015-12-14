@@ -5,7 +5,7 @@
        <head>
             <meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-            <title>Le云控制台</title>
+            <title>控制台-乐视云平台</title>
             <link rel="shortcut icon" href="/static/images/favicon.ico">
             <link rel="stylesheet" href="/static/stylesheets/bootstrap-f2d483c4e9.css">
             <link rel="stylesheet" href="/static/stylesheets/font-awesome-81ce96f2e2.css">

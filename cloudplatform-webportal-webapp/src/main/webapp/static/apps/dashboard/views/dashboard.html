@@ -7,12 +7,13 @@
 					<a href="https://lcp-uc.letvcloud.com/userView/ucOverview.do"><img class="userimg" src="{{userimg}}" ng-hide="!userimg"></a>
 				</div>
 				<div class="le-col-5">
-					<div class="messagetitle">您好：<a href="https://lcp-uc.letvcloud.com/userView/ucOverview.do"><span class="text-blue">{{username}}</span></a></div>
-					<ul>
+					<div class="messagetitle">您好：<a href="http://lcp-uc.letvcloud.com/userView/ucOverview.do"><span class="text-blue">{{username}}</span></a></div>
+					<div class="message">账户余额：&nbsp;&nbsp;<span class="remain">¥{{remain}}</span></div>
+					<!--<ul>
 						<li><a href="https://lcp-uc.letvcloud.com/userView/accountManagerView.do"><i class="iconfont icon-icon" ng-class="{1:'', 'undefined':'text-gray'}[mobileStatus]"></i></a></li>
 						<li><a href="https://lcp-uc.letvcloud.com/userView/accountManagerView.do"><i class="iconfont icon-xinfeng" ng-class="{1:'', 'undefined':'text-gray'}[emailStatus]"></i></a></li>
 						<li><a href="https://lcp-uc.letvcloud.com/userView/accountManagerView.do"><i class="iconfont icon-shenfenrenzheng" ng-class="{1:'', 'undefined':'text-gray'}[userStatus]"></i></a></li>
-					</ul>
+					</ul>-->
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-6">
@@ -26,10 +27,9 @@
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<div class="clearfix">
+			<div class="clearfix" style="margin-top: 17px;">
 				<div class="le-col-offset-2 le-col-5">
-					<div>账户余额：&nbsp;&nbsp;<span class="remain">¥{{remain}}</span></div>
-					<div style="margin-top:10px;"><span class="text-gray">预估消费：&nbsp;&nbsp;</span>¥{{consume.total || '0.00'}}<span class="text-gray">&nbsp;&nbsp;元/天</span></div>
+					<div style="margin-top:6px;"><span class="text-gray">预估消费：&nbsp;&nbsp;</span>¥{{consume.total || '0.00'}}<span class="text-gray">&nbsp;&nbsp;元/天</span></div>
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-offset-6 le-col-6">

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/stylesheets/toaster-4f7c5e6480.css">
     <link rel="stylesheet" href="/static/stylesheets/common-313aa6550a.css">
     <link rel="stylesheet" type="text/css" href="/static/stylesheets/style-profile-951f1e9b5e.css">
-	<title>Le云控制台</title>
+	<title>控制台-乐视云平台</title>
 </head>
 <style>
 .main .side-bar{height:100%;margin-top:0;padding-top:10px;z-index:200;background:#ebebeb;}
