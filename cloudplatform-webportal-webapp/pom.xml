@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    	<artifactId>webportal</artifactId>
-    	<groupId>com.letv.cloudplatform</groupId>
+        <artifactId>webportal</artifactId>
+        <groupId>com.letv.cloudplatform</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -13,12 +13,12 @@
     <packaging>war</packaging>
 
     <properties>
-       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-   </properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 
     <dependencies>
-		<!-- logback相关 -->
+        <!-- logback相关 -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -40,7 +40,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -130,19 +130,19 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
         </dependency>
-        <dependency>  
-		    <groupId>org.codehaus.jackson</groupId>  
-		    <artifactId>jackson-core-asl</artifactId>  
-		</dependency>  
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+        </dependency>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
         <dependency>
-		   <groupId>org.apache.httpcomponents</groupId>
-		   <artifactId>httpclient</artifactId>
-		</dependency>
-		
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -196,22 +196,22 @@
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
         </dependency>
-         <dependency>
-		  <groupId>commons-io</groupId>
-		  <artifactId>commons-io</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
         <!-- SECURITY begin -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-ehcache</artifactId>
-		</dependency>
-		<!-- SECURITY end -->
-		
-		<!-- zxing -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+        </dependency>
+        <!-- SECURITY end -->
+
+        <!-- zxing -->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
@@ -220,58 +220,58 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
         </dependency>
-		
-		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>sitemesh</artifactId>
-		</dependency>
-		
+
         <dependency>
-		  <groupId>janino</groupId>
-		  <artifactId>janino</artifactId>
-		</dependency>
-		<dependency>
-		  <groupId>org.google</groupId>
-		  <artifactId>kaptcha</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		
-		<dependency>
-        	<groupId>com.letv.cloudplatform</groupId>
-        	<artifactId>webportal-common</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>janino</groupId>
+            <artifactId>janino</artifactId>
         </dependency>
         <dependency>
-        	<groupId>com.letv.cloudplatform</groupId>
-        	<artifactId>webportal-data-model</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
+            <groupId>org.google</groupId>
+            <artifactId>kaptcha</artifactId>
         </dependency>
         <dependency>
-        	<groupId>com.letv.cloudplatform</groupId>
-        	<artifactId>webportal-cache-client</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
-        	<exclusions>
-		         <exclusion>  
-		            <groupId>com.letv.cloudplatform</groupId>
-		        	<artifactId>webportal-common-exception</artifactId>
-		         </exclusion>  
-        	</exclusions>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.letv.cloudplatform</groupId>
+            <artifactId>webportal-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-        	<groupId>com.letv.cloudplatform</groupId>
-        	<artifactId>webportal-sdk-rds</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
+            <groupId>com.letv.cloudplatform</groupId>
+            <artifactId>webportal-data-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.letv.cloudplatform</groupId>
+            <artifactId>webportal-cache-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.letv.cloudplatform</groupId>
+                    <artifactId>webportal-common-exception</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.letv.cloudplatform</groupId>
+            <artifactId>webportal-sdk-rds</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.letv.cloudplatform</groupId>
@@ -281,42 +281,78 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-	       	<groupId>com.letv.cloudplatform</groupId>
-	       	<artifactId>webportal-sdk-billing</artifactId>
-	       	<version>1.0-SNAPSHOT</version>
-	       	<type>jar</type>
-	       	<scope>compile</scope>
+            <groupId>com.letv.cloudplatform</groupId>
+            <artifactId>webportal-sdk-billing</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
-		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.9</version>
-				<configuration>
-					<contextPath>/</contextPath>
-					<scanIntervalSeconds>3</scanIntervalSeconds>
-					<connectors>
-		                <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-		                    <port>80</port>
-		                </connector>
-		            </connectors>                 
-					<scanTargetPatterns>
-						<scanTargetPattern>
-							<directory>src/main/webapp/WEB-INF</directory>
-							<excludes>
-								<exclude>**/*.jsp</exclude>
-							</excludes>
-							<includes>
-								<include>**/*.properties</include>
-								<include>**/*.xml</include>
-							</includes>
-						</scanTargetPattern>
-					</scanTargetPatterns>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>genkey</id>
+                        <goals>
+                            <goal>generateKeyPair</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keystore>${project.build.directory}/jetty-ssl.keystore</keystore>
+                    <dname>cn=com.letvcloud.com</dname><!-- put your CN here-->
+                    <keypass>jetty6</keypass>
+                    <storepass>jetty6</storepass>
+                    <alias>jetty6</alias>
+                    <keyalg>RSA</keyalg>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.9</version>
+                <configuration>
+                    <contextPath>/</contextPath>
+                    <scanIntervalSeconds>3</scanIntervalSeconds>
+                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>80</port>
+                        </connector>
+                        <connector implementation="org.mortbay.jetty.security.SslSocketConnector">
+                            <port>443</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                            <keystore>${project.build.directory}/jetty-ssl.keystore</keystore>
+                            <password>jetty6</password>
+                            <keyPassword>jetty6</keyPassword>
+                        </connector>
+                    </connectors>
+                    <scanTargetPatterns>
+                        <scanTargetPattern>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <excludes>
+                                <exclude>**/*.jsp</exclude>
+                            </excludes>
+                            <includes>
+                                <include>**/*.properties</include>
+                                <include>**/*.xml</include>
+                            </includes>
+                        </scanTargetPattern>
+                    </scanTargetPatterns>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

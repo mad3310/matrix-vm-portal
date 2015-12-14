@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="renderer" content="webkit">
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
-	<title>乐视云计算-最专业的VaaS云平台</title>
+	<title>邀请码-乐视云平台</title>
 	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
 	<link rel="stylesheet" href="/static/staticPage/css/common-e7a2afd556.css">
 	<link rel="stylesheet" href="/static/staticPage/css/style-e013a852a2.css">
@@ -31,7 +31,7 @@
 			<div class="blockTitle"><span>恭喜</span></div>
 			<div class="blockDesc"><span>邀请码验证通过，可继续访问乐视云平台</span></div>
 			<div><a><span>2s后自动跳转~</span></a></div>
-			<div><span class="text-muted">若没有自动跳转，请点击</span><a href="http://lcp.letvcloud.com/profile"><span>这里</span></a></div>
+			<div><span class="text-muted">若没有自动跳转，请点击</span><a href="https://lcp.letvcloud.com/profile"><span>这里</span></a></div>
 		</div>
 	</div>
 </body>
