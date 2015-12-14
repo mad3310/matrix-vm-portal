@@ -121,6 +121,14 @@ function moneyInput(){
                     $('.payoption').removeClass('active');
                     _paybtn.attr('disabled', 'true');
                 }else{
+                    if(Number(money) % 1 === 0){
+                        if(money.indexOf('.')===-1){
+                            _target.val(money+'.00');
+                        }
+                        else{
+                            _target.val(money.replace(/\.0*/g,'.00'));
+                        }
+                    }
                     if(money==compare&&money==orderPaynum){//fit
                         $('.payoption').removeClass('active');
                     }else{
@@ -154,6 +162,15 @@ function moneyInput(){
         }
     } 
     return flag;
+}
+
+function moneyInputFocus(){
+    var _target=$('.remainPay');
+    var _paybtn=$('#pay');
+    var _errordesc=$('.error-desc');
+    _target.removeClass('has-error');
+    _errordesc.addClass('hide');
+    _paybtn.removeAttr('disabled');
 }
 //支付方式选择
 function payOptionChose(){
@@ -317,6 +334,7 @@ function orderDetail(){
                     $('.remainPay').val(data.data);
                     $('.payoption:eq(0)').addClass('active'); 
                 }
+                $('.remainPay').blur();
             });
             _target.append(orderHtml);
          }
