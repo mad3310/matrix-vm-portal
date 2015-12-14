@@ -151,7 +151,7 @@ public class EncryptUtil {
                                                SecretKeySpec deskey, IvParameterSpec ivParam) throws Exception {
         byte[] cipherByte;
         // 使用DES对称加密算法的CBC模式加密
-        Cipher encrypt = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        Cipher encrypt = Cipher.getInstance("TripleDES/CBC/PKCS5Padding");
 
         encrypt.init(Cipher.ENCRYPT_MODE, deskey, ivParam);
 
@@ -185,7 +185,7 @@ public class EncryptUtil {
 
         byte[] cipherByte;
         // 获得Cipher实例，使用CBC模式。
-        Cipher decrypt = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        Cipher decrypt = Cipher.getInstance("TripleDES/CBC/PKCS5Padding");
         // 初始化加密实例，定义为解密功能，并传入密钥，偏转向量
         decrypt.init(Cipher.DECRYPT_MODE, deskey, ivParam);
 
@@ -392,11 +392,10 @@ public class EncryptUtil {
         String realContent = "";
         long start = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
-            encodeContent = encrypt("cloud_22989u8324312323423423|clientid_232409098weszdaasda|clientsecret_12sdsadsf|1029293891283911902"+i);
-//			realContent = decrypt("ky3aycCjuSAPCW/kMQCJykkysBz6cDCSq6lJ07tz1+ti7cIKQ9amLaLLXbf5q+Vmi2gy4e6EafB4vwAmcOJ+ySObD2dyfUwaR3oYOy44wu351dCOlWSBiPE/3VQfUaQrkEyWX3gk5yFX+yixTjyuNHkxcDco5ITlXjIkQWI8fO8=");
+//            encodeContent = encrypt("cloud_22989u8324312323423423|clientid_232409098weszdaasda|clientsecret_12sdsadsf|1029293891283911902"+i);
+			realContent = decrypt("ky3aycCjuSAPCW/kMQCJykkysBz6cDCSq6lJ07tz1+ti7cIKQ9amLaLLXbf5q+Vmi2gy4e6EafB4vwAmcOJ+ySObD2dyfUwaR3oYOy44wu351dCOlWSBiPE/3VQfUaQrkEyWX3gk5yFX+yixTjyuNHkxcDco5ITlXjIkQWI8fO8=");
         }
         long end = System.currentTimeMillis();
         System.out.println("time="+(end-start)+",value="+realContent+",encode="+encodeContent);
-        System.out.print("tttttttt");
     }
 }
