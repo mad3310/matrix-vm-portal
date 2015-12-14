@@ -140,6 +140,7 @@ public class PayServiceImpl implements IPayService {
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Map<String, Object> pay(String orderNumber, Map<String, Object> map, HttpServletResponse response) {
+		logger.debug("订单去支付：{}", orderNumber);
 		Map<String, Object> ret = new HashMap<String, Object>();
 		
 		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
