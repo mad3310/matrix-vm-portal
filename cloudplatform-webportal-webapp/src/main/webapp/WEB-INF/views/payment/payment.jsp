@@ -35,7 +35,7 @@
 					<span class="item-title">余额支付：</span>
 					<span class="item-desc">
 						<span class="desc-input">
-							<span class="input-china">¥</span><input type="text" class="remainPay" maxlength='12' oninput="moneyInput()" onpropertychange="moneyInput()"/></span>
+							<span class="input-china">¥</span><input type="text" class="remainPay" maxlength='12' onblur="moneyInput()" onfocus="moneyInputFocus()" /></span>
 						<span class="error-desc text-red"></span>
 					</span>
 				</div>
