@@ -118,7 +118,7 @@ define(['./common.service'], function (serviceModule) {
     };
     config.vmDiskStatuses = [
       {"text": "创建中", "value": "creating"},
-      {"text": "可用的", "value": "available"},
+      {"text": "可用", "value": "available"},
       {"text": "挂载中", "value": "attaching"},
       {"text": "使用中", "value": "in-use"},
       {"text": "删除中", "value": "deleting"},
@@ -135,7 +135,7 @@ define(['./common.service'], function (serviceModule) {
       {"text": "不可用", "value": "UNRECOGNIZED"},
     ];
     config.vmFloatIpStatuses={
-      'AVAILABLE':'可用的',
+      'AVAILABLE':'可用',
       'BINDED':'已绑定'
     };
     config.vmImageStatuses=[
