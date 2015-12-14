@@ -34,8 +34,7 @@ input::-ms-reveal{display:none;}
     -moz-osx-font-smoothing: grayscale;
 }
 .iconfont:before{
-    position: relative;
-    top:-2px;
+    vertical-align: top;
 }
 .icon-iconshugang:before { content: "\e63f"; }
 .icon-roundcheckfill:before { content: "\e600"; }
