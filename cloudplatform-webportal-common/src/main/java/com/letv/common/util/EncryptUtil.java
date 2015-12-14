@@ -1,15 +1,16 @@
 package com.letv.common.util;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 
 /**
  * 功能描述 加密常用类
@@ -17,6 +18,8 @@ import sun.misc.BASE64Encoder;
 public class EncryptUtil {
     // 密钥是16位长度的byte[]进行Base64转换后得到的字符串
     public static String key = "LmMGStGtOpF4xNyvYt54EQ==";
+    private final static Logger logger = LoggerFactory
+            .getLogger(EncryptUtil.class);
 
     /**
      * <li>
@@ -28,11 +31,13 @@ public class EncryptUtil {
      * @return 加密后的字符串
      */
     public static String encrypt(String xmlStr) {
+        logger.info("-------------------------xmlStr:{}",xmlStr);
         byte[] encrypt = null;
 
         try {
             // 取需要加密内容的utf-8编码。
             encrypt = xmlStr.getBytes("utf-8");
+            logger.info("-------------------------encrypt:{}",encrypt);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -40,23 +45,26 @@ public class EncryptUtil {
         byte[] md5Hasn = null;
         try {
             md5Hasn = EncryptUtil.MD5Hash(encrypt, 0, encrypt.length);
+            logger.info("-------------------------md5Hasn:{}",md5Hasn);
         } catch (Exception e) {
             e.printStackTrace();
         }
         // 组合消息体
         byte[] totalByte = EncryptUtil.addMD5(md5Hasn, encrypt);
-
+        logger.info("-------------------------totalByte:{}",totalByte);
         // 取密钥和偏转向量
         byte[] key = new byte[8];
         byte[] iv = new byte[8];
         getKeyIV(EncryptUtil.key, key, iv);
         SecretKeySpec deskey = new SecretKeySpec(key, "DES");
         IvParameterSpec ivParam = new IvParameterSpec(iv);
-
+        logger.info("-------------------------deskey:{}",deskey);
+        logger.info("-------------------------ivParam:{}",ivParam);
         // 使用DES算法使用加密消息体
         byte[] temp = null;
         try {
             temp = EncryptUtil.DES_CBC_Encrypt(totalByte, deskey, ivParam);
+            logger.info("-------------------------temp:{}",temp);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,6 +95,7 @@ public class EncryptUtil {
         byte[] encBuf = null;
         try {
             encBuf = decoder.decodeBuffer(xmlStr);
+            logger.info("-------------------------encBuf:{}",encBuf);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,12 +106,14 @@ public class EncryptUtil {
         getKeyIV(EncryptUtil.key, key, iv);
 
         SecretKeySpec deskey = new SecretKeySpec(key, "DES");
+        logger.info("-------------------------deskey:{}",deskey);
         IvParameterSpec ivParam = new IvParameterSpec(iv);
-
+        logger.info("-------------------------ivParam:{}",ivParam);
         // 使用DES算法解密
         byte[] temp = null;
         try {
             temp = EncryptUtil.DES_CBC_Decrypt(encBuf, deskey, ivParam);
+            logger.info("-------------------------temp:{}",temp);
         } catch (Exception e) {
             e.printStackTrace();
         }

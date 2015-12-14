@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 /**
  * Created by liuhao1 on 2015/12/7.
  */
@@ -25,8 +27,12 @@ public class SessionUtil {
                 .append(BARRIER).append(client_secret).append(BARRIER)
                 .append(System.nanoTime()).toString();
 
-        return EncryptUtil.encrypt(realContent);
-//        return realContent;
+        try {
+            return ZipUtil.compress(realContent);
+        } catch (IOException e) {
+            logger.error("ZipUtil compress error:{}",e.getMessage());
+        }
+        return "";
     }
 
     public static final String getUuidBySessionId(String sessionId) {
@@ -36,7 +42,7 @@ public class SessionUtil {
         }
         String realContent = "";
         try {
-            realContent = EncryptUtil.decrypt(sessionId);
+            realContent = ZipUtil.uncompress(sessionId);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -53,7 +59,7 @@ public class SessionUtil {
         }
         String realContent = "";
         try {
-            realContent = EncryptUtil.decrypt(sessionId);
+            realContent = ZipUtil.uncompress(sessionId);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
