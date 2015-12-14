@@ -99,7 +99,7 @@ function moneyInput(){
     var _target=$('.remainPay');
     var _paybtn=$('#pay');
     var _errordesc=$('.error-desc');
-    var reg=/^([1-9]+(\.[0-9]{1,2})?|0\.[1-9][0-9]|0\.0[1-9]|0\.[1-9]|[1-9]+\d)$/
+    var reg=/^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/;
     // var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
     var orderPaynum=Number($('#orderpay').text());
     var remain=Number($('.remain').text().substring(1));
