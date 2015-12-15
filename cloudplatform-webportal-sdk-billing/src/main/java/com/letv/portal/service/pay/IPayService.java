@@ -15,7 +15,7 @@ public interface IPayService {
 	  * @author lisuxiao
 	  * @date 2015年9月17日 下午4:39:01
 	  */
-	Map<String, Object> pay(String orderNumber, Map<String, Object> paramMap, HttpServletResponse response);
+	Map<String, Object> pay(String orderNumber, Map<String, Object> paramMap);
 
 	/**
 	  * @Title: callback
