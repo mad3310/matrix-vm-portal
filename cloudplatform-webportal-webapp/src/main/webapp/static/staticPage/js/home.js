@@ -287,31 +287,52 @@ function tabClick(){
         }
     });
 }
+//获取浏览器缓存
+function getCookie(name){
+    var arr=document.cookie.split('; ');
+
+    for(var i=0; i<arr.length; i++){
+        var arr2=arr[i].split('=');
+        if(arr2[0]==name){
+            return arr2[1];
+        }
+    }
+    return '';
+}
 //home&product logged
 function iflogged(){
     var _target=$('.nav-more');
-    $.ajax({
-        url:'/user',
-        type:'get',
-        cache:false,
-        success:function(data){
-            if(data.result==0){//未登录
-                _target.removeClass('hide');
-                $('.logged').addClass('hide');
-            }else{
-                var name=data.data.contacts;
-                if(!name)
-                    name = data.data;
-                _target.addClass('hide');
-                $('.logged').removeClass('hide').find('.logged-name').text(name);
-                if(data.data.userAvatar){
-                    $(".logged .icon-my").addClass('hide').next().children('img').attr('src',data.data.userAvatar).removeClass('hide')
-                }else{
-                    $(".logged .account-img").addClass('hide').parent().prev().removeClass('hide');
+    var matrix_cookie=getCookie('matrix_uc_cookie');
+    if(matrix_cookie){//logged
+        var username=getCookie('userName');
+        $('.logged').removeClass('hide').find('.logged-name').text(username);
+        var userimg=getCookie('headPortrait');
+        if(userimg){//has img
+            $(".logged .icon-my").addClass('hide').next().children('img').attr('src',userimg).removeClass('hide')
+        }else{
+            $.ajax({
+                url:'/user',
+                type:'get',
+                cache:false,
+                success:function(data){
+                    if(data.result==0){//未登录
+                        _target.removeClass('hide');
+                        $('.logged').addClass('hide');
+                    }else{
+                        _target.addClass('hide');
+                        if(data.data.userAvatar){
+                            $(".logged .icon-my").addClass('hide').next().children('img').attr('src',data.data.userAvatar).removeClass('hide')
+                        }else{
+                            $(".logged .account-img").addClass('hide').parent().prev().removeClass('hide');
+                        }
+                    }
                 }
-            }
+            }); 
         }
-    });
+    }else{//not logged
+        _target.removeClass('hide');
+        $('.logged').addClass('hide');
+    }   
 }
 function customerToolInit() {
     var brands={

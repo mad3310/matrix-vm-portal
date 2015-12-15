@@ -65,26 +65,30 @@ define(['controllers/app.controller'], function (controllerModule) {
 			 }
 			function userinfo(usinfourl){
 				$scope.username=getCookie("userName");
-				HttpService.doGet(usinfourl).then(function(data){
-					if(data.result==0){//error
-						WidgetService.notifyError('获取用户信息失败！')
-					}else{
-						var _data=data.data;
-						$scope.usericon.hide=true;
-						$scope.username=_data.contacts?_data.contacts:_data;
-						if(_data.userAvatar){
-							$scope.userimg=_data.userAvatar;
-							$('.account-icon').attr('src',_data.userAvatar);
+				var userImg=getCookie("headPortrait");
+				if(userImg){//has img
+					$scope.usericon.hide=true;
+					$scope.userimg=userImg;
+				}else{//接口查询
+					HttpService.doGet(usinfourl).then(function(data){
+						if(data.result==0){//error
+							WidgetService.notifyError('获取用户信息失败！')
 						}else{
-							// $scope.userimg="../static/images/dashboard/account.png"
-							$scope.usericon.hide=false;
-							$scope.usericon.styles={color:'#f5c131'};
+							var _data=data.data;
+							$scope.usericon.hide=true;
+							if(_data.userAvatar){
+								$scope.userimg=_data.userAvatar;
+							}else{
+								$scope.usericon.hide=false;
+								$scope.usericon.styles={color:'#f5c131'};
+							}
+							$scope.mobileStatus=_data.mobileStatus;
+							$scope.emailStatus=_data.emailStatus;
+							$scope.userStatus=_data.userStatus;
 						}
-						$scope.mobileStatus=_data.mobileStatus;
-						$scope.emailStatus=_data.emailStatus;
-						$scope.userStatus=_data.userStatus;
-					}
-				})
+					})
+				}
+				
 			}
 			function unreadMes(messageurl){
 				HttpService.doGet(messageurl).then(function(data){
