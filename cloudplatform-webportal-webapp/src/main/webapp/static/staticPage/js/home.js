@@ -303,6 +303,7 @@ function getCookie(name){
 function iflogged(){
     var _target=$('.nav-more');
     var matrix_cookie=getCookie('matrix_uc_cookie');
+    var userid=getCookie("userId");
     if(matrix_cookie){//logged
         var username=getCookie('userName');
         $('.logged').removeClass('hide').find('.logged-name').text(username);
@@ -311,7 +312,7 @@ function iflogged(){
             $(".logged .icon-my").addClass('hide').next().children('img').attr('src',userimg).removeClass('hide')
         }else{
             $.ajax({
-                url:'/user',
+                url:'/user/'+userid,
                 type:'get',
                 cache:false,
                 success:function(data){
