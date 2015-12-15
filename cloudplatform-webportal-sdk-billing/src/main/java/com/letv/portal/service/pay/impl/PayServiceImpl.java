@@ -1,6 +1,5 @@
 package com.letv.portal.service.pay.impl;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -17,8 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +24,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CalendarUtil;
@@ -137,143 +134,178 @@ public class PayServiceImpl implements IPayService {
 
 	@Value("${pay.success}")
 	private String PAY_SUCCESS;
-
-	@Transactional(isolation = Isolation.READ_COMMITTED)
-	public Map<String, Object> pay(String orderNumber, Map<String, Object> map, HttpServletResponse response) {
-		logger.debug("订单去支付：{}", orderNumber);
-		Map<String, Object> ret = new HashMap<String, Object>();
-		
-		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	private boolean validateOrderStatus(Order order, Map<String, Object> ret) {
+		boolean b = false;
+		if(0 == order.getStatus().intValue()) {
+			updateOrderPayInfo(order.getId(), null, null, 3, null);//支付中
+			b = true;
+		} else if (1 == order.getStatus().intValue()) {
+			ret.put("alert", "订单状态已失效");
+			ret.put("status", 1);
+		} else if (2 == order.getStatus().intValue()) {
+			ret.put("alert", "订单状态已支付成功，请勿重复提交");
+		} else if(3 == order.getStatus().intValue() && new Date().getTime()-order.getUpdateTime().getTime()>3000) {
+			updateOrderPayInfo(order.getId(), null, null, null, null);//更新修改时间
+			b = true;
+		} else {
+			ret.put("alert", "支付中");
+		}
+		return b;
+	}
+	
+	private boolean validateServiceResource(List<OrderSub> orderSubs, Map<String, Object> ret) {
 		for (OrderSub orderSub : orderSubs) {
 			if(orderSub.getSubscription().getBuyType()==0 && "1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
-				//去服务提供方验证参数是否合法
 				CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(orderSub.getSubscription().getProductId(), 
 						orderSub.getProductInfoRecord().getParams());
 				if(!validateResult.isSuccess()) {
 					logger.info("服务接口提供方验证失败：{}", validateResult.getFailureReason());
 					ret.put("alert", validateResult.getFailureReason());
-					return ret;
+					return false;
 				}
 			}
 		}
+		return true;
+	}
+	
+	private boolean validateUserAccount(String userMoney, BigDecimal orderPrice, Map<String, Object> ret) {
+		boolean b = true;
+		Double m = 0d;
+		try {
+			m = Double.parseDouble(userMoney);
+		} catch (NumberFormatException e) {
+			logger.error(e.getMessage(),e);
+			ret.put("alert", "传入金额不合法!");
+			b = false;
+		}
+		if(m>0) {
+			BigDecimal accountMoney = new BigDecimal(m);
+			//验证账户金额>=accountaccountMoney
+			BillUserAmount userAmount = this.billUserAmountService.getUserAmount(this.sessionService.getSession().getUserId());
+			if(userAmount.getAvailableAmount().compareTo(accountMoney)==-1) {
+				ret.put("alert", "账户余额小于传入金额!");
+				b = false;
+			}
+			
+			//需要支付的金额=总价-账户所选余额
+			if(orderPrice.subtract(accountMoney).doubleValue()<0) {
+				ret.put("alert", "传入金额不合法!");
+				b = false;
+			}
+		}
+		return b;
+	}
+	
+	private Map<String, Object> payAllByUserAccount(List<OrderSub> orderSubs, String orderNumber, BigDecimal useAccountPrice) {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		Long createUser = orderSubs.get(0).getCreateUser();
+		UserVo ucUser = this.userService.getUcUserById(createUser);
+		
+		if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
+			reNewOperate(orderSubs, getValidOrderPrice(orderSubs));
+			updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, useAccountPrice);
+			ret.put("responseUrl", this.PAY_SUCCESS + "/" + orderNumber);
+			ret.put("response", true);
+			//发送用户通知
+			if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
+				this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您成功续费"+useAccountPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+			}
+			return ret;
+		}
+		//设置用户支付部分余额为冻结余额
+		if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
+			ret.put("alert", "用户可使用余额不足");
+			return ret;
+		}
+		//3代表订单支付金额为0或订单金额全部使用账户余额支付时流水编号自己生成
+		if(updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, useAccountPrice)) {
+			//创建应用实例
+			createInstance(orderSubs);
+			ret.put("responseUrl", this.PAY_SUCCESS + "/" + orderNumber);
+			ret.put("response", true);
+			
+			//发送用户通知
+			if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
+				this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买云产品成功支付"+useAccountPrice+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
+			}
+		}
+		return ret;
+	}
+	
+	
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public Map<String, Object> pay(String orderNumber, Map<String, Object> map) {
+		logger.debug("订单去支付：{}", orderNumber);
+		Map<String, Object> ret = new HashMap<String, Object>();
+		
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
 		if (orderSubs == null || orderSubs.size() == 0) {
 			ret.put("alert", "参数未查出订单数据,orderNumber=" + orderNumber);
 			return ret;
 		}
+		
 		Order order = orderSubs.get(0).getOrder();
-		if (order.getStatus().intValue() == 1) {
-			ret.put("alert", "订单状态已失效");
-			ret.put("status", 1);
-		} else if (order.getStatus().intValue() == 2) {
-			ret.put("alert", "订单状态已支付成功，请勿重复提交");
-			ret.put("status", 2);
+		//验证订单状态和去服务提供方验证参数是否合法
+		if(!validateOrderStatus(order, ret) || !validateServiceResource(orderSubs, ret)) {
 			return ret;
-		} else {
-			String userMoney = (String)map.get("accountMoney");
-			BigDecimal price = getValidOrderPrice(orderSubs);
-			BigDecimal accountMoney = new BigDecimal(0);
-			if(userMoney!=null && Double.parseDouble(userMoney)>0) {
-				accountMoney = new BigDecimal(userMoney);
-				//验证账户金额>=accountaccountMoney
-				BillUserAmount userAmount = this.billUserAmountService.getUserAmount(this.sessionService.getSession().getUserId());
-				if(userAmount.getAvailableAmount().compareTo(accountMoney)==-1) {
-					ret.put("alert", "账户余额小于传入金额!");
-					return ret;
-				}
-				
-				price = price.subtract(accountMoney);//需要支付的金额=总价-账户所选余额
-				if(price.doubleValue()<0) {
-					ret.put("alert", "传入金额不合法!");
-					return ret;
-				}
-			}
-			
-			if (price.doubleValue() == 0) {
-				Long createUser = orderSubs.get(0).getCreateUser();
-				UserVo ucUser = this.userService.getUcUserById(createUser);
-				
-				if(orderSubs.get(0).getSubscription().getBuyType()==1) {//续费
-					reNewOperate(orderSubs, getValidOrderPrice(orderSubs));
-					updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, accountMoney);
-					try {
-						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
-					} catch (IOException e) {
-						logger.error("pay inteface sendRedirect had error, ", e);
-						throw new CommonException(e);
-					}
-					//发送用户通知
-					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
-						this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您成功续费"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
-					}
-					return ret;
-				}
-				//设置用户支付部分余额为冻结余额
-				if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
-					ret.put("alert", "用户可使用余额不足");
-					return ret;
-				}
-				//3代表订单支付金额为0或订单金额全部使用账户余额支付时流水编号自己生成
-				if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, accountMoney)) {
-					//创建应用实例
-					createInstance(orderSubs);
-					try {
-						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
-					} catch (IOException e) {
-						logger.error("pay inteface sendRedirect had error, ", e);
-						throw new CommonException(e);
-					}
-					
-					//发送用户通知
-					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile())) {
-						this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买云产品成功支付"+accountMoney+"元，请登录网站lcp.letvcloud.com进行体验！如有问题，可拨打客服电话400-055-6060。");
-					}
-					return ret;
-				} else {
-					throw new ValidateException("更新订单状态异常");
-				}
-			}
-			
-			String pattern = (String) map.get("pattern");
-			if(pattern==null || (!Constants.ALI_PAY_PATTERN.equals(pattern) && !Constants.WX_PAY_PATTERN.equals(pattern))) {
-				ret.put("alert", "传入的支付方式异常，支付方式："+pattern);
-				return ret;
-			}
-			
-			//增加用户充值信息
-			this.billUserAmountService.recharge(orderSubs.get(0).getCreateUser(), price,orderNumber,Integer.valueOf(pattern));
-			
-			//充值
-			Map<String, String> params = new HashMap<String, String>();
-			String url = getParams(order.getOrderNumber(), price, pattern, this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
-					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
-					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
+		}
+		
+		String userMoney = (String)map.get("accountMoney")==null?"0":(String)map.get("accountMoney");
+		//订单总金额
+		BigDecimal totalPrice = getValidOrderPrice(orderSubs);
+		if(!validateUserAccount(userMoney, totalPrice, ret)) {
+			return ret;
+		}
+		//使用账户金额
+		BigDecimal useAccountPrice = new BigDecimal(userMoney);
+		//微信或支付宝待支付金额
+		BigDecimal payPrice = totalPrice.subtract(useAccountPrice);
+		
+		
+		//全部使用余额支付
+		if (payPrice.doubleValue() == 0) {
+			return payAllByUserAccount(orderSubs, orderNumber, useAccountPrice);
+		}
+		
+		String pattern = (String) map.get("pattern");
+		if(pattern==null || (!Constants.ALI_PAY_PATTERN.equals(pattern) && !Constants.WX_PAY_PATTERN.equals(pattern))) {
+			ret.put("alert", "传入的支付方式异常，支付方式："+pattern);
+			return ret;
+		}
+		
+		//增加用户充值信息
+		this.billUserAmountService.recharge(orderSubs.get(0).getCreateUser(), payPrice, orderNumber,Integer.valueOf(pattern));
+		
+		//充值
+		Map<String, String> params = new HashMap<String, String>();
+		String url = getParams(order.getOrderNumber(), payPrice, pattern, this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
+				orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
+				orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
 
-			if (Constants.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝方法
-				if(accountMoney!=null) {
-					//更新使用账户余额到订单表
-					Order account = new Order();
-					account.setId(orderSubs.get(0).getOrderId());
-					account.setAccountPrice(accountMoney);
-					this.orderService.updateBySelective(account);
-				}
-				logger.info("去支付宝支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
-				try {
-					response.sendRedirect(getPayUrl(url, params));
-				} catch (IOException e) {
-					logger.error("pay inteface sendRedirect had error, ", e);
-					throw new CommonException(e);
-				}
-			} else if (Constants.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
-				logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
-				String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
-				ret = transResult(str);
-				if(getValidOrderPrice(orderSubs).subtract(accountMoney).compareTo(new BigDecimal((String) ret.get("price")))==0) {
-					if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null, null, accountMoney)) {
-						ret.put("alert", "微信方式支付异常");
-					}
-				} else {
+		if (Constants.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝方法
+			if(useAccountPrice!=null) {
+				//更新使用账户余额到订单表
+				Order account = new Order();
+				account.setId(orderSubs.get(0).getOrderId());
+				account.setAccountPrice(useAccountPrice);
+				this.orderService.updateBySelective(account);
+			}
+			logger.info("去支付宝支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+payPrice);
+			ret.put("responseUrl", getPayUrl(url, params));
+			ret.put("response", true);
+		} else if (Constants.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
+			logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+payPrice);
+			String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
+			ret = transResult(str);
+			if(totalPrice.subtract(useAccountPrice).compareTo(new BigDecimal((String) ret.get("price")))==0) {
+				if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null, null, useAccountPrice)) {
 					ret.put("alert", "微信方式支付异常");
 				}
+			} else {
+				ret.put("alert", "微信方式支付异常");
 			}
 		}
 		return ret;
@@ -678,6 +710,7 @@ public class PayServiceImpl implements IPayService {
 	
 	//服务创建成功后回调
 	@SuppressWarnings("unchecked")
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	private void vmServiceCallback(List<OrderSub> orderSubs, String region, String vmId, String volumeId, String floatingIpId, int index, Object userData) {
 		List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
 		if(index>records.size()) {

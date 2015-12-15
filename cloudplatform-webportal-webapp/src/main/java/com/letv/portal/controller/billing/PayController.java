@@ -70,7 +70,16 @@ public class PayController {
 	@RequestMapping(value="/{orderNumber}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject pay(@PathVariable String orderNumber, HttpServletRequest request,HttpServletResponse response, ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
-		obj.setData(this.payService.pay(orderNumber, params, response));
+		Map<String, Object> ret = this.payService.pay(orderNumber, params);
+		if(null!=ret.get("response") && true==(Boolean)ret.get("response")) {
+			try {
+				response.sendRedirect((String)ret.get("responseUrl"));
+			} catch (IOException e) {
+				logger.error("pay inteface sendRedirect had error, ", e);
+				throw new CommonException(e);
+			}
+		}
+		obj.setData(ret);
 		return obj;
 	}
 	
@@ -121,7 +130,7 @@ public class PayController {
 	public void generateQRcode(@PathVariable String orderNumber, HttpServletRequest request, HttpServletResponse response) {
 		logger.info("请求微信生成二维码，userId=" + sessionService.getSession().getUserId() + ", 订单编码=" + orderNumber);
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
-		Map<String,Object> ret = this.payService.pay(orderNumber, params, response);
+		Map<String,Object> ret = this.payService.pay(orderNumber, params);
 		String content = (String) ret.get("wxurl");// 内容
 		if(content!=null) {
 			int width = 200; // 图像宽度
