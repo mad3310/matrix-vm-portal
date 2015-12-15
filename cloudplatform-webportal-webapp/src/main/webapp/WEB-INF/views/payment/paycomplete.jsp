@@ -30,7 +30,7 @@
 	</div>
 </body>
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
-<script src="${ctx}/static/page-js/payment/payment-2252ca4b2a.js"></script>
+<script src="${ctx}/static/page-js/payment/payment-33acb5c554.js"></script>
 <script>
 timeStatus()//订单支付状态查询
 </script>

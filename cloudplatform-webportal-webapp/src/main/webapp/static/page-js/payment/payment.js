@@ -104,7 +104,7 @@ function moneyInput(){
     var orderPaynum=Number($('#orderpay').text());
     var remain=Number($('.remain').text().substring(1));
     var compare=(orderPaynum>remain)?remain:orderPaynum;
-    var money=Number(_target.val());
+    var money=_target.val();
     if(money){
         if(reg.test(money)){
             if(money<0){
