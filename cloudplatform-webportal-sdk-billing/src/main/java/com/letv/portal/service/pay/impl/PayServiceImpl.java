@@ -850,6 +850,7 @@ public class PayServiceImpl implements IPayService {
 	
 	//服务创建成功后回调
 	@SuppressWarnings("unchecked")
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	private void serviceCallback(List<OrderSub> orderSubs, String region, String id, int index, Object userData) {
 		List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
 		if(index>records.size()) {
