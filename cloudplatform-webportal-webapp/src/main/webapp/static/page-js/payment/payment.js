@@ -99,7 +99,7 @@ function moneyInput(){
     var _target=$('.remainPay');
     var _paybtn=$('#pay');
     var _errordesc=$('.error-desc');
-    var reg=/^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/;
+    var reg=/(^([1-9]\d*)(\.\d{1,2})?$)|(^0\.0[1-9]$)|(^0\.[1-9]\d*$)/;
     // var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
     var orderPaynum=Number($('#orderpay').text());
     var remain=Number($('.remain').text().substring(1));
@@ -120,24 +120,22 @@ function moneyInput(){
                     _errordesc.removeClass('hide');
                     $('.payoption').removeClass('active');
                     _paybtn.attr('disabled', 'true');
-                }else{
-                    if(Number(money) % 1 === 0){
-                        if(money.indexOf('.')===-1){
-                            _target.val(money+'.00');
-                        }
-                        else{
-                            _target.val(money.replace(/\.0*/g,'.00'));
-                        }
+                }else {
+                    if (money.indexOf('.') === -1) {
+                        _target.val(money + '.00');
                     }
-                    if(money==compare&&money==orderPaynum){//fit
+                    else if(/\.\d$/.test(money)) {
+                        _target.val(money + '0');
+                    }
+                    if (money == compare && money == orderPaynum) {//fit
                         $('.payoption').removeClass('active');
-                    }else{
-                        $('.payoption:eq(0)').addClass('active'); 
+                    } else {
+                        $('.payoption:eq(0)').addClass('active');
                     }
                     _target.removeClass('has-error');
                     _errordesc.addClass('hide');
                     _paybtn.removeAttr('disabled');
-                    flag=true;
+                    flag = true;
                 }
             }
         }else{//不是数字
