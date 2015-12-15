@@ -484,6 +484,8 @@ public class ResourceServiceImpl implements ResourceService {
                 throw new UserOperationException("Name cannot be repeated.", "名称不能重复");
             }
         }
+        
+        localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_KEY_PAIR, keyPairs.size() + 1);
 
         QuotaApi quotaApi = getNovaQuotaApi(novaApi, region);
         Quota quota = quotaApi.getByTenant(tenantId);

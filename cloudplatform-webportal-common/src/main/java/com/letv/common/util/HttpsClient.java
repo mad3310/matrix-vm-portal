@@ -317,7 +317,7 @@ public class HttpsClient {
 	}
 	
 	/*public static void main(String[] args) {
-		String result = HttpsClient.sendXMLDataByGet("https://oauthtest.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
+		String result = HttpsClient.sendXMLDataByGet("https://login.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
 		System.out.println(result);
 		System.out.println("in");
 		Map<String,String> headParams = new HashMap<String,String>();
