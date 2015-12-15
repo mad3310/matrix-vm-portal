@@ -235,8 +235,8 @@ define(['./common.directive'],function (directiveModule) {
             link: function (scope, element, attrs) {
                 var delayQueueModelHandler = Utility.delayQueueModel();
                 var max = Number(scope.max),
-                  min = Number(scope.min),
-                  isExternalModelChangedInDirective=false;
+                  min = Number(scope.min);
+                  //isExternalModelChangedInDirective=false;
                 if(scope.isMinChangeable === 'true'){
                     scope.$watch('min', function (newValue) {
                         min = Number(newValue);
@@ -244,10 +244,10 @@ define(['./common.directive'],function (directiveModule) {
                     });
                 }
                 scope.$watch('externalModel', function (newValue) {
-                    if(isExternalModelChangedInDirective){
+                    /*if(isExternalModelChangedInDirective){
                         isExternalModelChangedInDirective=false;
                         return;
-                    }
+                    }*/
                     scope.model = newValue;
                 });
                 scope.$watch('model', function (newValue) {
@@ -261,7 +261,7 @@ define(['./common.directive'],function (directiveModule) {
                             }
                             delayQueueModelHandler(newValue, function (value) {
                                 scope.model = Number(value);
-                                isExternalModelChangedInDirective=true;
+                                //isExternalModelChangedInDirective=true;
                                 scope.externalModel = scope.model;
                             });
                         }
