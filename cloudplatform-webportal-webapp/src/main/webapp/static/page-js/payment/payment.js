@@ -140,10 +140,14 @@ function moneyInput(){
             }
         }else{//不是数字
             _target.addClass('has-error');
-            _errordesc.text('输入不合法数字！请输入两位小数');
             _errordesc.removeClass('hide');
             $('.payoption').removeClass('active');
             _paybtn.attr('disabled', 'true');
+            if(Number(money)==0){
+                _errordesc.text('余额为0，无法用余额进行支付！');
+            }else{
+                _errordesc.text('输入不合法数字！请输入两位小数');
+            } 
         }
     }else{
         if($('.self-checkbox').hasClass('active')){

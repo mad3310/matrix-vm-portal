@@ -9,8 +9,8 @@
 	<title>支付-乐视云平台</title>
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
 	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
-	<link rel="stylesheet" href="/static/staticPage/css/common-2a2979cf8b.css">
-	<link rel="stylesheet" href="/static/staticPage/css/style-e013a852a2.css">
+	<link rel="stylesheet" href="/static/staticPage/css/common-e410f85195.css">
+	<link rel="stylesheet" href="/static/staticPage/css/style-ea8a062e9f.css">
 </head>
 <body>
 	<input type="text" class="hide" value="${orderNum}" id="orderNum">
@@ -30,7 +30,7 @@
 	</div>
 </body>
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
-<script src="${ctx}/static/page-js/payment/payment-4078de3d56.js"></script>
+<script src="${ctx}/static/page-js/payment/payment-d3ef3e5d1d.js"></script>
 <script>
 timeStatus()//订单支付状态查询
 </script>
