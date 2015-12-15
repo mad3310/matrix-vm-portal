@@ -292,7 +292,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           region: region,
           order_time: $scope.vmBuyPeriod.toString(),
           order_num: $scope.vmCount.toString(),
-          os_broadband: $scope.networkBandWidth.toString(),
+          os_broadband: $scope.vmNetworkType == 'primary' && $scope.vmNetworkPublicIpModel == 'now'?$scope.networkBandWidth.toString():'0',
           volumeType: $scope.selectedVmDiskType.name,
           volumeSize:$scope.dataDiskVolume.toString(),
           cpu_ram: $scope.selectedVmCpu + '_' + $scope.selectedVmRam,
