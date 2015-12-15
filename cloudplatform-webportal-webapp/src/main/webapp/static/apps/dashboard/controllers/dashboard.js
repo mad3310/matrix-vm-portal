@@ -64,13 +64,14 @@ define(['controllers/app.controller'], function (controllerModule) {
 				 return '';
 			 }
 			function userinfo(usinfourl){
+				$scope.username=getCookie("userName");
 				HttpService.doGet(usinfourl).then(function(data){
 					if(data.result==0){//error
 						WidgetService.notifyError('获取用户信息失败！')
 					}else{
 						var _data=data.data;
 						$scope.usericon.hide=true;
-						$scope.username=_data.contacts;
+						$scope.username=_data.contacts?_data.contacts:_data;
 						if(_data.userAvatar){
 							$scope.userimg=_data.userAvatar;
 							$('.account-icon').attr('src',_data.userAvatar);

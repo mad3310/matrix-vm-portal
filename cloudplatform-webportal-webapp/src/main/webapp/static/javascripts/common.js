@@ -80,6 +80,7 @@ var client=new ClientInfor();
   // 用户头像修改
   var userid=getCookie("userId");
   var usinfourl="/user/"+userid;
+  $('.header-username').text(getCookie("userName"));
   $.ajax({
     url:usinfourl,
     type: 'get',
@@ -88,12 +89,10 @@ var client=new ClientInfor();
       }else{
         var _data=data.data;
         if(_data){
-          $('.header-username').text(_data.contacts);
           if(_data.userAvatar){
             $('.account-icon').attr('src',_data.userAvatar);
           }
         }
-        
       }
     }
   });

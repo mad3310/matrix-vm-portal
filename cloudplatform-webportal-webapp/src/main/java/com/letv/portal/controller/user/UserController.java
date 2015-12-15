@@ -87,10 +87,10 @@ public class UserController {
 			obj.setResult(0);
 			return obj;
 		}
-		Long ucId =  this.userService.getUcIdByUserId(userId);
-		Map<String, Object> user = this.ucService.getUserByUserId(ucId);
+		UserModel userModel = this.userService.getUserById(userId);
+		Map<String, Object> user = this.ucService.getUserByUserId(userModel.getUcId());
 		if(user == null || user.isEmpty()) {
-			obj.setResult(0);
+			obj.setData(userModel.getUserName());
 			return obj;
 		}
 		obj.setData(user);
@@ -99,13 +99,13 @@ public class UserController {
 	@RequestMapping(value="/message/un/{userId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject unReadMessage(@PathVariable Long userId,ResultObject obj) throws Exception{
 		if(null ==userId) {
-			obj.setResult(0);
+			obj.setData(0);
 			return obj;
 		}
 		Long ucId = this.userService.getUcIdByUserId(userId);
 		Map<String, Object> unReadMessage = this.ucService.getUnReadMessage(ucId);
 		if(unReadMessage == null || unReadMessage.isEmpty()) {
-			obj.setResult(0);
+			obj.setData(0);
 			return obj;
 		}
 		obj.setData(unReadMessage.get("totalCount"));
