@@ -72,7 +72,7 @@
                 <uc.auth.api.http>https://lcp-uc.letvcloud.com/uc-http-api</uc.auth.api.http>
                 <webportal.local.http>https://lcp.letvcloud.com</webportal.local.http>
 
-                <oauth.auth.http>https://oauthtest.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
 
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
@@ -133,7 +133,7 @@
                 <uc.auth.api.http>https://lcp-uc.letvcloud.com/uc-http-api</uc.auth.api.http>
                 <webportal.local.http>https://lcp.letvcloud.com</webportal.local.http>
 
-                <oauth.auth.http>https://oauthtest.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
 
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
@@ -192,7 +192,7 @@
                 <uc.auth.api.http>https://lcp-uc.letvcloud.com/uc-http-api</uc.auth.api.http>
                 <webportal.local.http>https://lcp.letvcloud.com</webportal.local.http>
 
-                <oauth.auth.http>https://oauthtest.lecloud.com</oauth.auth.http>
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
 
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
