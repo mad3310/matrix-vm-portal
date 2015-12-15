@@ -40,38 +40,7 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
-    private ICacheService<?> cacheService = CacheFactory.getCache();
-
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
-
-	/**Methods Name: userInfo <br>
-	 * Description: 根据当前session获取用户信息<br>
-	 * @author name: liuhao1
-	 * @param request
-	 * @param obj
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(method=RequestMethod.GET)
-	public @ResponseBody ResultObject userInfo(HttpServletRequest request,ResultObject obj) throws Exception{
-		Cookie cookie = CookieUtil.getCookieByName(request,CookieUtil.COOKIE_KEY);
-		if(cookie == null) {
-			obj.setResult(0);
-			return obj;
-		}
-        Session session = (Session) this.cacheService.get(SessionUtil.getUuidBySessionId(cookie.getValue()), null);
-        if(null == session) {
-            obj.setResult(0);
-            return obj;
-        }
-        Map<String, Object> userdetailinfo = this.ucService.getUserByUserId(session.getUcId());
-        if(userdetailinfo == null || userdetailinfo.isEmpty()) {
-            obj.setData(session.getUserName());
-            return obj;
-        }
-        obj.setData(userdetailinfo);
-        return obj;
-	}
 
 	/**Methods Name: userInfo <br>
 	 * Description: 根据userId，获取用户信息<br>
@@ -82,7 +51,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject userInfo(@PathVariable Long userId,ResultObject obj) throws Exception{
+	public @ResponseBody ResultObject userInfo(@PathVariable Long userId,ResultObject obj,HttpServletResponse response) throws Exception{
 		if(null ==userId) {
 			obj.setResult(0);
 			return obj;
@@ -93,6 +62,7 @@ public class UserController {
 			obj.setData(userModel.getUserName());
 			return obj;
 		}
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_HEAD_PORTRAIT, (String) user.get("userAvatar"), CookieUtil.USER_LOGIN_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
 		obj.setData(user);
 		return obj;
 	}

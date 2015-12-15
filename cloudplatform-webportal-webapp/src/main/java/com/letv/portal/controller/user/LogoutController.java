@@ -58,6 +58,7 @@ public class LogoutController{
             CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
             CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_ID,response,CookieUtil.LCP_COOKIE_DOMAIN);
             CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_NAME,response,CookieUtil.LCP_COOKIE_DOMAIN);
+            CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_HEAD_PORTRAIT,response, CookieUtil.LCP_COOKIE_DOMAIN);
         }
         if(session != null) {
             String clientId = session.getClientId();

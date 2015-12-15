@@ -13,6 +13,7 @@ public class CookieUtil {
     public static final String COOKIE_KEY = "matrix_uc_cookie";
     public static final String COOKIE_KEY_USER_NAME = "userName";
     public static final String COOKIE_KEY_USER_ID = "userId";
+    public static final String COOKIE_KEY_HEAD_PORTRAIT = "headPortrait";
 
     public static final String LCP_COOKIE_DOMAIN = "letvcloud.com";
     public static final int USER_LOGIN_MAX_AGE = -1; // 内存cookie
