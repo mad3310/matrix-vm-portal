@@ -18,7 +18,7 @@ gulp.task('html', function(){
 });
 // 压缩、重命名静态页css
 gulp.task('homecss', function() {
-  return gulp.src(['./static/staticPage/css/*.css'])//- 需要处理的css文件，放到一个字符串数组里
+  return gulp.src(['./static/staticPage/css/common.css','./static/staticPage/css/style.css','./static/staticPage/css/toastr.css'])//- 需要处理的css文件，放到一个字符串数组里
         .pipe(minifyCss())//- 压缩处理成一行
         .pipe(rev())//- 文件名加MD5后缀
         .pipe(gulp.dest('./dest/css/staticPage'))//- 输出文件本地
@@ -28,7 +28,8 @@ gulp.task('homecss', function() {
 });
 //压缩、合并控制台css
 gulp.task('consolecmcss', function() {
-  return gulp.src(['./static/stylesheets/*.css'])//- 需要处理的css文件，放到一个字符串数组里
+  return gulp.src(['./static/stylesheets/bootstrap.css','./static/stylesheets/font-awesome.css','./static/stylesheets/toaster.css','./static/stylesheets/rzslider.css',
+    './static/stylesheets/common.css','./static/stylesheets/style-cloudvm.css','./static/stylesheets/style-profile.css'])//- 需要处理的css文件，放到一个字符串数组里
         .pipe(minifyCss())//- 压缩处理成一行
         .pipe(rev())//- 文件名加MD5后缀
         .pipe(gulp.dest('./dest/css/stylesheets'))//- 输出文件本地
@@ -38,7 +39,7 @@ gulp.task('consolecmcss', function() {
 });
 // 压缩js文件
 gulp.task('js', function() {
-  return gulp.src(['./static/staticPage/js/*.js','./static/page-js/payment/payment.js','./static/page-js/invite/inviteCode.js'])
+  return gulp.src(['./static/staticPage/js/browserCheck.js','./static/staticPage/js/home.js','./static/staticPage/js/toastr.js','./static/page-js/payment/payment.js','./static/page-js/invite/inviteCode.js'])
     .pipe(uglify())//js压缩
     .pipe(rev())//- 文件名加MD5后缀
     .pipe(gulp.dest('./dest/js/staticPage'))
@@ -58,4 +59,6 @@ gulp.task('consolerev', function() {
         .pipe(gulp.dest('./dest/jsp/'))//- 替换后的文件输出的目录
         .pipe(notify({ message: 'consolerev task ok' }));
 });
-gulp.task('default', ['homecss','consolecmcss','js','rev','consolerev']);
+
+// gulp.task('default', ['homecss','consolecmcss','js','rev','consolerev']);
+gulp.task('default', ['rev']);

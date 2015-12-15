@@ -9,9 +9,9 @@
 	<title>支付-乐视云平台</title>
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
 	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
-	<link rel="stylesheet" href="/static/staticPage/css/toastr.css">
-	<link rel="stylesheet" href="/static/staticPage/css/common.css">
-	<link rel="stylesheet" href="/static/staticPage/css/style.css">
+	<link rel="stylesheet" href="/static/staticPage/css/toastr-ae1f53a3db.css">
+	<link rel="stylesheet" href="/static/staticPage/css/common-2a2979cf8b.css">
+	<link rel="stylesheet" href="/static/staticPage/css/style-e013a852a2.css">
 </head>
 <body>
 	<input id="userId" type="text" class="hide" value="${cookie.userId.value}">
@@ -102,8 +102,8 @@
 	</div>
 </body>
 <script src="${ctx}/static/javascripts/jquery-1.11.3.js"></script>
-<script src="${ctx}/static/staticPage/js/toastr.js"></script>
-<script src="${ctx}/static/page-js/payment/payment.js"></script>
+<script src="${ctx}/static/staticPage/js/toastr-63327f4929.js"></script>
+<script src="${ctx}/static/page-js/payment/payment-4078de3d56.js"></script>
 <script>
 remainChose();//余额支付
 // moneyInputVali();//余额输入校验
