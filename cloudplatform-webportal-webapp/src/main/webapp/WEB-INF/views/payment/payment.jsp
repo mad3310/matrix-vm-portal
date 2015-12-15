@@ -103,7 +103,7 @@
 </body>
 <script src="${ctx}/static/javascripts/jquery-1.11.3.js"></script>
 <script src="${ctx}/static/staticPage/js/toastr-63327f4929.js"></script>
-<script src="${ctx}/static/page-js/payment/payment-d3ef3e5d1d.js"></script>
+<script src="${ctx}/static/page-js/payment/payment.js"></script>
 <script>
 remainChose();//余额支付
 // moneyInputVali();//余额输入校验

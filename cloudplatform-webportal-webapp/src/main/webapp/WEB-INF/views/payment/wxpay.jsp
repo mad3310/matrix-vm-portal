@@ -49,7 +49,7 @@
   </div>
 </div>
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
-<script src="${ctx}/static/page-js/payment/payment-d3ef3e5d1d.js"></script>
+<script src="${ctx}/static/page-js/payment/payment-2252ca4b2a.js"></script>
 <script type="text/javascript">
 var _timer = null;
 var INTERVAL = 3000;
