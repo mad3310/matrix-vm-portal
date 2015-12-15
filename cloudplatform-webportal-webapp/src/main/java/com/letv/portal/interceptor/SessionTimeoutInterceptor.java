@@ -111,6 +111,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
         CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
         CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_ID,response,CookieUtil.LCP_COOKIE_DOMAIN);
         CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_NAME,response,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_HEAD_PORTRAIT,response, CookieUtil.LCP_COOKIE_DOMAIN);
         boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
         if (isAjaxRequest) {
             responseJson(request,response,"长时间未操作，请重新登录");
