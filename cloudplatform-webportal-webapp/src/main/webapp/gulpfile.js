@@ -59,6 +59,16 @@ gulp.task('consolerev', function() {
         .pipe(gulp.dest('./dest/jsp/'))//- 替换后的文件输出的目录
         .pipe(notify({ message: 'consolerev task ok' }));
 });
-
-// gulp.task('default', ['homecss','consolecmcss','js','rev','consolerev']);
-gulp.task('default', ['rev']);
+gulp.task('revback',function(){
+    return gulp.src(['./rev/back/*.json', './home/*.html','./WEB-INF/views/payment/*.jsp','./WEB-INF/views/invite/*.jsp'])//- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
+        .pipe(revCollector())//- 执行文件内键值对进行替换
+        .pipe(gulp.dest('./dest/html/back/home'))//- 替换后的文件输出的目录
+        .pipe(notify({ message: 'revback task ok' }));
+});
+gulp.task('consolerevback',function(){
+    return gulp.src(['./rev/stylesheets/back/*.json', './home/*.html','./WEB-INF/views/payment/*.jsp','./WEB-INF/views/invite/*.jsp'])//- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
+        .pipe(revCollector())//- 执行文件内键值对进行替换
+        .pipe(gulp.dest('./dest/back/jsp'))//- 替换后的文件输出的目录
+        .pipe(notify({ message: 'consolerevback task ok' }));
+});
+gulp.task('default', ['homecss','consolecmcss','js','rev','consolerev']);

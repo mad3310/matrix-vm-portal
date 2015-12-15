@@ -196,6 +196,8 @@ define(['controllers/app.controller'], function (controllerModule) {
 							$scope.quotas.volumeSizeStyle={width:$scope.service.volumeSize/$scope.quotas.CLOUDVM_VOLUME_SIZE*100+"%"}
 							$scope.quotas.CLOUDVM_VOLUME_SNAPSHOT=data.data.CLOUDVM_VOLUME_SNAPSHOT;
 							$scope.quotas.volumeSnapshotStyle={width:$scope.service.volumeSnapshot/$scope.quotas.CLOUDVM_VOLUME_SNAPSHOT*100+"%"}
+							$scope.quotas.CLOUDVM_KEY_PAIR=data.data.CLOUDVM_KEY_PAIR;
+							$scope.quotas.keypairStyle={width:$scope.service.keyPair/$scope.quotas.CLOUDVM_KEY_PAIR*100+"%"}
 						}
 					});
 				});
