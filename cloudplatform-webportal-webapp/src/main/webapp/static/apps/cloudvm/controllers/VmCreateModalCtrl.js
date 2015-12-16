@@ -186,7 +186,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         $scope.selectedVmRam,
         ($scope.selectedVmDiskType &&  $scope.selectedVmDiskType.name) || '',
         $scope.dataDiskVolume,
-        $scope.networkBandWidth,
+        ($scope.vmNetworkType == 'primary' && $scope.vmNetworkPublicIpModel == 'now')?$scope.networkBandWidth:0,
         $scope.vmCount,
         $scope.vmBuyPeriod].join('_');
     }, function (value) {
