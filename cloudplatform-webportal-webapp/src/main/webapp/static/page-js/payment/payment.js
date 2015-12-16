@@ -140,11 +140,15 @@ function moneyInput(){
             }
         }else{//不是数字
             _target.addClass('has-error');
-            _errordesc.text('输入不合法数字！请输入两位小数');
             _errordesc.removeClass('hide');
             $('.payoption').removeClass('active');
             _paybtn.attr('disabled', 'true');
-        }
+            if(Number(money)==0){
+                _errordesc.text('余额为0，无法用余额进行支付！');
+            }else{
+                _errordesc.text('输入不合法数字！请输入两位小数');
+            } 
+        }  
     }else{
         if($('.self-checkbox').hasClass('active')){
             _target.addClass('has-error');
@@ -347,19 +351,25 @@ function alloptionsHandle(){
     // 检查当前的支付方式
     var _alloption=$('.alloption.active');
     if(_alloption.length>0){
-        if(_alloption.length>1){
-            _paybtn.removeAttr('disabled');
-        }else{
-            if(_alloption.hasClass('self-checkbox')){
-                if(remainpay==orderPaynum){
-                    _paybtn.removeAttr('disabled'); 
-                }else{
-                    _paybtn.attr('disabled','true');
-                }
-            }else{//单种支付
-                _paybtn.removeAttr('disabled');
+        if($('.self-checkbox').hasClass('active')){
+            if($('.remainPay').hasClass('has-error')){//输入的金额有问题，不能支付
+                _paybtn.attr('disabled','true');
             }
-             
+        }else{
+            if(_alloption.length>1){
+                _paybtn.removeAttr('disabled');
+            }else{
+                if(_alloption.hasClass('self-checkbox')){
+                    if(remainpay==orderPaynum){
+                        _paybtn.removeAttr('disabled'); 
+                    }else{
+                        _paybtn.attr('disabled','true');
+                    }
+                }else{//单种支付
+                    _paybtn.removeAttr('disabled');
+                }
+                 
+            }
         }
     }else{//未选择支付方式
         _paybtn.attr('disabled','true');

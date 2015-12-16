@@ -59,16 +59,25 @@ gulp.task('consolerev', function() {
         .pipe(gulp.dest('./dest/jsp/'))//- 替换后的文件输出的目录
         .pipe(notify({ message: 'consolerev task ok' }));
 });
-gulp.task('revback',function(){
-    return gulp.src(['./rev/back/*.json', './home/*.html','./WEB-INF/views/payment/*.jsp','./WEB-INF/views/invite/*.jsp'])//- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
-        .pipe(revCollector())//- 执行文件内键值对进行替换
-        .pipe(gulp.dest('./dest/html/back/home'))//- 替换后的文件输出的目录
-        .pipe(notify({ message: 'revback task ok' }));
-});
-gulp.task('consolerevback',function(){
-    return gulp.src(['./rev/stylesheets/back/*.json', './home/*.html','./WEB-INF/views/payment/*.jsp','./WEB-INF/views/invite/*.jsp'])//- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
-        .pipe(revCollector())//- 执行文件内键值对进行替换
-        .pipe(gulp.dest('./dest/back/jsp'))//- 替换后的文件输出的目录
-        .pipe(notify({ message: 'consolerevback task ok' }));
+// gulp.task('revback',function(){
+//     return gulp.src(['./rev/back/homecss.json', './home/*.html','./WEB-INF/views/payment/*.jsp','./WEB-INF/views/invite/*.jsp'])//- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
+//         .pipe(revCollector())//- 执行文件内键值对进行替换
+//         .pipe(gulp.dest('./dest/html/back/home'))//- 替换后的文件输出的目录
+//         .pipe(notify({ message: 'revback task ok' }));
+// });
+// gulp.task('consolerevback',function(){
+//     return gulp.src(['./rev/stylesheets/back/*.json', './WEB-INF/views/profile.jsp','./WEB-INF/views/cloudvm-new/index.jsp'])//- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
+//         .pipe(revCollector())//- 执行文件内键值对进行替换
+//         .pipe(gulp.dest('./dest/jsp/back'))//- 替换后的文件输出的目录
+//         .pipe(notify({ message: 'consolerevback task ok' }));
+// });
+gulp.task('paymentjs',function(){
+    return gulp.src(['./static/page-js/payment/payment.js'])
+    .pipe(uglify())//js压缩
+    .pipe(rev())//- 文件名加MD5后缀
+    .pipe(gulp.dest('./dest/js/payment'))
+    // .pipe(rev.manifest({path:'js.json'}))//- 生成一个rev-manifest.json
+    // .pipe(gulp.dest('./rev'))
+    .pipe(notify({ message: 'js task ok' }));
 });
 gulp.task('default', ['homecss','consolecmcss','js','rev','consolerev']);

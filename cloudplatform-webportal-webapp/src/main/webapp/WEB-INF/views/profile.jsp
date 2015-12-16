@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="/static/images/favicon.ico">
 	<link rel="stylesheet" href="/static/stylesheets/bootstrap-f2d483c4e9.css">
     <link rel="stylesheet" href="/static/stylesheets/toaster-4f7c5e6480.css">
-    <link rel="stylesheet" href="/static/stylesheets/common-06b30455c1.css">
+    <link rel="stylesheet" href="/static/stylesheets/common-d8f1434dd9.css">
     <link rel="stylesheet" type="text/css" href="/static/stylesheets/style-profile-d86d0b8502.css">
     <title>控制台-乐视云平台</title>
 </head>
