@@ -3,15 +3,32 @@ package com.letv.portal.service.product.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductElementDao;
 import com.letv.portal.model.base.BaseStandard;
+import com.letv.portal.model.order.OrderSub;
+import com.letv.portal.model.product.ProductInfoRecord;
+import com.letv.portal.service.openstack.billing.ResourceCreateService;
+import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.RouterCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.VmCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.VolumeCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.product.IHostProductService;
 
 @Service("hostProductService")
@@ -23,6 +40,10 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	private IProductElementDao productElementDao;
 	@Autowired
 	private IBaseStandardDao baseStandardDao;
+	@Autowired
+	private ResourceCreateService resourceCreateService;
+	@Autowired
+	private HostProductServiceOfNewTransaction hostProductServiceOfNewTransaction;
 	
 	@Override
 	public boolean validateData(Long id, Map<String, Object> map) {
@@ -96,6 +117,125 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 		}
 		logger.info("validateData, map "+element+" element is :"+map.get(element)+", element not within range");
 		return false;
+	}
+
+	//创建云主机
+	@Override
+	public void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records) {
+		logger.info("开始创建云主机！");
+		this.resourceCreateService.createVm(orderSubs.get(0).getCreateUser(), params, new VmCreateAdapter() {
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+			private Map<String, String> idNames = new HashMap<String, String>();
+
+			@Override
+			public void vmCreated(VmCreateEvent event) throws Exception {
+				logger.info("云主机创建成功回调! num="+event.getVmIndex());
+				successCount.incrementAndGet();
+				idNames.put(event.getVmId(), event.getName());
+				hostProductServiceOfNewTransaction.vmServiceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVolumeId(), event.getFloatingIpId(), event.getVmIndex(), event.getUserData());
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
+			}
+
+			@Override
+			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
+				logger.info("云主机创建失败回调! num="+event.getVmIndex());
+				failCount.incrementAndGet();
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
+			}
+		}, records);
+		logger.info("调用创建云主机成功!");
+	}
+	
+	//创建云硬盘
+	@Override
+	public void createVolume(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
+		logger.info("开始创建云硬盘！");
+		this.resourceCreateService.createVolume(orderSubs.get(0).getCreateUser(), params, new VolumeCreateAdapter(){
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+			private Map<String, String> idNames = new HashMap<String, String>();
+			
+			@Override
+			public void volumeCreated(VolumeCreateEvent event) throws Exception {
+				logger.info("云硬盘创建成功回调! num="+event.getVolumeIndex());
+				successCount.incrementAndGet();
+				idNames.put(event.getVolumeId(), event.getName());
+				hostProductServiceOfNewTransaction.serviceCallback(orderSubs, event.getRegion(), event.getVolumeId(), event.getVolumeIndex(), event.getUserData());
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.VOLUME, idNames);
+			}
+			@Override
+			public void volumeCreateFailed(VolumeCreateFailEvent event)
+					throws Exception {
+				logger.info("云硬盘创建失败回调! num="+event.getVolumeIndex());
+				failCount.incrementAndGet();
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.VOLUME, idNames);
+			}
+			
+		}, records);
+		
+		logger.info("调用创建云硬盘成功!");
+	}
+	
+	//创建公网IP
+	@Override
+	public void createFloatingIp(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
+		logger.info("开始创建公网IP！");
+		this.resourceCreateService.createFloatingIp(orderSubs.get(0).getCreateUser(), params, new FloatingIpCreateAdapter() {
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+			private Map<String, String> idNames = new HashMap<String, String>();
+			
+			@Override
+			public void floatingIpCreated(FloatingIpCreateEvent event) throws Exception {
+				logger.info("公网IP创建成功回调! num="+event.getFloatingIpIndex());
+				successCount.incrementAndGet();
+				idNames.put(event.getFloatingIpId(), event.getName());
+				hostProductServiceOfNewTransaction.serviceCallback(orderSubs, event.getRegion(), event.getFloatingIpId(), event.getFloatingIpIndex(), event.getUserData());
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.FLOATINGIP, idNames);
+			}
+			
+			@Override
+			public void floatingIpCreateFailed(FloatingIpCreateFailEvent event)
+					throws Exception {
+				logger.info("公网IP创建失败回调! num="+event.getFloatingIpIndex());
+				failCount.incrementAndGet();
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.FLOATINGIP, idNames);
+			}
+			
+		}, records);
+		
+		logger.info("调用创建公网IP成功!");
+	}
+	
+	//创建路由器
+	@Override
+	public void createRouter(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
+		logger.info("开始创建路由器！");
+		this.resourceCreateService.createRouter(orderSubs.get(0).getCreateUser(), params, new RouterCreateAdapter() {
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+			private Map<String, String> idNames = new HashMap<String, String>();
+			
+			@Override
+			public void routerCreated(RouterCreateEvent event) throws Exception {
+				logger.info("路由器创建成功回调! num="+event.getRouterIndex());
+				successCount.incrementAndGet();
+				idNames.put(event.getRouterId(), event.getName());
+				hostProductServiceOfNewTransaction.serviceCallback(orderSubs, event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.ROUTER, idNames);
+			}
+			
+			@Override
+			public void routerCreateFailed(RouterCreateFailEvent event)
+					throws Exception {
+				logger.info("路由器创建失败回调! num="+event.getRouterIndex());
+				failCount.incrementAndGet();
+				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.ROUTER, idNames);
+			}
+		}, records);
+		
+		logger.info("调用创建路由器成功!");
 	}
 	
 }
