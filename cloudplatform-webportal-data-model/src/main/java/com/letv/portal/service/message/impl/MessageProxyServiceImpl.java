@@ -45,8 +45,7 @@ public class MessageProxyServiceImpl implements IMessageProxyService{
 	private void analyzeRestServiceResult(String result, String url, Map<String, String> params) {
 		Map<String, Object> map = transResult(result);
 		
-		if(map.get("id")==null && 1!=(Integer)map.get("id")) {
-			map.put("result", true);
+		if(map.get("id")==null || 1!=(Integer)map.get("id")) {
 			exceptionEmailServiceUtil.sendErrorEmail("用户中心接口调用失败", 
 					"保存消息通知失败，返回结果:"+result+";传入参数："+params.toString(), url);
 		}
