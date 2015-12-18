@@ -22,7 +22,6 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 	</resultMap>
-	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
@@ -47,14 +46,12 @@
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 
-	<!-- 插入记录 -->
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		insert into WEBPORTAL_USER (UC_ID,OAUTH_ID,USERNAME,EMAIL,MOBILE,IS_ADMIN, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER) values
 		(#{ucId},#{oauthId},#{userName},#{email},#{mobile},#{isAdmin},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 
-	<!-- 物理删除 -->
 	<update id="delete" parameterType="User">
 		delete from WEBPORTAL_USER where ID = #{id}
 	</update>
@@ -75,13 +72,11 @@
 		where ID = #{id}
 	</update>
 
-	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_USER where ID = #{id}
 	</select>
-	<!-- 根据ucid查询-->
 	<select id="selectByUcId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
@@ -92,27 +87,23 @@
 			ID
 		from WEBPORTAL_USER where UC_ID = #{ucId}
 	</select>
-	<!-- 根据oauthid查询-->
 	<select id="selectByOauthId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_USER where OAUTH_ID = #{oauthId}
 	</select>
 
-	<!-- 根据userName查询-->
 	<select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_USER where USERNAME = #{userName}
 	</select>
 
-	<!-- 根据userName查询用户是否存在-->
 	<select id="existByUserName" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select count(1)
 		from WEBPORTAL_USER where USERNAME = #{userName}
 	</select>
 
-	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
 			parameterType="java.util.Map">
 		select

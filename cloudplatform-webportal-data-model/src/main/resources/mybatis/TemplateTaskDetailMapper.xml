@@ -31,7 +31,6 @@
 		from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd where ttd.id = #{id}
 	</select>
 	
-	<!-- 插入记录 -->
 	<insert id="insert" parameterType="TemplateTaskDetail" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_TEMPLATE_TASK_DETAIL(
@@ -42,7 +41,6 @@
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 	
-	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
@@ -89,13 +87,11 @@
 		</trim>
 	</sql>
 	
-	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd
 		<include refid="Example_Where_Clause" />
 	</select>
-	<!-- 按task_type查询 -->
 	<select id="selectByTemplateTaskType" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
@@ -147,7 +143,6 @@
 			</if>
 		</trim>
 	</sql>
-	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select

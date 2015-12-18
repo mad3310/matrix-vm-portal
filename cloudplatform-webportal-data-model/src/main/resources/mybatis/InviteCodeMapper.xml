@@ -67,8 +67,6 @@
 	        MATRIX_INVITE_CODE invite
 	        <include refid="Common_Where_Clause" />
 	</select>
-	
-	<!-- 更新记录 -->
 	<update id="updateInviteCode" parameterType="InviteCode">
 		update 
 			MATRIX_INVITE_CODE

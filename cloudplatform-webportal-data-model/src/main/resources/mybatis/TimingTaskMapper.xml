@@ -31,7 +31,6 @@
 		tt.DELETED,tt.CREATE_TIME,tt.CREATE_USER,tt.UPDATE_TIME,tt.UPDATE_USER
 	</sql>
 	
-	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
@@ -87,7 +86,6 @@
 	</sql>
 
 
-	<!-- 插入记录 -->
 	<insert id="insert" parameterType="BaseTimingTask" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_TIMING_TASK(NAME,UUID,HTTP_METHOD,URL,TIMING_RULE,EXEC_TYPE,DESCN,TYPE,TIME_POINT,TIME_INTERVAL,
@@ -96,7 +94,6 @@
 		#{name},#{uuid},#{httpMethod},#{url},#{timingRule},#{execType},#{descn},#{type},#{timePoint},#{timeInterval},#{deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
-	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="BaseTimingTask">
 		update WEBPORTAL_TIMING_TASK set
 		ID=#{id},NAME=#{name},UUID=#{uuid},HTTP_METHOD=#{httpMethod},URL=#{url},TIMING_RULE=#{timingRule},EXEC_TYPE=#{execType},DESCN=#{descn},TYPE=#{type},TIME_POINT=#{timePoint},TIME_INTERVAL=#{timeInterval},
@@ -154,12 +151,10 @@
 		where ID=#{id}
 	</update>
 	
-	<!-- 物理删除 -->
 	<update id="delete" parameterType="BaseTimingTask">
 		delete from WEBPORTAL_TIMING_TASK where ID = #{id}
 	</update>
 
-	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	        select
 			<include refid="Base_Column_List" /> 
@@ -167,14 +162,12 @@
 			where  tt.ID = #{id};
 	</select>
 
-	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="BaseTimingTask">
 		select count(1) from WEBPORTAL_TIMING_TASK tt
 		<include refid="Example_Where_Clause" />
 	</select>
 	
-	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
 		select
@@ -237,7 +230,6 @@
 		</trim>
 	</sql>
 	
-	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select

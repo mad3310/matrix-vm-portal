@@ -30,14 +30,13 @@
 		tci.ID,tci.TASK_ID,tci.STATUS,tci.SERVICE_NAME,tci.CLUSTER_NAME,tci.START_TIME,tci.END_TIME,tci.DELETED,tci.CREATE_TIME,tci.CREATE_USER,tci.UPDATE_TIME,tci.UPDATE_USER
 	</sql>
 	
-	<insert id="insert" parameterType="BackupResult" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="insert" parameterType="TaskChainIndex" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_TASK_CHAIN_INDEX(TASK_ID,CLUSTER_NAME,SERVICE_NAME,STATUS,START_TIME,END_TIME,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
 		#{taskId},#{clusterName},#{serviceName},#{status},#{startTime},#{endTime},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser})
 	</insert>
 	
-	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
@@ -122,7 +121,6 @@
 		</set>
 		where ID=#{id}
 	</update>
-	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_TASK_CHAIN_INDEX tci
@@ -146,7 +144,6 @@
 		from WEBPORTAL_TASK_CHAIN_INDEX tci where tci.id = #{id}
 	</select>
 	
-	<!--  分页：根据条件查询 -->
 	<sql id="Example_Page_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
@@ -189,7 +186,6 @@
 			</if>
 		</trim>
 	</sql>
-	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select

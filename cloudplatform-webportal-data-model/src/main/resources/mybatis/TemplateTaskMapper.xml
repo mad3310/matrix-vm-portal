@@ -21,7 +21,6 @@
 	<sql id="Base_Column_List">
 		tt.ID,tt.NAME,tt.DESCN,tt.TASK_TYPE,tt.DELETED,tt.DELETED,tt.CREATE_TIME,tt.CREATE_USER,tt.UPDATE_TIME,tt.UPDATE_USER
 	</sql>
-	<!-- 插入记录 -->
 	<insert id="insert" parameterType="TemplateTask" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_TEMPLATE_TASK(
@@ -32,7 +31,6 @@
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 	
-	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
@@ -99,7 +97,6 @@
 		where ID=#{id}
 	</update>
 	
-	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_TEMPLATE_TASK tt
@@ -152,7 +149,6 @@
 		</trim>
 	</sql>
 	
-	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select

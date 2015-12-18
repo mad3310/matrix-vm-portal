@@ -59,7 +59,6 @@
 	    	ORDER BY operate.CREATE_TIME DESC
 	</select>
 
-	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 			<include refid="Base_Column_List" />
@@ -72,7 +71,6 @@
 	    	</if>
 	</select>
 	
-	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select 
 			count(1) 
