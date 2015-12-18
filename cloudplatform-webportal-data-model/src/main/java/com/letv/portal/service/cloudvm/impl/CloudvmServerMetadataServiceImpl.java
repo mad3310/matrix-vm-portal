@@ -4,7 +4,7 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.cloudvm.ICloudvmServerMetadataDao;
 import com.letv.portal.model.cloudvm.CloudvmServerMetadata;
 import com.letv.portal.service.cloudvm.ICloudvmServerMetadataService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.order.IOrderSubDetailDao;
 import com.letv.portal.model.order.OrderSubDetail;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.order.IOrderSubDetailService;
 
 @Service("orderSubDetailService")

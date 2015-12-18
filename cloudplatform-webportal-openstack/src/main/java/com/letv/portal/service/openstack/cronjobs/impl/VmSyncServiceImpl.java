@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.cronjobs.impl.cache.SyncLocalApiCache;

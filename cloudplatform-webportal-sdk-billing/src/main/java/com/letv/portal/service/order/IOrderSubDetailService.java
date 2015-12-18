@@ -3,7 +3,7 @@ package com.letv.portal.service.order;
 import java.util.Map;
 
 import com.letv.portal.model.order.OrderSubDetail;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**
  * 订单详情service

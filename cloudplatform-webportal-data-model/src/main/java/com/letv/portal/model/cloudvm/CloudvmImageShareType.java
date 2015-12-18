@@ -1,6 +1,7 @@
 package com.letv.portal.model.cloudvm;
 
-import com.letv.portal.model.adminoplog.IntEnum;
+
+import com.letv.portal.enumeration.IntEnum;
 
 /**
  * Created by zhouxianguang on 2015/10/23.

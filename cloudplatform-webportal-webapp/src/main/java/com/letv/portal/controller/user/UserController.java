@@ -1,13 +1,9 @@
 package com.letv.portal.controller.user;
 
 import com.letv.common.result.ResultObject;
-import com.letv.common.session.Session;
 import com.letv.common.util.CookieUtil;
-import com.letv.common.util.SessionUtil;
-import com.letv.mms.cache.ICacheService;
-import com.letv.mms.cache.factory.CacheFactory;
-import com.letv.portal.model.UserModel;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.model.common.UserModel;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.oauth.IUcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 

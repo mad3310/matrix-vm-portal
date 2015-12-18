@@ -1,6 +1,6 @@
 package com.letv.portal.model.common;
 
-import com.letv.portal.model.adminoplog.IntEnum;
+import com.letv.portal.enumeration.IntEnum;
 
 /**
  * Created by zhouxianguang on 2015/11/10.

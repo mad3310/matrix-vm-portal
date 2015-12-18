@@ -1,8 +1,5 @@
 package com.letv.portal.timing.task.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -12,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.timing.task.ITimingTaskDao;
 import com.letv.portal.model.timing.task.BaseTimingTask;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.timing.task.IBaseTimingTaskService;
 
 @Service("baseTimingTaskService")

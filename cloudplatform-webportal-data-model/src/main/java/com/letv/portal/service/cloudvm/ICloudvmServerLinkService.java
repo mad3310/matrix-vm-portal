@@ -1,7 +1,7 @@
 package com.letv.portal.service.cloudvm;
 
 import com.letv.portal.model.cloudvm.CloudvmServerLink;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 import java.util.List;
 

@@ -1,16 +1,11 @@
 package com.letv.portal.service.cloudvm.impl;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.cloudvm.ICloudvmFlavorDao;
-import com.letv.portal.dao.cloudvm.ICloudvmRegionDao;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
-import com.letv.portal.model.cloudvm.CloudvmRegion;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
-import com.letv.portal.service.cloudvm.ICloudvmRegionService;
-import com.letv.portal.service.impl.BaseServiceImpl;
-import org.apache.commons.lang.StringUtils;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

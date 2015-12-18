@@ -3,8 +3,8 @@ package com.letv.portal.controller.billing.api;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-import com.letv.portal.model.UserModel;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.model.common.UserModel;
+import com.letv.portal.service.common.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

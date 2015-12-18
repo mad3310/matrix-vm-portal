@@ -5,7 +5,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.cloudvm.ICloudvmVmCountDao;
 import com.letv.portal.model.cloudvm.CloudvmVmCount;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

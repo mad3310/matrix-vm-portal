@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.subscription.ISubscriptionDetailDao;
 import com.letv.portal.model.subscription.SubscriptionDetail;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 
 @Service("subscriptionDetailService")

@@ -8,7 +8,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.cloudvm.ICloudvmServerDao;
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

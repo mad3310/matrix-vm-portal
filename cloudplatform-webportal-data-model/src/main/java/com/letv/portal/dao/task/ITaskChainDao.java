@@ -5,7 +5,9 @@ import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.task.TaskChain;
+import org.springframework.stereotype.Repository;
 
+@Repository("taskChainDao")
 public interface ITaskChainDao extends IBaseDao<TaskChain> {
 
 	TaskChain selectNextChainByIndexAndOrder(TaskChain tc);

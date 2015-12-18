@@ -9,7 +9,7 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.base.IBaseElementDao;
 import com.letv.portal.model.base.BaseElement;
 import com.letv.portal.service.base.IBaseElementService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 
 @Service("baseElementService")
 public class BaseElementServiceImpl extends BaseServiceImpl<BaseElement> implements IBaseElementService {

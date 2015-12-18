@@ -19,9 +19,9 @@
 	    <association property="baseRegion" javaType="BaseRegion">
 			<result column="NAME" property="name" />
 		</association>
-		<association property="hcluster" javaType="Hcluster">
+		<!--<association property="hcluster" javaType="Hcluster">
 			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
-		</association>
+		</association>-->
 	</resultMap>
 	
 	<sql id="Base_Column_List">

@@ -1,7 +1,7 @@
 package com.letv.portal.proxy;
 
 import com.letv.common.session.Session;
-import com.letv.portal.model.UserLogin;
+import com.letv.portal.model.common.UserLogin;
 
 public interface ILoginProxy {
 	Session saveOrUpdateUserBySession(Session session);

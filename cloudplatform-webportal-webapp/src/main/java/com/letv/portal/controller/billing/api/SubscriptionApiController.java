@@ -4,7 +4,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.order.OrderSub;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 import org.slf4j.Logger;

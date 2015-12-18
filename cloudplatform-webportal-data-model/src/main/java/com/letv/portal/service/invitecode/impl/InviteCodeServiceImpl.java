@@ -1,6 +1,5 @@
 package com.letv.portal.service.invitecode.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,7 @@ import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.invitecode.IInviteCodeDao;
 import com.letv.portal.model.invitecode.InviteCode;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.invitecode.IInviteCodeService;
 
 /**

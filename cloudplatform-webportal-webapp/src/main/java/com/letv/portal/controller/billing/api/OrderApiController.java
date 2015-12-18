@@ -1,7 +1,7 @@
 package com.letv.portal.controller.billing.api;
 
 import com.letv.common.result.ResultObject;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.order.IOrderSubService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

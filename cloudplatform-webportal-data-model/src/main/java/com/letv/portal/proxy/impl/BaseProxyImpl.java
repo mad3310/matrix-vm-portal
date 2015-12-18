@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.proxy.IBaseProxy;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 public abstract class BaseProxyImpl<T> implements IBaseProxy<T>{
 	

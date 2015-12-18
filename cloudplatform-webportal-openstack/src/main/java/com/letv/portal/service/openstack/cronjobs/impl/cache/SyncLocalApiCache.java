@@ -2,7 +2,7 @@ package com.letv.portal.service.openstack.cronjobs.impl.cache;
 
 import com.google.common.cache.*;
 import com.letv.common.exception.MatrixException;
-import com.letv.portal.model.UserVo;
+import com.letv.portal.model.common.UserVo;
 import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;

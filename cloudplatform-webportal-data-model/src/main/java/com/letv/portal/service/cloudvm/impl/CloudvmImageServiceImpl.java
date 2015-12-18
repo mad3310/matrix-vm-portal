@@ -7,7 +7,7 @@ import com.letv.portal.dao.cloudvm.ICloudvmImageDao;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmImageType;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 

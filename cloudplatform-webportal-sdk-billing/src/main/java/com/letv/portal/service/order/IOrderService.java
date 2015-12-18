@@ -1,7 +1,7 @@
 package com.letv.portal.service.order;
 
 import com.letv.portal.model.order.Order;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**
  * 订单service

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.product.IProductInfoRecordDao;
 import com.letv.portal.model.product.ProductInfoRecord;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.product.IProductInfoRecordService;
 
 @Service("productInfoRecordService")

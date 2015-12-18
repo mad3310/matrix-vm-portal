@@ -7,7 +7,7 @@ import java.util.Map;
 import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.product.Product;
 import com.letv.portal.model.product.ProductElement;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**Program Name: IBaseElementService <br>
  * Description:  产品<br>

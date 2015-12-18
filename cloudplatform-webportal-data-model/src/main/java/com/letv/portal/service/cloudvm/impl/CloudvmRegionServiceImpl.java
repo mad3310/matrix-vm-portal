@@ -17,7 +17,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.cloudvm.ICloudvmRegionDao;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 
 @Service("cloudvmRegionService")
 public class CloudvmRegionServiceImpl extends BaseServiceImpl<CloudvmRegion>

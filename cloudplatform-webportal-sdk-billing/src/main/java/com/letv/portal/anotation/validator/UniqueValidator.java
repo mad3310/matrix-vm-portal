@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ApplicationObjectSupport;
 
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 import com.letv.portal.service.base.IBaseElementService;
 
 public class UniqueValidator extends ApplicationObjectSupport implements ConstraintValidator<Unique, String> {

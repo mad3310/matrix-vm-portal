@@ -7,7 +7,7 @@ import java.util.Map;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**
  * 订单service

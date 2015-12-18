@@ -4,7 +4,7 @@ import com.letv.common.exception.MatrixException;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;

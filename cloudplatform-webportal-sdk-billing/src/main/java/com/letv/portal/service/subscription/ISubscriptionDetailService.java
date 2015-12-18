@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.subscription.SubscriptionDetail;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**
  * 订阅详情service

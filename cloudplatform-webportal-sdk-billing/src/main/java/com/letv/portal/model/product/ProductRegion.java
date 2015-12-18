@@ -1,9 +1,9 @@
 package com.letv.portal.model.product;
 
+import com.letv.portal.model.common.HclusterModel;
 import org.apache.ibatis.type.Alias;
 
 import com.letv.common.model.BaseModel;
-import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.base.BaseRegion;
 
 /**

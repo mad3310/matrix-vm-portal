@@ -1,7 +1,7 @@
 package com.letv.portal.service.product;
 
 import com.letv.portal.model.product.ProductInfoRecord;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**
  * 页面商品信息服务

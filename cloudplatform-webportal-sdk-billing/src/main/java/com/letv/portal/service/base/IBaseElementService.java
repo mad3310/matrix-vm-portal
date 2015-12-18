@@ -1,7 +1,7 @@
 package com.letv.portal.service.base;
 
 import com.letv.portal.model.base.BaseElement;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**Program Name: IBaseElementService <br>
  * Description:  基本元素<br>

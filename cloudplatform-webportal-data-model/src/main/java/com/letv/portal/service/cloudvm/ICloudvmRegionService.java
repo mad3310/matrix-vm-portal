@@ -3,7 +3,7 @@ package com.letv.portal.service.cloudvm;
 import java.util.List;
 
 import com.letv.portal.model.cloudvm.CloudvmRegion;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 public interface ICloudvmRegionService extends IBaseService<CloudvmRegion> {
 	void add(String code, String displayName);

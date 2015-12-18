@@ -3,7 +3,7 @@ package com.letv.portal.service.cloudvm;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 import java.util.List;
 

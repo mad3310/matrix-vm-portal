@@ -1,6 +1,6 @@
 package com.letv.portal.dao.cloudvm;
 
-import com.letv.portal.dao.adminoplog.IntEnumTypeHandler;
+import com.letv.portal.enumeration.IntEnumTypeHandler;
 import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 
 /**

@@ -19,7 +19,7 @@ import com.letv.portal.dao.cloudvm.ICloudvmVolumeDao;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 
 @Service("cloudvmVolumeService")
 public class CloudvmVolumeServiceImpl extends BaseServiceImpl<CloudvmVolume>

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.operate.RecentOperate;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 
 public interface IRecentOperateService extends IBaseService<RecentOperate>  {

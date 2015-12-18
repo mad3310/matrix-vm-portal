@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
-import com.letv.portal.model.UserVo;
 import com.letv.portal.service.openstack.OpenStackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.controller.cloudvm.Util;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 

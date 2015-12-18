@@ -4,15 +4,13 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.IpUtil;
 import com.letv.common.util.SessionUtil;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
-import com.letv.portal.model.UserLogin;
-import com.letv.portal.model.UserModel;
+import com.letv.portal.model.common.UserLogin;
+import com.letv.portal.model.common.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
-import com.letv.portal.service.ILoginRecordService;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.oauth.IOauthService;
 import com.letv.portal.service.oauth.IUcService;
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.util.Date;
 import java.util.Map;
 
 @Component

@@ -1,6 +1,6 @@
 package com.letv.portal.service.openstack.impl;
 
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.billing.event.service.EventPublishService;

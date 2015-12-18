@@ -7,7 +7,6 @@ import com.letv.portal.model.common.CommonQuota;
 import com.letv.portal.model.common.CommonQuotaModule;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.common.ICommonQuotaService;
-import com.letv.portal.service.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

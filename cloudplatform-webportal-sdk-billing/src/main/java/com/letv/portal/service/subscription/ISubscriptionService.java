@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.subscription.Subscription;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**
  * 订阅service

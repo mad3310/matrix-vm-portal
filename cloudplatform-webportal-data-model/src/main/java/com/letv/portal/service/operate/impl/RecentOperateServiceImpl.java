@@ -16,7 +16,7 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.operate.IRecentOperateDao;
 import com.letv.portal.model.operate.RecentOperate;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.operate.IRecentOperateService;
 
 /**

@@ -8,7 +8,7 @@ import com.letv.portal.model.order.Order;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.order.IOrderService;

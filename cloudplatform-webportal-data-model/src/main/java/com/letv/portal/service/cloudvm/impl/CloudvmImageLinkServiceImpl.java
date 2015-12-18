@@ -4,7 +4,7 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.cloudvm.ICloudvmImageLinkDao;
 import com.letv.portal.model.cloudvm.CloudvmImageLink;
 import com.letv.portal.service.cloudvm.ICloudvmImageLinkService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

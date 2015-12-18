@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.cloudvm.*;
 import com.letv.portal.service.openstack.OpenStackTenant;
 import com.letv.portal.service.openstack.billing.event.service.EventPublishService;

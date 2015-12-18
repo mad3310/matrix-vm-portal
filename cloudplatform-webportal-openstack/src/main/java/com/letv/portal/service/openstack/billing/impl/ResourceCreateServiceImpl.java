@@ -3,8 +3,8 @@ package com.letv.portal.service.openstack.billing.impl;
 import com.letv.common.exception.MatrixException;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.model.UserVo;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.model.common.UserVo;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.BillingResource;
@@ -37,13 +37,8 @@ import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.HashSet;
 import java.util.Set;
 

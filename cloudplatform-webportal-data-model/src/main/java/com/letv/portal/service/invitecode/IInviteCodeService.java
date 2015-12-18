@@ -1,7 +1,7 @@
 package com.letv.portal.service.invitecode;
 
 import com.letv.portal.model.invitecode.InviteCode;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 
 public interface IInviteCodeService extends IBaseService<InviteCode>  {

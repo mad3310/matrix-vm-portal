@@ -16,14 +16,13 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.order.IOrderSubDao;
 import com.letv.portal.dao.order.IOrderSubDetailDao;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.order.OrderSubDetail;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IProductService;
 

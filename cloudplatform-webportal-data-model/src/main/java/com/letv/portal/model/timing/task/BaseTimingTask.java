@@ -3,7 +3,6 @@ package com.letv.portal.model.timing.task;
 import java.util.List;
 
 import com.letv.common.model.BaseModel;
-import com.letv.portal.enumeration.OssServerVisibility;
 import com.letv.portal.enumeration.TimingTaskExecType;
 import com.letv.portal.enumeration.TimingTaskType;
 

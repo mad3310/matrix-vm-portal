@@ -6,7 +6,7 @@ import com.letv.portal.dao.cloudvm.ICloudvmRcCountDao;
 import com.letv.portal.model.cloudvm.CloudvmRcCount;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.service.cloudvm.ICloudvmRcCountService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 

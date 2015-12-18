@@ -15,9 +15,8 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ExceptionEmailServiceUtil;
-import com.letv.common.util.HttpsClient;
 import com.letv.portal.model.message.Message;
-import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.message.IMessageProxyService;
 
 @Service("messageProxyService")

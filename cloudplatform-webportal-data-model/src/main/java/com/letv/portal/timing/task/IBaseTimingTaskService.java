@@ -1,7 +1,7 @@
 package com.letv.portal.timing.task;
 
 import com.letv.portal.model.timing.task.BaseTimingTask;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 public interface IBaseTimingTaskService extends IBaseService<BaseTimingTask> {
 	

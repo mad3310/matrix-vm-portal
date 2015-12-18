@@ -1,7 +1,7 @@
 package com.letv.portal.service.cloudvm;
 
 import com.letv.portal.model.cloudvm.CloudvmImageProperty;
-import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.common.IBaseService;
 
 /**
  * Created by zhouxianguang on 2015/10/8.

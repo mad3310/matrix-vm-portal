@@ -14,14 +14,12 @@
     <modules>
         <module>cloudplatform-webportal-common</module>
         <module>cloudplatform-webportal-data-model</module>
-        <module>cloudplatform-webportal-webapp</module>
-        <module>cloudplatform-webportal-webadmin</module>
         <module>cloudplatform-webportal-cache-client</module>
         <module>cloudplatform-webportal-exception</module>
         <module>cloudplatform-webportal-logger</module>
-        <module>cloudplatform-webportal-sdk-rds</module>
         <module>cloudplatform-webportal-openstack</module>
         <module>cloudplatform-webportal-sdk-billing</module>
+        <module>cloudplatform-webportal-webapp</module>
     </modules>
 
 

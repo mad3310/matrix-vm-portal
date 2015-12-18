@@ -11,7 +11,7 @@ import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.dictionary.IDictionaryDao;
 import com.letv.portal.model.dictionary.Dictionary;
 import com.letv.portal.service.dictionary.IDictionaryService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.common.impl.BaseServiceImpl;
 
 @Service("dictionaryService")
 public class DictionaryServiceImpl extends BaseServiceImpl<Dictionary> implements IDictionaryService{
