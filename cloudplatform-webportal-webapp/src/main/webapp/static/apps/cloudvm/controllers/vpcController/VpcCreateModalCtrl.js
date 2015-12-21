@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VpcCreateModalCtrl', function (Config, HttpService,WidgetService,Utility, ModelService,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
+  controllerModule.controller('VpcCreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility', 'ModelService','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'region',
+    function (Config, HttpService,WidgetService,Utility, ModelService,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
 
     $scope.vpcCreate = {
       name:'',
@@ -63,6 +64,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         };
 
     initComponents();
-  });
+  }]);
 
 });

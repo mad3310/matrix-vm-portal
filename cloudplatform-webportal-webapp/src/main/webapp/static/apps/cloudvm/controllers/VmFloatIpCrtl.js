@@ -250,7 +250,8 @@ define(['controllers/app.controller'], function (controllerModule) {
     }
   ]);
 
-  controllerModule.controller('VmIpBindVmModalCtrl', function (Config, HttpService,WidgetService,ModelService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,bindfloatIp,avalibleVm) {
+  controllerModule.controller('VmIpBindVmModalCtrl', ['Config', 'HttpService','WidgetService','ModelService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'region','bindfloatIp','avalibleVm',
+    function (Config, HttpService,WidgetService,ModelService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,bindfloatIp,avalibleVm) {
     $scope.floatIpName=bindfloatIp.name;
     $scope.floatIp=bindfloatIp.ipAddress;
     $scope.vmListSelectorData=avalibleVm.map(function(vm){
@@ -278,9 +279,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       });
     }
-  });
+  }]);
 
-  controllerModule.controller('VmIpEditModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,floatIp) {
+  controllerModule.controller('VmIpEditModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'region','floatIp',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,floatIp) {
     Utility.getRzSliderHack($scope)();
     $scope.ipName=floatIp.name;
     $scope.closeModal=function(){
@@ -306,5 +308,5 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-  });
+  }]);
 });

@@ -27,6 +27,6 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <script type="text/javascript" src="/static/javascripts/dist/require.min.js" data-main="/static/javascripts/dist/cloudvm-main-1450171287718.js"></script>
+            <script type="text/javascript" src="/static/javascripts/dist/require.min.js" data-main="/static/javascripts/dist/cloudvm-main-1450686774950.js"></script>
         </body>
     </html>

@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VirtualMachineCrtl', ['$scope','$interval','$window', '$modal', 'Config','Utility', 'HttpService','WidgetService','CurrentContext',
-    function ($scope,$interval,$window, $modal, Config,Utility, HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VirtualMachineCrtl', ['$scope','$interval','$window','$q', '$modal', 'Config','Utility', 'HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval,$window,$q, $modal, Config,Utility, HttpService,WidgetService,CurrentContext) {
       $scope.searchVmName = '';
       $scope.vmTaskStatuses = Config.vmTaskStatuses;
       $scope.vmList = [];
@@ -367,7 +367,7 @@ define(['controllers/app.controller'], function (controllerModule) {
             vmSnapshot: function () {
               return undefined;
             },
-            loadAllRegionData:function($q,CurrentContext){
+            loadAllRegionData:function(){
               if(CurrentContext.allRegionData){
                 return true;
               }
@@ -543,7 +543,8 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
   ]);
 
-  controllerModule.controller('DiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+  controllerModule.controller('DiskAttachModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','vm',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
 
     $scope.diskList=[];
     $scope.diskListSelectorData=[];
@@ -590,9 +591,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     initComponents();
 
-  });
+  }]);
 
-  controllerModule.controller('DiskDetachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+  controllerModule.controller('DiskDetachModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','vm',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
 
     $scope.diskList=[];
     $scope.diskListSelectorData=[];
@@ -637,9 +639,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     initComponents();
 
-  });
+  }]);
 
-  controllerModule.controller('FloatingIpBindModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+  controllerModule.controller('FloatingIpBindModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','vm',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
 
     $scope.floatingIpList=[];
     $scope.floatingIpListSelectorData=[];
@@ -687,9 +690,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     initComponents();
 
-  });
+  }]);
 
-  controllerModule.controller('VmSnapshotCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+  controllerModule.controller('VmSnapshotCreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','vm',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
 
     $scope.vmSnapshotName='';
 
@@ -716,9 +720,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-  });
+  }]);
 
-  controllerModule.controller('VmPasswordChangeModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+  controllerModule.controller('VmPasswordChangeModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','vm',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
 
     $scope.newPassword='';
     $scope.confirmPassword='';
@@ -746,9 +751,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-  });
+  }]);
 
-  controllerModule.controller('VmEditModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+  controllerModule.controller('VmEditModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','vm',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
 
     $scope.vmName=vm.name;
 
@@ -776,6 +782,6 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
 
 
-  });
+  }]);
 
 });

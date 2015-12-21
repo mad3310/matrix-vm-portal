@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('SubnetEditModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, subnetInfo) {
+  controllerModule.controller('SubnetEditModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'subnetInfo',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, subnetInfo) {
     $scope.subnetEdit = {
       name:subnetInfo.name
     };
@@ -33,6 +34,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-  });
+  }]);
 
 });

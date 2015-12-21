@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window,$sce,$httpParamSerializerJQLike,$modal, region,vmSnapshot) {
+  controllerModule.controller('VmCreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext','ModelService', '$scope', '$modalInstance','$timeout','$window','$sce','$httpParamSerializerJQLike','$modal', 'region','vmSnapshot',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window,$sce,$httpParamSerializerJQLike,$modal, region,vmSnapshot) {
 
     $scope.isCalculatingPrice=true;
     $scope.isDesignatedVmSnapshot = vmSnapshot?true:false;
@@ -331,6 +332,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
     initComponents();
-  });
+  }]);
 
 });

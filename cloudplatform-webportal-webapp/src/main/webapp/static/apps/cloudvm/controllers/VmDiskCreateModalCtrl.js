@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmDiskCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region,diskSnapshot) {
+  controllerModule.controller('VmDiskCreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext','ModelService', '$scope', '$modalInstance','$timeout','$window', 'region','diskSnapshot',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region,diskSnapshot) {
 
     var DEFAULT_MIN_VOLUME=10;
     var initComponents = function () {
@@ -140,6 +141,6 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     initComponents();
 
-  });
+  }]);
 
 });

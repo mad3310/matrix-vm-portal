@@ -307,7 +307,8 @@ define(['controllers/app.controller'], function (controllerModule) {
     }
   ]);
 
-  controllerModule.controller('VmDiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
+  controllerModule.controller('VmDiskAttachModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','disk',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
 
     $scope.vmList=[];
     $scope.vmListSelectorData=[];
@@ -355,9 +356,10 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     initComponents();
 
-  });
+  }]);
 
-  controllerModule.controller('VmDiskEditModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
+  controllerModule.controller('VmDiskEditModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','disk',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
 
     $scope.diskName=disk.name;
 
@@ -386,9 +388,10 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
 
 
-  });
+  }]);
 
-  controllerModule.controller('VmDiskSnapshotCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
+  controllerModule.controller('VmDiskSnapshotCreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region','disk',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
 
     $scope.diskSnapshotName='';
 
@@ -415,6 +418,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
-  });
+  }]);
 
 });

@@ -41,7 +41,7 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
-    directiveModule.directive('nameInputRestrict', function(Config) {
+    directiveModule.directive('nameInputRestrict', ['Config',function(Config) {
         return {
             require: 'ngModel',
             link: function(scope, elm, attrs, ctrl) {
@@ -53,9 +53,9 @@ define(['./common.directive'],function (directiveModule) {
                 };
             }
         };
-    });
+    }]);
 
-    directiveModule.directive('nameInputKeypairRestrict', function(Config) {
+    directiveModule.directive('nameInputKeypairRestrict', ['Config',function(Config) {
         return {
             require: 'ngModel',
             link: function(scope, elm, attrs, ctrl) {
@@ -67,9 +67,9 @@ define(['./common.directive'],function (directiveModule) {
                 };
             }
         };
-    });
+    }]);
 
-    directiveModule.directive('passwordRestrict', function(Config) {
+    directiveModule.directive('passwordRestrict', ['Config',function(Config) {
         return {
             require: 'ngModel',
             link: function(scope, elm, attrs, ctrl) {
@@ -81,9 +81,9 @@ define(['./common.directive'],function (directiveModule) {
                 };
             }
         };
-    });
+    }]);
 
-    directiveModule.directive('passwordConfirm', function(Config) {
+    directiveModule.directive('passwordConfirm', function() {
         return {
             require: 'ngModel',
             scope: {
@@ -115,7 +115,7 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
-    directiveModule.directive('vmCreateKeypairValidator', function(Config) {
+    directiveModule.directive('vmCreateKeypairValidator', function() {
         return {
             require: 'ngModel',
             link: function(scope, elm, attrs, ctrl) {
@@ -186,7 +186,7 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
-    directiveModule.directive('leSelect', function ($document) {
+    directiveModule.directive('leSelect', ['$document',function ($document) {
         return {
             restrict: 'AE',
             scope: {
@@ -219,9 +219,9 @@ define(['./common.directive'],function (directiveModule) {
             },
             templateUrl: '/static/apps/common/directives/le-select/template.html'
         };
-    });
+    }]);
 
-    directiveModule.directive('leSlider', function (Utility) {
+    directiveModule.directive('leSlider', ['Utility',function (Utility) {
         return {
             restrict: 'AE',
             scope: {
@@ -281,7 +281,7 @@ define(['./common.directive'],function (directiveModule) {
             },
             templateUrl: '/static/apps/common/directives/le-slider/template.html'
         };
-    });
+    }]);
 
     directiveModule.directive('buyPeriodSelector', function () {
         return {
@@ -302,7 +302,7 @@ define(['./common.directive'],function (directiveModule) {
         };
     });
 
-    directiveModule.directive('leAutoFocus', function ($timeout) {
+    directiveModule.directive('leAutoFocus', ['$timeout',function ($timeout) {
         return {
             restrict: 'AE',
             link: function (scope, element, attrs) {
@@ -311,9 +311,9 @@ define(['./common.directive'],function (directiveModule) {
                 }
             }
         };
-    });
+    }]);
 
-    directiveModule.directive('inputValidationTooltip', function ($timeout) {
+    directiveModule.directive('inputValidationTooltip', function () {
         return {
             restrict: 'AE',
             scope: {

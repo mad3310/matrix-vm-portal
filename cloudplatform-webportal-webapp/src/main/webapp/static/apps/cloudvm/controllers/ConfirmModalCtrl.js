@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('ConfirmModalCtrl', function ( $scope, $modalInstance, message,title) {
+  controllerModule.controller('ConfirmModalCtrl', ['$scope', '$modalInstance', 'message','title',function ( $scope, $modalInstance, message,title) {
     $scope.confirmMessage=message;
     $scope.title=title;
     $scope.closeModal=function(){
@@ -15,5 +15,5 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
-  });
+  }]);
 });

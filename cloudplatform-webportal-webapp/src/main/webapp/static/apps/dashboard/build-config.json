@@ -9,7 +9,7 @@
     compress: {
       properties: true
     },
-    mangle: false
+    mangle: true
   },
   paths: {
     //vendor

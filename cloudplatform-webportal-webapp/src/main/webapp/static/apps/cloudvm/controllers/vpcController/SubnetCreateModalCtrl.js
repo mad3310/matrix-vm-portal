@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-    controllerModule.controller('SubnetCreateModalCtrl', function (Config, HttpService, WidgetService, Utility, ModelService, CurrentContext, $scope, $modalInstance, $timeout, $window, subnetInfo) {
+    controllerModule.controller('SubnetCreateModalCtrl', ['Config', 'HttpService', 'WidgetService', 'Utility', 'ModelService', 'CurrentContext', '$scope', '$modalInstance', '$timeout', '$window', 'subnetInfo',
+        function (Config, HttpService, WidgetService, Utility, ModelService, CurrentContext, $scope, $modalInstance, $timeout, $window, subnetInfo) {
 
         $scope.subnetCreate = {
             name: ''
@@ -59,8 +60,9 @@ define(['controllers/app.controller'], function (controllerModule) {
             };
 
         initComponents();
-    });
-    controllerModule.controller('SubnetCreateWithVpcModalCtrl', function (Config, HttpService, WidgetService, Utility, ModelService, CurrentContext, $scope, $modalInstance, $timeout, $window, subnetInfo) {
+    }]);
+    controllerModule.controller('SubnetCreateWithVpcModalCtrl', ['Config', 'HttpService', 'WidgetService', 'Utility', 'ModelService', 'CurrentContext', '$scope', '$modalInstance', '$timeout', '$window', 'subnetInfo',
+        function (Config, HttpService, WidgetService, Utility, ModelService, CurrentContext, $scope, $modalInstance, $timeout, $window, subnetInfo) {
 
         $scope.subnetCreate = {
             name: '',
@@ -107,6 +109,6 @@ define(['controllers/app.controller'], function (controllerModule) {
             };
 
         initComponents();
-    });
+    }]);
 
 });

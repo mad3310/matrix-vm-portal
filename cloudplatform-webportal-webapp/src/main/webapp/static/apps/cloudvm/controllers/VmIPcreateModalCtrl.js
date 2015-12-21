@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmIPcreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
+  controllerModule.controller('VmIPcreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'region',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
     Utility.getRzSliderHack($scope)();
     $scope.networkBandWidth=2;
     $scope.ipName = '';
@@ -84,6 +85,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
 
-  });
+  }]);
 
 });

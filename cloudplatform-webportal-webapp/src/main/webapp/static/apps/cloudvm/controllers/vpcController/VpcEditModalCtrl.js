@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VpcEditModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, vpcInfo) {
+  controllerModule.controller('VpcEditModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'vpcInfo',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, vpcInfo) {
     $scope.vpcEdit = {
       name:vpcInfo.name
     };
@@ -31,6 +32,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-  });
+  }]);
 
 });

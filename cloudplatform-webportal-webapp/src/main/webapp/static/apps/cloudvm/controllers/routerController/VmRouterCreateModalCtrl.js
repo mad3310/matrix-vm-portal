@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmRouterCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
+  controllerModule.controller('VmRouterCreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'region',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
 
     $scope.routerName = '';
     $scope.enablePublicNetworkGateway = 'true';
@@ -75,6 +76,6 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     initComponents();
 
-  });
+  }]);
 
 });

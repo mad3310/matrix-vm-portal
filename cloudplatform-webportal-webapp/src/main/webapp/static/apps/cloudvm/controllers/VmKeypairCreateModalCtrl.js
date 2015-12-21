@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmKeypairCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region) {
+  controllerModule.controller('VmKeypairCreateModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance', 'region',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region) {
 
     $scope.keypairName='';
 
@@ -28,6 +29,6 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     };
 
-  });
+  }]);
 
 });

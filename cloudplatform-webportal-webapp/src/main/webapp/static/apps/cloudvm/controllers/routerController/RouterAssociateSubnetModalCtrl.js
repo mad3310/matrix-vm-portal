@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('AssociateSubnetModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, routerInfo) {
+  controllerModule.controller('AssociateSubnetModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance','$timeout','$window', 'routerInfo',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, routerInfo) {
     $scope.associateRouterName = routerInfo.routerName;
     $scope.selectedSubnet = null;
 
@@ -52,9 +53,10 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
     initComponents();
-  });
+  }]);
 
-  controllerModule.controller('RemoveSubnetModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, routerInfo) {
+  controllerModule.controller('RemoveSubnetModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance','$timeout','$window', 'routerInfo',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, routerInfo) {
     $scope.routerName = routerInfo.routerName;
     /*初始化已关联子网选择框--start*/
     $scope.subnetList = routerInfo.subnets;
@@ -86,6 +88,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-  });
+  }]);
 
 });

@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('AssociateRouterModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, subnetInfo) {
+  controllerModule.controller('AssociateRouterModalCtrl', ['Config', 'HttpService','WidgetService','Utility','ModelService', '$scope', '$modalInstance','$timeout','$window', 'subnetInfo',
+    function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, subnetInfo) {
     $scope.associateSubnetName=subnetInfo.subnetName;
 
     $scope.closeModal=function(){
@@ -41,7 +42,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
     initComponents();
-  });
+  }]);
 /*
 
   controllerModule.controller('RemoveRouterModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, routerInfo) {

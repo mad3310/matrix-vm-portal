@@ -475,7 +475,8 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
     ]);
 
-    controllerModule.controller('SubnetAssociateVmModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window,region, subnetInfo) {
+    controllerModule.controller('SubnetAssociateVmModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', 'modalInstance','$timeout','$window','region', 'subnetInfo',
+        function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window,region, subnetInfo) {
         $scope.associatedVmList = [];
         $scope.selectedAssociatedVm = [];
 
@@ -537,8 +538,9 @@ define(['controllers/app.controller'], function (controllerModule) {
               });*/
           };
         initComponents();
-    });
-    controllerModule.controller('SubnetDetachVmModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window,region, subnetInfo) {
+    }]);
+    controllerModule.controller('SubnetDetachVmModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window','region', 'subnetInfo',
+        function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window,region, subnetInfo) {
         $scope.detachVmList = [];
         $scope.selectedDetachVm = [];
         $scope.subnetDetachVm = {
@@ -599,6 +601,6 @@ define(['controllers/app.controller'], function (controllerModule) {
                 });*/
             };
         initComponents();
-    });
+    }]);
 });
 

@@ -3,7 +3,8 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmRouterEditModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, routerInfo) {
+  controllerModule.controller('VmRouterEditModalCtrl', ['Config', 'HttpService','WidgetService','Utility','CurrentContext', '$scope', '$modalInstance','$timeout','$window', 'routerInfo',
+    function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, routerInfo) {
     $scope.editRouterName = routerInfo.routerName;
     $scope.editEnablePublicNetworkGateway = routerInfo.publicNetworkGatewayEnable;
 
@@ -44,6 +45,6 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
 
 
-  });
+  }]);
 
 });
