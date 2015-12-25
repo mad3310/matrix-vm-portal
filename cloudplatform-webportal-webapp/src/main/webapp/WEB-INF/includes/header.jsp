@@ -1,6 +1,6 @@
     <%@ page language="java" pageEncoding="UTF-8"%>
     <div class="header">
-        <a href="/home/index.html" class="header-brand pull-left">
+        <a href="/index.html" class="header-brand pull-left">
             <!-- <img src="/static/images/brand-logo.png" class="brand-logo" /> -->
             <img class="brand-logo" src="http://i3.letvimg.com/lc01_lecloud/201509/25/11/14/letvcloud-logo.png">
         </a>
@@ -24,11 +24,11 @@
             <i class="separator"></i>
         </div>
         <a href="https://lcp-uc.letvcloud.com/userView/ucOverview.do" class="header-account pull-right">
-            <img src="/static/images/nav-account.png" class="account-icon" />
+            <img src="/images/nav-account.png" class="account-icon" />
             <span class="header-username"></span>
         </a>
-        <a href="/home/helpcenter.html" class="header-help pull-right">
-            <img src="/static/images/nav-help.png" class="help-icon" />
+        <a href="/helpcenter.html" class="header-help pull-right">
+            <img src="/images/nav-help.png" class="help-icon" />
             <span>帮助中心</span>
         </a>
     </div>

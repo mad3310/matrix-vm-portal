@@ -8,11 +8,11 @@
 	<meta name="renderer" content="webkit">
 	<title>升级浏览器-乐视云平台</title>
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
-	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
+	<link rel="shortcut icon" href="/images/home/favicon.ico">
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="../../../static/css/ui-css/common.css"/>
-	<link rel="stylesheet" href="/static/staticPage/css/common.css">
-	<link rel="stylesheet" href="/static/staticPage/css/style.css">
+	<link rel="stylesheet" href="/stylesheets/home/common.css">
+  	<link rel="stylesheet" href="/stylesheets/home/style.css">
 	<title>浏览器版本错误</title>
 	<style>
 	a{border:0;}
@@ -27,23 +27,23 @@
 		</p>
 		<ul class="ul_horizon mt30 clearfix">
 			<li><a href="https://www.google.com/chrome/browser/"
-				target="_blank"> <img src="static/img/chrome.png">
+				target="_blank"> <img src="/images/chrome.png">
 			</a>
 				<p>
 					<a href="https://www.google.com/chrome/browser/"><h4>Chrome</h4></a>
 				</p></li>
 			<li><a href="http://www.firefox.com.cn/" target="_blank"><img
-					src="static/img/ff.png"></a>
+					src="/images/ff.png"></a>
 				<p>
 					<a href="http://www.firefox.com.cn/"><h4>FireFox</h4></a>
 				</p></li>
 			<li><a href="http://windows.microsoft.com/zh-cn/internet-explorer" target="_blank"><img
-					src="static/img/ie.png" width="124px" height="134px"></a>
+					src="/images/ie.png" width="124px" height="134px"></a>
 				<p>
 					<a href="http://windows.microsoft.com/zh-cn/internet-explorer"><h4>IE</h4></a>
 				</p></li>
 			<li><a href="http://www.opera.com/zh-cn" target="_blank"><img
-					src="static/img/opera.png"></a>
+					src="/images/opera.png"></a>
 				<p>
 					<a href="http://www.opera.com/zh-cn"><h4>Opera</h4></a>
 				</p></li>
@@ -51,7 +51,7 @@
 	</div>
 	<div class="text-center mt30 pd30">
 		<div class="ib pd30">
-			<img src="static/img/monkey.png" />
+			<img src="/images/monkey.png" />
 		</div>
 		<div class="ib pd30">
 			<p>
@@ -92,7 +92,7 @@
 				</ul>
 			</div>
 			<div class="col-md-offset-2 col-md-2">
-				<div class="footer-qrcode"><img src="/static/staticPage/img/letv-code.png"></div>
+				<div class="footer-qrcode"><img src="/images/home/letv-code.png"></div>
 				<div class="followus"><span>关注我们</span></div>
 			</div>
 			<div class="clearfix"></div>
@@ -101,7 +101,7 @@
 			<div class="footer-right clearfix">
 				<div class="col-md-offset-4 col-md-5">
 					<div class="col-md-5 right-logo">
-						<img src="/static/staticPage/img/credible-cloud.png">
+						<img src="/images/home/credible-cloud.png">
 						<div>可信云认证</div>
 					</div>
 					<div class="col-md-7 right-desc hide">
@@ -113,7 +113,7 @@
 				</div>
 				<div class="col-md-offset-1 col-md-5 hide">
 					<div class="col-md-5 right-logo">
-						<img src="/static/staticPage/img/iso.png">
+						<img src="/images/home/iso.png">
 						<div>ISO27001认证 </div>
 					</div>
 					<div class="col-md-7 right-desc">

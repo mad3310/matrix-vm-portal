@@ -8,9 +8,9 @@
 	<meta name="renderer" content="webkit">
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
 	<title>邀请码-乐视云平台</title>
-	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
-	<link rel="stylesheet" href="/static/staticPage/css/common-e410f85195.css">
-	<link rel="stylesheet" href="/static/staticPage/css/style-ea8a062e9f.css">
+	<link rel="shortcut icon" href="/images/home/favicon.ico">
+  <link rel="stylesheet" href="/stylesheets/home/common.css">
+  <link rel="stylesheet" href="/stylesheets/home/style.css">
 </head>
 <body class="invitebg">
 	<div class="inviteBlock">
@@ -36,8 +36,8 @@
 	</div>
 </body>
 </html>
-<script src="/static/javascripts/jquery-1.11.3.js"></script>
-<script src="${ctx}/static/page-js/invite/inviteCode-2bc4837a0f.js"></script>
+<script src="/javascripts/vendor/jquery-1.11.3.js"></script>
+<script src="${ctx}/javascripts/page/inviteCode.js"></script>
 <script>
 	inviteBtnClick();
 	codeimgClick();

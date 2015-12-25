@@ -9,9 +9,9 @@
   <meta name="renderer" content="webkit">
   <title>支付-乐视云平台</title>
   <meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
-  <link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
-  <link rel="stylesheet" href="/static/staticPage/css/common-e410f85195.css">
-  <link rel="stylesheet" href="/static/staticPage/css/style-ea8a062e9f.css">
+  <link rel="shortcut icon" href="/images/home/favicon.ico">
+  <link rel="stylesheet" href="/stylesheets/home/common.css">
+  <link rel="stylesheet" href="/stylesheets/home/style.css">
 </head>
 <body>
 <input type="text" class="hide" value="${money}" id="needPay">
@@ -24,9 +24,9 @@
     </div>
     <div class="WeChatQR_Buttom" style="border:none">
         <div class="WeChatPay">
-            <img src="${ctx}/static/staticPage/img/WeChatPay_Right.png" ><span>微信支付</span>
+            <img src="${ctx}/images/home/WeChatPay_Right.png" ><span>微信支付</span>
         </div>
-        <div class="WeChat_Line"><img src="${ctx}/static/staticPage/img/WeChat_Line.png"></div>
+        <div class="WeChat_Line"><img src="${ctx}/images/home/WeChat_Line.png"></div>
         <div class="WeChat_Money">
             ￥&nbsp;<span>${money}</span>
         </div>
@@ -40,16 +40,16 @@
         <input type="hidden" id="corderId" value="${orderNum}">
         <div style="width:220px;height:2px;margin:0 auto;" id="code"></div>
         <div class="WeChat_Line WeChat_Line_MarginTop">
-            <img src="${ctx}/static/staticPage/img/WeChat_Line.png">
+            <img src="${ctx}/images/home/WeChat_Line.png">
         </div>
         <div class="WeChat_PlayCode">
-            <img src="${ctx}/static/staticPage/img/WeChat_Scan.png"><span>请使用微信扫码支付</span>
+            <img src="${ctx}/images/home/WeChat_Scan.png"><span>请使用微信扫码支付</span>
         </div>
     </div>
   </div>
 </div>
-<script src="/static/javascripts/jquery-1.11.3.js"></script>
-<script src="${ctx}/static/page-js/payment/payment-33acb5c554.js"></script>
+<script src="/javascripts/vendor/jquery-1.11.3.js"></script>
+<script src="${ctx}/javascripts/page/payment.js"></script>
 <script type="text/javascript">
 var _timer = null;
 var INTERVAL = 3000;

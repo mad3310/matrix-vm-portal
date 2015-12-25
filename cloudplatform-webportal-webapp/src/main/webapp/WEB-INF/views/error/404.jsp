@@ -8,14 +8,14 @@
 	<meta name="renderer" content="webkit">
 	<title>404-乐视云平台</title>
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
-	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
-	<link rel="stylesheet" href="/static/staticPage/css/common.css">
-	<link rel="stylesheet" href="/static/staticPage/css/style.css">
+	<link rel="shortcut icon" href="/images/home/favicon.ico">
+	<link rel="stylesheet" href="/stylesheets/home/common.css">
+	<link rel="stylesheet" href="/stylesheets/home/style.css">
 	<title>404错误</title>
 </head>
 <body>
 <div class="main-body text-center">
-	<div class="body-errorimg"><img src="../../../static/img/error.png"></div>
+	<div class="body-errorimg"><img src="../../../images/error.png"></div>
 	<div class="body-error"><span class="error_alert">404警告！</span><span class="error_text">您探索了一个未知领域！</span></div>
 	<div class="error_return"><a href="<%=ConfigUtil.getString("webportal.local.http") %>"><span>返回首页</span></a></div>
 </div>
@@ -49,7 +49,7 @@
 				</ul>
 			</div>
 			<div class="col-md-offset-2 col-md-2">
-				<div class="footer-qrcode"><img src="/static/staticPage/img/letv-code.png"></div>
+				<div class="footer-qrcode"><img src="/images/home/letv-code.png"></div>
 				<div class="followus"><span>关注我们</span></div>
 			</div>
 			<div class="clearfix"></div>
@@ -58,7 +58,7 @@
 			<div class="footer-right clearfix">
 				<div class="col-md-offset-4 col-md-5">
 					<div class="col-md-5 right-logo">
-						<img src="/static/staticPage/img/credible-cloud.png">
+						<img src="/images/home/credible-cloud.png">
 						<div>可信云认证</div>
 					</div>
 					<div class="col-md-7 right-desc hide">
@@ -70,7 +70,7 @@
 				</div>
 				<div class="col-md-offset-1 col-md-5 hide">
 					<div class="col-md-5 right-logo">
-						<img src="/static/staticPage/img/iso.png">
+						<img src="/images/home/iso.png">
 						<div>ISO27001认证 </div>
 					</div>
 					<div class="col-md-7 right-desc">
