@@ -82,10 +82,11 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
         if(allowUrl(request))
             return true;
 
-        Cookie cookie = CookieUtil.getCookieByName(request, CookieUtil.COOKIE_KEY);
+        Cookie memoryCookie = CookieUtil.getCookieByName(request, CookieUtil.MEMORY_COOKIE_KEY);
+        Cookie diskCookie = CookieUtil.getCookieByName(request, CookieUtil.DISK_COOKIE_KEY);
         Session session = null;
-        if (null != cookie) {
-            session = this.loginProxy.getUserBySessionId(cookie.getValue());
+        if (null != memoryCookie && null !=diskCookie) {
+            session = this.loginProxy.getUserBySessionId(memoryCookie.getValue());
         }
         if(null == session) {
             //session is null,login by request
@@ -107,7 +108,8 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
     }
 
     private boolean toLogin(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.delCookieByDomain(CookieUtil.MEMORY_COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.delCookieByDomain(CookieUtil.DISK_COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
         CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_ID,response,CookieUtil.LCP_COOKIE_DOMAIN);
         CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_NAME,response,CookieUtil.LCP_COOKIE_DOMAIN);
         CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_HEAD_PORTRAIT,response, CookieUtil.LCP_COOKIE_DOMAIN);
@@ -122,9 +124,12 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
     }
     private boolean loginSuccess(Session session,HttpServletRequest request,HttpServletResponse response){
         session.setOpenStackSession(openStackService.createSession(session.getUserId(),session.getEmail(),session.getUserName()));
-        CookieUtil.addCookieWithDomain(response,CookieUtil.COOKIE_KEY,SessionUtil.generateSessionId(session.getOauthId(),session.getClientId(),session.getClientSecret()),CookieUtil.USER_LOGIN_MAX_AGE,CookieUtil.LCP_COOKIE_DOMAIN);
-        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_ID, String.valueOf(session.getUserId()), CookieUtil.USER_LOGIN_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
-        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_NAME, String.valueOf(session.getUserName()), CookieUtil.USER_LOGIN_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
+        String cookieStr = SessionUtil.generateSessionId(session.getOauthId(), session.getClientId(), session.getClientSecret());
+
+        CookieUtil.addCookieWithDomain(response,CookieUtil.MEMORY_COOKIE_KEY,cookieStr,CookieUtil.MEMORY_MAX_AGE,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response,CookieUtil.DISK_COOKIE_KEY,cookieStr,CookieUtil.DISK_COOKIE_AGE,CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_ID, String.valueOf(session.getUserId()), CookieUtil.MEMORY_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_USER_NAME, String.valueOf(session.getUserName()), CookieUtil.MEMORY_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
         sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
             @Override
             public Session execute() throws Throwable {
