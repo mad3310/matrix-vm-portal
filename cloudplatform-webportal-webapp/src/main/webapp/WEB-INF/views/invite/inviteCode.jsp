@@ -36,8 +36,8 @@
 	</div>
 </body>
 </html>
-<script src="/javascripts/vendor/jquery-1.11.3.js"></script>
-<script src="${ctx}/javascripts/page/inviteCode.js"></script>
+<script src="/static/javascripts/jquery-1.11.3.js"></script>
+<script src="${ctx}/static/page-js/invite/inviteCode-2bc4837a0f.js"></script>
 <script>
 	inviteBtnClick();
 	codeimgClick();
