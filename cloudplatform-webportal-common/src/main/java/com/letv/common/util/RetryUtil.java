@@ -1,6 +1,7 @@
 package com.letv.common.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import com.letv.common.util.function.IRetry;
 @Service("retryUtil")
 public class RetryUtil {
 	
-	private static final Logger logger = Logger.getLogger(RetryUtil.class);
+	private final static Logger logger = LoggerFactory.getLogger(RetryUtil.class);
 	
 	@Autowired
 	ExceptionEmailServiceUtil exceptionEmailServiceUtil;
