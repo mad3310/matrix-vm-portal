@@ -7,12 +7,13 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <title>控制台-乐视云平台</title>
             <link rel="shortcut icon" href="/images/favicon.ico">
-            <link rel="stylesheet" href="/stylesheets/vendor/bootstrap.css">
+            <!-- <link rel="stylesheet" href="/stylesheets/vendor/bootstrap.css">
             <link rel="stylesheet" href="/stylesheets/vendor/font-awesome.css">
             <link rel="stylesheet" href="/stylesheets/vendor/toaster.css">
-            <link rel="stylesheet" href="/stylesheets/vendor/rzslider.css">
-            <link rel="stylesheet" href="/stylesheets/common.css">
-            <link rel="stylesheet" href="/stylesheets/style-cloudvm.css">
+            <link rel="stylesheet" href="/stylesheets/vendor/rzslider.css"> -->
+            <link rel="stylesheet" href="/stylesheets/vendor/vendor-e2f4321098.css">
+            <link rel="stylesheet" href="/stylesheets/common-9a4679b888.css">
+            <link rel="stylesheet" href="/stylesheets/style-cloudvm-86873e957c.css">
         </head>
         <style>
         .main .side-bar{height:100%;margin-top:0;padding-top:10px;z-index:200;background:#ebebeb;}
@@ -27,6 +28,6 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <script type="text/javascript" src="/javascripts/dist/require.min.js" data-main="/javascripts/dist/cloudvm-main-1450171287718.js"></script>
+            <script type="text/javascript" src="/javascripts/dist/require.min.js" data-main="/javascripts/dist/cloudvm-main-1451878788574.js"></script>
         </body>
     </html>

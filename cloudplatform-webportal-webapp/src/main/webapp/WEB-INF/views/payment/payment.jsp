@@ -9,9 +9,9 @@
 	<title>支付-乐视云平台</title>
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
 	<link rel="shortcut icon" href="/images/home/favicon.ico">
-	<link rel="stylesheet" href="/stylesheets/home/toastr.css">
-	<link rel="stylesheet" href="/stylesheets/home/common.css">
-  <link rel="stylesheet" href="/stylesheets/home/style.css">
+	<link rel="stylesheet" href="/stylesheets/home/toastr-ae1f53a3db.css">
+	<link rel="stylesheet" href="/stylesheets/home/common-e410f85195.css">
+  <link rel="stylesheet" href="/stylesheets/home/style-e7b015e0ac.css">
 </head>
 <body>
 	<input id="userId" type="text" class="hide" value="${cookie.userId.value}">
@@ -29,7 +29,6 @@
 						<span class="iconfont icon-checkiconfill self-checkbox alloption active" self-payoption='0'></span>
 						<span style="padding-left:5px;">使用余额</span>
 					</span>
-					<!-- <button class="btn btn-le-red item-recharge hide">充值</button> -->
 				</div>
 				<div class="pay-item remainInput" style="position:relative;z-index:100">
 					<span class="item-title">余额支付：</span>
@@ -42,11 +41,11 @@
 				<div class="pay-item payoptions">
 					<span class="item-title">支付方式：</span>
 					<div class="payoption alloption" self-payoption='1'>
-						<img src="/static/staticPage/img/zhifubao.png">
+						<img src="/images/home/zhifubao.png">
 						<i class="iconfont icon-checkroundfillicon"></i>
 					</div>
 					<div class="payoption alloption" self-payoption='2'>
-						<img src="/static/staticPage/img/wechat.png">
+						<img src="/images/home/wechat.png">
 						<i class="iconfont icon-checkroundfillicon"></i>
 					</div>
 				</div>
@@ -73,7 +72,6 @@
 							<th width="12.5%">订单号</th>
 							<th width="37.5%">配置</th>
 							<th width="12.5%">数量</th>
-							<!-- <th width="12.5%">单价</th> -->
 							<th width="12.5%">使用时长</th>
 							<th width="12.5%">支付费用</th>
 						</tr>
@@ -102,8 +100,8 @@
 	</div>
 </body>
 <script src="${ctx}/javascripts/vendor/jquery-1.11.3.js"></script>
-<script src="${ctx}/javascripts/page/toastr.js"></script>
-<script src="${ctx}/javascripts/page/payment.js"></script>
+<script src="${ctx}/javascripts/page/toastr-63327f4929.js"></script>
+<script src="${ctx}/javascripts/page/payment-33acb5c554.js"></script>
 <script>
 remainChose();//余额支付
 // moneyInputVali();//余额输入校验

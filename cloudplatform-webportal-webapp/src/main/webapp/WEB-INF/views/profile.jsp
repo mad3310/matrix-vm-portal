@@ -7,10 +7,11 @@
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="shortcut icon" href="/images/favicon.ico">
-	<link rel="stylesheet" href="/stylesheets/vendor/bootstrap.css">
-    <link rel="stylesheet" href="/stylesheets/vendor/toaster.css">
-    <link rel="stylesheet" href="/stylesheets/common.css">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/style-profile.css">
+	<!-- <link rel="stylesheet" href="/stylesheets/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/stylesheets/vendor/toaster.css"> -->
+    <link rel="stylesheet" href="/stylesheets/vendor/vendor-e2f4321098.css">
+    <link rel="stylesheet" href="/stylesheets/common-9a4679b888.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style-profile-d86d0b8502.css">
     <title>控制台-乐视云平台</title>
 </head>
 <style>
@@ -26,6 +27,6 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <script type="text/javascript" src="/static/javascripts/dist/require.min.js" data-main="/static/javascripts/dist/dashboard-main-1450686774950.js"></script>
+    <script type="text/javascript" src="/javascripts/dist/require.min.js" data-main="/javascripts/dist/dashboard-main-1451878788574.js"></script>
 </body>
 </html>

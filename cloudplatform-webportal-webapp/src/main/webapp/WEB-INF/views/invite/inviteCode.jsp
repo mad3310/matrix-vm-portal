@@ -9,8 +9,8 @@
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
 	<title>邀请码-乐视云平台</title>
 	<link rel="shortcut icon" href="/images/home/favicon.ico">
-  <link rel="stylesheet" href="/stylesheets/home/common.css">
-  <link rel="stylesheet" href="/stylesheets/home/style.css">
+  <link rel="stylesheet" href="/stylesheets/home/common-e410f85195.css">
+  <link rel="stylesheet" href="/stylesheets/home/style-e7b015e0ac.css">
 </head>
 <body class="invitebg">
 	<div class="inviteBlock">
@@ -18,11 +18,11 @@
 			<span class="blockTitle">乐视云邀请码</span>
 			<form class="blockForm">
 				<input type="text" class="formInput inviteCode" placeholder="请输入邀请码" onchange="inviteVali($(this))" onpropertychange="inviteVali($(this))"/>
-				<div class="error-msg hide"></div>
+				<div class="error-msg"><span></span></div>
 				<div class="valicode hide" id="valicode">
 					<input type="text" class="valicode-input formInput" id="input_idcode" placeholder="点击图片刷新验证码" onchange="codeVali($(this))" onpropertychange="codeVali($(this))"/>
 					<img src="" class="vali-codeimg formInput" id="idcode">
-					<div class="error-msg hide">验证码错误，请重新输入</div>
+					<div class="error-msg"><span>验证码错误，请重新输入</span></div>
 				</div>
 				<div class="formBtn"><div class="btn btn-le-blue invitebtn">验证</div></div>
 			</form>
@@ -36,8 +36,8 @@
 	</div>
 </body>
 </html>
-<script src="/static/javascripts/jquery-1.11.3.js"></script>
-<script src="${ctx}/static/page-js/invite/inviteCode-2bc4837a0f.js"></script>
+<script src="/javascripts/vendor/jquery-1.11.3.js"></script>
+<script src="${ctx}/javascripts/page/inviteCode-212726d5e1.js"></script>
 <script>
 	inviteBtnClick();
 	codeimgClick();
