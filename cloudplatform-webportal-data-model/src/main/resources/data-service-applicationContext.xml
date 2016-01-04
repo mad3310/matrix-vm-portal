@@ -11,6 +11,7 @@
 	
 	<context:annotation-config />
 	<context:component-scan base-package="com.letv.portal" />
+	<context:component-scan base-package="com.letv.lcp" />
 	
 	<!-- <bean id="init" class="com.letv.mms.service.impl.InitCacheServiceImpl" init-method="init" /> -->
 	

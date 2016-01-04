@@ -1,0 +1,40 @@
+package com.letv.lcp.openstack.service.local;
+
+import org.jclouds.openstack.cinder.v1.domain.Volume;
+
+import com.letv.common.paging.impl.Page;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.model.storage.VolumeResource;
+import com.letv.portal.model.cloudvm.CloudvmVolume;
+import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
+
+/**
+ * Created by zhouxianguang on 2015/10/21.
+ */
+public interface ILocalVolumeService {
+    VolumeResource get(long tenantId, String region, String volumeId) throws OpenStackException;
+
+    Page list(long tenantId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
+
+    CloudvmVolume create(long userId,long tenantId, String region, Volume volume) throws OpenStackException;
+
+    CloudvmVolume create(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException;
+
+    CloudvmVolume create(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus, String vmId) throws OpenStackException;
+
+    CloudvmVolume createIfNotExists(long userId,long tenantId, String region, Volume volume, CloudvmVolumeStatus initStatus) throws OpenStackException;
+
+    void update(long userId, long tenantId, String region, Volume volume) throws OpenStackException;
+
+    void updateVmIdAndVmName(long userId, long tenantId, String region, String volumeId, String vmId, String vmName) throws OpenStackException;
+
+    void updateStatus(long userId, long tenantId, String region, String volumeId, CloudvmVolumeStatus status) throws OpenStackException;
+
+    void updateNameAndDesc(long userId, long tenantId, String region, String volumeId, String name, String description);
+
+    boolean delete(long tenantId, String region, String volumeId);
+
+    long count(long tenantId, String region);
+
+    long countSize(long tenantId, String region);
+}

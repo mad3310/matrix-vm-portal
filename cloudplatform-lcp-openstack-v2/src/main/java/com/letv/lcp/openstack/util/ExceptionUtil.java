@@ -1,0 +1,89 @@
+package com.letv.lcp.openstack.util;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+
+import com.letv.common.exception.MatrixException;
+import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ResultObject;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.exception.UserOperationException;
+import com.letv.lcp.openstack.service.base.impl.OpenStackServiceImpl;
+
+/**
+ * Created by zhouxianguang on 2015/10/30.
+ */
+public class ExceptionUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionUtil.class);
+
+    public static Throwable getCause(Throwable ex) {
+        Throwable cause = ex.getCause();
+        if (cause != null) {
+            return cause;
+        } else {
+            return ex;
+        }
+    }
+
+    public static void throwException(Throwable ex) throws OpenStackException {
+        if (ex instanceof ValidateException) {
+            throw (ValidateException) ex;
+        } else if (ex instanceof MatrixException) {
+            throw (MatrixException) ex;
+        } else if (ex instanceof OpenStackException) {
+            throw (OpenStackException) ex;
+        }
+        throw new OpenStackException("后台错误", ex);
+    }
+
+    public static void throwMatrixException(Exception ex) throws MatrixException {
+        if (ex instanceof RuntimeException) {
+            throw (RuntimeException) ex;
+        } else if (ex instanceof OpenStackException) {
+            throw ((OpenStackException) ex).matrixException();
+        } else {
+            throw new MatrixException("后台错误", ex);
+        }
+    }
+
+    public static String getUserMessage(Exception e) {
+        if (e instanceof OpenStackException) {
+            return ((OpenStackException) e).getUserMessage();
+        } else {
+            return "后台错误";
+        }
+    }
+
+    public static void processBillingException(Exception ex) {
+        logger.error(ex.getMessage(), ex);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(ex, "计费系统", null, "");
+    }
+
+    public static void logAndEmail(Exception e) {
+        logger.error(e.getMessage(), e);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(e, "", null, "");
+    }
+
+    public static void emailByExceptionType(Exception e) {
+        if (!(e instanceof UserOperationException) && !(e instanceof BindException)) {
+            OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(e, "", null, "");
+        }
+    }
+
+    public static ResponseEntity<String> getResponseEntityFromException(Exception ex) {
+        if (!(ex instanceof UserOperationException)) {
+            ExceptionUtil.logAndEmail(ex);
+        }
+        ResultObject result = new ResultObject();
+        result.setResult(0);
+        if (ex instanceof OpenStackException) {
+            result.addMsg(((OpenStackException) ex).getUserMessage());
+        } else {
+            result.addMsg("后台错误");
+        }
+        return HttpUtil.createResponseEntity(result);
+    }
+}

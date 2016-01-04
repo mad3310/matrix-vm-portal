@@ -1,0 +1,41 @@
+package com.letv.lcp.cloudvm.model.event;
+
+/**
+ * Created by zhouxianguang on 2015/10/16.
+ */
+public class RouterCreateEvent {
+
+    private String region;
+    private String routerId;
+    private Integer routerIndex;
+    private String name;
+    private Object userData;
+
+    public RouterCreateEvent(String region, String routerId, Integer routerIndex, String name, Object userData) {
+        this.region = region;
+        this.routerId = routerId;
+        this.routerIndex = routerIndex;
+        this.name = name;
+        this.userData = userData;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getRouterId() {
+        return routerId;
+    }
+
+    public Integer getRouterIndex() {
+        return routerIndex;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Object getUserData() {
+        return userData;
+    }
+}

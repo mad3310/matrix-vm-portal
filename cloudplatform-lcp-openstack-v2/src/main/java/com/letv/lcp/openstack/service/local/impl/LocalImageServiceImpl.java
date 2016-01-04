@@ -1,0 +1,159 @@
+package com.letv.lcp.openstack.service.local.impl;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.letv.common.exception.ValidateException;
+import com.letv.common.paging.impl.Page;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.model.image.ImageResource;
+import com.letv.lcp.openstack.model.image.impl.LocalImageResource;
+import com.letv.lcp.openstack.service.local.ILocalImageService;
+import com.letv.lcp.openstack.service.local.ILocalRegionService;
+import com.letv.portal.model.cloudvm.CloudvmImage;
+import com.letv.portal.model.cloudvm.CloudvmImageShareType;
+import com.letv.portal.model.cloudvm.CloudvmImageStatus;
+import com.letv.portal.model.cloudvm.CloudvmImageType;
+import com.letv.portal.service.cloudvm.ICloudvmImageService;
+
+/**
+ * Created by zhouxianguang on 2015/10/23.
+ */
+@Service
+public class LocalImageServiceImpl implements ILocalImageService {
+
+    @Autowired
+    private ICloudvmImageService cloudvmImageService;
+
+    @Autowired
+    private ILocalRegionService localRegionService;
+
+    @Override
+    public Page listImage(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+        localRegionService.get(region);
+
+        Page page = null;
+        if (currentPage != null && recordsPerPage != null) {
+            if (currentPage <= 0) {
+                throw new ValidateException("当前页数不能小于或等于0");
+            }
+            if (recordsPerPage <= 0) {
+                throw new ValidateException("每页记录数不能小于或等于0");
+            }
+            page = new Page(currentPage, recordsPerPage);
+        }
+        List<CloudvmImage> cloudvmImages = cloudvmImageService.selectImageByName(region, name, page);
+        List<ImageResource> imageResources = new LinkedList<ImageResource>();
+        for (CloudvmImage cloudvmImage : cloudvmImages) {
+            imageResources.add(new LocalImageResource(cloudvmImage));
+        }
+
+        if (page == null) {
+            page = new Page();
+        }
+        page.setTotalRecords(cloudvmImageService.selectCountImageByName(region, name));
+        page.setData(imageResources);
+        return page;
+    }
+
+    @Override
+    public Page listVmSnapshot(long tenantId, String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
+        localRegionService.get(region);
+
+        Page page = null;
+        if (currentPage != null && recordsPerPage != null) {
+            if (currentPage <= 0) {
+                throw new ValidateException("当前页数不能小于或等于0");
+            }
+            if (recordsPerPage <= 0) {
+                throw new ValidateException("每页记录数不能小于或等于0");
+            }
+            page = new Page(currentPage, recordsPerPage);
+        }
+        List<CloudvmImage> cloudvmImages = cloudvmImageService.selectVmSnapshotByName(tenantId, region, name, page);
+        List<ImageResource> imageResources = new LinkedList<ImageResource>();
+        for (CloudvmImage cloudvmImage : cloudvmImages) {
+            imageResources.add(new LocalImageResource(cloudvmImage));
+        }
+
+        if (page == null) {
+            page = new Page();
+        }
+        page.setTotalRecords(cloudvmImageService.selectCountVmSnapshotByName(tenantId, region, name));
+        page.setData(imageResources);
+        return page;
+    }
+
+    @Override
+    public int countVmSnapshot(long tenantId, String region, String name) {
+        return cloudvmImageService.selectCountVmSnapshotByName(tenantId, region, name);
+    }
+
+    @Override
+    public int countVmSnapshot(long tenantId, String region) {
+        return countVmSnapshot(tenantId, region, null);
+    }
+
+    @Override
+    public CloudvmImage createVmSnapshot(long userId, long tenantId, String region, ImageDetails image, String imageName, Server server) {
+        CloudvmImage cloudvmImage = new CloudvmImage();
+        cloudvmImage.setType(CloudvmImageShareType.PRIVATE);
+        cloudvmImage.setCreateUser(userId);
+        cloudvmImage.setTenantId(tenantId);
+        cloudvmImage.setRegion(region);
+        cloudvmImage.setImageId(image.getId());
+        cloudvmImage.setMinDisk(image.getMinDisk());
+        cloudvmImage.setMinRam(image.getMinRam());
+        cloudvmImage.setName(imageName);
+        cloudvmImage.setSize(image.getSize().get());
+        cloudvmImage.setStatus(CloudvmImageStatus.valueOf(image.getStatus().name()));
+        cloudvmImage.setImageType(CloudvmImageType.SNAPSHOT);
+        cloudvmImage.setServerId(server.getId());
+        cloudvmImage.setServerName(server.getName());
+        cloudvmImageService.insert(cloudvmImage);
+        return cloudvmImage;
+    }
+
+    @Override
+    public void updateVmSnapshotStatus(long userId, long tenantId, String region, String vmSnapshotId, CloudvmImageStatus status) {
+        CloudvmImage cloudvmImage = cloudvmImageService.selectVmSnapshotByVmSnapshotId(tenantId, region, vmSnapshotId);
+        if (cloudvmImage != null) {
+            cloudvmImage.setUpdateUser(userId);
+            cloudvmImage.setStatus(status);
+            cloudvmImageService.update(cloudvmImage);
+        }
+    }
+
+    @Override
+    public boolean deleteVmSnapshot(long tenantId, String region, String vmSnapshotId) {
+        CloudvmImage cloudvmImage = cloudvmImageService.selectVmSnapshotByVmSnapshotId(tenantId, region, vmSnapshotId);
+        if (cloudvmImage != null) {
+            cloudvmImageService.delete(cloudvmImage);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ImageResource getImageOrVmSnapshot(String region, String imageId) {
+        CloudvmImage cloudvmImage = cloudvmImageService.getImageOrVmSnapshot(region, imageId);
+        if (cloudvmImage != null) {
+            return new LocalImageResource(cloudvmImage);
+        }
+        return null;
+    }
+
+    @Override
+    public ImageResource getVmSnapshot(long tenantId, String region, String imageId) {
+        CloudvmImage cloudvmImage = cloudvmImageService.selectVmSnapshotByVmSnapshotId(tenantId, region, imageId);
+        if (cloudvmImage != null) {
+            return new LocalImageResource(cloudvmImage);
+        }
+        return null;
+    }
+}
