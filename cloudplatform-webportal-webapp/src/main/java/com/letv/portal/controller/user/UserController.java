@@ -56,7 +56,7 @@ public class UserController {
 			obj.setData(userModel.getUserName());
 			return obj;
 		}
-        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_HEAD_PORTRAIT, (String) user.get("userAvatar"), CookieUtil.USER_LOGIN_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
+        CookieUtil.addCookieWithDomain(response, CookieUtil.COOKIE_KEY_HEAD_PORTRAIT, (String) user.get("userAvatar"), CookieUtil.MEMORY_MAX_AGE, CookieUtil.LCP_COOKIE_DOMAIN);
 		obj.setData(user);
 		return obj;
 	}

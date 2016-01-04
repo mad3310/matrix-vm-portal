@@ -13,21 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.letv.portal.model.cloudvm.CloudvmRcCountType;
-import com.letv.portal.model.common.CommonQuotaType;
-import com.letv.portal.service.openstack.billing.ResourceLocator;
-import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.event.*;
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
-import com.letv.portal.service.openstack.local.service.LocalRcCountService;
-import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
-import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
-import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.NameUtil;
-import com.letv.portal.service.openstack.util.RetryUtil;
-import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
-import com.letv.portal.service.openstack.util.function.Function0;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -48,11 +33,22 @@ import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
+import com.letv.portal.model.common.CommonQuotaType;
+import com.letv.portal.service.openstack.billing.ResourceLocator;
+import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateFailEvent;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
@@ -60,7 +56,9 @@ import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.local.service.LocalRcCountService;
 import com.letv.portal.service.openstack.resource.FloatingIpResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.PortResource;
@@ -72,7 +70,14 @@ import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.PortResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
+import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
+import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
+import com.letv.portal.service.openstack.util.ExceptionUtil;
+import com.letv.portal.service.openstack.util.NameUtil;
+import com.letv.portal.service.openstack.util.RetryUtil;
+import com.letv.portal.service.openstack.util.constants.OpenStackConstants;
+import com.letv.portal.service.openstack.util.function.Function0;
 
 public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		implements NetworkManager {
@@ -626,7 +631,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						}
 					}
 				}
-
+				int subNetSize = network.getSubnets().size();
 				boolean isSuccess = networkApi.delete(networkId);
 				if (!isSuccess) {
 					throw new OpenStackException(
@@ -646,6 +651,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				LocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_NETWORK);
+				if(subNetSize>0) {
+					//当私有网络下存在子网时，删除本地子网计数
+					localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET, subNetSize);
+				}
 
 				return null;
 			}

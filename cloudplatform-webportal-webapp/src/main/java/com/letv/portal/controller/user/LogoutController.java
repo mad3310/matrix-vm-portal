@@ -52,10 +52,11 @@ public class LogoutController{
 
         loginProxy.logout();
         Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-        Cookie cookie = CookieUtil.getCookieByName(request, CookieUtil.COOKIE_KEY);
+        Cookie cookie = CookieUtil.getCookieByName(request, CookieUtil.MEMORY_COOKIE_KEY);
         if(null != cookie) {
             session = (Session) this.cacheService.get(SessionUtil.getUuidBySessionId(cookie.getValue()),null);
-            CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
+            CookieUtil.delCookieByDomain(CookieUtil.MEMORY_COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
+            CookieUtil.delCookieByDomain(CookieUtil.DISK_COOKIE_KEY,response,CookieUtil.LCP_COOKIE_DOMAIN);
             CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_ID,response,CookieUtil.LCP_COOKIE_DOMAIN);
             CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_USER_NAME,response,CookieUtil.LCP_COOKIE_DOMAIN);
             CookieUtil.delCookieByDomain(CookieUtil.COOKIE_KEY_HEAD_PORTRAIT,response, CookieUtil.LCP_COOKIE_DOMAIN);

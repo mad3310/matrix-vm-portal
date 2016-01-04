@@ -10,13 +10,16 @@ import java.util.Map;
  * Created by liuhao1 on 2015/12/7.
  */
 public class CookieUtil {
-    public static final String COOKIE_KEY = "matrix_uc_cookie";
+    public static final String DISK_COOKIE_KEY = "default_lcpuc_cookie";
+    public static final String MEMORY_COOKIE_KEY = "matrix_uc_cookie";
+    public static final int DISK_COOKIE_AGE = 1800;//默认超时1800s即半小时
+    public static final int MEMORY_MAX_AGE = -1; // 内存cookie
+
     public static final String COOKIE_KEY_USER_NAME = "userName";
     public static final String COOKIE_KEY_USER_ID = "userId";
     public static final String COOKIE_KEY_HEAD_PORTRAIT = "headPortrait";
 
     public static final String LCP_COOKIE_DOMAIN = "letvcloud.com";
-    public static final int USER_LOGIN_MAX_AGE = -1; // 内存cookie
     private static final String DELETE_COOKIE_VALUE = null;
     private static final int DELETE_COOKIE_MAX_AGE = 0;
 
