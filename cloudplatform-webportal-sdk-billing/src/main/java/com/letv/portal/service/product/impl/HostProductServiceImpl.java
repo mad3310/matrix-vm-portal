@@ -30,6 +30,7 @@ import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEve
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.product.IHostProductService;
+import com.letv.portal.service.task.ITaskEngine;
 
 @Service("hostProductService")
 public class HostProductServiceImpl extends ProductServiceImpl implements IHostProductService {
@@ -44,6 +45,8 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	private ResourceCreateService resourceCreateService;
 	@Autowired
 	private HostProductServiceOfNewTransaction hostProductServiceOfNewTransaction;
+	@Autowired
+	private ITaskEngine taskEngine;
 	
 	@Override
 	public boolean validateData(Long id, Map<String, Object> map) {
@@ -123,6 +126,13 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	@Override
 	public void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records) {
 		logger.info("开始创建云主机！");
+//		
+//		Map<String, Object> createInfo = new HashMap<String, Object>();
+//		createInfo.put("userId", orderSubs.get(0).getCreateUser());
+//		
+//		
+//		this.taskEngine.run("LCP_VM_CREATE", params);
+		
 		this.resourceCreateService.createVm(orderSubs.get(0).getCreateUser(), params, new VmCreateAdapter() {
 			private AtomicInteger successCount = new AtomicInteger();
 			private AtomicInteger failCount = new AtomicInteger();

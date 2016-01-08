@@ -6,12 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskCreateFloatingIpService")
+@Service("taskCreateStorageService")
 public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskCreateStorageServiceImpl.class);
@@ -22,7 +23,7 @@ public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl i
 			return tr;
 		}
 		
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
 		if (vmCreateConf.getVolumeSize() == 0) {
 			return tr;
 		}
@@ -51,7 +52,7 @@ public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl i
 	@Override
 	public void rollBack(TaskResult tr) {
 		Map<String, Object> params = (Map<String, Object>) tr.getParams();
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
 		if (!vmCreateConf.getBindFloatingIp()) {
 			return;
 		}

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskVmCreateParamsService")
+@Service("taskVmCreatePrepareService")
 public class TaskVmCreatePrepareServiceImpl extends BaseTask4VmCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskVmCreatePrepareServiceImpl.class);

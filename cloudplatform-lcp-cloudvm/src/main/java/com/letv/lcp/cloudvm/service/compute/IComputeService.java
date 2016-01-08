@@ -20,4 +20,6 @@ public interface IComputeService extends IResourceService<ComputeModel>  {
 	String waitingVmsCreated(Map<String, Object> params);
 	
 	String bindFloatingIp(Map<String, Object> params);
+	
+	String emailVmsCreated(Map<String, Object> params);
 }

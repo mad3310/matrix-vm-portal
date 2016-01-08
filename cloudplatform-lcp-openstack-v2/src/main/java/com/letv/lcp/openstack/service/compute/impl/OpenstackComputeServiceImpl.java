@@ -1,6 +1,7 @@
 package com.letv.lcp.openstack.service.compute.impl;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,20 +33,22 @@ import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
 import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
+import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.lcp.cloudvm.listener.VmCreateListener;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
-import com.letv.lcp.openstack.exception.PollingInterruptedException;
 import com.letv.lcp.openstack.exception.ResourceNotFoundException;
 import com.letv.lcp.openstack.exception.UserOperationException;
 import com.letv.lcp.openstack.service.base.IOpenStackService;
@@ -59,6 +62,8 @@ import com.letv.lcp.openstack.service.manage.VMManager;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
 import com.letv.lcp.openstack.service.validation.IValidationService;
 import com.letv.portal.model.common.CommonQuotaType;
+import com.letv.portal.model.common.UserModel;
+import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.common.IUserService;
 
 @Service
@@ -78,6 +83,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
     private IApiService apiService;
     @Autowired
     private VMManager vmManager;
+    @Autowired
+    private ICloudvmRegionService cloudvmRegionService;
     
 
 	@Override
@@ -173,7 +180,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 
 	@Override
 	public String getVmCreatePrepare(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
 		if (StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())) {
             vmCreateConf.setBindFloatingIp(false);
         }
@@ -196,7 +203,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 
 	@Override
 	public String checkVmCreateConf(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
 		Long userId = (Long) params.get("userId");
 		String sessionId = (String) params.get("uuid");
 		String region = vmCreateConf.getRegion();
@@ -343,7 +350,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@Override
 	public String checkQuota(Map<String, Object> params) {
 		Long userId = (Long) params.get("userId");
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
 		
 		String uuid = (String) params.get("uuid");
 		NovaApi novaApi = apiService.getNovaApi(userId, uuid);
@@ -415,12 +422,13 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String waitingVmsCreated(Map<String, Object> params) {
-		List<VmCreateContext> contexts = (List<VmCreateContext>) params.get("vmCreateContexts");
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		List<JSONObject> contexts = JSONObject.parseObject((String) params.get("vmCreateContexts"), List.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
 		int i=0;
 		try {
             List<VmCreateContext> unFinishedVms = new LinkedList<VmCreateContext>();
-            for (VmCreateContext vmCreateContext : contexts) {
+            for (JSONObject jsonObject : contexts) {
+            	VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObject.toJSONString(), VmCreateContext.class);
                 if (vmCreateContext.getServerCreatedId() != null) {
                     unFinishedVms.add(vmCreateContext);
                 }
@@ -520,6 +528,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 						floatingIPApi.update(floatingIpId
 								, org.jclouds.openstack.neutron.v2.domain.FloatingIP.UpdateFloatingIP.updateBuilder().portId(
 								portId).build());
+						vmCreateContext.setFloatingIpBindDate(new Date());
 					}
 				}
 			} catch (APINotAvailableException e) {
@@ -528,6 +537,73 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 		    	return e.getMessage();
 			}
 		}
+		return "success";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String emailVmsCreated(Map<String, Object> params) {
+		List<JSONObject> contexts = JSONObject.parseObject((String) params.get("vmCreateContexts"), List.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		
+		UserModel user = this.userService.getUserById((Long)params.get("userId"));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Map<String, Object> mailMessageModel = new HashMap<String, Object>();
+        mailMessageModel.put("userName", user.getUserName());
+
+        List<Map<String, Object>> vmModelList = new LinkedList<Map<String, Object>>();
+        mailMessageModel.put("vmList", vmModelList);
+        
+        ServerApi serverApi = apiService.getNovaApi((Long)params.get("userId"), (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion());
+                
+        Optional<FloatingIPApi> floatingIPApiOptional2 = apiService
+				.getNeutronApi((Long)params.get("userId"), (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
+		if (!floatingIPApiOptional2.isPresent()) {
+			try {
+				throw new APINotAvailableException(FloatingIPApi.class);
+			} catch (APINotAvailableException e) {
+				logger.error(e.getMessage(), e);
+		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后发送邮件异常", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+		    	return e.getMessage();
+			}
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional2.get();
+		
+		String regionDisplayName = this.cloudvmRegionService.selectByCode(vmCreateConf.getRegion()).getDisplayName();
+		
+        for (JSONObject json : contexts) {
+        	VmCreateContext vmContext = JSONObject.parseObject(json.toJSONString(), VmCreateContext.class);
+            if (vmContext.getServerCreatedId() != null) {
+            	Server server = serverApi.get(vmContext.getServerCreatedId());
+                Map<String, Object> vmModel = new HashMap<String, Object>();
+                vmModel.put("region", regionDisplayName);
+                vmModel.put("vmId", vmContext.getServerCreatedId());
+                vmModel.put("vmName", server.getName());
+                vmModel.put("adminUserName", "root");
+                if (StringUtils.isNotEmpty(vmCreateConf.getKeyPairName())) {
+                    vmModel.put("keyPairName", vmCreateConf.getKeyPairName());
+                } else {
+                    vmModel.put("password", vmCreateConf.getAdminPass());
+                }
+                vmModel.put("createTime", format.format((server.getCreated())));
+                if (vmContext.getFloatingIpId()!= null && vmContext.getFloatingIpBindDate() != null) {
+                    vmModel.put("ip", floatingIPApi.get(vmContext.getFloatingIpId()).getFloatingIpAddress());
+                    vmModel.put("port", 22);
+                    vmModel.put("bindTime", format.format(vmContext.getFloatingIpBindDate()));
+                }
+                vmModelList.add(vmModel);
+            }
+        }
+
+        if (!vmModelList.isEmpty()) {
+            MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", user.getEmail(),
+                    "乐视云平台web-portal系统通知", "cloudvm/createVms.ftl",
+                    mailMessageModel);
+            mailMessage.setHtml(true);
+            OpenStackServiceImpl.getOpenStackServiceGroup().getDefaultEmailSender()
+                    .sendMessage(mailMessage);
+        }
 		return "success";
 	}
 

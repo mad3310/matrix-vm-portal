@@ -1,5 +1,7 @@
 package com.letv.lcp.cloudvm.model.task;
 
+import java.util.Date;
+
 
 public class VmCreateContext {
 
@@ -9,8 +11,15 @@ public class VmCreateContext {
 	private String serverId;
 	private String serverCreatedId;
 	private String resourceName;
+	private Date floatingIpBindDate;
 	
 	
+	public Date getFloatingIpBindDate() {
+		return floatingIpBindDate;
+	}
+	public void setFloatingIpBindDate(Date floatingIpBindDate) {
+		this.floatingIpBindDate = floatingIpBindDate;
+	}
 	public String getServerCreatedId() {
 		return serverCreatedId;
 	}

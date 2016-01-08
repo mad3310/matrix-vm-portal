@@ -1,5 +1,6 @@
 package com.letv.lcp.cloudvm.service.task.vmcreate.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,14 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.letv.lcp.cloudvm.model.event.VmCreateEvent;
-import com.letv.lcp.cloudvm.model.event.VmCreateFailEvent;
+import com.alibaba.fastjson.JSONObject;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskCreateFloatingIpService")
+@Service("taskNotifyCallerService")
 public class TaskNotifyCallerServiceImpl extends BaseTask4VmCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskNotifyCallerServiceImpl.class);
@@ -24,10 +24,10 @@ public class TaskNotifyCallerServiceImpl extends BaseTask4VmCreateServiceImpl im
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
-		List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
 		//TODO 调用创建回调接口
-		String ret = "";
+		String ret = "success";
         
 		
 		logger.info("创建云主机，结果：{}", ret);

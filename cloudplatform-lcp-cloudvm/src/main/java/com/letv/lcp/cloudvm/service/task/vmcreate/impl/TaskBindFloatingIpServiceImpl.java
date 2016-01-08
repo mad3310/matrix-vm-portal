@@ -6,11 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskCreateFloatingIpService")
+@Service("taskBindFloatingIpService")
 public class TaskBindFloatingIpServiceImpl extends BaseTask4VmCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskBindFloatingIpServiceImpl.class);
@@ -20,7 +21,7 @@ public class TaskBindFloatingIpServiceImpl extends BaseTask4VmCreateServiceImpl 
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
 		String ret = null;
 		if(vmCreateConf.getBindFloatingIp()) {
 			ret = computeService.bindFloatingIp(params);

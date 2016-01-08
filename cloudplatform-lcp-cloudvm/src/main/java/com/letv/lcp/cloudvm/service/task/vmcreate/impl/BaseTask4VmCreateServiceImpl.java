@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONObject;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.lcp.cloudvm.dispatch.DispatchCenter;
 import com.letv.lcp.cloudvm.enumeration.ServiceTypeEnum;
@@ -41,7 +42,7 @@ public class BaseTask4VmCreateServiceImpl extends BaseTaskServiceImpl implements
 	
 	@Override
 	public void beforExecute(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String) params.get("vmCreateConf"), VMCreateConf2.class);
 		List<VmCreateContext> vmCreateContexts = new LinkedList<VmCreateContext>();
         for (int i = 0; i < vmCreateConf.getCount(); i++) {
             vmCreateContexts.add(new VmCreateContext());
@@ -78,5 +79,4 @@ public class BaseTask4VmCreateServiceImpl extends BaseTaskServiceImpl implements
 
 	}
 	
-
 }
