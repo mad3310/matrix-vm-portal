@@ -101,7 +101,7 @@
 </body>
 <script src="${ctx}/javascripts/vendor/jquery-1.11.3.js"></script>
 <script src="${ctx}/javascripts/page/toastr-63327f4929.js"></script>
-<script src="${ctx}/javascripts/page/payment-33acb5c554.js"></script>
+<script src="${ctx}/javascripts/page/payment-965f21a048.js"></script>
 <script>
 remainChose();//余额支付
 // moneyInputVali();//余额输入校验
