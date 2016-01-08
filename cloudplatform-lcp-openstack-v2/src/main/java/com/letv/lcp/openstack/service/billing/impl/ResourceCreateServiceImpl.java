@@ -1,6 +1,7 @@
 package com.letv.lcp.openstack.service.billing.impl;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,12 +20,13 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.lcp.cloudvm.listener.FloatingIpCreateListener;
 import com.letv.lcp.cloudvm.listener.RouterCreateListener;
+import com.letv.lcp.cloudvm.listener.VmCreateListener;
 import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.model.network.FloatingIpCreateConf;
 import com.letv.lcp.cloudvm.model.network.RouterCreateConf;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
+import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.openstack.exception.OpenStackException;
-import com.letv.lcp.openstack.listener.VmCreateListener;
 import com.letv.lcp.openstack.listener.VmSnapshotCreateListener;
 import com.letv.lcp.openstack.model.billing.BillingResource;
 import com.letv.lcp.openstack.model.billing.CheckResult;
@@ -43,7 +45,6 @@ import com.letv.lcp.openstack.service.manage.impl.VMManagerImpl;
 import com.letv.lcp.openstack.service.manage.impl.VolumeManagerImpl;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
 import com.letv.lcp.openstack.service.session.impl.OpenStackSessionImpl;
-import com.letv.lcp.openstack.service.task.createvm.VMCreateConf2;
 import com.letv.lcp.openstack.service.validation.IValidationService;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.JsonUtil;
@@ -202,7 +203,7 @@ public class ResourceCreateServiceImpl implements IResourceCreateService {
             final IOpenStackSession openStackSession = createOpenStackSession(userId);
             try {
                 CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
-                ((VolumeManagerImpl) openStackSession.getVolumeManager()).create(cinderApi, volumeCreateConf, listener, listenerUserData);
+                ((VolumeManagerImpl) openStackSession.getVolumeManager()).create(cinderApi, volumeCreateConf, listener, listenerUserData, null);
             } finally {
                 apiService.clearCache(userId, sessionId);
             }
@@ -247,7 +248,7 @@ public class ResourceCreateServiceImpl implements IResourceCreateService {
             final IOpenStackSession openStackSession = createOpenStackSession(userId);
             try {
                 NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
-                ((NetworkManagerImpl) openStackSession.getNetworkManager()).createFloatingIp(neutronApi, floatingIpCreateConf, listener, listenerUserData);
+                ((NetworkManagerImpl) openStackSession.getNetworkManager()).createFloatingIp(neutronApi, floatingIpCreateConf, listener, listenerUserData, null);
             } finally {
                 apiService.clearCache(userId, sessionId);
             }

@@ -14,6 +14,7 @@ import org.jclouds.openstack.nova.v2_0.domain.Image;
 import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 
 import com.google.common.collect.ImmutableSet;
+import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.exception.ResourceNotFoundException;
 import com.letv.lcp.openstack.exception.UserOperationException;

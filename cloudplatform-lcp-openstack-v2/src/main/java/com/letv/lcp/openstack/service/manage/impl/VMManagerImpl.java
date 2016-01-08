@@ -37,10 +37,13 @@ import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.v2_0.domain.Resource;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
+import com.letv.lcp.cloudvm.listener.VmCreateListener;
+import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.exception.PollingInterruptedException;
@@ -50,7 +53,6 @@ import com.letv.lcp.openstack.exception.TaskNotFinishedException;
 import com.letv.lcp.openstack.exception.UserOperationException;
 import com.letv.lcp.openstack.exception.VMDeleteException;
 import com.letv.lcp.openstack.exception.VMStatusException;
-import com.letv.lcp.openstack.listener.VmCreateListener;
 import com.letv.lcp.openstack.listener.VmSnapshotCreateListener;
 import com.letv.lcp.openstack.model.billing.ResourceLocator;
 import com.letv.lcp.openstack.model.compute.FlavorResource;
@@ -78,7 +80,6 @@ import com.letv.lcp.openstack.service.manage.check.ServerChecker;
 import com.letv.lcp.openstack.service.manage.check.VolumeChecker;
 import com.letv.lcp.openstack.service.task.check.VMCreateCheck;
 import com.letv.lcp.openstack.service.task.createvm.VMCreate;
-import com.letv.lcp.openstack.service.task.createvm.VMCreateConf2;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.StringUtil;
 import com.letv.portal.model.cloudvm.CloudvmImage;
@@ -86,6 +87,7 @@ import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.cloudvm.CloudvmVolumeStatus;
 import com.letv.portal.model.common.CommonQuotaType;
 
+@Service("vmManager")
 public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         VMManager {
 

@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 import com.letv.common.session.Session;
 import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.model.conf.OpenStackConf;
+import com.letv.lcp.openstack.model.user.OpenStackUser;
 import com.letv.lcp.openstack.service.manage.ImageManager;
 import com.letv.lcp.openstack.service.manage.NetworkManager;
 import com.letv.lcp.openstack.service.manage.VMManager;
@@ -29,6 +31,11 @@ public interface IOpenStackSession extends Closeable, Serializable {
     void init(Session session) throws OpenStackException;
 
     void init() throws OpenStackException;
+    
+    OpenStackUser getOpenStackUser();
+    
+    OpenStackConf getOpenStackConf();
+    
 
 //    Set<String> listRegions();
 //

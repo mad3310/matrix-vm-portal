@@ -1,8 +1,8 @@
-package com.letv.lcp.openstack.listener.adapter;
+package com.letv.lcp.cloudvm.listener.adapter;
 
-import com.letv.lcp.openstack.listener.VmCreateListener;
-import com.letv.lcp.openstack.model.event.VmCreateEvent;
-import com.letv.lcp.openstack.model.event.VmCreateFailEvent;
+import com.letv.lcp.cloudvm.listener.VmCreateListener;
+import com.letv.lcp.cloudvm.model.event.VmCreateEvent;
+import com.letv.lcp.cloudvm.model.event.VmCreateFailEvent;
 
 /**
  * Created by zhouxianguang on 2015/10/14.

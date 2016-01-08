@@ -74,7 +74,7 @@ public class OpenstackNetworkService extends AbstractTest {
 		try {
 			FloatingIpCreateConf floatingIpCreateConf = JsonUtil.fromJson(ipParam, new TypeReference<FloatingIpCreateConf>() {
 			}, true);
-			openstackNetworkService.createFloatingIp(userId, floatingIpCreateConf, null, null);
+			openstackNetworkService.createFloatingIp(userId, floatingIpCreateConf, null, null, null);
 		} catch (OpenStackException e) {
 			e.printStackTrace();
 		}

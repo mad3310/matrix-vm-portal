@@ -1,4 +1,4 @@
-package com.letv.lcp.openstack.service.task.createvm;
+package com.letv.lcp.cloudvm.model.task;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -6,8 +6,8 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.letv.lcp.openstack.constants.ValidationRegex;
-import com.letv.lcp.openstack.validation.Divisible;
+import com.letv.lcp.cloudvm.constants.ValidationRegex;
+import com.letv.lcp.cloudvm.validation.Divisible;
 
 public class VMCreateConf2 {
 	private String region;

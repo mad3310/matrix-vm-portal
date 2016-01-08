@@ -3,7 +3,12 @@ package com.letv.lcp.openstack.service.manage;
 import java.util.List;
 import java.util.Map;
 
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
+
 import com.letv.common.paging.impl.Page;
+import com.letv.lcp.cloudvm.listener.VmCreateListener;
+import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.exception.PollingInterruptedException;
@@ -12,12 +17,10 @@ import com.letv.lcp.openstack.exception.ResourceNotFoundException;
 import com.letv.lcp.openstack.exception.TaskNotFinishedException;
 import com.letv.lcp.openstack.exception.VMDeleteException;
 import com.letv.lcp.openstack.exception.VMStatusException;
-import com.letv.lcp.openstack.listener.VmCreateListener;
 import com.letv.lcp.openstack.model.compute.FlavorResource;
 import com.letv.lcp.openstack.model.compute.VMResource;
 import com.letv.lcp.openstack.model.conf.VmSnapshotCreateConf;
 import com.letv.lcp.openstack.model.storage.VolumeResource;
-import com.letv.lcp.openstack.service.task.createvm.VMCreateConf2;
 
 public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
@@ -121,4 +124,6 @@ public interface VMManager extends ResourceManager {
 	void createImageFromVm(VmSnapshotCreateConf createConf) throws OpenStackException;
 
 	void checkCreateImageFromVm(VmSnapshotCreateConf vmSnapshotCreateConf);
+	
+	void recordVmCreated(long userId, String region, Server server, Flavor flavor) throws OpenStackException;
 }

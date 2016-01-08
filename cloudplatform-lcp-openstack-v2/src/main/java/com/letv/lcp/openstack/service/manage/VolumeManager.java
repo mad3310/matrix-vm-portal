@@ -2,6 +2,9 @@ package com.letv.lcp.openstack.service.manage;
 
 import java.util.List;
 
+import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.features.VolumeApi;
+
 import com.letv.common.paging.impl.Page;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
 import com.letv.lcp.openstack.exception.APINotAvailableException;
@@ -10,6 +13,7 @@ import com.letv.lcp.openstack.exception.RegionNotFoundException;
 import com.letv.lcp.openstack.exception.ResourceNotFoundException;
 import com.letv.lcp.openstack.model.storage.VolumeResource;
 import com.letv.lcp.openstack.model.storage.VolumeTypeResource;
+import com.letv.lcp.openstack.service.manage.check.Checker;
 import com.letv.lcp.openstack.util.Ref;
 
 public interface VolumeManager extends ResourceManager {
@@ -48,4 +52,7 @@ public interface VolumeManager extends ResourceManager {
 	void checkCreate(VolumeCreateConf volumeCreateConf) throws OpenStackException;
 
     VolumeTypeResource getVolumeTypeResource(String region, String volumeTypeId) throws OpenStackException;
+
+    void waitingVolume(VolumeApi volumeApi, String volumeId,
+			long sleepTime, Checker<Volume> checker) throws OpenStackException;
 }

@@ -33,6 +33,7 @@ import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
@@ -46,6 +47,7 @@ import com.letv.lcp.cloudvm.model.event.RouterCreateEvent;
 import com.letv.lcp.cloudvm.model.event.RouterCreateFailEvent;
 import com.letv.lcp.cloudvm.model.network.FloatingIpCreateConf;
 import com.letv.lcp.cloudvm.model.network.RouterCreateConf;
+import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 import com.letv.lcp.openstack.constants.OpenStackConstants;
 import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
@@ -74,6 +76,7 @@ import com.letv.lcp.openstack.service.manage.ApiRunnable;
 import com.letv.lcp.openstack.service.manage.NetworkManager;
 import com.letv.lcp.openstack.service.manage.check.Checker;
 import com.letv.lcp.openstack.service.manage.check.NetworkChecker;
+import com.letv.lcp.openstack.service.task.createvm.MultiVmCreateContext;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.NameUtil;
 import com.letv.lcp.openstack.util.RetryUtil;
@@ -81,6 +84,7 @@ import com.letv.lcp.openstack.util.function.Function0;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.model.common.CommonQuotaType;
 
+@Service("networkManager")
 public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		implements NetworkManager {
 
@@ -2762,7 +2766,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 	}
 
-	private void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, List<FloatingIP> successCreatedFloatingIps) throws OpenStackException {
+	@SuppressWarnings("unchecked")
+	private void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, List<FloatingIP> successCreatedFloatingIps,
+			Map<String, Object> params) throws OpenStackException {
 		final String region = createConf.getRegion();
 		final String name = createConf.getName();
 		final String publicNetworkId = createConf.getPublicNetworkId();
@@ -2841,6 +2847,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		long userVoUserId = openStackUser.getUserVoUserId();
 		ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
+		
+		//任务流创建所需
+		List<VmCreateContext> context = null;
+		if(null != params && null != params.get("multiVmCreateContext")) {
+			context = (List<VmCreateContext>) params.get("vmCreateContexts");
+			params.put("vmCreateContexts", context);
+		}
+		
 		for (int i = 0; i < count; i++) {
 			final String floatingIpName;
 			if (count > 1) {
@@ -2850,7 +2864,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			}
 			FloatingIP floatingIP = floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
 					.name(floatingIpName).fipQos(createFipQos(bandWidth)).build());
-			if (successCreatedFloatingIps != null) {
+			if(null != context) {
+				context.get(i).setFloatingIpId(floatingIP.getId());;
+			}
+			
+			if (null != successCreatedFloatingIps) {
 				successCreatedFloatingIps.add(floatingIP);
 			}
 			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
@@ -2858,14 +2876,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 	}
 
-	public void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, FloatingIpCreateListener listener, Object listenerUserData) throws OpenStackException {
+	public void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, FloatingIpCreateListener listener, Object listenerUserData, Map<String, Object> params) throws OpenStackException {
 		List<FloatingIP> successCreatedFloatingIps = null;
 		if(listener!=null){
 			successCreatedFloatingIps = new LinkedList<FloatingIP>();
 		}
 
 		try {
-			createFloatingIp(neutronApi,createConf,successCreatedFloatingIps);
+			createFloatingIp(neutronApi,createConf,successCreatedFloatingIps,params);
 		} catch (Exception e){
 			notifyFloatingIpCreateListener(createConf,successCreatedFloatingIps,e,listener,listenerUserData);
 			ExceptionUtil.throwException(e);
@@ -2920,7 +2938,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 			@Override
 			public Void run(NeutronApi neutronApi) throws Exception {
-				createFloatingIp(neutronApi, floatingIpCreateConf, null, null);
+				createFloatingIp(neutronApi, floatingIpCreateConf, null, null, null);
 
 				return null;
 			}

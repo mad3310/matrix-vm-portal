@@ -54,7 +54,7 @@ import com.letv.portal.service.common.IUserService;
 /**
  * Created by zhouxianguang on 2015/10/8.
  */
-@Service
+@Service("apiService")
 public class ApiServiceImpl implements IApiService {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiServiceImpl.class);
@@ -95,7 +95,7 @@ public class ApiServiceImpl implements IApiService {
                     throw new MatrixException("后台错误", e);
                 }
             }
-        }, Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()))).expireAfterAccess(600, TimeUnit.MINUTES).maximumSize(50).build();
+        }, Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()))).expireAfterAccess(10, TimeUnit.MINUTES).maximumSize(50).build();
     }
 
     @PreDestroy

@@ -23,12 +23,14 @@ import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
 import org.jclouds.openstack.cinder.v1.options.CreateSnapshotOptions;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 import org.jclouds.openstack.v2_0.domain.Resource;
+import org.springframework.stereotype.Service;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.model.event.VolumeCreateEvent;
 import com.letv.lcp.cloudvm.model.event.VolumeCreateFailEvent;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
+import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.exception.PollingInterruptedException;
@@ -55,6 +57,7 @@ import com.letv.lcp.openstack.service.manage.ApiRunnable;
 import com.letv.lcp.openstack.service.manage.VolumeManager;
 import com.letv.lcp.openstack.service.manage.check.Checker;
 import com.letv.lcp.openstack.service.manage.check.VolumeChecker;
+import com.letv.lcp.openstack.service.task.createvm.MultiVmCreateContext;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.NameUtil;
 import com.letv.lcp.openstack.util.Ref;
@@ -66,6 +69,7 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.service.cloudvm.ICloudvmVolumeService;
 
+@Service("volumeManager")
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		implements VolumeManager {
 
@@ -595,7 +599,8 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		}
 	}
 
-	private void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData, List<Volume> successCreatedVolumes) throws OpenStackException{
+	private void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, 
+			Object listenerUserData, List<Volume> successCreatedVolumes, Map<String, Object> params) throws OpenStackException{
 		checkUserEmail();
 
 		checkRegion(cinderApi, volumeCreateConf.getRegion());
@@ -679,6 +684,13 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						"云硬盘数量超过配额。");
 			}
 		}
+		
+		//任务流创建所需
+		List<VmCreateContext> context = null;
+		if(null != params && null != params.get("multiVmCreateContext")) {
+			context = (List<VmCreateContext>) params.get("vmCreateContexts");
+			params.put("vmCreateContexts", context);
+		}
 
 		final List<Volume> toSyncCloudvmVolumeList = new LinkedList<Volume>();
 		try {
@@ -696,7 +708,10 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 //						.create
 //                                (openStackUser.getUserVoUserId(), openStackUser.getUserVoUserId(), volumeCreateConf.getRegion(), volume);
 				toSyncCloudvmVolumeList.add(volume);
-				if (successCreatedVolumes != null) {
+				if(null != context) {
+					context.get(i).setVolumeId(volume.getId());;
+				}
+				if (null != successCreatedVolumes) {
 					successCreatedVolumes.add(volume);
 				}
 			}
@@ -711,15 +726,15 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		}
 	}
 
-	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
-			throws OpenStackException {
+	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, 
+			VolumeCreateListener listener, Object listenerUserData, Map<String, Object> params)throws OpenStackException {
 		List<Volume> successCreatedVolumes = null;
 		if (listener != null) {
 			successCreatedVolumes = new LinkedList<Volume>();
 		}
 
 		try {
-			create(cinderApi, volumeCreateConf, listener, listenerUserData, successCreatedVolumes);
+			create(cinderApi, volumeCreateConf, listener, listenerUserData, successCreatedVolumes, params);
 		} catch (Exception ex){
 			notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,ex,listener,listenerUserData);
 			ExceptionUtil.throwException(ex);

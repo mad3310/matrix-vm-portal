@@ -9,7 +9,8 @@ import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Image;
 import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 
-import com.letv.lcp.openstack.listener.VmCreateListener;
+import com.letv.lcp.cloudvm.listener.VmCreateListener;
+import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.openstack.service.manage.impl.NetworkManagerImpl;
 import com.letv.lcp.openstack.service.manage.impl.VMManagerImpl;
 import com.letv.lcp.openstack.service.manage.impl.VolumeManagerImpl;

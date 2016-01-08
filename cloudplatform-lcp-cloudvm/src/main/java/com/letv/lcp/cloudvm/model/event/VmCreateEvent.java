@@ -1,4 +1,4 @@
-package com.letv.lcp.openstack.model.event;
+package com.letv.lcp.cloudvm.model.event;
 
 /**
  * Created by zhouxianguang on 2015/10/16.

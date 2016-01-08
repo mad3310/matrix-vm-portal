@@ -3,12 +3,12 @@ package com.letv.lcp.openstack.service.task.check;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.exception.UserOperationException;
 import com.letv.lcp.openstack.service.manage.impl.NetworkManagerImpl;
 import com.letv.lcp.openstack.service.manage.impl.VMManagerImpl;
 import com.letv.lcp.openstack.service.manage.impl.VolumeManagerImpl;
-import com.letv.lcp.openstack.service.task.createvm.VMCreateConf2;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 
 public class VMCreateCheck {

@@ -59,7 +59,7 @@ public class OpenstackStorageService extends AbstractTest {
 		try {
 			VolumeCreateConf storage = JsonUtil.fromJson(volumeParam, new TypeReference<VolumeCreateConf>() {
 	        }, true);
-			openstackStorageService.create(userId, storage, null, null);
+			openstackStorageService.create(userId, storage, null, null, null);
 			//方法中有使用线程池异步保存数据库
 			Thread.sleep(10000l);
 		} catch (Exception e) {
