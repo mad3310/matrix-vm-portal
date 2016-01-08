@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ import com.letv.portal.service.letvcloud.BillUserServiceBilling;
  */
 @Controller
 @RequestMapping("/userAccount")
-public class UserAccountController {
+public class UserAccountController{
 
 	private final static Logger logger = LoggerFactory.getLogger(UserAccountController.class);
 
@@ -35,9 +37,12 @@ public class UserAccountController {
 	private BillUserAmountService billUserAmountService;
 	@Autowired
 	private BillUserServiceBilling billUserServiceBilling;
+	@Autowired
+	private SessionServiceImpl sessionService;
 
-	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject account(@PathVariable Long userId, ResultObject obj) {
+	@RequestMapping(value="/balance",method=RequestMethod.GET)
+	public @ResponseBody ResultObject account(ResultObject obj) {
+		Long userId = sessionService.getSession().getUserId();
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
 		DecimalFormat formatter = new DecimalFormat("0.00");
 		if(null == billUserAmount) {
@@ -49,8 +54,9 @@ public class UserAccountController {
 		return obj;
 	}
 
-	@RequestMapping(value="/order/un/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject getUserBillingCount(@PathVariable Long userId, ResultObject obj) {
+	@RequestMapping(value="/order/un",method=RequestMethod.GET)
+	public @ResponseBody ResultObject getUserBillingCount(ResultObject obj) {
+		Long userId = sessionService.getSession().getUserId();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 	    Long count = this.billUserServiceBilling.getUserBillingCount(userId, sdf.format(new Date()));
 		obj.setData(count);

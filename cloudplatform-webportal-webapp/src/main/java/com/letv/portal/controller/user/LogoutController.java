@@ -12,6 +12,8 @@ import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.proxy.impl.LoginProxyImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,7 @@ import com.letv.common.session.SessionServiceImpl;
 public class LogoutController{
 
     public static final String DASHBORAD_ADDRESS = "/profile";
+    private final static Logger logger = LoggerFactory.getLogger(LogoutController.class);
 
     @Value("${oauth.auth.http}")
     private String OAUTH_AUTH_HTTP;
@@ -69,7 +72,8 @@ public class LogoutController{
             buffer.append(OAUTH_AUTH_HTTP).append("/logout?client_id=").append(clientId).append("&client_secret=").append(clientSecret).append(OAUTH_REDIRECT_KEY_SECRET);
 
             sessionService.setSession(null,"logout");
-            HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
+            String result = HttpsClient.sendXMLDataByGet(buffer.toString(), 1000, 1000);
+            logger.info("loginout by oauth,url:{},result:{}",buffer.toString(),result);
         }
         StringBuffer buffer = new StringBuffer();
         buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append(DASHBORAD_ADDRESS);

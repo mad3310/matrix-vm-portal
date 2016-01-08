@@ -12,7 +12,7 @@ import java.util.Map;
 public class CookieUtil {
     public static final String DISK_COOKIE_KEY = "default_lcpuc_cookie";
     public static final String MEMORY_COOKIE_KEY = "matrix_uc_cookie";
-    public static final int DISK_COOKIE_AGE = 1800;//默认超时1800s即半小时
+    public static final int DISK_COOKIE_AGE = 3600;//默认超时1800s即半小时
     public static final int MEMORY_MAX_AGE = -1; // 内存cookie
 
     public static final String COOKIE_KEY_USER_NAME = "userName";

@@ -1,7 +1,9 @@
 package com.letv.portal.controller.user;
 
 import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CookieUtil;
+import com.letv.portal.controller.BaseController;
 import com.letv.portal.model.common.UserModel;
 import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.oauth.IUcService;
@@ -27,29 +29,27 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController{
 
 	@Autowired
 	private IUcService ucService;
 	@Autowired
 	private IUserService userService;
+    @Autowired
+    private SessionServiceImpl sessionService;
 
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	/**Methods Name: userInfo <br>
 	 * Description: 根据userId，获取用户信息<br>
 	 * @author name: liuhao1
-	 * @param userId
 	 * @param obj
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject userInfo(@PathVariable Long userId,ResultObject obj,HttpServletResponse response) throws Exception{
-		if(null ==userId) {
-			obj.setResult(0);
-			return obj;
-		}
+	@RequestMapping(method=RequestMethod.GET)
+	public @ResponseBody ResultObject userInfo(ResultObject obj,HttpServletResponse response) throws Exception{
+        Long userId = sessionService.getSession().getUserId();
 		UserModel userModel = this.userService.getUserById(userId);
 		Map<String, Object> user = this.ucService.getUserByUserId(userModel.getUcId());
 		if(user == null || user.isEmpty()) {
@@ -60,12 +60,9 @@ public class UserController {
 		obj.setData(user);
 		return obj;
 	}
-	@RequestMapping(value="/message/un/{userId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject unReadMessage(@PathVariable Long userId,ResultObject obj) throws Exception{
-		if(null ==userId) {
-			obj.setData(0);
-			return obj;
-		}
+	@RequestMapping(value="/message/un",method=RequestMethod.GET)
+	public @ResponseBody ResultObject unReadMessage(ResultObject obj) throws Exception{
+        Long userId = sessionService.getSession().getUserId();
 		Long ucId = this.userService.getUcIdByUserId(userId);
 		Map<String, Object> unReadMessage = this.ucService.getUnReadMessage(ucId);
 		if(unReadMessage == null || unReadMessage.isEmpty()) {
@@ -75,4 +72,5 @@ public class UserController {
 		obj.setData(unReadMessage.get("totalCount"));
 		return obj;
 	}
+
 }

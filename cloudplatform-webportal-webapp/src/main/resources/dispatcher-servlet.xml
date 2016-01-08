@@ -69,7 +69,6 @@
                 <value>/toLogin</value>
                 <value>/static</value>
                 <value>/home</value>
-	          <value>/user</value>
 
 	          <!-- 支付完成回调api -->
 	          <value>/pay/callback</value>
