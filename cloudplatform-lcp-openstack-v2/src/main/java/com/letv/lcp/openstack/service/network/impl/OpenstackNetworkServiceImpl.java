@@ -1,5 +1,6 @@
 package com.letv.lcp.openstack.service.network.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.lcp.cloudvm.listener.FloatingIpCreateListener;
@@ -108,7 +110,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void rollBackFloatingIpWithCreateVmFail(Map<String, Object> params) {
-		long userId = (long) params.get("userId");
+		Long userId = (Long) params.get("userId");
 		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
 		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
 		String region = vmCreateConf.getRegion();
@@ -140,8 +142,14 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String createSubnetPorts(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
-		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+		List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
+		for (JSONObject jsonObject : vmCreateContexts) {
+			VmCreateContext context = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
+			contexts.add(context);
+		}
+		
 		Long userId = (Long)params.get("userId");
 		Subnet privateSubnet = null;
 		Network privateNetwork = null;
@@ -157,7 +165,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 			return "PrivateSubnetId is null";
 		}
 
-		for (VmCreateContext vmCreateContext : context) {
+		for (VmCreateContext vmCreateContext : contexts) {
 			Port subnetPort = apiService.getNeutronApi(userId, (String)params.get("uuid")).getPortApi(vmCreateConf.getRegion())
 					.create(Port
 							.createBuilder(privateNetwork.getId())
@@ -168,7 +176,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 							.build());
 			vmCreateContext.setSubnetPortId(subnetPort.getId());;
 		}
-		params.put("vmCreateContexts", context);
+		params.put("vmCreateContexts", contexts);
 		
 		return "success";
 	}

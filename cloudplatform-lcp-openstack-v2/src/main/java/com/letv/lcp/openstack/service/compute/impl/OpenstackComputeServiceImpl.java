@@ -2,6 +2,7 @@ package com.letv.lcp.openstack.service.compute.impl;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -96,11 +97,14 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String createVm(Long userId, VMCreateConf2 vmCreateConf, VmCreateListener vmCreateListener, Object listenerUserData, Map<String, Object> params) {
-		List<VmCreateContext> contexts = (List<VmCreateContext>) params.get("vmCreateContexts");
-		params.put("vmCreateContexts", contexts);
-		for (int i = 0; i < contexts.size(); i++) {
-			createOneVm(userId, vmCreateConf, contexts.get(i), params);
+		List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+		List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
+		for (JSONObject jsonObject : vmCreateContexts) {
+			VmCreateContext context = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
+			createOneVm(userId, vmCreateConf, context, params);
+			contexts.add(context);
 		}
+		params.put("vmCreateContexts", contexts);
 		return "success";
 	}
 
@@ -156,6 +160,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			ServerCreated serverCreated = novaApi
 					.getServerApi(region)
 					.create(context.getResourceName(), imageRef, vmCreateConf.getFlavorId(), options);
+			context.setServerCreatedId(serverCreated.getId());
 			Server server = novaApi.getServerApi(region).get(serverCreated.getId());
 			context.setServerId(server.getId());
 
@@ -495,10 +500,16 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String bindFloatingIp(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
-		List<VmCreateContext> contexts = (List<VmCreateContext>) params.get("vmCreateContexts");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get( "vmCreateConf"), VMCreateConf2.class);
+        List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get( "vmCreateContexts"), List.class );
+        List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
+        params.put("vmCreateContexts", contexts);
+        
 		NovaApi novaApi = apiService.getNovaApi((Long)params.get("userId"), (String)params.get("uuid"));
-		for (VmCreateContext vmCreateContext : contexts) {
+		for (JSONObject jsonObject : vmCreateContexts) {
+			VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObject.toString(), VmCreateContext. class);
+            contexts.add(vmCreateContext);
+            
 			Server server = novaApi.getServerApi(vmCreateConf.getRegion())
                     .get(vmCreateContext.getServerCreatedId());
 			Optional<org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi> floatingIPApiOptional = novaApi.getFloatingIPApi(vmCreateConf.getRegion());

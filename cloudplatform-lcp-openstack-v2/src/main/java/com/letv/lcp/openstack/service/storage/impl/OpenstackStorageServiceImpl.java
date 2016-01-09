@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Optional;
 import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
@@ -87,7 +88,7 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void rollBackWithCreateVmFail(Map<String, Object> params) {
-		long userId = (long) params.get("userId");
+		Long userId = (Long) params.get("userId");
 		String uuid = (String)params.get("uuid");
 		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
 		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
@@ -132,9 +133,9 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	public String addVolume(Map<String, Object> params) {
 		Long userId = (Long)params.get("userId");
 		String sessionId = (String)params.get("uuid");
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+        List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class );
 		String region = vmCreateConf.getRegion();
-		List<VmCreateContext> contexts = (List<VmCreateContext>) params.get("vmCreateContexts");
 
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         final VolumeApi volumeApi = apiService.getCinderApi(userId, sessionId).getVolumeApi(region);
@@ -148,7 +149,8 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			}
 			VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional.get();
         
-			for (VmCreateContext vmCreateContext : contexts) {
+			for (JSONObject jsonObject : vmCreateContexts) {
+				VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObject.toString(), VmCreateContext. class);
 			    boolean volumeUpdated = false;
 			    if (vmCreateContext.getServerCreatedId() != null && vmCreateContext.getVolumeId() != null) {
 			        final String volumeId = vmCreateContext.getVolumeId();

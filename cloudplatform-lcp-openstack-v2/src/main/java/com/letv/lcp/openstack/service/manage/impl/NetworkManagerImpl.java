@@ -35,6 +35,7 @@ import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.exception.MatrixException;
@@ -2850,8 +2851,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		
 		//任务流创建所需
 		List<VmCreateContext> context = null;
-		if(null != params && null != params.get("multiVmCreateContext")) {
-			context = (List<VmCreateContext>) params.get("vmCreateContexts");
+		if(null != params && null != params.get("vmCreateContexts")) {
+			List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+			List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
+			for (JSONObject jsonObject : vmCreateContexts) {
+				VmCreateContext context1 = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
+				contexts.add(context1);
+			}
+			context = contexts;
 			params.put("vmCreateContexts", context);
 		}
 		

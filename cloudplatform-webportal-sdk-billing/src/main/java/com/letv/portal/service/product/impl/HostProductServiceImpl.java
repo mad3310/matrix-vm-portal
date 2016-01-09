@@ -126,34 +126,36 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	@Override
 	public void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records) {
 		logger.info("开始创建云主机！");
-//		
-//		Map<String, Object> createInfo = new HashMap<String, Object>();
-//		createInfo.put("userId", orderSubs.get(0).getCreateUser());
-//		
-//		
-//		this.taskEngine.run("LCP_VM_CREATE", params);
 		
-		this.resourceCreateService.createVm(orderSubs.get(0).getCreateUser(), params, new VmCreateAdapter() {
-			private AtomicInteger successCount = new AtomicInteger();
-			private AtomicInteger failCount = new AtomicInteger();
-			private Map<String, String> idNames = new HashMap<String, String>();
-
-			@Override
-			public void vmCreated(VmCreateEvent event) throws Exception {
-				logger.info("云主机创建成功回调! num="+event.getVmIndex());
-				successCount.incrementAndGet();
-				idNames.put(event.getVmId(), event.getName());
-				hostProductServiceOfNewTransaction.vmServiceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVolumeId(), event.getFloatingIpId(), event.getVmIndex(), event.getUserData());
-				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
-			}
-
-			@Override
-			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
-				logger.info("云主机创建失败回调! num="+event.getVmIndex());
-				failCount.incrementAndGet();
-				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
-			}
-		}, records);
+		Map<String, Object> createInfo = new HashMap<String, Object>();
+		createInfo.put("userId", orderSubs.get(0).getCreateUser()); 
+		createInfo.put("vmCreateConf", params); 
+		
+		this.taskEngine.run("LCP_VM_CREATE", params);
+		
+		logger.error("---------diaoyonggongzuoliu-------");
+		
+//		this.resourceCreateService.createVm(orderSubs.get(0).getCreateUser(), params, new VmCreateAdapter() {
+//			private AtomicInteger successCount = new AtomicInteger();
+//			private AtomicInteger failCount = new AtomicInteger();
+//			private Map<String, String> idNames = new HashMap<String, String>();
+//
+//			@Override
+//			public void vmCreated(VmCreateEvent event) throws Exception {
+//				logger.info("云主机创建成功回调! num="+event.getVmIndex());
+//				successCount.incrementAndGet();
+//				idNames.put(event.getVmId(), event.getName());
+//				hostProductServiceOfNewTransaction.vmServiceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVolumeId(), event.getFloatingIpId(), event.getVmIndex(), event.getUserData());
+//				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
+//			}
+//
+//			@Override
+//			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
+//				logger.info("云主机创建失败回调! num="+event.getVmIndex());
+//				failCount.incrementAndGet();
+//				hostProductServiceOfNewTransaction.checkOrderFinished(orderSubs, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
+//			}
+//		}, records);
 		logger.info("调用创建云主机成功!");
 	}
 	
