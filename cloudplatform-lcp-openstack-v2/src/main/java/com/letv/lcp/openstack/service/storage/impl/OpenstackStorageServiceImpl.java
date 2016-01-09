@@ -40,7 +40,7 @@ import com.letv.lcp.openstack.util.ThreadUtil;
 import com.letv.lcp.openstack.util.function.Function0;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 
-@Service
+@Service("openstackStorageService")
 public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OpenstackStorageServiceImpl.class);

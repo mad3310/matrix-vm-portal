@@ -6,9 +6,6 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.letv.common.session.Executable;
-import com.letv.common.session.Session;
-import com.letv.portal.service.openstack.OpenStackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,9 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.result.ResultObject;
+import com.letv.common.session.Executable;
+import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.service.base.IOpenStackService;
+import com.letv.lcp.openstack.service.session.IOpenStackSession;
 
 @Component
 public class CloudvmInterceptor implements HandlerInterceptor {
@@ -29,7 +29,7 @@ public class CloudvmInterceptor implements HandlerInterceptor {
     private SessionServiceImpl sessionService;
 
     @Autowired
-    private OpenStackService openStackService;
+    private IOpenStackService openStackService;
 
     public String[] checkUrls;
     private String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
@@ -60,7 +60,7 @@ public class CloudvmInterceptor implements HandlerInterceptor {
             for (String url : checkUrls) {
                 if (requestUrl.contains(url)) {
                     Session session = sessionService.getSession();
-                    OpenStackSession openStackSession = (OpenStackSession) session.getOpenStackSession();
+                    IOpenStackSession openStackSession = (IOpenStackSession) session.getOpenStackSession();
                     if (openStackSession == null) {
                         openStackSession = openStackService.createSession(session.getUserId(), session.getEmail(), session.getUserName());
                         session.setOpenStackSession(openStackSession);

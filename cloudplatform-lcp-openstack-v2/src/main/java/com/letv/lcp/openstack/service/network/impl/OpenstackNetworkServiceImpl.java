@@ -39,7 +39,7 @@ import com.letv.lcp.openstack.service.validation.IValidationService;
 import com.letv.lcp.openstack.util.RandomUtil;
 import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 
-@Service
+@Service("openstackNetworkService")
 public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OpenstackNetworkServiceImpl.class);

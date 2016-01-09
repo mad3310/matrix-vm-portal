@@ -4,8 +4,6 @@ import java.text.MessageFormat;
 
 import javax.validation.Valid;
 
-import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
-import com.letv.portal.service.openstack.util.Ref;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,14 +16,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.exception.UserOperationException;
+import com.letv.lcp.openstack.exception.VolumeNotFoundException;
+import com.letv.lcp.openstack.service.local.ILocalVolumeService;
+import com.letv.lcp.openstack.service.local.ILocalVolumeTypeService;
+import com.letv.lcp.openstack.service.manage.VolumeManager;
+import com.letv.lcp.openstack.service.resource.IResourceServiceFacade;
+import com.letv.lcp.openstack.util.Ref;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
-import com.letv.portal.service.openstack.local.service.LocalVolumeService;
-import com.letv.portal.service.openstack.local.service.LocalVolumeTypeService;
-import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.vo.cloudvm.form.volume.VolumeEditForm;
 import com.letv.portal.vo.cloudvm.form.volume_snapshot.VolumeSnapshotCreateForm;
@@ -38,15 +37,15 @@ public class VolumeController {
 	private SessionServiceImpl sessionService;
 
 	@Autowired
-	private LocalVolumeService localVolumeService;
+	private ILocalVolumeService localVolumeService;
 
 	@Autowired
-	private LocalVolumeTypeService localVolumeTypeService;
+	private ILocalVolumeTypeService localVolumeTypeService;
 	@Autowired
 	private IRecentOperateService recentOperateService;
 
 	@Autowired
-	private ResourceServiceFacade resourceServiceFacade;
+	private IResourceServiceFacade resourceServiceFacade;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {

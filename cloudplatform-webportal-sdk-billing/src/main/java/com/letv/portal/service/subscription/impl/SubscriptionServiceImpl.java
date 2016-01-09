@@ -23,12 +23,16 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.lcp.openstack.model.billing.BillingResource;
+import com.letv.lcp.openstack.model.billing.ResourceLocator;
+import com.letv.lcp.openstack.service.billing.IResourceDeleteService;
+import com.letv.lcp.openstack.service.billing.IResourceQueryService;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.dao.subscription.ISubscriptionDao;
 import com.letv.portal.dao.subscription.ISubscriptionDetailDao;
 import com.letv.portal.enumeration.ProductType;
-import com.letv.portal.model.common.UserVo;
 import com.letv.portal.model.base.BaseStandard;
+import com.letv.portal.model.common.UserVo;
 import com.letv.portal.model.message.Message;
 import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.model.subscription.Subscription;
@@ -36,10 +40,6 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.message.IMessageProxyService;
-import com.letv.portal.service.openstack.billing.BillingResource;
-import com.letv.portal.service.openstack.billing.ResourceDeleteService;
-import com.letv.portal.service.openstack.billing.ResourceLocator;
-import com.letv.portal.service.openstack.billing.ResourceQueryService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;
@@ -53,9 +53,9 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	@Autowired
 	private IProductService productService;
 	@Autowired
-	private ResourceQueryService resourceQueryService;
+	private IResourceQueryService resourceQueryService;
 	@Autowired
-	private ResourceDeleteService resourceDeleteService;
+	private IResourceDeleteService resourceDeleteService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
 	

@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.letv.portal.service.openstack.util.Ref;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,26 +21,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.lcp.openstack.exception.OpenStackCompositeException;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.exception.UserOperationException;
+import com.letv.lcp.openstack.model.compute.VMResource;
+import com.letv.lcp.openstack.model.conf.VmSnapshotCreateConf;
+import com.letv.lcp.openstack.model.storage.VolumeResource;
+import com.letv.lcp.openstack.service.local.ILocalImageService;
+import com.letv.lcp.openstack.service.local.ILocalKeyPairService;
+import com.letv.lcp.openstack.service.local.ILocalVmService;
+import com.letv.lcp.openstack.service.local.ILocalVolumeService;
+import com.letv.lcp.openstack.service.manage.ImageManager;
+import com.letv.lcp.openstack.service.manage.VMManager;
+import com.letv.lcp.openstack.service.manage.VolumeManager;
+import com.letv.lcp.openstack.service.resource.IResourceServiceFacade;
+import com.letv.lcp.openstack.service.session.IOpenStackSession;
+import com.letv.lcp.openstack.util.ExceptionUtil;
+import com.letv.lcp.openstack.util.HttpUtil;
+import com.letv.lcp.openstack.util.Ref;
+import com.letv.lcp.openstack.util.tuple.Tuple2;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.exception.OpenStackCompositeException;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.local.service.LocalImageService;
-import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
-import com.letv.portal.service.openstack.local.service.LocalVmService;
-import com.letv.portal.service.openstack.local.service.LocalVolumeService;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import com.letv.portal.service.openstack.resource.manager.VMManager;
-import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
-import com.letv.portal.service.openstack.resource.manager.VolumeManager;
-import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
-import com.letv.portal.service.openstack.util.ExceptionUtil;
-import com.letv.portal.service.openstack.util.HttpUtil;
-import com.letv.portal.service.openstack.util.Ref;
-import com.letv.portal.service.openstack.util.tuple.Tuple2;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.vo.cloudvm.form.keypair.CreateKeyPairForm;
 import com.letv.portal.vo.cloudvm.form.vm.ChangeAdminPassForm;
@@ -59,19 +58,19 @@ public class VMController {
 	private IRecentOperateService recentOperateService;
 
 	@Autowired
-	private LocalVmService vmQueryService;
+	private ILocalVmService vmQueryService;
 
 	@Autowired
-	private LocalImageService localImageService;
+	private ILocalImageService localImageService;
 
 	@Autowired
-	private ResourceServiceFacade resourceServiceFacade;
+	private IResourceServiceFacade resourceServiceFacade;
 
 	@Autowired
-	private LocalKeyPairService localKeyPairService;
+	private ILocalKeyPairService localKeyPairService;
 	
 	@Autowired
-	private LocalVolumeService localVolumeService;
+	private ILocalVolumeService localVolumeService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -383,7 +382,7 @@ public class VMController {
 			@RequestParam String vmId, @RequestParam String volumeId) {
 		ResultObject result = new ResultObject();
 		try {
-			OpenStackSession openStackSession = Util.session(sessionService);
+			IOpenStackSession openStackSession = Util.session(sessionService);
 			VMManager vmManager = openStackSession.getVMManager();
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			VMResource vmResource = vmManager.get(region, vmId);
@@ -408,7 +407,7 @@ public class VMController {
 			@RequestParam String vmId, @RequestParam String volumeId) {
 		ResultObject result = new ResultObject();
 		try {
-			OpenStackSession openStackSession = Util.session(sessionService);
+			IOpenStackSession openStackSession = Util.session(sessionService);
 			VMManager vmManager = openStackSession.getVMManager();
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			VMResource vmResource =  vmManager.get(region, vmId);
@@ -432,7 +431,7 @@ public class VMController {
 			@RequestParam String vmId) {
 		ResultObject result = new ResultObject();
 		try {
-			OpenStackSession openStackSession = Util.session(sessionService);
+			IOpenStackSession openStackSession = Util.session(sessionService);
 			VMManager vmManager = openStackSession.getVMManager();
 			result.setData(vmManager.openConsole(vmManager.get(region, vmId)));
 		} catch (UserOperationException e) {
@@ -447,7 +446,7 @@ public class VMController {
 	@RequestMapping(value = "/is-authority", method = RequestMethod.GET)
 	public @ResponseBody ResultObject isAuthority() {
 		ResultObject result = new ResultObject();
-		OpenStackSession openStackSession = Util.session(sessionService);
+		IOpenStackSession openStackSession = Util.session(sessionService);
 		result.setData(openStackSession.isAuthority());
 		return result;
 	}

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.exception.OpenStackException;
 
 @Controller
 @RequestMapping("/osf")

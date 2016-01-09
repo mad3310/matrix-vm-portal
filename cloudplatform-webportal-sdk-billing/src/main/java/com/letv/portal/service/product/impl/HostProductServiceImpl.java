@@ -10,25 +10,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.lcp.cloudvm.listener.adapter.FloatingIpCreateAdapter;
+import com.letv.lcp.cloudvm.listener.adapter.RouterCreateAdapter;
+import com.letv.lcp.cloudvm.listener.adapter.VolumeCreateAdapter;
+import com.letv.lcp.cloudvm.model.event.FloatingIpCreateEvent;
+import com.letv.lcp.cloudvm.model.event.FloatingIpCreateFailEvent;
+import com.letv.lcp.cloudvm.model.event.RouterCreateEvent;
+import com.letv.lcp.cloudvm.model.event.RouterCreateFailEvent;
+import com.letv.lcp.cloudvm.model.event.VolumeCreateEvent;
+import com.letv.lcp.cloudvm.model.event.VolumeCreateFailEvent;
+import com.letv.lcp.openstack.service.billing.IResourceCreateService;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductElementDao;
 import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
-import com.letv.portal.service.openstack.billing.ResourceCreateService;
-import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateAdapter;
-import com.letv.portal.service.openstack.billing.listeners.RouterCreateAdapter;
-import com.letv.portal.service.openstack.billing.listeners.VmCreateAdapter;
-import com.letv.portal.service.openstack.billing.listeners.VolumeCreateAdapter;
-import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateFailEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateFailEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
-import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.product.IHostProductService;
 import com.letv.portal.service.task.ITaskEngine;
 
@@ -42,7 +39,7 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	@Autowired
 	private IBaseStandardDao baseStandardDao;
 	@Autowired
-	private ResourceCreateService resourceCreateService;
+	private IResourceCreateService resourceCreateService;
 	@Autowired
 	private HostProductServiceOfNewTransaction hostProductServiceOfNewTransaction;
 	@Autowired
@@ -131,7 +128,7 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 		createInfo.put("userId", orderSubs.get(0).getCreateUser()); 
 		createInfo.put("vmCreateConf", params); 
 		
-		this.taskEngine.run("LCP_VM_CREATE", params);
+		this.taskEngine.run("LCP_VM_CREATE", createInfo);
 		
 		logger.error("---------diaoyonggongzuoliu-------");
 		

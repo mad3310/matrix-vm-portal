@@ -67,7 +67,7 @@ import com.letv.portal.model.common.UserModel;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.common.IUserService;
 
-@Service
+@Service("openstackComputeService")
 public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OpenstackComputeServiceImpl.class);
