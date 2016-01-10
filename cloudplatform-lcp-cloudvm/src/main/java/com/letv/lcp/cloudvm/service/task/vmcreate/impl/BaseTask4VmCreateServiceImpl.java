@@ -40,8 +40,7 @@ public class BaseTask4VmCreateServiceImpl extends BaseTaskServiceImpl implements
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4VmCreateServiceImpl.class);
 	
-	@Override
-	public void beforExecute(Map<String, Object> params) {
+	protected void initParams(Map<String, Object> params) {
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String) params.get("vmCreateConf"), VMCreateConf2.class);
 		List<VmCreateContext> vmCreateContexts = new LinkedList<VmCreateContext>();
         for (int i = 0; i < vmCreateConf.getCount(); i++) {
@@ -57,7 +56,11 @@ public class BaseTask4VmCreateServiceImpl extends BaseTaskServiceImpl implements
                 vmCreateContext.setResourceName(NameUtil.nameAddNumber(sourceName, i++));
             }
         }
-        params.put("vmCreateContexts", vmCreateContexts);
+        params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));
+	}
+	
+	@Override
+	public void beforExecute(Map<String, Object> params) {
 		computeService = (IComputeService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.COMPUTE);
 		networkService = (INetworkService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.NETWORK);
 		storageService = (IStorageService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.STORAGE);

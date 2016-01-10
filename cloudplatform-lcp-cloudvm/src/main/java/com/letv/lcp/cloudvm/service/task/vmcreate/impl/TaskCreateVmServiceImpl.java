@@ -21,8 +21,8 @@ public class TaskCreateVmServiceImpl extends BaseTask4VmCreateServiceImpl implem
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
-		String ret = computeService.createVm((Long)params.get("userId"), vmCreateConf, null, null, params);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		String ret = computeService.createVm(Long.parseLong((String)params.get("userId")), vmCreateConf, null, null, params);
 		logger.info("创建云主机，结果：{}", ret);
 		
 		tr.setResult(ret);

@@ -2852,14 +2852,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		//任务流创建所需
 		List<VmCreateContext> context = null;
 		if(null != params && null != params.get("vmCreateContexts")) {
-			List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+			String jsonContext = JSONObject.toJSONString(params.get("vmCreateContexts"));
+			List<JSONObject> vmCreateContexts = JSONObject.parseObject(jsonContext, List.class);
 			List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
 			for (JSONObject jsonObject : vmCreateContexts) {
 				VmCreateContext context1 = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
 				contexts.add(context1);
 			}
 			context = contexts;
-			params.put("vmCreateContexts", context);
 		}
 		
 		for (int i = 0; i < count; i++) {
@@ -2880,6 +2880,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			}
 			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
 			localRcCountService.incRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH, bandWidth);
+		}
+		if(null != context) {
+			params.put("vmCreateContexts", JSONObject.toJSON(context));
 		}
 	}
 

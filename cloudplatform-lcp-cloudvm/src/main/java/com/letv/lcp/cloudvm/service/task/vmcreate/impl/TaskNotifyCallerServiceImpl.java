@@ -24,8 +24,8 @@ public class TaskNotifyCallerServiceImpl extends BaseTask4VmCreateServiceImpl im
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
-		List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 		//TODO 调用创建回调接口
 		String ret = "success";
         

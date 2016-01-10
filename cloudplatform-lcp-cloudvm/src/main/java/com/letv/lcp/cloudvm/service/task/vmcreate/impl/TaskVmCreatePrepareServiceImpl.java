@@ -19,7 +19,7 @@ public class TaskVmCreatePrepareServiceImpl extends BaseTask4VmCreateServiceImpl
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		
+		initParams(params);
 		String ret = computeService.getVmCreatePrepare(params);
 		logger.info("创建云主机参数及前提工作准备，执行结果：{}", ret);
 		

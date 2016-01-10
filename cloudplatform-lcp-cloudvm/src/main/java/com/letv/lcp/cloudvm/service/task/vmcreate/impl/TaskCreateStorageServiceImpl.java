@@ -22,8 +22,7 @@ public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl i
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		if (vmCreateConf.getVolumeSize() == 0) {
 			return tr;
 		}
@@ -34,7 +33,7 @@ public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl i
 		volumeCreateConf.setSize(vmCreateConf.getVolumeSize());
 		volumeCreateConf.setCount(vmCreateConf.getCount());
 		
-		String ret = storageService.create((Long)params.get("userId"), volumeCreateConf, null, null, params);
+		String ret = storageService.create(Long.parseLong((String)params.get("userId")), volumeCreateConf, null, null, params);
 		logger.info("创建云主机中的云硬盘，结果：{}", ret);
 		
 		tr.setResult(ret);

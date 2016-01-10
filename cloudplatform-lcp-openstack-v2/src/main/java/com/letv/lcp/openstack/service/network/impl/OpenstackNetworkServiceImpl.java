@@ -110,7 +110,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void rollBackFloatingIpWithCreateVmFail(Map<String, Object> params) {
-		Long userId = (Long) params.get("userId");
+		Long userId = Long.parseLong((String)params.get("userId"));
 		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
 		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
 		String region = vmCreateConf.getRegion();
@@ -142,27 +142,28 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String createSubnetPorts(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
-		List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		if (StringUtils.isEmpty(vmCreateConf.getPrivateSubnetId())) {
+			return "success";
+		}
+		List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 		List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
 		for (JSONObject jsonObject : vmCreateContexts) {
 			VmCreateContext context = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
 			contexts.add(context);
 		}
+		params.put("vmCreateContexts", contexts);
 		
-		Long userId = (Long)params.get("userId");
-		Subnet privateSubnet = null;
+		Long userId = Long.parseLong((String)params.get("userId"));
+		Subnet privateSubnet = apiService.getNeutronApi(userId, (String)params.get("uuid")).getSubnetApi(vmCreateConf.getRegion())
+				.get(vmCreateConf.getPrivateSubnetId());;
 		Network privateNetwork = null;
-		if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
-			try {
-				privateSubnet = getPrivateSubnetById(userId, (String)params.get("uuid"), vmCreateConf, privateNetwork);
-			} catch (ResourceNotFoundException e) {
-				logger.error(e.getMessage(), e);
-	        	errorEmailService.sendExceptionEmail(e, "创建云主机中的子网获取异常", userId, vmCreateConf.toString());
-	        	return e.getMessage();
-			}
-		} else {
-			return "PrivateSubnetId is null";
+		try {
+			privateNetwork = getPrivateNetwork(userId, (String)params.get("uuid"), vmCreateConf, privateSubnet);
+		} catch (ResourceNotFoundException e) {
+			logger.error(e.getMessage(), e);
+        	errorEmailService.sendExceptionEmail(e, "创建云主机中的子网获取异常", userId, vmCreateConf.toString());
+        	return e.getMessage();
 		}
 
 		for (VmCreateContext vmCreateContext : contexts) {
@@ -176,15 +177,13 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 							.build());
 			vmCreateContext.setSubnetPortId(subnetPort.getId());;
 		}
-		params.put("vmCreateContexts", contexts);
 		
 		return "success";
 	}
 	
-	private Subnet getPrivateSubnetById(Long userId, String uuid, 
-			VMCreateConf2 vmCreateConf, Network privateNetwork) throws ResourceNotFoundException {
-		Subnet privateSubnet = apiService.getNeutronApi(userId, uuid).getSubnetApi(vmCreateConf.getRegion())
-				.get(vmCreateConf.getPrivateSubnetId());
+	private Network getPrivateNetwork(Long userId, String uuid, 
+			VMCreateConf2 vmCreateConf, Subnet privateSubnet) throws ResourceNotFoundException {
+		Network privateNetwork = null;
 		if (privateSubnet == null) {
 			throw new ResourceNotFoundException("Subnet", "子网",
 					vmCreateConf.getPrivateSubnetId());
@@ -197,30 +196,21 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 						"私有子网", vmCreateConf.getPrivateSubnetId());
 			}
 		}
-		return privateSubnet;
+		return privateNetwork;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void rollBackSubnetPortsWithCreateVmFail(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
-		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
-		Long userId = (Long)params.get("userId");
-		Subnet privateSubnet = null;
-		Network privateNetwork = null;
-		if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
-			try {
-				privateSubnet = getPrivateSubnetById(userId, (String)params.get("uuid"), vmCreateConf, privateNetwork);
-			} catch (ResourceNotFoundException e) {
-				logger.error(e.getMessage(), e);
-	        	errorEmailService.sendExceptionEmail(e, "创建云主机中的子网获取异常", userId, vmCreateConf.toString());
-	        	return;
-			}
-		} else {
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		if (vmCreateConf.getPrivateSubnetId() == null) {
 			return;
 		}
+		List<JSONObject> context = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
+		Long userId = (Long)params.get("userId");
 
-		for (VmCreateContext vmCreateContext : context) {
+		for (JSONObject jsonObj : context) {
+			VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObj.toJSONString(), VmCreateContext.class);
 			if (null != vmCreateContext.getSubnetPortId()) {
 				apiService.getNeutronApi(userId, (String)params.get("uuid")).getPortApi(vmCreateConf.getRegion())
 						.delete(vmCreateContext.getSubnetPortId());

@@ -131,10 +131,10 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String addVolume(Map<String, Object> params) {
-		Long userId = (Long)params.get("userId");
+		Long userId = Long.parseLong((String)params.get("userId"));
 		String sessionId = (String)params.get("uuid");
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
-        List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class );
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+        List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class );
 		String region = vmCreateConf.getRegion();
 
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
@@ -212,7 +212,7 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			}
 		} catch (OpenStackException e) {
 			logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定云硬盘异常", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定云硬盘异常", userId, (String) params.get("vmCreateConf"));
 	    	return e.getMessage();
 		}
     

@@ -22,7 +22,8 @@ public class TaskCreateFloatingIpServiceImpl extends BaseTask4VmCreateServiceImp
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		String jsonConf = JSONObject.toJSONString(params.get("vmCreateConf"));
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(jsonConf, VMCreateConf2.class);
 		if (!vmCreateConf.getBindFloatingIp()) {
 			return tr;
 		}
@@ -34,7 +35,7 @@ public class TaskCreateFloatingIpServiceImpl extends BaseTask4VmCreateServiceImp
 		floatingIpCreateConf.setPublicNetworkId(vmCreateConf.getFloatingNetworkId());
 		floatingIpCreateConf.setCount(vmCreateConf.getCount());
 		
-		String ret = networkService.createFloatingIp((Long)params.get("userId"), floatingIpCreateConf, null, null, params);
+		String ret = networkService.createFloatingIp(Long.parseLong((String)params.get("userId")), floatingIpCreateConf, null, null, params);
 		logger.info("创建云主机中的公网IP，结果：{}", ret);
 		
 		tr.setResult(ret);
@@ -53,7 +54,7 @@ public class TaskCreateFloatingIpServiceImpl extends BaseTask4VmCreateServiceImp
 	@Override
 	public void rollBack(TaskResult tr) {
 		Map<String, Object> params = (Map<String, Object>) tr.getParams();
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		if (!vmCreateConf.getBindFloatingIp()) {
 			return;
 		}

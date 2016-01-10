@@ -97,14 +97,14 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String createVm(Long userId, VMCreateConf2 vmCreateConf, VmCreateListener vmCreateListener, Object listenerUserData, Map<String, Object> params) {
-		List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+		List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 		List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
 		for (JSONObject jsonObject : vmCreateContexts) {
 			VmCreateContext context = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
 			createOneVm(userId, vmCreateConf, context, params);
 			contexts.add(context);
 		}
-		params.put("vmCreateContexts", contexts);
+		params.put("vmCreateContexts", JSONObject.toJSON(contexts));
 		return "success";
 	}
 
@@ -186,19 +186,21 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@Override
 	public String getVmCreatePrepare(Map<String, Object> params) {
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		Long userId = Long.parseLong((String)params.get("userId"));
 		if (StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())) {
             vmCreateConf.setBindFloatingIp(false);
         }
 		try {
             validationService.validate(vmCreateConf);
             params.put("uuid", UUID.randomUUID().toString());
-            IOpenStackSession openStackSession = openStackService.createSession((Long)params.get("userId"));
+            IOpenStackSession openStackSession = openStackService.createSession(userId);
             openStackSession .init(null);
             OpenStackServiceImpl.getOpenStackServiceGroup().getResourceService()
-            	.createDefaultSecurityGroupAndRule(this.apiService.getNeutronApi((Long)params.get("userId"), (String)params.get("uuid")));
+            	.createDefaultSecurityGroupAndRule(this.apiService.getNeutronApi(userId, (String)params.get("uuid")));
+            params.put("vmCreateConf", JSONObject.toJSON(vmCreateConf));
 		} catch (Exception e) {
 	    	logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "云主机创建准备异常", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "云主机创建准备异常", userId, (String) params.get("vmCreateConf"));
 	    	return e.getMessage();
 		}
         
@@ -208,8 +210,9 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 
 	@Override
 	public String checkVmCreateConf(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
-		Long userId = (Long) params.get("userId");
+		String json = JSONObject.toJSONString(params.get("vmCreateConf"));
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(json, VMCreateConf2.class);
+		Long userId = Long.parseLong((String)params.get("userId"));
 		String sessionId = (String) params.get("uuid");
 		String region = vmCreateConf.getRegion();
 		
@@ -344,6 +347,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 				throw new UserOperationException(
 						"Virtual machine number must be greater than zero.", "虚拟机数量必须大于0");
 			}
+			params.put("vmCreateConf", JSONObject.toJSON(vmCreateConf));
 		} catch (OpenStackException e) {
 			logger.error(e.getMessage(), e);
 	    	errorEmailService.sendExceptionEmail(e, "校验云主机创建参数异常", userId, vmCreateConf.toString());
@@ -354,8 +358,9 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 
 	@Override
 	public String checkQuota(Map<String, Object> params) {
-		Long userId = (Long) params.get("userId");
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		Long userId = Long.parseLong((String)params.get("userId"));
+		String jsonConf = JSONObject.toJSONString(params.get("vmCreateConf"));
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(jsonConf, VMCreateConf2.class);
 		
 		String uuid = (String) params.get("uuid");
 		NovaApi novaApi = apiService.getNovaApi(userId, uuid);
@@ -391,7 +396,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 				throw new APINotAvailableException(QuotaApi.class);
 			}
 			
-			IOpenStackSession openStackSession = openStackService.createSession((Long)params.get("userId"));
+			IOpenStackSession openStackSession = openStackService.createSession(userId);
             openStackSession.init(null);
 			Quota novaQuota = quotaApiOptional.get().getByTenant(openStackSession.getOpenStackUser().getTenantId());
 			if (novaQuota == null) {
@@ -418,7 +423,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			}
 		} catch (OpenStackException e) {
 			logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "云主机创建未通过配额校验", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "云主机创建未通过配额校验", userId, (String) params.get("vmCreateConf"));
 	    	return e.getMessage();
 		}
 		return "success";
@@ -427,8 +432,9 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String waitingVmsCreated(Map<String, Object> params) {
-		List<JSONObject> contexts = JSONObject.parseObject((String) params.get("vmCreateContexts"), List.class);
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		List<JSONObject> contexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		Long userId = Long.parseLong((String)params.get("userId"));
 		int i=0;
 		try {
             List<VmCreateContext> unFinishedVms = new LinkedList<VmCreateContext>();
@@ -438,7 +444,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
                     unFinishedVms.add(vmCreateContext);
                 }
             }
-            NeutronApi neutronApi = apiService.getNeutronApi((Long)params.get("userId"), (String)params.get("uuid"));
+            NeutronApi neutronApi = apiService.getNeutronApi(userId, (String)params.get("uuid"));
     		NetworkApi networkApi = neutronApi.getNetworkApi(vmCreateConf.getRegion());
 
             final String vmNetworkName;
@@ -466,7 +472,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             while (!unFinishedVms.isEmpty()) {
                 for (VmCreateContext vmCreateContext : unFinishedVms
                         .toArray(new VmCreateContext[0])) {
-                    Server server = apiService.getNovaApi((Long)params.get("userId"), (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion())
+                    Server server = apiService.getNovaApi(userId, (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion())
                             .get(vmCreateContext.getServerCreatedId());
                     if (server == null) {
                         unFinishedVms.remove(vmCreateContext);
@@ -491,7 +497,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             }
         } catch (Exception e) {
         	logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "等待云主机创建完成", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "等待云主机创建完成", userId, (String) params.get("vmCreateConf"));
 	    	return e.getMessage();
         }
 		return "success";
@@ -500,12 +506,12 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String bindFloatingIp(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get( "vmCreateConf"), VMCreateConf2.class);
-        List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get( "vmCreateContexts"), List.class );
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get( "vmCreateConf")), VMCreateConf2.class);
+        List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get( "vmCreateContexts")), List.class );
         List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
-        params.put("vmCreateContexts", contexts);
+        Long userId = Long.parseLong((String)params.get("userId"));
         
-		NovaApi novaApi = apiService.getNovaApi((Long)params.get("userId"), (String)params.get("uuid"));
+		NovaApi novaApi = apiService.getNovaApi(userId, (String)params.get("uuid"));
 		for (JSONObject jsonObject : vmCreateContexts) {
 			VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObject.toString(), VmCreateContext. class);
             contexts.add(vmCreateContext);
@@ -527,7 +533,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 					AttachInterfaceApi attachInterfaceApi = attachInterfaceApiOptional.get();
 					
 					Optional<FloatingIPApi> floatingIPApiOptional2 = apiService
-							.getNeutronApi((Long)params.get("userId"), (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
+							.getNeutronApi(userId, (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
 					if (!floatingIPApiOptional2.isPresent()) {
 						throw new APINotAvailableException(FloatingIPApi.class);
 					}
@@ -542,9 +548,10 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 						vmCreateContext.setFloatingIpBindDate(new Date());
 					}
 				}
+				params.put("vmCreateContexts", JSONObject.toJSON(contexts));
 			} catch (APINotAvailableException e) {
 				logger.error(e.getMessage(), e);
-		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定公网ip异常", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定公网ip异常", userId, (String) params.get("vmCreateConf"));
 		    	return e.getMessage();
 			}
 		}
@@ -554,10 +561,11 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String emailVmsCreated(Map<String, Object> params) {
-		List<JSONObject> contexts = JSONObject.parseObject((String) params.get("vmCreateContexts"), List.class);
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		List<JSONObject> contexts = JSONObject.parseObject(JSONObject.toJSONString( params.get("vmCreateContexts")), List.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		Long userId = Long.parseLong((String)params.get("userId"));
 		
-		UserModel user = this.userService.getUserById((Long)params.get("userId"));
+		UserModel user = this.userService.getUserById(userId);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Map<String, Object> mailMessageModel = new HashMap<String, Object>();
@@ -566,16 +574,16 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
         List<Map<String, Object>> vmModelList = new LinkedList<Map<String, Object>>();
         mailMessageModel.put("vmList", vmModelList);
         
-        ServerApi serverApi = apiService.getNovaApi((Long)params.get("userId"), (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion());
+        ServerApi serverApi = apiService.getNovaApi(userId, (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion());
                 
         Optional<FloatingIPApi> floatingIPApiOptional2 = apiService
-				.getNeutronApi((Long)params.get("userId"), (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
+				.getNeutronApi(userId, (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
 		if (!floatingIPApiOptional2.isPresent()) {
 			try {
 				throw new APINotAvailableException(FloatingIPApi.class);
 			} catch (APINotAvailableException e) {
 				logger.error(e.getMessage(), e);
-		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后发送邮件异常", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后发送邮件异常", userId, params.get("vmCreateConf").toString());
 		    	return e.getMessage();
 			}
 		}

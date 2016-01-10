@@ -690,7 +690,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		//任务流创建所需
 		List<VmCreateContext> context = null;
 		if(null != params && null != params.get("multiVmCreateContext")) {
-			List<JSONObject> vmCreateContexts = JSONObject.parseObject((String)params.get("vmCreateContexts"), List.class);
+			List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 			List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
 			for (JSONObject jsonObject : vmCreateContexts) {
 				VmCreateContext context1 = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);

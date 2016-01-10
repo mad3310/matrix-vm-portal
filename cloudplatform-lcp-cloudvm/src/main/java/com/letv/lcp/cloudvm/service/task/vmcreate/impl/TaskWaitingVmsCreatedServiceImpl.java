@@ -21,7 +21,7 @@ public class TaskWaitingVmsCreatedServiceImpl extends BaseTask4VmCreateServiceIm
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		String ret = null;
 		if(vmCreateConf.getVolumeSize() > 0 || vmCreateConf.getBindFloatingIp()) {
 			ret = computeService.waitingVmsCreated(params);

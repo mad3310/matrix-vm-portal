@@ -21,7 +21,7 @@ public class TaskBindFloatingIpServiceImpl extends BaseTask4VmCreateServiceImpl 
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		String ret = null;
 		if(vmCreateConf.getBindFloatingIp()) {
 			ret = computeService.bindFloatingIp(params);
