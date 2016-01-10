@@ -125,7 +125,7 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 		logger.info("开始创建云主机！");
 		
 		Map<String, Object> createInfo = new HashMap<String, Object>();
-		createInfo.put("userId", orderSubs.get(0).getCreateUser()); 
+		createInfo.put("userId", orderSubs.get(0).getCreateUser()+""); 
 		createInfo.put("vmCreateConf", params); 
 		
 		this.taskEngine.run("LCP_VM_CREATE", createInfo);
