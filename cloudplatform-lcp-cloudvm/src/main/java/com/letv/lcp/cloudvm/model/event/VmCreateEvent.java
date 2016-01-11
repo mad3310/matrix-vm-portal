@@ -1,19 +1,24 @@
 package com.letv.lcp.cloudvm.model.event;
 
+import java.util.EventObject;
+
 /**
  * Created by zhouxianguang on 2015/10/16.
  */
-public class VmCreateEvent {
+public class VmCreateEvent extends EventObject {
 
-    private String region;
+	private static final long serialVersionUID = 1362308281709224255L;
+	private String region;
     private String vmId;
     private Integer vmIndex;
     private String name;
     private Object userData;
     private String volumeId;
     private String floatingIpId;
+    
 
-    public VmCreateEvent(String region, String vmId, Integer vmIndex, String name, Object userData) {
+    public VmCreateEvent(Object source, String region, String vmId, Integer vmIndex, String name, Object userData) {
+    	super(source);
         this.region = region;
         this.vmId = vmId;
         this.vmIndex = vmIndex;

@@ -689,7 +689,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		
 		//任务流创建所需
 		List<VmCreateContext> context = null;
-		if(null != params && null != params.get("multiVmCreateContext")) {
+		if(null != params && null != params.get("vmCreateContexts")) {
 			List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 			List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
 			for (JSONObject jsonObject : vmCreateContexts) {
@@ -763,7 +763,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), volumeIndexRef, volume.getName(), listenerUserData));
+							listener.volumeCreated(new VolumeCreateEvent(this, volumeCreateConf.getRegion(), volume.getId(), volumeIndexRef, volume.getName(), listenerUserData));
 							return true;
 						}
 					}, 1, "云硬盘监听器实现方错误：重试超过1次");

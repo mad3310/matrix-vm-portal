@@ -1637,7 +1637,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
+							listener.routerCreated(new RouterCreateEvent(this,routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
 							return true;
 						}
 					}, 1, "路由器监听器实现方错误：重试超过1次");
@@ -2914,7 +2914,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
+							listener.floatingIpCreated(new FloatingIpCreateEvent(this, createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
 							return true;
 						}
 					}, 1, "公网IP监听器实现方错误：重试超过1次");
