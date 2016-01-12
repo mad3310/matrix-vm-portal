@@ -20,7 +20,7 @@ public class TaskEmailVmsCreatedServiceImpl extends BaseTask4VmCreateServiceImpl
 			return tr;
 		}
 		String ret = computeService.emailVmsCreated(params);
-		logger.info("创建云主机，结果：{}", ret);
+		logger.info("创建云主机完成后发送邮件，结果：{}", ret);
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {

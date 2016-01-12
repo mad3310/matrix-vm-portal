@@ -1,6 +1,7 @@
 package com.letv.lcp.openstack.service.storage.impl;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.lcp.openstack.service.base.OpenStackServiceGroup;
 import com.letv.lcp.openstack.service.base.impl.OpenStackServiceImpl;
 import com.letv.lcp.openstack.service.erroremail.IErrorEmailService;
+import com.letv.lcp.openstack.service.jclouds.ApiSession;
 import com.letv.lcp.openstack.service.jclouds.IApiService;
 import com.letv.lcp.openstack.service.manage.VolumeManager;
 import com.letv.lcp.openstack.service.manage.check.Checker;
@@ -55,6 +57,8 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
     private IOpenStackService openStackService;
 	@Autowired
 	private VolumeManager volumeManager;
+	@Autowired
+	private ApiSession apiSession;
 
 	@Override
 	public String create(Long userId, VolumeCreateConf storage, VolumeCreateListener listener, Object listenerUserData, Map<String, Object> params) {
@@ -90,8 +94,9 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	public void rollBackWithCreateVmFail(Map<String, Object> params) {
 		Long userId = (Long) params.get("userId");
 		String uuid = (String)params.get("uuid");
-		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
-		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		List<JSONObject> contexts =  JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
+		List<VmCreateContext> vmCreateContexts = new ArrayList<VmCreateContext>();
 		
 		Checker<Volume> volumeChecker = new Checker<Volume>() {
 			@Override
@@ -101,7 +106,9 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 		};
 		OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
 		VolumeApi volumeApi = apiService.getCinderApi(userId, uuid).getVolumeApi(vmCreateConf.getRegion());
-		for (VmCreateContext vmCreateContext : context) {
+		for (JSONObject json : contexts) {
+			VmCreateContext vmCreateContext = JSONObject.parseObject(json.toJSONString(), VmCreateContext.class);
+			vmCreateContexts.add(vmCreateContext);
 			if (null != vmCreateContext.getVolumeId()) {
 				final String volumeId = vmCreateContext.getVolumeId();
 				try {
@@ -124,7 +131,7 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 				}
 			}
 		}
-		
+		params.put("vmCreateContexts", vmCreateContexts);
 	}
 
 
@@ -181,7 +188,8 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			                            || status == Volume.Status.ERROR);
 			                }
 			            },500L);
-			            openStackServiceGroup.getLocalVolumeService().update(userId,userId,region,volumeApi.get(volumeId));
+			            Volume v = apiSession.getCinderApi(userId).getVolumeApi(region).get(volumeId);
+			            openStackServiceGroup.getLocalVolumeService().update(userId,userId,region,v);
 			            volumeUpdated = true;
 			        }
 			    }

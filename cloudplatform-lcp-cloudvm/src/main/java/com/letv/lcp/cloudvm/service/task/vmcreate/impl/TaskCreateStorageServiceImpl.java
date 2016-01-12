@@ -51,7 +51,7 @@ public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl i
 	@Override
 	public void rollBack(TaskResult tr) {
 		Map<String, Object> params = (Map<String, Object>) tr.getParams();
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		if (!vmCreateConf.getBindFloatingIp()) {
 			return;
 		}

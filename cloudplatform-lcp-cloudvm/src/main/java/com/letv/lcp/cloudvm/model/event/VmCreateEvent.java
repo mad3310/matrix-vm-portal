@@ -1,6 +1,9 @@
 package com.letv.lcp.cloudvm.model.event;
 
 import java.util.EventObject;
+import java.util.List;
+
+import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 
 /**
  * Created by zhouxianguang on 2015/10/16.
@@ -15,18 +18,25 @@ public class VmCreateEvent extends EventObject {
     private Object userData;
     private String volumeId;
     private String floatingIpId;
+    private List<VmCreateContext> contexts;
     
 
-    public VmCreateEvent(Object source, String region, String vmId, Integer vmIndex, String name, Object userData) {
+    public VmCreateEvent(Object source, String region, String vmId, Integer vmIndex, String name, Object userData, List<VmCreateContext> contexts) {
     	super(source);
         this.region = region;
         this.vmId = vmId;
         this.vmIndex = vmIndex;
         this.name = name;
         this.userData = userData;
+        this.contexts = contexts;
     }
 
-    public String getVolumeId() {
+    
+    public List<VmCreateContext> getContexts() {
+		return contexts;
+	}
+
+	public String getVolumeId() {
         return volumeId;
     }
 

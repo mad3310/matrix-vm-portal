@@ -9,6 +9,8 @@ import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
@@ -136,6 +138,7 @@ public class LocalVolumeServiceImpl implements ILocalVolumeService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void update(long userId, long tenantId, String region, Volume volume) throws OpenStackException {
         if (volume != null) {
             CloudvmVolume cloudvmVolume = cloudvmVolumeService.selectByVolumeId(tenantId, region, volume.getId());

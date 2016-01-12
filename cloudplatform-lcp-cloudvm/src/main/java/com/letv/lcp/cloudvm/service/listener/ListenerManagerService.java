@@ -1,4 +1,4 @@
-package com.letv.lcp.cloudvm.listener;
+package com.letv.lcp.cloudvm.service.listener;
 
 import java.util.EventListener;
 import java.util.EventObject;
@@ -7,16 +7,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.letv.lcp.cloudvm.enumeration.ListenerTypeEnum;
+import com.letv.lcp.cloudvm.listener.FloatingIpCreateListener;
+import com.letv.lcp.cloudvm.listener.RouterCreateListener;
+import com.letv.lcp.cloudvm.listener.VmCreateListener;
+import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.model.event.FloatingIpCreateEvent;
 import com.letv.lcp.cloudvm.model.event.RouterCreateEvent;
 import com.letv.lcp.cloudvm.model.event.VmCreateEvent;
 import com.letv.lcp.cloudvm.model.event.VolumeCreateEvent;
 
-public class ListenerManager {
+@Service("listenerManagerService")
+public class ListenerManagerService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ListenerManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(ListenerManagerService.class);
 	
 	private static Map<String, EventListener> listeners = new ConcurrentHashMap<String, EventListener>();
 	
@@ -24,14 +30,14 @@ public class ListenerManager {
 		listeners.put(key, listener);
     }
 	
-	public void removeMyListener(String key){ 
+	public void removeListener(String key){ 
 		listeners.remove(key);
     }
 	
 	/**
      * 创建成功通知Listener
      */
-    private String notifyListenersCreatedSuccess(String key, ListenerTypeEnum listenerType, EventObject event) {
+    public String notifyListenersCreated(String key, ListenerTypeEnum listenerType, EventObject event) {
     	try {
 			if(listenerType.toInt() == ListenerTypeEnum.FloatingIpCreateListener.getCode()) {
 				FloatingIpCreateListener listener = (FloatingIpCreateListener)listeners.get(key);
@@ -53,7 +59,4 @@ public class ListenerManager {
     	return "success";
     }
     
-    public static void main(String[] args) {
-    	
-	}
 }

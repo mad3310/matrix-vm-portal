@@ -24,7 +24,24 @@ public interface IStorageService extends IResourceService<StorageModel> {
 	String create(Long userId, VolumeCreateConf storage, VolumeCreateListener listener, 
 			Object listenerUserData, Map<String, Object> params);
 	
+	/**
+	  * @Title: rollBackWithCreateVmFail
+	  * @Description: 云主机创建中的云硬盘创建失败回滚
+	  * @param params void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年1月11日 下午6:50:09
+	  */
 	void rollBackWithCreateVmFail(Map<String, Object> params);
 	
+	/**
+	  * @Title: addVolume
+	  * @Description: 云主机创建中添加云硬盘
+	  * @param params
+	  * @return String   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年1月11日 下午6:51:19
+	  */
 	String addVolume(Map<String, Object> params);
 }

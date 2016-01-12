@@ -1,5 +1,6 @@
 package com.letv.portal.service.product.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.lcp.cloudvm.listener.VmCreateListener;
 import com.letv.lcp.cloudvm.listener.adapter.FloatingIpCreateAdapter;
 import com.letv.lcp.cloudvm.listener.adapter.RouterCreateAdapter;
 import com.letv.lcp.cloudvm.listener.adapter.VolumeCreateAdapter;
@@ -17,8 +19,12 @@ import com.letv.lcp.cloudvm.model.event.FloatingIpCreateEvent;
 import com.letv.lcp.cloudvm.model.event.FloatingIpCreateFailEvent;
 import com.letv.lcp.cloudvm.model.event.RouterCreateEvent;
 import com.letv.lcp.cloudvm.model.event.RouterCreateFailEvent;
+import com.letv.lcp.cloudvm.model.event.VmCreateEvent;
+import com.letv.lcp.cloudvm.model.event.VmCreateFailEvent;
 import com.letv.lcp.cloudvm.model.event.VolumeCreateEvent;
 import com.letv.lcp.cloudvm.model.event.VolumeCreateFailEvent;
+import com.letv.lcp.cloudvm.model.task.VmCreateContext;
+import com.letv.lcp.cloudvm.service.listener.ListenerManagerService;
 import com.letv.lcp.openstack.service.billing.IResourceCreateService;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.base.IBaseStandardDao;
@@ -26,6 +32,7 @@ import com.letv.portal.dao.product.IProductElementDao;
 import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
+import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IHostProductService;
 import com.letv.portal.service.task.ITaskEngine;
 
@@ -44,6 +51,10 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	private HostProductServiceOfNewTransaction hostProductServiceOfNewTransaction;
 	@Autowired
 	private ITaskEngine taskEngine;
+	@Autowired
+	private ListenerManagerService listenerManagerService;
+	@Autowired
+	private IOrderSubService orderSubService;
 	
 	@Override
 	public boolean validateData(Long id, Map<String, Object> map) {
@@ -127,10 +138,47 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 		Map<String, Object> createInfo = new HashMap<String, Object>();
 		createInfo.put("userId", orderSubs.get(0).getCreateUser()+""); 
 		createInfo.put("vmCreateConf", params); 
+		createInfo.put("orderNumber", orderSubs.get(0).getOrder().getOrderNumber()); 
+		
+		//添加监听器
+		this.listenerManagerService.addListener(orderSubs.get(0).getOrder().getOrderNumber(), new VmCreateListener() {
+			
+			@Override
+			public void vmCreated(VmCreateEvent event) throws Exception {
+				List<OrderSub> orderSubsInner = orderSubService.selectOrderSubByOrderNumberWithOutSession((String)event.getUserData());
+				List<ProductInfoRecord> recordsInner = new ArrayList<ProductInfoRecord>();
+				for (OrderSub orders : orderSubsInner) {
+					recordsInner.add(orders.getProductInfoRecord());
+				}
+				AtomicInteger successCount = new AtomicInteger();
+				AtomicInteger failCount = new AtomicInteger();
+				Map<String, String> idNames = new HashMap<String, String>();
+				for(int i=0; i<event.getContexts().size(); i++ ) {
+					VmCreateContext context = event.getContexts().get(i);
+					if(context.getServerId()!=null) {
+						logger.info("云主机创建成功回调! num="+i);
+						successCount.incrementAndGet();
+						idNames.put(context.getServerId(), context.getResourceName());
+						hostProductServiceOfNewTransaction.vmServiceCallback(orderSubsInner, event.getRegion(), context.getServerId(), context.getVolumeId(), context.getFloatingIpId(), i, recordsInner);
+						hostProductServiceOfNewTransaction.checkOrderFinished(orderSubsInner, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
+					} else {
+						logger.info("云主机创建失败回调! num="+event.getVmIndex());
+						failCount.incrementAndGet();
+						hostProductServiceOfNewTransaction.checkOrderFinished(orderSubsInner, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
+					}
+				}
+				
+			}
+			
+			@Override
+			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
+				
+			}
+		});
 		
 		this.taskEngine.run("LCP_VM_CREATE", createInfo);
 		
-		logger.error("---------diaoyonggongzuoliu-------");
+		
 		
 //		this.resourceCreateService.createVm(orderSubs.get(0).getCreateUser(), params, new VmCreateAdapter() {
 //			private AtomicInteger successCount = new AtomicInteger();
