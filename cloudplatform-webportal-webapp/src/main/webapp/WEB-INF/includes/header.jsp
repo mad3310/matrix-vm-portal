@@ -2,7 +2,7 @@
     <div class="header">
         <a href="/index.html" class="header-brand pull-left">
             <!-- <img src="/static/images/brand-logo.png" class="brand-logo" /> -->
-            <img class="brand-logo" src="http://i3.letvimg.com/lc01_lecloud/201509/25/11/14/letvcloud-logo.png">
+            <img class="brand-logo" src="http://i3.letvimg.com/lc04_lecloud/201601/12/10/22/letvcloud-logo.png">
         </a>
         <div class="header-region dropdown pull-left ">
             <a id="drop1" href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
