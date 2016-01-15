@@ -8,7 +8,7 @@
 	<meta name="renderer" content="webkit">
 	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
 	<title>邀请码-乐视云平台</title>
-	<link rel="shortcut icon" href="/images/home/favicon.ico">
+	<link rel="shortcut icon" href="http://i3.letvimg.com/lc05_lecloud/201601/12/10/21/favicon.ico">
   <link rel="stylesheet" href="/stylesheets/home/common-e410f85195.css">
   <link rel="stylesheet" href="/stylesheets/home/style-e7b015e0ac.css">
 </head>
