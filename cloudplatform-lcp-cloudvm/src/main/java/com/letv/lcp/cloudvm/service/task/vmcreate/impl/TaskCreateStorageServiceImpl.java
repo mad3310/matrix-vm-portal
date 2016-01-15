@@ -1,14 +1,21 @@
 package com.letv.lcp.cloudvm.service.task.vmcreate.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
+import com.letv.lcp.cloudvm.model.task.VmCreateContext;
+import com.letv.lcp.cloudvm.service.storage.IStorageDbService;
+import com.letv.portal.enumeration.cloudvm.CloudvmVolumeStatusEnum;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
@@ -17,6 +24,10 @@ public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl i
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskCreateStorageServiceImpl.class);
 	
+	@Autowired
+    private IStorageDbService storageDbService;
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess()) {
@@ -38,6 +49,13 @@ public class TaskCreateStorageServiceImpl extends BaseTask4VmCreateServiceImpl i
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {
+			//更新数据库
+			List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
+			for (VmCreateContext vmCreateContext : vmCreateContexts) {
+				this.storageDbService.updateStorage(vmCreateContext.getVolumeDbId(), Long.parseLong((String)params.get("userId")), 
+						vmCreateContext.getVolumeInstanceId(), CloudvmVolumeStatusEnum.AVAILABLE);
+			}
+			
 			tr.setSuccess(true);
 			tr.setParams(params);
 		} else {

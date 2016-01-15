@@ -128,10 +128,10 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
         	return;
 		}
 		for (VmCreateContext vmCreateContext : context) {
-			if (null != vmCreateContext.getFloatingIpId()) {
-				boolean isSuccess = floatingIPApi.delete(vmCreateContext.getFloatingIpId());
+			if (null != vmCreateContext.getFloatingIpInstanceId()) {
+				boolean isSuccess = floatingIPApi.delete(vmCreateContext.getFloatingIpInstanceId());
                 if(isSuccess) {
-                	vmCreateContext.setFloatingIpId(null);
+                	vmCreateContext.setFloatingIpInstanceId(null);
                     localRcCountService.decRcCount(userId, userId, region, CloudvmRcCountType.FLOATING_IP);
 					localRcCountService.decRcCount(userId, region, CloudvmRcCountType.BAND_WIDTH, vmCreateConf.getBandWidth());
                 }
@@ -156,7 +156,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 		
 		Long userId = Long.parseLong((String)params.get("userId"));
 		Subnet privateSubnet = apiService.getNeutronApi(userId, (String)params.get("uuid")).getSubnetApi(vmCreateConf.getRegion())
-				.get(vmCreateConf.getPrivateSubnetId());;
+				.get(vmCreateConf.getPrivateSubnetId());
 		Network privateNetwork = null;
 		try {
 			privateNetwork = getPrivateNetwork(userId, (String)params.get("uuid"), vmCreateConf, privateSubnet);
@@ -175,7 +175,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 											.builder()
 											.subnetId(privateSubnet.getId()).build()))
 							.build());
-			vmCreateContext.setSubnetPortId(subnetPort.getId());;
+			vmCreateContext.setSubnetPortInstanceId(subnetPort.getId());;
 		}
 		
 		return "success";
@@ -211,9 +211,9 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 
 		for (JSONObject jsonObj : context) {
 			VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObj.toJSONString(), VmCreateContext.class);
-			if (null != vmCreateContext.getSubnetPortId()) {
+			if (null != vmCreateContext.getSubnetPortInstanceId()) {
 				apiService.getNeutronApi(userId, (String)params.get("uuid")).getPortApi(vmCreateConf.getRegion())
-						.delete(vmCreateContext.getSubnetPortId());
+						.delete(vmCreateContext.getSubnetPortInstanceId());
 			}
 		}
 	}

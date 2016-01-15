@@ -47,5 +47,11 @@
         <typeHandler handler="com.letv.portal.enumeration.IntEnumTypeHandler" javaType="com.letv.portal.model.cloudvm.CloudvmRcCountType"/>
         <typeHandler handler="com.letv.portal.enumeration.IntEnumTypeHandler" javaType="com.letv.portal.model.common.CommonQuotaModule"/>
         <typeHandler handler="com.letv.portal.enumeration.IntEnumTypeHandler" javaType="com.letv.portal.model.common.CommonQuotaType"/>
+        
+        <typeHandler handler="com.letv.portal.enumeration.IntEnumTypeHandler" javaType="com.letv.portal.enumeration.cloudvm.CloudvmNetworkStatusEnum"/>
+        <typeHandler handler="com.letv.portal.enumeration.IntEnumTypeHandler" javaType="com.letv.portal.enumeration.cloudvm.CloudvmServerStatusEnum"/>
+        <typeHandler handler="com.letv.portal.enumeration.IntEnumTypeHandler" javaType="com.letv.portal.enumeration.cloudvm.CloudvmVolumeStatusEnum"/>
+        <typeHandler handler="com.letv.portal.enumeration.IntEnumTypeHandler" javaType="com.letv.portal.enumeration.cloudvm.CloudvmVolumeTypeEnum"/>
+        
     </typeHandlers>
 </configuration>

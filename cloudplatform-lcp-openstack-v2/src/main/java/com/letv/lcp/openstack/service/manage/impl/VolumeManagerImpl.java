@@ -717,7 +717,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 //                                (openStackUser.getUserVoUserId(), openStackUser.getUserVoUserId(), volumeCreateConf.getRegion(), volume);
 				toSyncCloudvmVolumeList.add(volume);
 				if(null != context) {
-					context.get(i).setVolumeId(volume.getId());;
+					context.get(i).setVolumeInstanceId(volume.getId());;
 				}
 				if (null != successCreatedVolumes) {
 					successCreatedVolumes.add(volume);

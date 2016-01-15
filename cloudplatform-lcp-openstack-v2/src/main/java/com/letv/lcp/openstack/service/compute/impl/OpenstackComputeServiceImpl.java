@@ -9,8 +9,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.IP;
@@ -22,6 +24,7 @@ import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Image;
@@ -56,12 +59,16 @@ import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.lcp.openstack.service.base.impl.OpenStackServiceImpl;
 import com.letv.lcp.openstack.service.compute.IOpenstackComputeService;
 import com.letv.lcp.openstack.service.erroremail.IErrorEmailService;
+import com.letv.lcp.openstack.service.jclouds.ApiSession;
 import com.letv.lcp.openstack.service.jclouds.IApiService;
 import com.letv.lcp.openstack.service.local.ILocalCommonQuotaSerivce;
 import com.letv.lcp.openstack.service.local.ILocalVolumeService;
 import com.letv.lcp.openstack.service.manage.VMManager;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
 import com.letv.lcp.openstack.service.validation.IValidationService;
+import com.letv.lcp.openstack.util.ThreadUtil;
+import com.letv.lcp.openstack.util.Timeout;
+import com.letv.lcp.openstack.util.function.Function0;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.model.common.UserModel;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
@@ -82,6 +89,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
     private IUserService userService;
     @Autowired
     private IApiService apiService;
+    @Autowired
+    private ApiSession apiSession;
     @Autowired
     private VMManager vmManager;
     @Autowired
@@ -104,7 +113,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			createOneVm(userId, vmCreateConf, context, params);
 			contexts.add(context);
 		}
-		params.put("vmCreateContexts", JSONObject.toJSON(contexts));
+		params.put("vmCreateContexts", contexts);
 		return "success";
 	}
 
@@ -142,7 +151,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			
 			if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
 				options.novaNetworks(ImmutableSet.<org.jclouds.openstack.nova.v2_0.domain.Network> of(org.jclouds.openstack.nova.v2_0.domain.Network.builder()
-						.portUuid(context.getSubnetPortId()).build()));
+						.portUuid(context.getSubnetPortInstanceId()).build()));
 			} else {
 				NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
 				NetworkApi networkApi = neutronApi.getNetworkApi(region);
@@ -157,27 +166,46 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			if (flavor == null) {
 				throw new ResourceNotFoundException("Flavor", "云主机配置", vmCreateConf.getFlavorId());
 			}
-			ServerCreated serverCreated = novaApi
-					.getServerApi(region)
+			final ServerApi serverApi = novaApi.getServerApi(region);
+			ServerCreated serverCreated = serverApi
 					.create(context.getResourceName(), imageRef, vmCreateConf.getFlavorId(), options);
-			context.setServerCreatedId(serverCreated.getId());
-			Server server = novaApi.getServerApi(region).get(serverCreated.getId());
-			context.setServerId(server.getId());
+			Server server = serverApi.get(serverCreated.getId());
+			final String serverId = server.getId();
+			context.setServerInstanceId(server.getId());
+			context.setCpu(flavor.getVcpus());
+			context.setRam(flavor.getRam());
+			//等待云主机状态为活动的并且addresses不为空的时候停止等待
+			ThreadUtil.waiting(new Function0<Boolean>() {
+				Server server = null;
+                @Override
+                public Boolean apply() throws Exception {
+                	server = serverApi.get(serverId);
+                    if(server == null){
+                        return false;
+                    }
+                    Server.Status status = server.getStatus();
+                    return !((status == Server.Status.ACTIVE && !server.getAddresses().isEmpty()));
+                }
+            },new Timeout().time(1L).unit(TimeUnit.MINUTES),500L);
+			Server serverLater = serverApi.get(serverId);
+			for(Address address : serverLater.getAddresses().values()) {
+				context.setPrivateIp(address.getAddr());
+			}
 
 			vmManager.recordVmCreated(userId, region, null, flavor);
 
-			if (null != context.getVolumeId()) {
+			if (null != context.getVolumeInstanceId()) {
 			    ILocalVolumeService localVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService();
 			    localVolumeService.updateVmIdAndVmName(userId
 						, userId
 						, region
-						, context.getVolumeId()
+						, context.getVolumeInstanceId()
 						, server.getId()
 				        , server.getName());
 			}
 		} catch (OpenStackException e) {
 			logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "云主机创建异常", userId, (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "云主机创建异常", userId, vmCreateConf.toString());
 	    	return e.getMessage();
 		}
 		return "success";
@@ -185,11 +213,9 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 
 	@Override
 	public String getVmCreatePrepare(Map<String, Object> params) {
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject((String)params.get("vmCreateConf"), VMCreateConf2.class);
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		Long userId = Long.parseLong((String)params.get("userId"));
-		if (StringUtils.isEmpty(vmCreateConf.getSharedNetworkId())) {
-            vmCreateConf.setBindFloatingIp(false);
-        }
+		
 		try {
             validationService.validate(vmCreateConf);
             params.put("uuid", UUID.randomUUID().toString());
@@ -197,7 +223,6 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             openStackSession .init(null);
             OpenStackServiceImpl.getOpenStackServiceGroup().getResourceService()
             	.createDefaultSecurityGroupAndRule(this.apiService.getNeutronApi(userId, (String)params.get("uuid")));
-            params.put("vmCreateConf", JSONObject.toJSON(vmCreateConf));
 		} catch (Exception e) {
 	    	logger.error(e.getMessage(), e);
 	    	errorEmailService.sendExceptionEmail(e, "云主机创建准备异常", userId, (String) params.get("vmCreateConf"));
@@ -440,7 +465,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             List<VmCreateContext> unFinishedVms = new LinkedList<VmCreateContext>();
             for (JSONObject jsonObject : contexts) {
             	VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObject.toJSONString(), VmCreateContext.class);
-                if (vmCreateContext.getServerCreatedId() != null) {
+                if (vmCreateContext.getServerInstanceId() != null) {
                     unFinishedVms.add(vmCreateContext);
                 }
             }
@@ -473,7 +498,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
                 for (VmCreateContext vmCreateContext : unFinishedVms
                         .toArray(new VmCreateContext[0])) {
                     Server server = apiService.getNovaApi(userId, (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion())
-                            .get(vmCreateContext.getServerCreatedId());
+                            .get(vmCreateContext.getServerInstanceId());
                     if (server == null) {
                         unFinishedVms.remove(vmCreateContext);
                     } else {
@@ -517,14 +542,14 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             contexts.add(vmCreateContext);
             
 			Server server = novaApi.getServerApi(vmCreateConf.getRegion())
-                    .get(vmCreateContext.getServerCreatedId());
+                    .get(vmCreateContext.getServerInstanceId());
 			Optional<org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi> floatingIPApiOptional = novaApi.getFloatingIPApi(vmCreateConf.getRegion());
 			try {
 				if (!floatingIPApiOptional.isPresent()) {
 					throw new APINotAvailableException(
 							org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi.class);
 				}
-				FloatingIP floatingIP = floatingIPApiOptional.get().get(vmCreateContext.getFloatingIpId());
+				FloatingIP floatingIP = floatingIPApiOptional.get().get(vmCreateContext.getFloatingIpInstanceId());
 				if (server != null && server.getStatus() != Server.Status.ERROR && floatingIP != null && floatingIP.getInstanceId() == null) {
 					Optional<AttachInterfaceApi> attachInterfaceApiOptional = novaApi.getAttachInterfaceApi(vmCreateConf.getRegion());
 				    if (!attachInterfaceApiOptional.isPresent()) {
@@ -548,7 +573,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 						vmCreateContext.setFloatingIpBindDate(new Date());
 					}
 				}
-				params.put("vmCreateContexts", JSONObject.toJSON(contexts));
+				params.put("vmCreateContexts", contexts);
 			} catch (APINotAvailableException e) {
 				logger.error(e.getMessage(), e);
 		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定公网ip异常", userId, (String) params.get("vmCreateConf"));
@@ -593,11 +618,11 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 		
         for (JSONObject json : contexts) {
         	VmCreateContext vmContext = JSONObject.parseObject(json.toJSONString(), VmCreateContext.class);
-            if (vmContext.getServerCreatedId() != null) {
-            	Server server = serverApi.get(vmContext.getServerCreatedId());
+            if (vmContext.getServerInstanceId() != null) {
+            	Server server = serverApi.get(vmContext.getServerInstanceId());
                 Map<String, Object> vmModel = new HashMap<String, Object>();
                 vmModel.put("region", regionDisplayName);
-                vmModel.put("vmId", vmContext.getServerCreatedId());
+                vmModel.put("vmId", vmContext.getServerInstanceId());
                 vmModel.put("vmName", server.getName());
                 vmModel.put("adminUserName", "root");
                 if (StringUtils.isNotEmpty(vmCreateConf.getKeyPairName())) {
@@ -606,8 +631,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
                     vmModel.put("password", vmCreateConf.getAdminPass());
                 }
                 vmModel.put("createTime", format.format((server.getCreated())));
-                if (vmContext.getFloatingIpId()!= null && vmContext.getFloatingIpBindDate() != null) {
-                    vmModel.put("ip", floatingIPApi.get(vmContext.getFloatingIpId()).getFloatingIpAddress());
+                if (vmContext.getFloatingIpInstanceId()!= null && vmContext.getFloatingIpBindDate() != null) {
+                    vmModel.put("ip", floatingIPApi.get(vmContext.getFloatingIpInstanceId()).getFloatingIpAddress());
                     vmModel.put("port", 22);
                     vmModel.put("bindTime", format.format(vmContext.getFloatingIpBindDate()));
                 }

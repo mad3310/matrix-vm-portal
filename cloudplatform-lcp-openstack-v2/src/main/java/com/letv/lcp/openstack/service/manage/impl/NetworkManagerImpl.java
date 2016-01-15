@@ -2872,7 +2872,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			FloatingIP floatingIP = floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
 					.name(floatingIpName).fipQos(createFipQos(bandWidth)).build());
 			if(null != context) {
-				context.get(i).setFloatingIpId(floatingIP.getId());;
+				context.get(i).setFloatingIpInstanceId(floatingIP.getId());
+				context.get(i).setCarrierName(publicNetwork.getName());
+				context.get(i).setPublicIp(floatingIP.getFloatingIpAddress());
 			}
 			
 			if (null != successCreatedFloatingIps) {
@@ -2882,7 +2884,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			localRcCountService.incRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH, bandWidth);
 		}
 		if(null != context) {
-			params.put("vmCreateContexts", JSONObject.toJSON(context));
+			params.put("vmCreateContexts", context);
 		}
 	}
 

@@ -1,13 +1,21 @@
 package com.letv.lcp.cloudvm.service.task.vmcreate.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
+import com.letv.lcp.cloudvm.model.task.VmCreateContext;
+import com.letv.lcp.cloudvm.service.compute.IComputeDbService;
+import com.letv.lcp.cloudvm.service.network.INetworkDbService;
+import com.letv.portal.enumeration.cloudvm.CloudvmNetworkStatusEnum;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
@@ -16,6 +24,12 @@ public class TaskBindFloatingIpServiceImpl extends BaseTask4VmCreateServiceImpl 
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskBindFloatingIpServiceImpl.class);
 	
+	@Autowired
+	private IComputeDbService computeDbService;
+	@Autowired
+	private INetworkDbService networkDbService;
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess()) {
@@ -32,6 +46,15 @@ public class TaskBindFloatingIpServiceImpl extends BaseTask4VmCreateServiceImpl 
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {
+			//更新数据库
+			List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
+			for (VmCreateContext vmCreateContext : vmCreateContexts) {
+				this.computeDbService.updateServer(vmCreateContext.getServerDbId(), Long.parseLong((String)params.get("userId")), 
+						vmCreateContext.getFloatingIpDbId());
+				this.networkDbService.updatePublicNetwork(vmCreateContext.getVolumeDbId(), Long.parseLong((String)params.get("userId")),
+						CloudvmNetworkStatusEnum.BINDED);
+			}
+			params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));
 			tr.setSuccess(true);
 			tr.setParams(params);
 		} else {

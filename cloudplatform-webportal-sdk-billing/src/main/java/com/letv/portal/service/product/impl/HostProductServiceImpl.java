@@ -155,11 +155,11 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 				Map<String, String> idNames = new HashMap<String, String>();
 				for(int i=0; i<event.getContexts().size(); i++ ) {
 					VmCreateContext context = event.getContexts().get(i);
-					if(context.getServerId()!=null) {
+					if(context.getServerInstanceId()!=null) {
 						logger.info("云主机创建成功回调! num="+i);
 						successCount.incrementAndGet();
-						idNames.put(context.getServerId(), context.getResourceName());
-						hostProductServiceOfNewTransaction.vmServiceCallback(orderSubsInner, event.getRegion(), context.getServerId(), context.getVolumeId(), context.getFloatingIpId(), i, recordsInner);
+						idNames.put(context.getServerInstanceId(), context.getResourceName());
+						hostProductServiceOfNewTransaction.vmServiceCallback(orderSubsInner, event.getRegion(), context.getServerInstanceId(), context.getVolumeInstanceId(), context.getFloatingIpInstanceId(), i, recordsInner);
 						hostProductServiceOfNewTransaction.checkOrderFinished(orderSubsInner, successCount.get(), failCount.get(), params, Constant.OPENSTACK, idNames);
 					} else {
 						logger.info("云主机创建失败回调! num="+event.getVmIndex());

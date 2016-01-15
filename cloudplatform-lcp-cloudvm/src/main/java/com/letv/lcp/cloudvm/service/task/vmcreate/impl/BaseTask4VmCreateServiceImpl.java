@@ -56,7 +56,7 @@ public class BaseTask4VmCreateServiceImpl extends BaseTaskServiceImpl implements
                 vmCreateContext.setResourceName(NameUtil.nameAddNumber(sourceName, i++));
             }
         }
-        params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));
+        params.put("vmCreateContexts", vmCreateContexts);
 	}
 	
 	@Override
