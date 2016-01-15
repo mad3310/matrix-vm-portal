@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.lcp.cloudvm.listener.VmCreateListener;
+import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.listener.adapter.FloatingIpCreateAdapter;
 import com.letv.lcp.cloudvm.listener.adapter.RouterCreateAdapter;
 import com.letv.lcp.cloudvm.listener.adapter.VolumeCreateAdapter;
@@ -208,6 +209,32 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	@Override
 	public void createVolume(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建云硬盘！");
+		
+//		Map<String, Object> createInfo = new HashMap<String, Object>();
+//		createInfo.put("userId", orderSubs.get(0).getCreateUser()+""); 
+//		createInfo.put("volumeCreateConf", params); 
+//		createInfo.put("orderNumber", orderSubs.get(0).getOrder().getOrderNumber()); 
+//		
+//		//添加监听器
+//		this.listenerManagerService.addListener(orderSubs.get(0).getOrder().getOrderNumber(), new VolumeCreateListener() {
+//			
+//			@Override
+//			public void volumeCreated(VolumeCreateEvent event) throws Exception {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//			
+//			@Override
+//			public void volumeCreateFailed(VolumeCreateFailEvent event)
+//					throws Exception {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+//		
+//		this.taskEngine.run("LCP_STORAGE_CREATE", createInfo);
+		
+		
 		this.resourceCreateService.createVolume(orderSubs.get(0).getCreateUser(), params, new VolumeCreateAdapter(){
 			private AtomicInteger successCount = new AtomicInteger();
 			private AtomicInteger failCount = new AtomicInteger();
