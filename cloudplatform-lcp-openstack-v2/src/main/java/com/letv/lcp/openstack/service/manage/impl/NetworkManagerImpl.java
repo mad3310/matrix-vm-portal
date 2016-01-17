@@ -2916,7 +2916,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.floatingIpCreated(new FloatingIpCreateEvent(this, createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
+							listener.floatingIpCreated(new FloatingIpCreateEvent(this, createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData, null));
 							return true;
 						}
 					}, 1, "公网IP监听器实现方错误：重试超过1次");

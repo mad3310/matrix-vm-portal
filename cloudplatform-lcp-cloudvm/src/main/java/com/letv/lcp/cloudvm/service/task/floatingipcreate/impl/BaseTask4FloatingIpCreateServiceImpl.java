@@ -1,4 +1,4 @@
-package com.letv.lcp.cloudvm.service.task.storagecreate.impl;
+package com.letv.lcp.cloudvm.service.task.floatingipcreate.impl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.lcp.cloudvm.dispatch.DispatchCenter;
 import com.letv.lcp.cloudvm.enumeration.ServiceTypeEnum;
-import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
+import com.letv.lcp.cloudvm.model.network.FloatingIpCreateConf;
 import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 import com.letv.lcp.cloudvm.service.compute.IComputeService;
 import com.letv.lcp.cloudvm.service.network.INetworkService;
@@ -24,8 +24,8 @@ import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.BaseTaskServiceImpl;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Component("baseStorageCreateTaskService")
-public class BaseTask4StorageCreateServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
+@Component("baseFloatingIpCreateTaskService")
+public class BaseTask4FloatingIpCreateServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
 
 	@Value("${service.notice.email.to}")
 	private String SERVICE_NOTICE_MAIL_ADDRESS;
@@ -38,19 +38,19 @@ public class BaseTask4StorageCreateServiceImpl extends BaseTaskServiceImpl imple
 	protected INetworkService networkService;
 	protected IStorageService storageService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(BaseTask4StorageCreateServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(BaseTask4FloatingIpCreateServiceImpl.class);
 	
 	protected void initParams(Map<String, Object> params) {
-		VolumeCreateConf volumeCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("volumeCreateConf")), VolumeCreateConf.class);
+		FloatingIpCreateConf floatingIpCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("floatingIpCreateConf")), FloatingIpCreateConf.class);
 		List<VmCreateContext> vmCreateContexts = new LinkedList<VmCreateContext>();
-        for (int i = 0; i < volumeCreateConf.getCount(); i++) {
+        for (int i = 0; i < floatingIpCreateConf.getCount(); i++) {
             vmCreateContexts.add(new VmCreateContext());
         }
         
         if (vmCreateContexts.size() == 1) {
-            vmCreateContexts.get(0).setResourceName(volumeCreateConf.getName());
+            vmCreateContexts.get(0).setResourceName(floatingIpCreateConf.getName());
         } else if (vmCreateContexts.size() > 1) {//批量创建修改名称
-            String sourceName = volumeCreateConf.getName();
+            String sourceName = floatingIpCreateConf.getName();
             int i = 1;
             for (VmCreateContext vmCreateContext : vmCreateContexts) {
                 vmCreateContext.setResourceName(NameUtil.nameAddNumber(sourceName, i++));

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.lcp.cloudvm.listener.FloatingIpCreateListener;
 import com.letv.lcp.cloudvm.listener.VmCreateListener;
 import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.listener.adapter.FloatingIpCreateAdapter;
@@ -220,14 +221,34 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 //			
 //			@Override
 //			public void volumeCreated(VolumeCreateEvent event) throws Exception {
-//				// TODO Auto-generated method stub
+//				List<OrderSub> orderSubsInner = orderSubService.selectOrderSubByOrderNumberWithOutSession((String)event.getUserData());
+//				List<ProductInfoRecord> recordsInner = new ArrayList<ProductInfoRecord>();
+//				for (OrderSub orders : orderSubsInner) {
+//					recordsInner.add(orders.getProductInfoRecord());
+//				}
+//				AtomicInteger successCount = new AtomicInteger();
+//				AtomicInteger failCount = new AtomicInteger();
+//				Map<String, String> idNames = new HashMap<String, String>();
+//				for(int i=0; i<event.getContexts().size(); i++ ) {
+//					VmCreateContext context = event.getContexts().get(i);
+//					if(context.getServerInstanceId()!=null) {
+//						logger.info("云硬盘创建成功回调! num="+i);
+//						successCount.incrementAndGet();
+//						idNames.put(context.getVolumeInstanceId(), context.getResourceName());
+//						hostProductServiceOfNewTransaction.serviceCallback(orderSubsInner, event.getRegion(), context.getVolumeInstanceId(), i,recordsInner);
+//						hostProductServiceOfNewTransaction.checkOrderFinished(orderSubsInner, successCount.get(), failCount.get(), params, Constant.VOLUME, idNames);
+//					} else {
+//						logger.info("云硬盘创建失败回调! num="+event.getVolumeIndex());
+//						failCount.incrementAndGet();
+//						hostProductServiceOfNewTransaction.checkOrderFinished(orderSubsInner, successCount.get(), failCount.get(), params, Constant.VOLUME, idNames);
+//					}
+//				}
 //				
 //			}
 //			
 //			@Override
 //			public void volumeCreateFailed(VolumeCreateFailEvent event)
 //					throws Exception {
-//				// TODO Auto-generated method stub
 //				
 //			}
 //		});
@@ -265,6 +286,51 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 	@Override
 	public void createFloatingIp(final List<OrderSub> orderSubs, final String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建公网IP！");
+		
+//		Map<String, Object> createInfo = new HashMap<String, Object>();
+//		createInfo.put("userId", orderSubs.get(0).getCreateUser()+""); 
+//		createInfo.put("floatingIpCreateConf", params); 
+//		createInfo.put("orderNumber", orderSubs.get(0).getOrder().getOrderNumber()); 
+//		
+//		//添加监听器
+//		this.listenerManagerService.addListener(orderSubs.get(0).getOrder().getOrderNumber(), new FloatingIpCreateListener() {
+//			
+//			@Override
+//			public void floatingIpCreated(FloatingIpCreateEvent event) throws Exception {
+//				List<OrderSub> orderSubsInner = orderSubService.selectOrderSubByOrderNumberWithOutSession((String)event.getUserData());
+//				List<ProductInfoRecord> recordsInner = new ArrayList<ProductInfoRecord>();
+//				for (OrderSub orders : orderSubsInner) {
+//					recordsInner.add(orders.getProductInfoRecord());
+//				}
+//				AtomicInteger successCount = new AtomicInteger();
+//				AtomicInteger failCount = new AtomicInteger();
+//				Map<String, String> idNames = new HashMap<String, String>();
+//				for(int i=0; i<event.getContexts().size(); i++ ) {
+//					VmCreateContext context = event.getContexts().get(i);
+//					if(context.getServerInstanceId()!=null) {
+//						logger.info("公网IP创建成功回调! num="+i);
+//						successCount.incrementAndGet();
+//						idNames.put(context.getFloatingIpInstanceId(), context.getResourceName());
+//						hostProductServiceOfNewTransaction.serviceCallback(orderSubsInner, event.getRegion(), context.getFloatingIpInstanceId(), i, recordsInner);
+//						hostProductServiceOfNewTransaction.checkOrderFinished(orderSubsInner, successCount.get(), failCount.get(), params, Constant.FLOATINGIP, idNames);
+//					} else {
+//						logger.info("公网IP创建失败回调! num="+i);
+//						failCount.incrementAndGet();
+//						hostProductServiceOfNewTransaction.checkOrderFinished(orderSubsInner, successCount.get(), failCount.get(), params, Constant.FLOATINGIP, idNames);
+//					}
+//				}
+//				
+//			}
+//			
+//			@Override
+//			public void floatingIpCreateFailed(FloatingIpCreateFailEvent event)
+//					throws Exception {
+//			}
+//		});
+//		
+//		this.taskEngine.run("LCP_FLOATINGIP_CREATE", createInfo);
+		
+		
 		this.resourceCreateService.createFloatingIp(orderSubs.get(0).getCreateUser(), params, new FloatingIpCreateAdapter() {
 			private AtomicInteger successCount = new AtomicInteger();
 			private AtomicInteger failCount = new AtomicInteger();

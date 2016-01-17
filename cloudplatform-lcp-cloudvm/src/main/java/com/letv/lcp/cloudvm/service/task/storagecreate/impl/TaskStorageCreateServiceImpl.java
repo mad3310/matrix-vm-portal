@@ -12,14 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
-import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 import com.letv.lcp.cloudvm.service.storage.IStorageDbService;
 import com.letv.portal.enumeration.cloudvm.CloudvmVolumeStatusEnum;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskCreateStorageService")
+@Service("taskStorageCreateService")
 public class TaskStorageCreateServiceImpl extends BaseTask4StorageCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskStorageCreateServiceImpl.class);
@@ -33,19 +32,12 @@ public class TaskStorageCreateServiceImpl extends BaseTask4StorageCreateServiceI
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
-		if (vmCreateConf.getVolumeSize() == 0) {
-			return tr;
-		}
-		VolumeCreateConf volumeCreateConf = new VolumeCreateConf();
-		volumeCreateConf.setRegion(vmCreateConf.getRegion());
-		volumeCreateConf.setName(vmCreateConf.getName());
-		volumeCreateConf.setVolumeTypeId(vmCreateConf.getVolumeTypeId());
-		volumeCreateConf.setSize(vmCreateConf.getVolumeSize());
-		volumeCreateConf.setCount(vmCreateConf.getCount());
+		
+		
+		VolumeCreateConf volumeCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("volumeCreateConf")), VolumeCreateConf.class);
 		
 		String ret = storageService.create(Long.parseLong((String)params.get("userId")), volumeCreateConf, null, null, params);
-		logger.info("创建云主机中的云硬盘，结果：{}", ret);
+		logger.info("创建云硬盘，结果：{}", ret);
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {
@@ -65,15 +57,9 @@ public class TaskStorageCreateServiceImpl extends BaseTask4StorageCreateServiceI
 		return tr;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void rollBack(TaskResult tr) {
-		Map<String, Object> params = (Map<String, Object>) tr.getParams();
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
-		if (!vmCreateConf.getBindFloatingIp()) {
-			return;
-		}
-		storageService.rollBackWithCreateVmFail(params);
+		
 	}
 	
 }
