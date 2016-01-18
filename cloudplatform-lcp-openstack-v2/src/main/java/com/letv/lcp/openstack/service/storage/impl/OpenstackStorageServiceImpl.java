@@ -64,7 +64,12 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	public String create(Long userId, VolumeCreateConf storage, VolumeCreateListener listener, Object listenerUserData, Map<String, Object> params) {
 		try {
             validationService.validate(storage);
-            final String sessionId = RandomUtil.generateRandomSessionId();
+            String sessionId = null;
+            if(null != params.get("uuid")) {
+            	sessionId = (String)params.get("uuid");
+            } else {
+            	sessionId = RandomUtil.generateRandomSessionId();
+            }
             final IOpenStackSession openStackSession = this.openStackService.createSession(userId);
             openStackSession.init(null);
             try {
@@ -89,14 +94,9 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	}
 
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void rollBackWithCreateVmFail(Map<String, Object> params) {
-		Long userId = (Long) params.get("userId");
+	public boolean deleteVolumeById(Long userId, String region, String instanceId, Map<String, Object> params) {
 		String uuid = (String)params.get("uuid");
-		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
-		List<JSONObject> contexts =  JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
-		List<VmCreateContext> vmCreateContexts = new ArrayList<VmCreateContext>();
 		
 		Checker<Volume> volumeChecker = new Checker<Volume>() {
 			@Override
@@ -105,33 +105,31 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			}
 		};
 		OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
-		VolumeApi volumeApi = apiService.getCinderApi(userId, uuid).getVolumeApi(vmCreateConf.getRegion());
-		for (JSONObject json : contexts) {
-			VmCreateContext vmCreateContext = JSONObject.parseObject(json.toJSONString(), VmCreateContext.class);
-			vmCreateContexts.add(vmCreateContext);
-			if (null != vmCreateContext.getVolumeInstanceId()) {
-				final String volumeId = vmCreateContext.getVolumeInstanceId();
-				try {
-					volumeManager.waitingVolume(volumeApi, volumeId, 100, volumeChecker);
-				} catch (OpenStackException e) {
-					logger.error(e.getMessage(), e);
-		        	errorEmailService.sendExceptionEmail(e, "创建云主机中的公网Ip rollback异常", userId, vmCreateConf.toString());
-				}
-				boolean isSuccess = volumeApi.delete(volumeId);
-				if (isSuccess) {
-					vmCreateContext.setVolumeInstanceId(null);
-					openStackServiceGroup.getLocalVolumeService().delete(userId, vmCreateConf.getRegion(), volumeId);
-				} else {
-					openStackServiceGroup.getErrorEmailService()
-							.sendErrorEmail(
-									new ErrorMailMessageModel()
-											.exceptionMessage("创建云主机的云硬盘回滚时删除失败")
-											.exceptionParams(MessageFormat.format("userId={0},region={1},volumeId={2}", userId, vmCreateConf.getRegion(), volumeId))
-											.toMap());
-				}
+		VolumeApi volumeApi = apiService.getCinderApi(userId, uuid).getVolumeApi(region);
+		if (null != instanceId) {
+			final String volumeId = instanceId;
+			try {
+				volumeManager.waitingVolume(volumeApi, volumeId, 100, volumeChecker);
+			} catch (OpenStackException e) {
+				logger.error(e.getMessage(), e);
+	        	errorEmailService.sendExceptionEmail(e, "删除云硬盘异常", userId, JSONObject.toJSONString(params.get("vmCreateContexts")));
+	        	return false;
+			}
+			boolean isSuccess = volumeApi.delete(volumeId);
+			if (isSuccess) {
+				openStackServiceGroup.getLocalVolumeService().delete(userId, region, volumeId);
+				return true;
+			} else {
+				openStackServiceGroup.getErrorEmailService()
+						.sendErrorEmail(
+								new ErrorMailMessageModel()
+										.exceptionMessage("删除云硬盘异常")
+										.exceptionParams(MessageFormat.format("userId={0},region={1},volumeId={2}", userId, region, volumeId))
+										.toMap());
 			}
 		}
-		params.put("vmCreateContexts", vmCreateContexts);
+		return false;
+		
 	}
 
 

@@ -1,5 +1,6 @@
 package com.letv.lcp.cloudvm.service.task.storagecreate.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,22 @@ public class TaskStorageCreateServiceImpl extends BaseTask4StorageCreateServiceI
 	
 	@Override
 	public void rollBack(TaskResult tr) {
+		Map<String, Object> params = (Map<String, Object>) tr.getParams();
+		VolumeCreateConf volumeCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("volumeCreateConf")), VolumeCreateConf.class);
 		
+		List<JSONObject> contexts =  JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
+		List<VmCreateContext> vmCreateContexts = new ArrayList<VmCreateContext>();
+		for (JSONObject json : contexts) {
+			VmCreateContext vmCreateContext = JSONObject.parseObject(json.toJSONString(), VmCreateContext.class);
+			vmCreateContexts.add(vmCreateContext);
+			if(null != vmCreateContext.getVolumeInstanceId()) {
+				boolean ret = storageService.deleteVolumeById((Long)params.get("userId"), volumeCreateConf.getRegion(), vmCreateContext.getVolumeInstanceId(), params);
+				if(ret) {
+					vmCreateContext.setVolumeInstanceId(null);
+				}
+			}
+		}
+		params.put("vmCreateContexts", vmCreateContexts);
 	}
 	
 }

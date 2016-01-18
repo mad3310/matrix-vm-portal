@@ -38,7 +38,7 @@ public class TaskStorageCreateNotifyCallerServiceImpl extends BaseTask4StorageCr
 		for (JSONObject jsonObject : vmCreateContexts) {
 			contexts.add(JSONObject.parseObject(jsonObject.toJSONString(), VmCreateContext.class));
 		}
-		VolumeCreateEvent event = new VolumeCreateEvent(null, volumeCreateConf.getRegion(), null, null, null, params.get("orderNumber"), contexts);
+		VolumeCreateEvent event = new VolumeCreateEvent(this, volumeCreateConf.getRegion(), null, null, null, params.get("orderNumber"), contexts);
 		String ret = this.listenerManagerService.notifyListenersCreated((String)params.get("orderNumber"), ListenerTypeEnum.VolumeCreateListener, event);
 		
 		logger.info("创建云硬盘完成后回调listener，结果：{}", ret);

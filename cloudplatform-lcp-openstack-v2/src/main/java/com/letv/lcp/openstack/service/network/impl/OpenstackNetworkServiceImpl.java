@@ -69,6 +69,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
             } else {
             	sessionId = RandomUtil.generateRandomSessionId();
             }
+            
             final IOpenStackSession openStackSession = this.openStackService.createSession(userId);
             openStackSession.init(null);
             try {
@@ -107,13 +108,10 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 		return "success";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void rollBackFloatingIpWithCreateVmFail(Map<String, Object> params) {
-		Long userId = Long.parseLong((String)params.get("userId"));
-		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
-		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
-		String region = vmCreateConf.getRegion();
+	public boolean deleteFloatingIpById(Long userId, String region, String instanceId, Map<String, Object> params) {
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+		
 		ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 		FloatingIPApi floatingIPApi = null;
 		try {
@@ -124,19 +122,18 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 			floatingIPApi = floatingIPApiOptional.get();
 		} catch (APINotAvailableException e) {
 			logger.error(e.getMessage(), e);
-        	errorEmailService.sendExceptionEmail(e, "创建云主机中的公网Ip rollback异常", userId, vmCreateConf.toString());
-        	return;
+        	errorEmailService.sendExceptionEmail(e, "删除公网Ip异常", userId, instanceId);
+        	return false;
 		}
-		for (VmCreateContext vmCreateContext : context) {
-			if (null != vmCreateContext.getFloatingIpInstanceId()) {
-				boolean isSuccess = floatingIPApi.delete(vmCreateContext.getFloatingIpInstanceId());
-                if(isSuccess) {
-                	vmCreateContext.setFloatingIpInstanceId(null);
-                    localRcCountService.decRcCount(userId, userId, region, CloudvmRcCountType.FLOATING_IP);
-					localRcCountService.decRcCount(userId, region, CloudvmRcCountType.BAND_WIDTH, vmCreateConf.getBandWidth());
-                }
-			}
+		if (null != instanceId && null != floatingIPApi) {
+			boolean isSuccess = floatingIPApi.delete(instanceId);
+            if(isSuccess) {
+                localRcCountService.decRcCount(userId, userId, region, CloudvmRcCountType.FLOATING_IP);
+				localRcCountService.decRcCount(userId, region, CloudvmRcCountType.BAND_WIDTH, vmCreateConf.getBandWidth());
+				return true;
+            }
 		}
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")

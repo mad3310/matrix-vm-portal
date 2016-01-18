@@ -26,13 +26,13 @@ public interface IStorageService extends IResourceService<StorageModel> {
 	
 	/**
 	  * @Title: rollBackWithCreateVmFail
-	  * @Description: 云主机创建中的云硬盘创建失败回滚
+	  * @Description: 根据id删除云硬盘
 	  * @param params void   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2016年1月11日 下午6:50:09
 	  */
-	void rollBackWithCreateVmFail(Map<String, Object> params);
+	boolean deleteVolumeById(Long userId, String region, String instanceId, Map<String, Object> params);
 	
 	/**
 	  * @Title: addVolume

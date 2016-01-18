@@ -3,6 +3,7 @@ package com.letv.lcp.cloudvm.service.task.floatingipcreate.impl;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +35,12 @@ public class BaseTask4FloatingIpCreateServiceImpl extends BaseTaskServiceImpl im
 	@Autowired
 	protected DispatchCenter dispatchCenter;
 	
-	protected IComputeService computeService;
 	protected INetworkService networkService;
-	protected IStorageService storageService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4FloatingIpCreateServiceImpl.class);
 	
 	protected void initParams(Map<String, Object> params) {
-		FloatingIpCreateConf floatingIpCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("floatingIpCreateConf")), FloatingIpCreateConf.class);
+		FloatingIpCreateConf floatingIpCreateConf = JSONObject.parseObject((String)params.get("floatingIpCreateConf"), FloatingIpCreateConf.class);
 		List<VmCreateContext> vmCreateContexts = new LinkedList<VmCreateContext>();
         for (int i = 0; i < floatingIpCreateConf.getCount(); i++) {
             vmCreateContexts.add(new VmCreateContext());
@@ -56,14 +55,13 @@ public class BaseTask4FloatingIpCreateServiceImpl extends BaseTaskServiceImpl im
                 vmCreateContext.setResourceName(NameUtil.nameAddNumber(sourceName, i++));
             }
         }
+        params.put("uuid", UUID.randomUUID().toString());
         params.put("vmCreateContexts", vmCreateContexts);
 	}
 	
 	@Override
 	public void beforExecute(Map<String, Object> params) {
-		computeService = (IComputeService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.COMPUTE);
 		networkService = (INetworkService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.NETWORK);
-		storageService = (IStorageService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.STORAGE);
 	}
 	
 	@Override

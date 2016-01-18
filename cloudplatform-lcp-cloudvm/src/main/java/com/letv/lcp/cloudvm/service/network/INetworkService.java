@@ -28,14 +28,14 @@ public interface INetworkService extends IResourceService<NetworkModel> {
 			FloatingIpCreateListener listener, Object listenerUserData, Map<String, Object> params);
 	
 	/**
-	  * @Title: rollBackFloatingIpWithCreateVmFail
-	  * @Description: 云主机创建中的公网ip创建失败回滚
+	  * @Title: deleteFloatingIpById
+	  * @Description: 根据id删除公网ip
 	  * @param params void   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2016年1月11日 下午6:51:59
 	  */
-	void rollBackFloatingIpWithCreateVmFail(Map<String, Object> params);
+	boolean deleteFloatingIpById(Long userId, String region, String instanceId, Map<String, Object> params);
 	
 	/**
 	  * @Title: createRouter

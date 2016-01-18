@@ -34,7 +34,7 @@ public class TaskFloatingIpCreateSaveInfoServiceImpl extends BaseTask4FloatingIp
 			return tr;
 		}
 		initParams(params);
-		FloatingIpCreateConf floatingIpCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("floatingIpCreateConf")), FloatingIpCreateConf.class);
+		FloatingIpCreateConf floatingIpCreateConf = JSONObject.parseObject((String)params.get("floatingIpCreateConf"), FloatingIpCreateConf.class);
 		
         params.put("floatingIpCreateConf", JSONObject.toJSON(floatingIpCreateConf));
 		Long userId = Long.parseLong((String)params.get("userId"));

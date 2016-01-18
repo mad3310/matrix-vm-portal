@@ -1,5 +1,6 @@
 package com.letv.lcp.cloudvm.service.task.floatingipcreate.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,22 @@ public class TaskFloatingIpCreateServiceImpl extends BaseTask4FloatingIpCreateSe
 	
 	@Override
 	public void rollBack(TaskResult tr) {
+		Map<String, Object> params = (Map<String, Object>) tr.getParams();
+		FloatingIpCreateConf floatingIpCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("floatingIpCreateConf")), FloatingIpCreateConf.class);
 		
+		List<JSONObject> contexts =  JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
+		List<VmCreateContext> vmCreateContexts = new ArrayList<VmCreateContext>();
+		for (JSONObject json : contexts) {
+			VmCreateContext vmCreateContext = JSONObject.parseObject(json.toJSONString(), VmCreateContext.class);
+			vmCreateContexts.add(vmCreateContext);
+			if(null != vmCreateContext.getFloatingIpInstanceId()) {
+				boolean ret = networkService.deleteFloatingIpById((Long)params.get("userId"), floatingIpCreateConf.getRegion(), vmCreateContext.getFloatingIpInstanceId(), params);
+				if(ret) {
+					vmCreateContext.setFloatingIpInstanceId(null);
+				}
+			}
+		}
+		params.put("vmCreateContexts", vmCreateContexts);
 	}
 	
 }

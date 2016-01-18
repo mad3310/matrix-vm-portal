@@ -3,6 +3,7 @@ package com.letv.lcp.cloudvm.service.task.storagecreate.impl;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,6 @@ import com.letv.lcp.cloudvm.dispatch.DispatchCenter;
 import com.letv.lcp.cloudvm.enumeration.ServiceTypeEnum;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
 import com.letv.lcp.cloudvm.model.task.VmCreateContext;
-import com.letv.lcp.cloudvm.service.compute.IComputeService;
-import com.letv.lcp.cloudvm.service.network.INetworkService;
 import com.letv.lcp.cloudvm.service.storage.IStorageService;
 import com.letv.lcp.cloudvm.util.NameUtil;
 import com.letv.portal.model.task.TaskResult;
@@ -34,14 +33,12 @@ public class BaseTask4StorageCreateServiceImpl extends BaseTaskServiceImpl imple
 	@Autowired
 	protected DispatchCenter dispatchCenter;
 	
-	protected IComputeService computeService;
-	protected INetworkService networkService;
 	protected IStorageService storageService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4StorageCreateServiceImpl.class);
 	
 	protected void initParams(Map<String, Object> params) {
-		VolumeCreateConf volumeCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("volumeCreateConf")), VolumeCreateConf.class);
+		VolumeCreateConf volumeCreateConf = JSONObject.parseObject((String)params.get("volumeCreateConf"), VolumeCreateConf.class);
 		List<VmCreateContext> vmCreateContexts = new LinkedList<VmCreateContext>();
         for (int i = 0; i < volumeCreateConf.getCount(); i++) {
             vmCreateContexts.add(new VmCreateContext());
@@ -56,13 +53,12 @@ public class BaseTask4StorageCreateServiceImpl extends BaseTaskServiceImpl imple
                 vmCreateContext.setResourceName(NameUtil.nameAddNumber(sourceName, i++));
             }
         }
+        params.put("uuid", UUID.randomUUID().toString());
         params.put("vmCreateContexts", vmCreateContexts);
 	}
 	
 	@Override
 	public void beforExecute(Map<String, Object> params) {
-		computeService = (IComputeService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.COMPUTE);
-		networkService = (INetworkService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.NETWORK);
 		storageService = (IStorageService) dispatchCenter.getServiceByStrategy(ServiceTypeEnum.STORAGE);
 	}
 	

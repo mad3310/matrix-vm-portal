@@ -35,7 +35,7 @@ public class TaskStorageCreateSaveInfoServiceImpl extends BaseTask4StorageCreate
 			return tr;
 		}
 		initParams(params);
-		VolumeCreateConf volumeCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("volumeCreateConf")), VolumeCreateConf.class);
+		VolumeCreateConf volumeCreateConf = JSONObject.parseObject((String)params.get("volumeCreateConf"), VolumeCreateConf.class);
 		
         params.put("volumeCreateConf", JSONObject.toJSON(volumeCreateConf));
 		Long userId = Long.parseLong((String)params.get("userId"));

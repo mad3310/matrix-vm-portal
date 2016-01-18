@@ -38,7 +38,7 @@ public class TaskFloatingIpCreateNotifyCallerServiceImpl extends BaseTask4Floati
 		for (JSONObject jsonObject : vmCreateContexts) {
 			contexts.add(JSONObject.parseObject(jsonObject.toJSONString(), VmCreateContext.class));
 		}
-		FloatingIpCreateEvent event = new FloatingIpCreateEvent(null, floatingIpCreateConf.getRegion(), null, null, null, params.get("orderNumber"), contexts);
+		FloatingIpCreateEvent event = new FloatingIpCreateEvent(this, floatingIpCreateConf.getRegion(), null, null, null, params.get("orderNumber"), contexts);
 		String ret = this.listenerManagerService.notifyListenersCreated((String)params.get("orderNumber"), ListenerTypeEnum.FloatingIpCreateListener, event);
 		
 		logger.info("创建公网ip完成后回调listener，结果：{}", ret);
