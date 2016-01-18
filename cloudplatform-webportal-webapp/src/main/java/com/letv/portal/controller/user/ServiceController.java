@@ -3,13 +3,6 @@ package com.letv.portal.controller.user;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.letv.portal.model.cloudvm.CloudvmRcCountType;
-import com.letv.portal.service.cloudvm.ICloudvmRcCountService;
-import com.letv.portal.service.common.ICommonQuotaService;
-import com.letv.portal.service.openstack.local.service.LocalImageService;
-import com.letv.portal.service.openstack.local.service.LocalKeyPairService;
-import com.letv.portal.service.openstack.local.service.LocalRcCountService;
-import com.letv.portal.service.openstack.local.service.LocalVolumeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.lcp.openstack.service.local.ILocalImageService;
+import com.letv.lcp.openstack.service.local.ILocalKeyPairService;
+import com.letv.lcp.openstack.service.local.ILocalRcCountService;
+import com.letv.lcp.openstack.service.local.ILocalVolumeService;
+import com.letv.portal.model.cloudvm.CloudvmRcCountType;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 
 
@@ -40,13 +38,13 @@ public class ServiceController {
 	@Autowired
 	private ICloudvmServerService cloudvmServerService;
 	@Autowired
-	private LocalRcCountService localRcCountService;
+	private ILocalRcCountService localRcCountService;
 	@Autowired
-	private LocalVolumeService localVolumeService;
+	private ILocalVolumeService localVolumeService;
     @Autowired
-    private LocalImageService localImageService;
+    private ILocalImageService localImageService;
     @Autowired
-    private LocalKeyPairService localKeyPairService;
+    private ILocalKeyPairService localKeyPairService;
 
 	private final static Logger logger = LoggerFactory.getLogger(ServiceController.class);
 

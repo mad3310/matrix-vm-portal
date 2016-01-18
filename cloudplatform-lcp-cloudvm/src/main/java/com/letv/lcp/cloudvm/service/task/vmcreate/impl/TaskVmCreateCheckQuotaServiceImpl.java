@@ -20,7 +20,7 @@ public class TaskVmCreateCheckQuotaServiceImpl extends BaseTask4VmCreateServiceI
 			return tr;
 		}
 		String ret = computeService.checkQuota(params);
-		logger.info("创建云主机参数检查，结果：{}", ret);
+		logger.info("创建云主机配额检查，结果：{}", ret);
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {

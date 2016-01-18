@@ -1,12 +1,17 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.common.result.ResultObject;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.local.service.LocalImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.service.local.ILocalImageService;
 
 @Controller
 @RequestMapping("/osi")
@@ -16,7 +21,7 @@ public class ImageController {
     private SessionServiceImpl sessionService;
 
     @Autowired
-    private LocalImageService localImageService;
+    private ILocalImageService localImageService;
 
     @RequestMapping(value="/regions",method = RequestMethod.GET)
     public

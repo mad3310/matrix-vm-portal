@@ -1,7 +1,7 @@
 package com.letv.portal.service.product;
 
 import com.letv.common.result.ResultObject;
-import com.letv.portal.service.openstack.billing.CheckResult;
+import com.letv.lcp.openstack.model.billing.CheckResult;
 
 
 /**

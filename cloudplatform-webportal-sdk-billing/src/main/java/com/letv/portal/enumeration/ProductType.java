@@ -3,11 +3,11 @@ package com.letv.portal.enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.letv.lcp.openstack.model.compute.VMResource;
+import com.letv.lcp.openstack.model.network.FloatingIpResource;
+import com.letv.lcp.openstack.model.network.RouterResource;
+import com.letv.lcp.openstack.model.storage.VolumeResource;
 import com.letv.portal.constant.Constants;
-import com.letv.portal.service.openstack.resource.FloatingIpResource;
-import com.letv.portal.service.openstack.resource.RouterResource;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
 
 public enum ProductType{
 	

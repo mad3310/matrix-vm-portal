@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.lcp.ICloudvmPublicNetworkDao">
+	
+	<insert id="insert" parameterType="CloudvmPublicNetworkModel" useGeneratedKeys="true" keyProperty="id" >
+	    insert into LCP_CLOUDVM_PUBLIC_NETWORK 
+	        (REGION,NAME,STATUS,BAND_WIDTH,TENANT_ID,DELETED,CREATE_TIME,CREATE_USER) 
+	    values
+	        (#{region},#{name},#{status},#{bandWidth},#{tenantId},#{deleted},now(),#{createUser})
+	</insert>
+	
+	<update id="update" parameterType="CloudvmPublicNetworkModel">
+		update 
+			LCP_CLOUDVM_PUBLIC_NETWORK
+		<set>
+		    <if test="networkInstanceId != null and networkInstanceId != '' ">
+		        NETWORK_INSTANCE_ID=#{networkInstanceId},
+		    </if>
+		    <if test="name != null and name != '' ">
+		        NAME=#{name},
+		    </if>
+		    <if test="status != null and status != '' ">
+		        STATUS=#{status},
+		    </if>
+		    <if test="publicIp != null and publicIp != '' ">
+		        PUBLIC_IP=#{publicIp},
+		    </if>
+		    <if test="carrierName != null and carrierName != '' ">
+		        CARRIER_NAME=#{carrierName},
+		    </if>
+		    	UPDATE_TIME=now(),
+		    <if test="updateUser != null and updateUser != '' ">
+		        UPDATE_USER=#{updateUser},
+		    </if>
+		</set>
+		where 
+			ID=#{id}
+	</update>
+	
+
+</mapper>

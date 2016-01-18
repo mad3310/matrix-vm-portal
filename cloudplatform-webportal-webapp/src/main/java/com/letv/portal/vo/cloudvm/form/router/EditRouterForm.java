@@ -1,10 +1,11 @@
 package com.letv.portal.vo.cloudvm.form.router;
 
-import com.letv.portal.service.openstack.util.constants.ValidationRegex;
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.letv.lcp.cloudvm.constants.ValidationRegex;
 
 /**
  * Created by zhouxianguang on 2015/11/4.

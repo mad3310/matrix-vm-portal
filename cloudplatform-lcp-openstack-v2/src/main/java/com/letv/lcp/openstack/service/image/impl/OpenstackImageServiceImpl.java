@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.lcp.openstack.service.image.IOpenstackImageService;
 
-@Service
+@Service("openstackImageService")
 public class OpenstackImageServiceImpl implements IOpenstackImageService  {
 
 	@Override

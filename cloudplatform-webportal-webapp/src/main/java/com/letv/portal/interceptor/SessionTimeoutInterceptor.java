@@ -1,5 +1,21 @@
 package com.letv.portal.interceptor;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.result.ResultObject;
@@ -9,26 +25,12 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CookieUtil;
 import com.letv.common.util.IpUtil;
 import com.letv.common.util.SessionUtil;
+import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.enumeration.LoginClient;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.common.ILoginRecordService;
-import com.letv.portal.service.openstack.OpenStackService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * 处理session超时的拦截器
@@ -40,7 +42,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
     @Autowired(required=false)
     private SessionServiceImpl sessionService;
     @Autowired
-    private OpenStackService openStackService;
+    private IOpenStackService openStackService;
 
     @Autowired
     private ILoginProxy loginProxy;

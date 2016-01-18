@@ -17,6 +17,15 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.lcp.openstack.model.billing.BillingResource;
+import com.letv.lcp.openstack.model.billing.CheckResult;
+import com.letv.lcp.openstack.model.compute.FlavorResource;
+import com.letv.lcp.openstack.model.compute.VMResource;
+import com.letv.lcp.openstack.model.network.FloatingIpResource;
+import com.letv.lcp.openstack.model.storage.VolumeResource;
+import com.letv.lcp.openstack.model.storage.VolumeTypeResource;
+import com.letv.lcp.openstack.service.billing.IResourceCreateService;
+import com.letv.lcp.openstack.service.billing.IResourceQueryService;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.order.Order;
@@ -25,15 +34,6 @@ import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
-import com.letv.portal.service.openstack.billing.BillingResource;
-import com.letv.portal.service.openstack.billing.CheckResult;
-import com.letv.portal.service.openstack.billing.ResourceCreateService;
-import com.letv.portal.service.openstack.billing.ResourceQueryService;
-import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.FloatingIpResource;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IHostProductService;
@@ -70,9 +70,9 @@ public class ProductManageServiceImpl implements IProductManageService {
 	@Autowired
 	private IHostCalculateService hostCalculateService;
 	@Autowired
-	private ResourceCreateService resourceCreateService;
+	private IResourceCreateService resourceCreateService;
 	@Autowired
-	private ResourceQueryService resourceQueryService;
+	private IResourceQueryService resourceQueryService;
 	
 	
 	private BigDecimal getOrderTotalPrice(Subscription sub, String orderTime, Map<String, Object> billingParams, List<BaseStandard> baseStandards) {

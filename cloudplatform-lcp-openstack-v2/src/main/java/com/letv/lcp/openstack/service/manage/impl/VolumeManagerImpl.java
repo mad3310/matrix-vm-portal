@@ -25,11 +25,13 @@ import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 import org.jclouds.openstack.v2_0.domain.Resource;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.letv.common.paging.impl.Page;
 import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.model.event.VolumeCreateEvent;
 import com.letv.lcp.cloudvm.model.event.VolumeCreateFailEvent;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
+import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.cloudvm.model.task.VmCreateContext;
 import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
@@ -687,8 +689,14 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		
 		//任务流创建所需
 		List<VmCreateContext> context = null;
-		if(null != params && null != params.get("multiVmCreateContext")) {
-			context = (List<VmCreateContext>) params.get("vmCreateContexts");
+		if(null != params && null != params.get("vmCreateContexts")) {
+			List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
+			List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
+			for (JSONObject jsonObject : vmCreateContexts) {
+				VmCreateContext context1 = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
+				contexts.add(context1);
+			}
+			context = contexts;
 			params.put("vmCreateContexts", context);
 		}
 
@@ -709,7 +717,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 //                                (openStackUser.getUserVoUserId(), openStackUser.getUserVoUserId(), volumeCreateConf.getRegion(), volume);
 				toSyncCloudvmVolumeList.add(volume);
 				if(null != context) {
-					context.get(i).setVolumeId(volume.getId());;
+					context.get(i).setVolumeInstanceId(volume.getId());;
 				}
 				if (null != successCreatedVolumes) {
 					successCreatedVolumes.add(volume);
@@ -755,7 +763,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), volumeIndexRef, volume.getName(), listenerUserData));
+							listener.volumeCreated(new VolumeCreateEvent(this, volumeCreateConf.getRegion(), volume.getId(), volumeIndexRef, volume.getName(), listenerUserData, null));
 							return true;
 						}
 					}, 1, "云硬盘监听器实现方错误：重试超过1次");

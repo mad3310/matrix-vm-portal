@@ -1,14 +1,14 @@
 package com.letv.portal.controller.cloudvm;
 
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.lcp.openstack.service.session.IOpenStackSession;
 
 /**
  * Created by zhouxianguang on 2015/6/12.
  */
 public class Util {
-	public static OpenStackSession session(SessionServiceImpl sessionService) {
-		return (OpenStackSession) sessionService.getSession()
+	public static IOpenStackSession session(SessionServiceImpl sessionService) {
+		return (IOpenStackSession) sessionService.getSession()
 				.getOpenStackSession();
 	}
 

@@ -181,7 +181,7 @@ public class VMCreate {
                                             context.getVmCreateListener().vmCreateFailed(
                                                     new VmCreateFailEvent(context.getVmCreateConf().getRegion(), vmIndex, reason, context.getListenerUserData()));
                                         } else {
-                                            VmCreateEvent vmCreateEvent = new VmCreateEvent(context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), vmIndex, vmCreateContext.getResourceName(), context.getListenerUserData());
+                                            VmCreateEvent vmCreateEvent = new VmCreateEvent(this, context.getVmCreateConf().getRegion(), vmCreateContext.getServerCreated().getId(), vmIndex, vmCreateContext.getResourceName(), context.getListenerUserData(), null);
                                             if (vmCreateContext.getVolume() != null) {
                                                 vmCreateEvent.setVolumeId(vmCreateContext.getVolume().getId());
                                             }
