@@ -19,7 +19,7 @@ public class CookieUtil {
     public static final String COOKIE_KEY_USER_ID = "userId";
     public static final String COOKIE_KEY_HEAD_PORTRAIT = "headPortrait";
 
-    public static final String LCP_COOKIE_DOMAIN = "letvcloud.com";
+    public static final String LCP_COOKIE_DOMAIN = "lecloud.com";
     private static final String DELETE_COOKIE_VALUE = null;
     private static final int DELETE_COOKIE_MAX_AGE = 0;
 
