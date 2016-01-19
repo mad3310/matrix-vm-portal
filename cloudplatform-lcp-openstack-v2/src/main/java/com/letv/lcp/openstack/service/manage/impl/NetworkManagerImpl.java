@@ -35,6 +35,7 @@ import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.exception.MatrixException;
@@ -1636,7 +1637,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.routerCreated(new RouterCreateEvent(routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
+							listener.routerCreated(new RouterCreateEvent(this,routerCreateConf.getRegion(), router.getId(), routerIndexRef, router.getName(), listenerUserData));
 							return true;
 						}
 					}, 1, "路由器监听器实现方错误：重试超过1次");
@@ -2850,9 +2851,15 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		
 		//任务流创建所需
 		List<VmCreateContext> context = null;
-		if(null != params && null != params.get("multiVmCreateContext")) {
-			context = (List<VmCreateContext>) params.get("vmCreateContexts");
-			params.put("vmCreateContexts", context);
+		if(null != params && null != params.get("vmCreateContexts")) {
+			String jsonContext = JSONObject.toJSONString(params.get("vmCreateContexts"));
+			List<JSONObject> vmCreateContexts = JSONObject.parseObject(jsonContext, List.class);
+			List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
+			for (JSONObject jsonObject : vmCreateContexts) {
+				VmCreateContext context1 = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
+				contexts.add(context1);
+			}
+			context = contexts;
 		}
 		
 		for (int i = 0; i < count; i++) {
@@ -2865,7 +2872,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			FloatingIP floatingIP = floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
 					.name(floatingIpName).fipQos(createFipQos(bandWidth)).build());
 			if(null != context) {
-				context.get(i).setFloatingIpId(floatingIP.getId());;
+				context.get(i).setFloatingIpInstanceId(floatingIP.getId());
+				context.get(i).setCarrierName(publicNetwork.getName());
+				context.get(i).setPublicIp(floatingIP.getFloatingIpAddress());
 			}
 			
 			if (null != successCreatedFloatingIps) {
@@ -2873,6 +2882,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			}
 			localRcCountService.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
 			localRcCountService.incRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH, bandWidth);
+		}
+		if(null != context) {
+			params.put("vmCreateContexts", context);
 		}
 	}
 
@@ -2904,7 +2916,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					RetryUtil.retry(new Function0<Boolean>() {
 						@Override
 						public Boolean apply() throws Exception {
-							listener.floatingIpCreated(new FloatingIpCreateEvent(createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData));
+							listener.floatingIpCreated(new FloatingIpCreateEvent(this, createConf.getRegion(), floatingIP.getId(), floatingIpIndexRef, floatingIP.getName(), listenerUserData, null));
 							return true;
 						}
 					}, 1, "公网IP监听器实现方错误：重试超过1次");

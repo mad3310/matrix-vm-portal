@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskCreateFloatingIpService")
+@Service("taskCreateSubnetPortsService")
 public class TaskCreateSubnetPortsServiceImpl extends BaseTask4VmCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskCreateSubnetPortsServiceImpl.class);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
-import com.letv.portal.service.openstack.billing.CheckResult;
+import com.letv.lcp.openstack.model.billing.CheckResult;
 import com.letv.portal.service.product.IProductManageService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;

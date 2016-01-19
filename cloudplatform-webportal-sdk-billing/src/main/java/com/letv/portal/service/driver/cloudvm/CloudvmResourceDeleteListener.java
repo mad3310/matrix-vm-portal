@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.letv.portal.service.openstack.billing.event.ResourceDeleteEvent;
+import com.letv.lcp.openstack.model.event.ResourceDeleteEvent;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IProductInfoRecordService;

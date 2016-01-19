@@ -1,14 +1,16 @@
 package com.letv.portal.listener;
 
-import com.letv.common.session.Session;
-import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.letv.common.session.Session;
+import com.letv.lcp.openstack.service.base.impl.OpenStackServiceImpl;
+import com.letv.lcp.openstack.service.session.IOpenStackSession;
 
 /**
  * Created by zhouxianguang on 2015/6/12.
@@ -25,7 +27,7 @@ public class SessionListener implements HttpSessionListener {
     public void sessionDestroyed(HttpSessionEvent sessionEvent) {
         Session session = (Session) sessionEvent.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
         if (session != null) {
-            OpenStackSession openStackSession = (OpenStackSession) session.getOpenStackSession();
+            IOpenStackSession openStackSession = (IOpenStackSession) session.getOpenStackSession();
             if (openStackSession != null && !openStackSession.isClosed()) {
                 try {
                     openStackSession.close();

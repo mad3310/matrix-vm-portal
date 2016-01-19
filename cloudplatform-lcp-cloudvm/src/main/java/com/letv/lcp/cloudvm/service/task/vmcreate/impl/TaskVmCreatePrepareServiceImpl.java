@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskVmCreateParamsService")
+@Service("taskVmCreatePrepareService")
 public class TaskVmCreatePrepareServiceImpl extends BaseTask4VmCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskVmCreatePrepareServiceImpl.class);
@@ -19,7 +19,6 @@ public class TaskVmCreatePrepareServiceImpl extends BaseTask4VmCreateServiceImpl
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		
 		String ret = computeService.getVmCreatePrepare(params);
 		logger.info("创建云主机参数及前提工作准备，执行结果：{}", ret);
 		

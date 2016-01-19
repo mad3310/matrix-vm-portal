@@ -1,6 +1,7 @@
 package com.letv.lcp.openstack.service.storage.impl;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Optional;
 import com.letv.lcp.cloudvm.listener.VolumeCreateListener;
 import com.letv.lcp.cloudvm.model.storage.VolumeCreateConf;
@@ -27,6 +29,7 @@ import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.lcp.openstack.service.base.OpenStackServiceGroup;
 import com.letv.lcp.openstack.service.base.impl.OpenStackServiceImpl;
 import com.letv.lcp.openstack.service.erroremail.IErrorEmailService;
+import com.letv.lcp.openstack.service.jclouds.ApiSession;
 import com.letv.lcp.openstack.service.jclouds.IApiService;
 import com.letv.lcp.openstack.service.manage.VolumeManager;
 import com.letv.lcp.openstack.service.manage.check.Checker;
@@ -39,7 +42,7 @@ import com.letv.lcp.openstack.util.ThreadUtil;
 import com.letv.lcp.openstack.util.function.Function0;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 
-@Service
+@Service("openstackStorageService")
 public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OpenstackStorageServiceImpl.class);
@@ -54,12 +57,19 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
     private IOpenStackService openStackService;
 	@Autowired
 	private VolumeManager volumeManager;
+	@Autowired
+	private ApiSession apiSession;
 
 	@Override
 	public String create(Long userId, VolumeCreateConf storage, VolumeCreateListener listener, Object listenerUserData, Map<String, Object> params) {
 		try {
             validationService.validate(storage);
-            final String sessionId = RandomUtil.generateRandomSessionId();
+            String sessionId = null;
+            if(null != params.get("uuid")) {
+            	sessionId = (String)params.get("uuid");
+            } else {
+            	sessionId = RandomUtil.generateRandomSessionId();
+            }
             final IOpenStackSession openStackSession = this.openStackService.createSession(userId);
             openStackSession.init(null);
             try {
@@ -84,13 +94,9 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	}
 
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void rollBackWithCreateVmFail(Map<String, Object> params) {
-		long userId = (long) params.get("userId");
+	public boolean deleteVolumeById(Long userId, String region, String instanceId, Map<String, Object> params) {
 		String uuid = (String)params.get("uuid");
-		VMCreateConf2 vmCreateConf = (VMCreateConf2) params.get("vmCreateConf");
-		List<VmCreateContext> context = (List<VmCreateContext>) params.get("vmCreateContexts");
 		
 		Checker<Volume> volumeChecker = new Checker<Volume>() {
 			@Override
@@ -99,30 +105,30 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			}
 		};
 		OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
-		VolumeApi volumeApi = apiService.getCinderApi(userId, uuid).getVolumeApi(vmCreateConf.getRegion());
-		for (VmCreateContext vmCreateContext : context) {
-			if (null != vmCreateContext.getVolumeId()) {
-				final String volumeId = vmCreateContext.getVolumeId();
-				try {
-					volumeManager.waitingVolume(volumeApi, volumeId, 100, volumeChecker);
-				} catch (OpenStackException e) {
-					logger.error(e.getMessage(), e);
-		        	errorEmailService.sendExceptionEmail(e, "创建云主机中的公网Ip rollback异常", userId, vmCreateConf.toString());
-				}
-				boolean isSuccess = volumeApi.delete(volumeId);
-				if (isSuccess) {
-					vmCreateContext.setVolumeId(null);
-					openStackServiceGroup.getLocalVolumeService().delete(userId, vmCreateConf.getRegion(), volumeId);
-				} else {
-					openStackServiceGroup.getErrorEmailService()
-							.sendErrorEmail(
-									new ErrorMailMessageModel()
-											.exceptionMessage("创建云主机的云硬盘回滚时删除失败")
-											.exceptionParams(MessageFormat.format("userId={0},region={1},volumeId={2}", userId, vmCreateConf.getRegion(), volumeId))
-											.toMap());
-				}
+		VolumeApi volumeApi = apiService.getCinderApi(userId, uuid).getVolumeApi(region);
+		if (null != instanceId) {
+			final String volumeId = instanceId;
+			try {
+				volumeManager.waitingVolume(volumeApi, volumeId, 100, volumeChecker);
+			} catch (OpenStackException e) {
+				logger.error(e.getMessage(), e);
+	        	errorEmailService.sendExceptionEmail(e, "删除云硬盘异常", userId, JSONObject.toJSONString(params.get("vmCreateContexts")));
+	        	return false;
+			}
+			boolean isSuccess = volumeApi.delete(volumeId);
+			if (isSuccess) {
+				openStackServiceGroup.getLocalVolumeService().delete(userId, region, volumeId);
+				return true;
+			} else {
+				openStackServiceGroup.getErrorEmailService()
+						.sendErrorEmail(
+								new ErrorMailMessageModel()
+										.exceptionMessage("删除云硬盘异常")
+										.exceptionParams(MessageFormat.format("userId={0},region={1},volumeId={2}", userId, region, volumeId))
+										.toMap());
 			}
 		}
+		return false;
 		
 	}
 
@@ -130,11 +136,11 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String addVolume(Map<String, Object> params) {
-		Long userId = (Long)params.get("userId");
+		Long userId = Long.parseLong((String)params.get("userId"));
 		String sessionId = (String)params.get("uuid");
-		VMCreateConf2 vmCreateConf = (VMCreateConf2)params.get("vmCreateConf");
+		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
+        List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class );
 		String region = vmCreateConf.getRegion();
-		List<VmCreateContext> contexts = (List<VmCreateContext>) params.get("vmCreateContexts");
 
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         final VolumeApi volumeApi = apiService.getCinderApi(userId, sessionId).getVolumeApi(region);
@@ -148,10 +154,11 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			}
 			VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional.get();
         
-			for (VmCreateContext vmCreateContext : contexts) {
+			for (JSONObject jsonObject : vmCreateContexts) {
+				VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObject.toString(), VmCreateContext. class);
 			    boolean volumeUpdated = false;
-			    if (vmCreateContext.getServerCreatedId() != null && vmCreateContext.getVolumeId() != null) {
-			        final String volumeId = vmCreateContext.getVolumeId();
+			    if (vmCreateContext.getVolumeInstanceId() != null) {
+			        final String volumeId = vmCreateContext.getVolumeInstanceId();
 			        ThreadUtil.waiting(new Function0<Boolean>() {
 			            @Override
 			            public Boolean apply() throws Exception {
@@ -159,16 +166,17 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			                return !(volume == null || volume.getStatus() != Volume.Status.CREATING);
 			            }
 			        },500L);
-			        Server server = serverApi.get(vmCreateContext.getServerCreatedId());
-			        Volume volume = volumeApi.get(vmCreateContext.getVolumeId());
+			        Server server = serverApi.get(vmCreateContext.getServerInstanceId());
+			        Volume volume = volumeApi.get(vmCreateContext.getVolumeInstanceId());
 			        if (volume != null && server != null && volume.getStatus() == Volume.Status.AVAILABLE && server.getStatus() != Server.Status.ERROR) {
 			        	volumeAttachmentApi.attachVolumeToServerAsDevice(
-			                            vmCreateContext.getVolumeId(),
-			                            vmCreateContext.getServerCreatedId(), "");
+			                            vmCreateContext.getVolumeInstanceId(),
+			                            vmCreateContext.getServerInstanceId(), "");
 			            ThreadUtil.waiting(new Function0<Boolean>() {
+			            	Volume volume = null;
 			                @Override
 			                public Boolean apply() throws Exception {
-			                    Volume volume = volumeApi.get(volumeId);
+			                    volume = volumeApi.get(volumeId);
 			                    if(volume == null){
 			                        return false;
 			                    }
@@ -179,18 +187,19 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			                            || status == Volume.Status.ERROR);
 			                }
 			            },500L);
-			            openStackServiceGroup.getLocalVolumeService().update(userId,userId,region,volumeApi.get(volumeId));
+			            Volume v = volumeApi.get(volumeId);
+			            openStackServiceGroup.getLocalVolumeService().update(userId,userId,region,v);
 			            volumeUpdated = true;
 			        }
 			    }
 			    if (!volumeUpdated) {
-			        if (vmCreateContext.getVolumeId() != null) {
-			            Volume volume = volumeApi.get(vmCreateContext.getVolumeId());
+			        if (vmCreateContext.getVolumeInstanceId() != null) {
+			            Volume volume = volumeApi.get(vmCreateContext.getVolumeInstanceId());
 			            if (volume != null) {
 			                CloudvmVolume cloudvmVolume = openStackServiceGroup.getCloudvmVolumeService()
 			                        .selectByVolumeId(userId, region, volume.getId());
 			                if (cloudvmVolume != null) {
-			                    final String volumeId = vmCreateContext.getVolumeId();
+			                    final String volumeId = vmCreateContext.getVolumeInstanceId();
 			                    ThreadUtil.waiting(new Function0<Boolean>() {
 			                        @Override
 			                        public Boolean apply() throws Exception {
@@ -210,7 +219,7 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			}
 		} catch (OpenStackException e) {
 			logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定云硬盘异常", (Long)params.get("userId"), (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定云硬盘异常", userId, vmCreateConf.toString());
 	    	return e.getMessage();
 		}
     

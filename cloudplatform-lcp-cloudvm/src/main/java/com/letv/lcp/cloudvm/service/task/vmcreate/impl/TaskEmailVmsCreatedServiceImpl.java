@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.service.task.IBaseTaskService;
 
-@Service("taskCreateFloatingIpService")
+@Service("taskEmailVmsCreatedService")
 public class TaskEmailVmsCreatedServiceImpl extends BaseTask4VmCreateServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskEmailVmsCreatedServiceImpl.class);
@@ -19,8 +19,8 @@ public class TaskEmailVmsCreatedServiceImpl extends BaseTask4VmCreateServiceImpl
 		if(!tr.isSuccess()) {
 			return tr;
 		}
-		String ret = computeService.checkVmCreateConf(params);
-		logger.info("创建云主机，结果：{}", ret);
+		String ret = computeService.emailVmsCreated(params);
+		logger.info("创建云主机完成后发送邮件，结果：{}", ret);
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {

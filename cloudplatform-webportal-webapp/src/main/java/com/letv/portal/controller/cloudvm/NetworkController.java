@@ -4,8 +4,6 @@ import java.text.MessageFormat;
 
 import javax.validation.Valid;
 
-import com.letv.portal.service.openstack.local.service.LocalSubnetOptionService;
-import com.letv.portal.service.openstack.resource.service.ResourceServiceFacade;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.lcp.openstack.exception.OpenStackException;
+import com.letv.lcp.openstack.exception.UserOperationException;
+import com.letv.lcp.openstack.service.local.ILocalSubnetOptionService;
+import com.letv.lcp.openstack.service.manage.NetworkManager;
+import com.letv.lcp.openstack.service.resource.IResourceServiceFacade;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.vo.cloudvm.form.floatingip.EditFloatingIpForm;
 import com.letv.portal.vo.cloudvm.form.network.CreatePrivateNetworkAndSubnetForm;
@@ -40,9 +40,9 @@ public class NetworkController {
 	@Autowired
 	private IRecentOperateService recentOperateService;
 	@Autowired
-	private LocalSubnetOptionService localSubnetOptionService;
+	private ILocalSubnetOptionService localSubnetOptionService;
 	@Autowired
-	private ResourceServiceFacade resourceServiceFacade;
+	private IResourceServiceFacade resourceServiceFacade;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {

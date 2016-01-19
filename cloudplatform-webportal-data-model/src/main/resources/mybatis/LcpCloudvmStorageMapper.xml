@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.lcp.ICloudvmStorageDao">
+	
+	<insert id="insert" parameterType="CloudvmStorageModel" useGeneratedKeys="true" keyProperty="id" >
+	    insert into LCP_CLOUDVM_STORAGE 
+	        (REGION,STATUS,SIZE,STORAGE_TYPE,NAME,TENANT_ID,DELETED,CREATE_TIME,CREATE_USER) 
+	    values
+	        (#{region},#{status},#{size},#{storageType},#{name},#{tenantId},#{deleted},now(),#{createUser})
+	</insert>
+	
+	<update id="update" parameterType="CloudvmStorageModel">
+		update 
+			LCP_CLOUDVM_STORAGE
+		<set>
+		    <if test="storageInstanceId != null and storageInstanceId != '' ">
+		        STORAGE_INSTANCE_ID=#{storageInstanceId},
+		    </if>
+		    <if test="status != null and status != '' ">
+		        STATUS=#{status},
+		    </if>
+		    <if test="serverId != null and serverId != '' ">
+		        SERVER_ID=#{serverId},
+		    </if>
+		        UPDATE_TIME=now(),
+		    <if test="updateUser != null and updateUser != '' ">
+		        UPDATE_USER=#{updateUser},
+		    </if>
+		</set>
+		where 
+			ID=#{id}
+	</update>
+
+</mapper>

@@ -7,11 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.lcp.openstack.model.billing.BillingResource;
+import com.letv.lcp.openstack.model.billing.ResourceLocator;
+import com.letv.lcp.openstack.service.billing.IResourceQueryService;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.enumeration.ProductType;
-import com.letv.portal.service.openstack.billing.BillingResource;
-import com.letv.portal.service.openstack.billing.ResourceLocator;
-import com.letv.portal.service.openstack.billing.ResourceQueryService;
 
 /**
  * 云主机信息
@@ -22,7 +22,7 @@ import com.letv.portal.service.openstack.billing.ResourceQueryService;
 public class CloudvmResourceInfoService {
 	
 	@Autowired
-	ResourceQueryService resourceQueryService;
+	IResourceQueryService resourceQueryService;
 	
 	/**
 	  * @Title: getCloudvmResourceNameById
