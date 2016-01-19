@@ -56,7 +56,7 @@ public class PayController {
 	  * @date 2015年9月17日 下午5:04:06
 	  */
 	@RequestMapping(value="/{orderNumber}",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject pay(@PathVariable String orderNumber, HttpServletRequest request,HttpServletResponse response, ResultObject obj) {
+	public void pay(@PathVariable String orderNumber, HttpServletRequest request,HttpServletResponse response, ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		Map<String, Object> ret = this.payService.pay(orderNumber, params);
 		if(null!=ret.get("response") && true==(Boolean)ret.get("response")) {
@@ -67,8 +67,8 @@ public class PayController {
 				throw new CommonException(e);
 			}
 		}
-		obj.setData(ret);
-		return obj;
+		//obj.setData(ret);
+		//return obj;
 	}
 	
 	
