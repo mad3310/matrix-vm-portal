@@ -22,7 +22,7 @@ public interface IHostProductService extends IProductService {
 	  * @author lisuxiao
 	  * @date 2015年12月16日 下午3:51:10
 	  */
-	void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records);
+	void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records, Long tenantId);
 	/**
 	  * @Title: createVolume
 	  * @Description: 创建云硬盘

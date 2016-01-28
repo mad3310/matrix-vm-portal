@@ -56,7 +56,8 @@ public class CheckVmCreateConfTask implements VmsCreateCheckSubTask{
                     context.setPrivateSubnet(privateSubnet);
                 }
             }
-        } else {
+        } 
+        if(vmCreateConf.getBindFloatingIp() && StringUtils.isNotEmpty(vmCreateConf.getSharedNetworkId())){
             Network sharedNetwork = context.getNeutronApi()
                     .getNetworkApi(region).get(vmCreateConf.getSharedNetworkId());
             if (sharedNetwork == null || !sharedNetwork.getShared()) {

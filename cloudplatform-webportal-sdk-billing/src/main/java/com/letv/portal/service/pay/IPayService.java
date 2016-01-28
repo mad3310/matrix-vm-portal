@@ -16,6 +16,16 @@ public interface IPayService {
 	  * @date 2015年9月17日 下午4:39:01
 	  */
 	Map<String, Object> pay(String orderNumber, Map<String, Object> paramMap);
+	/**
+	  * @Title: approve
+	  * @Description: 审批创建
+	  * @param orderNumber
+	  * @return boolean   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年1月27日 下午7:07:58
+	  */
+	Map<String, Object> approve(String orderNumber);
 
 	/**
 	  * @Title: callback

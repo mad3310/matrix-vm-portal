@@ -120,7 +120,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 				throw new APINotAvailableException(FloatingIPApi.class);
 			}
 			floatingIPApi = floatingIPApiOptional.get();
-		} catch (APINotAvailableException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
         	errorEmailService.sendExceptionEmail(e, "删除公网Ip异常", userId, instanceId);
         	return false;
@@ -157,7 +157,7 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 		Network privateNetwork = null;
 		try {
 			privateNetwork = getPrivateNetwork(userId, (String)params.get("uuid"), vmCreateConf, privateSubnet);
-		} catch (ResourceNotFoundException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
         	errorEmailService.sendExceptionEmail(e, "创建云主机中的子网获取异常", userId, vmCreateConf.toString());
         	return e.getMessage();

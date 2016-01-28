@@ -110,7 +110,7 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			final String volumeId = instanceId;
 			try {
 				volumeManager.waitingVolume(volumeApi, volumeId, 100, volumeChecker);
-			} catch (OpenStackException e) {
+			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 	        	errorEmailService.sendExceptionEmail(e, "删除云硬盘异常", userId, JSONObject.toJSONString(params.get("vmCreateContexts")));
 	        	return false;
@@ -217,7 +217,7 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 			        }
 			    }
 			}
-		} catch (OpenStackException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 	    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定云硬盘异常", userId, vmCreateConf.toString());
 	    	return e.getMessage();

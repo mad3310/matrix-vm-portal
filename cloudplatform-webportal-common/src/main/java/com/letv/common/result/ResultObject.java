@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 /**
@@ -50,8 +51,15 @@ public class ResultObject implements Serializable {
 		this.result = result;
 	}
 	public ResultObject(List<ObjectError> errors) {
+		FieldError fe = null;
 		for (ObjectError error : errors) {
-			this.msgs.add(error.getDefaultMessage());
+			if(error instanceof FieldError) {
+				fe = (FieldError) error;
+				this.msgs.add(fe.getField()+":"+fe.getDefaultMessage());
+			} else {
+				this.msgs.add(error.getDefaultMessage());
+			}
+			
 		}
 		this.result = 0;
 	}

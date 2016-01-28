@@ -37,6 +37,7 @@ public class TaskCreateFloatingIpServiceImpl extends BaseTask4VmCreateServiceImp
 		String jsonConf = JSONObject.toJSONString(params.get("vmCreateConf"));
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject(jsonConf, VMCreateConf2.class);
 		if (!vmCreateConf.getBindFloatingIp()) {
+			tr.setResult("skip");
 			return tr;
 		}
 		
@@ -52,10 +53,12 @@ public class TaskCreateFloatingIpServiceImpl extends BaseTask4VmCreateServiceImp
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {
+			Long createUser = params.get("createUser")==null?Long.parseLong((String)params.get("userId")):
+				Long.parseLong((String)params.get("createUser"));
 			//更新数据库
 			List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
 			for (VmCreateContext vmCreateContext : vmCreateContexts) {
-				this.networkDbService.updatePublicNetwork(vmCreateContext.getFloatingIpDbId(), Long.parseLong((String)params.get("userId")), 
+				this.networkDbService.updatePublicNetwork(vmCreateContext.getFloatingIpDbId(), createUser, 
 						vmCreateContext.getFloatingIpInstanceId(), vmCreateContext.getPublicIp(), vmCreateContext.getCarrierName(), CloudvmNetworkStatusEnum.AVAILABLE);
 			}
 			params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));

@@ -101,31 +101,33 @@ public class ProductManageServiceImpl implements IProductManageService {
 	}
 	
 	private void transferParamsDateToCalculate(Map<String, Object> params, Long id, Map<String, Object> billingParams) {
-		billingParams.put("orderTime", params.get("order_time")+"");
+		billingParams.put("orderTime", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
 		if(id==Constants.PRODUCT_VM) {//云主机参数转换
 			FlavorResource flavor = resourceQueryService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
 			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
+			
 			billingParams.put("os_cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
 			billingParams.put("os_cpu_ram_type", flavor.getVcpus()+"_"+flavor.getRam());
-			billingParams.put("os_storage", params.get("volumeSize")+"");
+			billingParams.put("os_storage", params.get("volumeSize")==null?"0":params.get("volumeSize")+"");
 			billingParams.put("os_storage_type", volume.getName()+"");
-			billingParams.put("os_broadband", params.get("bandWidth")+"");
+			billingParams.put("os_broadband", params.get("bandWidth")==null?"0":params.get("bandWidth")+"");
+			
 			billingParams.put("order_num", params.get("count")+"");
-			billingParams.put("order_time", params.get("order_time")+"");
+			billingParams.put("order_time", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
 		} else if(id==Constants.PRODUCT_VOLUME) {//云硬盘
 			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
 			billingParams.put("os_storage", params.get("size")+"");
 			billingParams.put("os_storage_type", volume.getName()+"");
 			billingParams.put("order_num", params.get("count")+"");
-			billingParams.put("order_time", params.get("order_time")+"");
+			billingParams.put("order_time", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
 		} else if(id==Constants.PRODUCT_ROUTER) {//路由器
 			billingParams.put("os_router", "router");
 			billingParams.put("order_num", params.get("count")+"");
-			billingParams.put("order_time", params.get("order_time")+"");
+			billingParams.put("order_time", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
 		} else if(id==Constants.PRODUCT_FLOATINGIP) {//公网IP
 			billingParams.put("os_broadband", params.get("bandWidth")+"");
 			billingParams.put("order_num", params.get("count")+"");
-			billingParams.put("order_time", params.get("order_time")+"");
+			billingParams.put("order_time", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
 		}
 	}
 	
@@ -168,8 +170,10 @@ public class ProductManageServiceImpl implements IProductManageService {
 		}
 		
 		String orderTime = (String)billingParams.get("order_time");
+		//用户id,管理员可以为其他申请用户创建云主机
+		Long userId = paramsDataMap.get("userId")==null?this.sessionService.getSession().getUserId():(Integer)paramsDataMap.get("userId");
 		
-		return validateAndBuy(id, billingParams, orderTime, paramsData, displayData, obj);
+		return validateAndBuy(id, billingParams, orderTime, paramsData, displayData, userId, obj);
 	}
 	
 	/**
@@ -186,7 +190,8 @@ public class ProductManageServiceImpl implements IProductManageService {
 	  * @author lisuxiao
 	  * @date 2015年11月11日 上午10:27:56
 	  */
-	private boolean validateAndBuy(Long productId, Map<String, Object> billingParams, String orderTime, String paramsData, String displayData, ResultObject obj) {
+	private boolean validateAndBuy(Long productId, Map<String, Object> billingParams, String orderTime, 
+			String paramsData, String displayData, Long userId, ResultObject obj) {
 		boolean ret = false;
 		//保存各个产品id和元素所有规格对应关系，保存订阅、计算价格时用
 		Map<Long, List<BaseStandard>> productStandards = new HashMap<Long, List<BaseStandard>>();
@@ -205,7 +210,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 				productStandards.put(Constants.PRODUCT_VOLUME, volumeBaseStandards);
 				productStandards.put(Constants.PRODUCT_FLOATINGIP, flatingIpBaseStandards);
 				
-				createSubscriptionAndOrder(pros, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards);
+				createSubscriptionAndOrder(pros, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards, userId);
 			}
 		} else if(productId==Constants.PRODUCT_VOLUME || 
 				productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP) {
@@ -213,14 +218,14 @@ public class ProductManageServiceImpl implements IProductManageService {
 			ret = hostProductService.validateData(productId, billingParams, baseStandards);
 			if(ret) {
 				productStandards.put(productId, baseStandards);
-				createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards);
+				createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards, userId);
 			}
 		} else {//规划的通用逻辑
 			List<BaseStandard> baseStandards = this.productService.selectBaseStandardByProductId(productId);
 			ret = productService.validateData(productId, billingParams, baseStandards);
 			if(ret) {
 				productStandards.put(productId, baseStandards);
-				createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards);
+				createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards, userId);
 			}
 		}
 		
@@ -228,31 +233,31 @@ public class ProductManageServiceImpl implements IProductManageService {
 	}
 
 	private void createSubscriptionAndOrder(Set<Class<? extends BillingResource>> pros, Long productId, Map<String, Object> billingParams, String orderTime, 
-			String paramsData, String displayData, ResultObject obj, Map<Long, List<BaseStandard>> productStandards) {
+			String paramsData, String displayData, ResultObject obj, Map<Long, List<BaseStandard>> productStandards, Long userId) {
 		Order o = new Order();
 		for(int i=0; i<Integer.parseInt((String)billingParams.get("order_num")); i++) {
 			List<Subscription> subs = new ArrayList<Subscription>();
 			if(productId==Constants.PRODUCT_VM) {
 				if(pros!=null){
 					if(pros.contains(VMResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_VM, paramsData, displayData.split(";;")[0], billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(Constants.PRODUCT_VM));
+						createFormAndSubscription(Constants.PRODUCT_VM, paramsData, displayData==null?null:displayData.split(";;")[0], billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(Constants.PRODUCT_VM), userId);
 					}
 					if(pros.contains(VolumeResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_VOLUME, paramsData, displayData.split(";;")[1], billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_VOLUME));
+						createFormAndSubscription(Constants.PRODUCT_VOLUME, paramsData, displayData==null?null:displayData.split(";;")[1], billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_VOLUME), userId);
 					}
 					if(pros.contains(FloatingIpResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_FLOATINGIP, paramsData, displayData.split(";;")[2], billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_FLOATINGIP));
+						createFormAndSubscription(Constants.PRODUCT_FLOATINGIP, paramsData, displayData==null?null:displayData.split(";;")[2], billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_FLOATINGIP), userId);
 					}
 				}
 			} else {
-				createFormAndSubscription(productId, paramsData, displayData, billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(productId));
+				createFormAndSubscription(productId, paramsData, displayData, billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(productId), userId);
 			}
 			
 			if(i==0) {
 				//生产总订单
 				o.setOrderNumber(SerialNumberUtil.getNumber(2));
 				o.setStatus(0);
-				o.setCreateUser(sessionService.getSession().getUserId());
+				o.setCreateUser(userId);
 				o.setCreateTime(new Timestamp(new Date().getTime()));
 				this.orderService.insert(o);
 				obj.setData(o.getOrderNumber());
@@ -262,7 +267,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 				BigDecimal totalPrice = getOrderTotalPrice(sub, (String)billingParams.get("order_time"), billingParams, productStandards.get(sub.getProductId()));
 				
 				//生成子订单
-				this.orderSubService.createOrder(sub, o.getId(), sub.getSubscriptionDetails(), totalPrice);
+				this.orderSubService.createOrder(sub, o.getId(), sub.getSubscriptionDetails(), totalPrice, userId);
 			}
 			
 		}
@@ -283,7 +288,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 	  * @date 2015年11月11日 上午10:04:04
 	  */
 	private void createFormAndSubscription(Long productId, String paramsData, String displayData, Map<String, Object> billingParams, String orderTime, 
-			int invokeType,int batch, List<Subscription> subs, List<BaseStandard> baseStandards) {
+			int invokeType,int batch, List<Subscription> subs, List<BaseStandard> baseStandards, Long userId) {
 		//保存表单信息
 		ProductInfoRecord record = new ProductInfoRecord();
 		record.setParams(paramsData);
@@ -291,11 +296,11 @@ public class ProductManageServiceImpl implements IProductManageService {
 		record.setInvokeType(invokeType+"");
 		record.setBatch(batch);
 		record.setDescn(displayData);
-		record.setCreateUser(sessionService.getSession().getUserId());
+		record.setCreateUser(userId);
 		this.productInfoRecordService.insert(record);
 		
 		//生产订阅
-		Subscription sub = this.subscriptionService.createSubscription(productId, billingParams, record.getId(), new Date(), orderTime, baseStandards);
+		Subscription sub = this.subscriptionService.createSubscription(productId, billingParams, record.getId(), new Date(), orderTime, baseStandards, userId);
 		subs.add(sub);
 	}
 	

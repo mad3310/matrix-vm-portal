@@ -134,11 +134,14 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 
 	//创建云主机
 	@Override
-	public void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records) {
+	public void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records, Long tenantId) {
 		logger.info("开始创建云主机！");
 		
 		Map<String, Object> createInfo = new HashMap<String, Object>();
-		createInfo.put("userId", orderSubs.get(0).getCreateUser()+""); 
+		//云主机租户id
+		createInfo.put("userId", tenantId==null?orderSubs.get(0).getCreateUser()+"":tenantId+""); 
+		//所属用户
+		createInfo.put("createUser", orderSubs.get(0).getCreateUser()+""); 
 		createInfo.put("vmCreateConf", params); 
 		createInfo.put("orderNumber", orderSubs.get(0).getOrder().getOrderNumber()); 
 		

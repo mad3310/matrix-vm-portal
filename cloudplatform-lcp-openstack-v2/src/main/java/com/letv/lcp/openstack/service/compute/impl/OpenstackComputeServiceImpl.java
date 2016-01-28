@@ -108,13 +108,19 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	public String createVm(Long userId, VMCreateConf2 vmCreateConf, VmCreateListener vmCreateListener, Object listenerUserData, Map<String, Object> params) {
 		List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 		List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
+		String ret = null;
 		for (JSONObject jsonObject : vmCreateContexts) {
 			VmCreateContext context = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
-			createOneVm(userId, vmCreateConf, context, params);
+			ret = createOneVm(userId, vmCreateConf, context, params);
+			if(!"success".equals(ret)) {
+				break;
+			}
 			contexts.add(context);
 		}
-		params.put("vmCreateContexts", contexts);
-		return "success";
+		if("success".equals(ret)) {
+			params.put("vmCreateContexts", contexts);
+		}
+		return ret;
 	}
 
 	
@@ -152,7 +158,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
 				options.novaNetworks(ImmutableSet.<org.jclouds.openstack.nova.v2_0.domain.Network> of(org.jclouds.openstack.nova.v2_0.domain.Network.builder()
 						.portUuid(context.getSubnetPortInstanceId()).build()));
-			} else {
+			} 
+			if(vmCreateConf.getBindFloatingIp() && StringUtils.isNotEmpty(vmCreateConf.getSharedNetworkId())){
 				NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
 				NetworkApi networkApi = neutronApi.getNetworkApi(region);
 				Network sharedNetwork = networkApi.get(vmCreateConf.getSharedNetworkId());
@@ -186,7 +193,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
                     Server.Status status = server.getStatus();
                     return !((status == Server.Status.ACTIVE && !server.getAddresses().isEmpty()));
                 }
-            },new Timeout().time(1L).unit(TimeUnit.MINUTES),500L);
+            },new Timeout().time(10L).unit(TimeUnit.MINUTES),500L);
 			Server serverLater = serverApi.get(serverId);
 			for(Address address : serverLater.getAddresses().values()) {
 				context.setPrivateIp(address.getAddr());
@@ -203,7 +210,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 						, server.getId()
 				        , server.getName());
 			}
-		} catch (OpenStackException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 	    	errorEmailService.sendExceptionEmail(e, "云主机创建异常", userId, vmCreateConf.toString());
 	    	return e.getMessage();
@@ -261,7 +268,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 								"私有子网", vmCreateConf.getPrivateSubnetId());
 					}
 				}
-			} else {
+			} 
+			if(vmCreateConf.getBindFloatingIp() && StringUtils.isNotEmpty(vmCreateConf.getSharedNetworkId())) {
 				Network sharedNetwork = networkApi.get(vmCreateConf.getSharedNetworkId());
 				if (sharedNetwork == null || !sharedNetwork.getShared()) {
 					throw new ResourceNotFoundException("Shared Network", "共享网络", vmCreateConf.getSharedNetworkId());
@@ -373,7 +381,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 						"Virtual machine number must be greater than zero.", "虚拟机数量必须大于0");
 			}
 			params.put("vmCreateConf", JSONObject.toJSON(vmCreateConf));
-		} catch (OpenStackException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 	    	errorEmailService.sendExceptionEmail(e, "校验云主机创建参数异常", userId, vmCreateConf.toString());
 	    	return e.getMessage();
@@ -446,7 +454,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 				throw new UserOperationException(
 						"Ram amounts exceeding the quota.", "内存总量超过配额。");
 			}
-		} catch (OpenStackException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 	    	errorEmailService.sendExceptionEmail(e, "云主机创建未通过配额校验", userId, (String) params.get("vmCreateConf"));
 	    	return e.getMessage();
@@ -472,7 +480,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             NeutronApi neutronApi = apiService.getNeutronApi(userId, (String)params.get("uuid"));
     		NetworkApi networkApi = neutronApi.getNetworkApi(vmCreateConf.getRegion());
 
-            final String vmNetworkName;
+            String vmNetworkName = null;
             if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
             	Subnet privateSubnet = neutronApi.getSubnetApi(vmCreateConf.getRegion()).get(vmCreateConf.getPrivateSubnetId());
 				if (privateSubnet == null) {
@@ -487,7 +495,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 					}
 					vmNetworkName = privateNetwork.getName();
 				}
-            } else {
+            } 
+            if(vmCreateConf.getBindFloatingIp() && StringUtils.isNotEmpty(vmCreateConf.getSharedNetworkId())){
             	Network sharedNetwork = networkApi.get(vmCreateConf.getSharedNetworkId());
 				if (sharedNetwork == null || !sharedNetwork.getShared()) {
 					throw new ResourceNotFoundException("Shared Network", "共享网络", vmCreateConf.getSharedNetworkId());
@@ -508,8 +517,12 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
                         Server.Status serverStatus = server.getStatus();
                         if (serverStatus == Server.Status.ERROR || serverStatus == Server.Status.SHUTOFF) {
                             unFinishedVms.remove(vmCreateContext);
-                        } else if (serverStatus == Server.Status.ACTIVE && taskState == null && "active".equals(vmState) && !server.getAddresses().get(vmNetworkName).isEmpty()) {
-                            unFinishedVms.remove(vmCreateContext);
+                        } else if (serverStatus == Server.Status.ACTIVE && taskState == null && "active".equals(vmState)) {
+                        	if(null!=vmNetworkName && !server.getAddresses().get(vmNetworkName).isEmpty()) {
+                        		unFinishedVms.remove(vmCreateContext);
+                        	} else {
+                        		unFinishedVms.remove(vmCreateContext);
+                        	}
                         }
                     }
                 }
@@ -574,7 +587,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 					}
 				}
 				params.put("vmCreateContexts", contexts);
-			} catch (APINotAvailableException e) {
+			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后绑定公网ip异常", userId, (String) params.get("vmCreateConf"));
 		    	return e.getMessage();
@@ -606,7 +619,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 		if (!floatingIPApiOptional2.isPresent()) {
 			try {
 				throw new APINotAvailableException(FloatingIPApi.class);
-			} catch (APINotAvailableException e) {
+			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 		    	errorEmailService.sendExceptionEmail(e, "云主机创建完成后发送邮件异常", userId, params.get("vmCreateConf").toString());
 		    	return e.getMessage();

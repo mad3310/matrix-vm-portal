@@ -1,6 +1,8 @@
 package com.letv.lcp.openstack.service.base.impl;
 
 import java.text.MessageFormat;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 
@@ -233,6 +235,17 @@ public class OpenStackServiceImpl implements IOpenStackService {
         String userName = userVo.getUsername();
         return this.createSession(userId, email, userName);
 	}
+	
+	@Override
+	public IOpenStackSession createSession(long userId, OpenStackConf openStackConf) {
+		UserVo userVo = userService.getUcUserById(userId);
+		String email = userVo.getEmail();
+		String userName = userVo.getUsername();
+		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(userId, email));
+		openStackUser.setUserName(userName);
+		openStackUser.setInternalUser(false);
+		return new OpenStackSessionImpl(openStackConf, openStackUser);
+	}
 
 	@Override
 	public String getOpenStackTenantNameFromMatrixUser(long userVoUserId, String email) {
@@ -323,4 +336,15 @@ public class OpenStackServiceImpl implements IOpenStackService {
     public static OpenStackConf getOpenStackConf() {
         return INSTANCE.openStackConf;
     }
+
+	@Override
+	public OpenStackConf getOpenStackConfDefault() {
+		OpenStackConf openStackConf = new OpenStackConf();
+		openStackConf.setPublicEndpoint(publicEndpoint);
+		openStackConf.setAdminEndpoint(adminEndpoint);
+		openStackConf.setUserRegisterToken(userRegisterToken);
+		openStackConf.setRouterGatewayBandWidth(Integer.parseInt(routerGatewayBandWidth));
+		openStackConf.setBasicUserName(basicUserName);
+		return openStackConf;
+	}
 }

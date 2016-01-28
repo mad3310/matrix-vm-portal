@@ -104,8 +104,7 @@
 
 	          <value>/order/detail</value>
 
-	          <value>/subscription/renew</value>
-	          <value>/billing/renew</value>
+	          <value>/api</value>
 	          <value>/kaptcha</value>
 	          <value>/inviteCode</value>
 
