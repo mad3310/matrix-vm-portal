@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.lcp.ICloudvmServerOperatorDao">
+
+	<insert id="insert" parameterType="CloudvmServerOperatorModel" useGeneratedKeys="true" keyProperty="id" >
+	    insert into LCP_CLOUDVM_SERVER_OPERATOR 
+	        (SERVER_ID,USER_ID,DELETED,CREATE_TIME,CREATE_USER) 
+	    values
+	        (#{serverId},#{userId},#{deleted},now(),#{createUser})
+	</insert>	
+	
+</mapper>

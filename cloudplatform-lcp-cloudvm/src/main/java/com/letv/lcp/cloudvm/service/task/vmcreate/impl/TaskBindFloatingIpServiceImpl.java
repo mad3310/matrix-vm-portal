@@ -43,14 +43,13 @@ public class TaskBindFloatingIpServiceImpl extends BaseTask4VmCreateServiceImpl 
 			
 			tr.setResult(ret);
 			if("success".equals(ret) || "true".equals(ret)) {
-				Long createUser = params.get("createUser")==null?Long.parseLong((String)params.get("userId")):
-					Long.parseLong((String)params.get("createUser"));
+				Long userId = Long.parseLong((String)params.get("userId"));
 				//更新数据库
 				List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
 				for (VmCreateContext vmCreateContext : vmCreateContexts) {
-					this.computeDbService.updateServer(vmCreateContext.getServerDbId(), createUser, 
+					this.computeDbService.updateServer(vmCreateContext.getServerDbId(), userId, 
 							vmCreateContext.getFloatingIpDbId());
-					this.networkDbService.updatePublicNetwork(vmCreateContext.getVolumeDbId(), createUser,
+					this.networkDbService.updatePublicNetwork(vmCreateContext.getVolumeDbId(), userId,
 							CloudvmNetworkStatusEnum.BINDED);
 				}
 				params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));

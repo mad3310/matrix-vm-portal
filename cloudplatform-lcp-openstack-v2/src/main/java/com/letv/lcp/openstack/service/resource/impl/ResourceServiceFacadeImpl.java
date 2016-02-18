@@ -100,8 +100,8 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public String createKeyPair(String region, String name) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
-        String tenantId = openStackUser.getTenantId();
+        long userVoUserId = openStackUser.getTenantUserId();
+        String tenantId = openStackUser.getOpenStackTenantId();
 
         NovaApi novaApi = getNovaApi();
         return resourceService.createKeyPair(novaApi, userVoUserId, tenantId, region, name);
@@ -110,8 +110,8 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public void checkCreateKeyPair(String region, String name) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
-        String tenantId = openStackUser.getTenantId();
+        long userVoUserId = openStackUser.getTenantUserId();
+        String tenantId = openStackUser.getOpenStackTenantId();
 
         NovaApi novaApi = getNovaApi();
         resourceService.checkCreateKeyPair(novaApi, userVoUserId, tenantId, region, name);
@@ -120,8 +120,8 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public void deleteKeyPair(String region, String name) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
-        String tenantId = openStackUser.getTenantId();
+        long userVoUserId = openStackUser.getTenantUserId();
+        String tenantId = openStackUser.getOpenStackTenantId();
 
         NovaApi novaApi = getNovaApi();
         resourceService.deleteKeyPair(novaApi, userVoUserId, tenantId, region, name);
@@ -130,7 +130,7 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public Page listVm(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
 
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
@@ -144,13 +144,13 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
 
-        resourceService.bindFloatingIp(novaApi, neutronApi, region, vmId, floatingIpId, openStackUser.getEmail(), openStackUser.getUserName());
+        resourceService.bindFloatingIp(novaApi, neutronApi, region, vmId, floatingIpId, openStackUser.getTenantEmail(), openStackUser.getUserName());
     }
 
     @Override
     public void renameVm(String region, String vmId, String name) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
 
         NovaApi novaApi = getNovaApi();
 
@@ -160,7 +160,7 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public void deleteVolume(String region, String volumeId) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
 
         CinderApi cinderApi = getCinderApi();
 
@@ -185,7 +185,7 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public VMResource getVm(String region, String vmId) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
 
         NovaApi novaApi = getNovaApi();
         NeutronApi neutronApi = getNeutronApi();
@@ -203,7 +203,7 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public VolumeSnapshotResource getVolumeSnapshot(String region, String volumeSnapshotId) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
 
         CinderApi cinderApi = getCinderApi();
 
@@ -213,7 +213,7 @@ public class ResourceServiceFacadeImpl implements IResourceServiceFacade {
     @Override
     public Page listVolume(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException {
         OpenStackUser openStackUser = getOpenStackUser();
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
 
         CinderApi cinderApi = getCinderApi();
 

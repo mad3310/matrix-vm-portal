@@ -554,7 +554,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_NETWORK, privateNetworkCount + 1);
+						.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_NETWORK, privateNetworkCount + 1);
 
 				Optional<QuotaApi> quotaApiOptional = neutronApi
 						.getQuotaApi(region);
@@ -563,7 +563,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 				QuotaApi quotaApi = quotaApiOptional.get();
 
-				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+				Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 
 				if (quota.getNetwork() <= privateNetworkCount) {
 					throw new UserOperationException(
@@ -574,7 +574,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				networkApi.create(Network.createBuilder(name).build());
 
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_NETWORK);
+				localRcCountService.incRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.PRIVATE_NETWORK);
 
 				return null;
 			}
@@ -657,10 +657,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				});
 
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_NETWORK);
+				localRcCountService.decRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.PRIVATE_NETWORK);
 				if(subNetSize>0) {
 					//当私有网络下存在子网时，删除本地子网计数
-					localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET, subNetSize);
+					localRcCountService.decRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET, subNetSize);
 				}
 
 				return null;
@@ -773,7 +773,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, privateSubnetCount + 1);
+						.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, privateSubnetCount + 1);
 
 				Optional<QuotaApi> quotaApiOptional = neutronApi
 						.getQuotaApi(region);
@@ -782,7 +782,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 				QuotaApi quotaApi = quotaApiOptional.get();
 
-				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+				Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 
 				if (quota.getSubnet() <= privateSubnetCount) {
 					throw new UserOperationException(
@@ -799,7 +799,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				subnetApi.create(createBuilder.build());
 
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
+				localRcCountService.incRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
 
 				return null;
 			}
@@ -837,7 +837,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 				QuotaApi quotaApi = quotaApiOptional.get();
 
-				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+				Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 
 				Set<String> privateNetworkIds = new HashSet<String>();
 				List<Network> networkList = networkApi.list().concat().toList();
@@ -857,7 +857,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_NETWORK, privateNetworkIds.size() + 1);
+						.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_NETWORK, privateNetworkIds.size() + 1);
 
 				if (quota.getNetwork() <= privateNetworkIds.size()) {
 					throw new UserOperationException(
@@ -866,7 +866,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, privateSubnetCount + 1);
+						.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_SUBNET, privateSubnetCount + 1);
 
 				if (quota.getSubnet() <= privateSubnetCount) {
 					throw new UserOperationException(
@@ -884,8 +884,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				subnetApi.create(createBuilder.build());
 
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-				localRcCountService.incRcCount(openStackUser.getUserVoUserId(),region,CloudvmRcCountType.PRIVATE_NETWORK);
-				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
+				localRcCountService.incRcCount(openStackUser.getTenantUserId(),region,CloudvmRcCountType.PRIVATE_NETWORK);
+				localRcCountService.incRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
 
 				return null;
 			}
@@ -1173,7 +1173,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				});
 
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
+				localRcCountService.decRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.PRIVATE_SUBNET);
 
 				return null;
 			}
@@ -1510,7 +1510,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				.size();
 
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_ROUTER, existsRouterCount + 1);
+				.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_ROUTER, existsRouterCount + 1);
 
 		Optional<QuotaApi> quotaApiOptional = neutronApi
 				.getQuotaApi(region);
@@ -1519,7 +1519,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 		QuotaApi quotaApi = quotaApiOptional.get();
 
-		Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+		Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 
 		if (quota.getRouter() <= existsRouterCount) {
 			throw new UserOperationException(
@@ -1555,7 +1555,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				.size();
 
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_ROUTER, existsRouterCount + 1);
+				.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_ROUTER, existsRouterCount + 1);
 
 		Optional<QuotaApi> quotaApiOptional = neutronApi
 				.getQuotaApi(region);
@@ -1564,7 +1564,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 		QuotaApi quotaApi = quotaApiOptional.get();
 
-		Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+		Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 
 		if (quota.getRouter() <= existsRouterCount) {
 			throw new UserOperationException(
@@ -1604,7 +1604,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			successCreatedRouters.add(router);
 		}
 
-		long userVoUserId = openStackUser.getUserVoUserId();
+		long userVoUserId = openStackUser.getTenantUserId();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService()
 				.incRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.ROUTER);
 	}
@@ -2002,7 +2002,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
 						.onDelete(new ResourceLocator().region(region).id(routerId).type(RouterResource.class));
 
-				long userVoUserId = openStackUser.getUserVoUserId();
+				long userVoUserId = openStackUser.getTenantUserId();
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService()
 						.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.ROUTER);
 
@@ -2200,11 +2200,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					routerSubnetPortCount++;
 				}
 
-				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+				Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 				if (quota == null) {
 					throw new OpenStackException(MessageFormat.format(
 							"Quota of user '{0}' is null.",
-							openStackUser.getUserId()), "用户配额不可用");
+							openStackUser.getTenantUserName()), "用户配额不可用");
 				}
 				if (quota.getPort() <= routerSubnetPortCount) {
 					throw new UserOperationException(
@@ -2448,7 +2448,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				OpenStackServiceImpl.getOpenStackServiceGroup().getEventPublishService()
 						.onDelete(new ResourceLocator().region(region).id(floatingIpId).type(FloatingIpResource.class));
 
-				long userVoUserId = openStackUser.getUserVoUserId();
+				long userVoUserId = openStackUser.getTenantUserId();
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 				localRcCountService.decRcCount(userVoUserId, userVoUserId, region, CloudvmRcCountType.FLOATING_IP);
 				localRcCountService.decRcCount(userVoUserId, region, CloudvmRcCountType.BAND_WIDTH
@@ -2742,7 +2742,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			}
 		}
 
-		Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+		Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 		if (quota == null) {
 			throw new OpenStackException(
 					"User quota is not available.", "用户配额不可用");
@@ -2750,7 +2750,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		final int floatingIpCountQuota = quota.getFloatingIp();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
+				.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.",
@@ -2759,7 +2759,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		final int floatingIpBandWidthQuota = quota.getBandWidth();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
+				.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
 			throw new UserOperationException(
 					"Floating IP band width exceeding the quota.",
@@ -2822,7 +2822,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			}
 		}
 
-		Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+		Quota quota = quotaApi.getByTenant(openStackUser.getOpenStackTenantId());
 		if (quota == null) {
 			throw new OpenStackException(
 					"User quota is not available.", "用户配额不可用");
@@ -2830,7 +2830,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		final int floatingIpCountQuota = quota.getFloatingIp();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
+				.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_FLOATING_IP, floatingIpCount + count);
 		if (floatingIpCount + count > floatingIpCountQuota) {
 			throw new UserOperationException(
 					"Floating IP count exceeding the quota.",
@@ -2839,14 +2839,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 		final int floatingIpBandWidthQuota = quota.getBandWidth();
 		OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-				.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
+				.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_BAND_WIDTH, totalBandWidth + bandWidth * count);
 		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
 			throw new UserOperationException(
 					"Floating IP band width exceeding the quota.",
 					"公网IP带宽超过配额");
 		}
 
-		long userVoUserId = openStackUser.getUserVoUserId();
+		long userVoUserId = openStackUser.getTenantUserId();
 		ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
 		
 		//任务流创建所需

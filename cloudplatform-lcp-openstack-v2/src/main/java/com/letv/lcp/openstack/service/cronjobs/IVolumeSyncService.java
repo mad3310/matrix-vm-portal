@@ -5,7 +5,7 @@ import java.util.List;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 
 import com.letv.common.exception.MatrixException;
-import com.letv.lcp.openstack.model.user.OpenStackTenant;
+import com.letv.lcp.openstack.model.user.OpenStackUser;
 import com.letv.lcp.openstack.service.manage.check.Checker;
 import com.letv.portal.model.cloudvm.CloudvmVolume;
 
@@ -15,7 +15,7 @@ import com.letv.portal.model.cloudvm.CloudvmVolume;
 public interface IVolumeSyncService {
     void sync(int recordsPerPage) throws MatrixException;
 
-    void syncVolumeCreated(OpenStackTenant tenant, String region, List<Volume> cloudvmVolumes, Checker<Volume>
+    void syncVolumeCreated(OpenStackUser openStackUser, String region, List<Volume> cloudvmVolumes, Checker<Volume>
             checker);
 
     void syncStatus(List<CloudvmVolume> cloudvmVolumes, Checker<Volume>

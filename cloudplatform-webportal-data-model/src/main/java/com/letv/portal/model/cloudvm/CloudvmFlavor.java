@@ -14,6 +14,7 @@ public class CloudvmFlavor extends BaseModel {
     private Integer vcpus;
     private Integer ram;
     private Integer disk;
+    private Integer storage;
 
     public CloudvmFlavor() {
     }
@@ -27,7 +28,16 @@ public class CloudvmFlavor extends BaseModel {
         this.disk = disk;
     }
 
-    public String getFlavorId() {
+    
+    public Integer getStorage() {
+		return storage;
+	}
+
+	public void setStorage(Integer storage) {
+		this.storage = storage;
+	}
+
+	public String getFlavorId() {
         return flavorId;
     }
 

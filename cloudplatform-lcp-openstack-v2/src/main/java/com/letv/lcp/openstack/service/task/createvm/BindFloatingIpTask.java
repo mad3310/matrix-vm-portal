@@ -83,7 +83,7 @@ public class BindFloatingIpTask extends VmsCreateSubTask {
 		}
 
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", context
-				.getVmManager().getOpenStackUser().getEmail(),
+				.getVmManager().getOpenStackUser().getTenantEmail(),
 				"乐视云平台web-portal系统通知", "cloudvm/bindFloatingIps.ftl",
 				mailMessageModel);
 		mailMessage.setHtml(true);

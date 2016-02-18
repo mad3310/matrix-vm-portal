@@ -14,23 +14,12 @@ public class OpenStackTenant implements Serializable {
     private static final long serialVersionUID = -5937930998423002260L;
 
     public final String email;
-    public final long userId;
+    public final long userId;//lcp用户id(使用表WEBPORTAL_CLOUDVM_REGION中id)
     public final String tenantName;
     public final String password;
     public final String jcloudsCredentialsIdentity;
+    public String openStackTenantId;//openstack用户id
 
-//    public OpenStackTenant(String tenantName) {
-//        this(tenantName, null, null);
-//    }
-//
-//    public OpenStackTenant(String tenantName, Long userId, String email) {
-//        this.tenantName = tenantName;
-//        this.userId = userId;
-//        this.email = email;
-//        OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
-//        this.password = openStackServiceGroup.getPasswordService().userIdToPassword(tenantName);
-//        this.jcloudsCredentialsIdentity = OpenStackServiceImpl.createCredentialsIdentity(tenantName);
-//    }
 
     public OpenStackTenant(long userId, String email) {
         this.userId = userId;
@@ -38,6 +27,14 @@ public class OpenStackTenant implements Serializable {
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         this.tenantName = openStackServiceGroup.getOpenStackService().getOpenStackTenantNameFromMatrixUser(userId, email);
         this.password = openStackServiceGroup.getPasswordService().userIdToPassword(tenantName);
+        this.jcloudsCredentialsIdentity = OpenStackServiceImpl.createCredentialsIdentity(tenantName);
+    }
+    
+    public OpenStackTenant(long userId, String email, String tenantName, String password) {
+    	this.userId = userId;
+        this.email = email;
+        this.tenantName = tenantName;
+        this.password = password;
         this.jcloudsCredentialsIdentity = OpenStackServiceImpl.createCredentialsIdentity(tenantName);
     }
 

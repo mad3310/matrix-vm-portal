@@ -8,6 +8,12 @@ public class CloudvmRegion extends BaseModel {
 
 	private String code;
 	private String displayName;
+	
+	private String adminEndpoint;
+	private String publicEndpoint;
+	private String tenantName;
+	private String tenantEmail;
+	private String tenantPassword;
 
 	public CloudvmRegion() {
 	}
@@ -32,6 +38,46 @@ public class CloudvmRegion extends BaseModel {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public String getAdminEndpoint() {
+		return adminEndpoint;
+	}
+
+	public void setAdminEndpoint(String adminEndpoint) {
+		this.adminEndpoint = adminEndpoint;
+	}
+
+	public String getPublicEndpoint() {
+		return publicEndpoint;
+	}
+
+	public void setPublicEndpoint(String publicEndpoint) {
+		this.publicEndpoint = publicEndpoint;
+	}
+
+	public String getTenantName() {
+		return tenantName;
+	}
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
+	public String getTenantEmail() {
+		return tenantEmail;
+	}
+
+	public void setTenantEmail(String tenantEmail) {
+		this.tenantEmail = tenantEmail;
+	}
+
+	public String getTenantPassword() {
+		return tenantPassword;
+	}
+
+	public void setTenantPassword(String tenantPassword) {
+		this.tenantPassword = tenantPassword;
 	}
 
 }

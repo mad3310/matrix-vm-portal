@@ -33,8 +33,57 @@ public class VMCreateConf2 {
 	private String adminPass;
 
 	private int count;
+	
+	/**------管理员为其他用户创建所用---start----**/
+	private Long userId;
+	private String userName;
+	private String operatorIds;//以，隔开多个操作者
+	private String callbackId;
+	private Integer orderTime;
+	/**------管理员为其他用户创建所用---end----**/
+	
 
 	public VMCreateConf2() {
+	}
+
+	public Integer getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(Integer orderTime) {
+		this.orderTime = orderTime;
+	}
+
+	public String getCallbackId() {
+		return callbackId;
+	}
+
+	public void setCallbackId(String callbackId) {
+		this.callbackId = callbackId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getOperatorIds() {
+		return operatorIds;
+	}
+
+	public void setOperatorIds(String operatorIds) {
+		this.operatorIds = operatorIds;
 	}
 
 	@NotBlank

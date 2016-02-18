@@ -140,8 +140,8 @@ public class OpenStackSessionImpl implements IOpenStackSession {
 		}else{
 			if(session != null){
 				final long userId = session.getUserId();
-				final String openStackUserId = openStackUser.getUserId();
-				final String openStackUserPassword = openStackUser.getPassword();
+				final String openStackUserId = openStackUser.getTenantUserName();
+				final String openStackUserPassword = openStackUser.getTenantUserPassword();
 				final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
 				OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(new OpenStackUserInfo(openStackUser.tenant,sessionId));
 			}
@@ -153,12 +153,12 @@ public class OpenStackSessionImpl implements IOpenStackSession {
 //			final String password = OpenStackServiceImpl.getOpenStackServiceGroup().getPasswordService().userIdToPassword(openStackUser.getUserId());
 //			openStackUser.setPassword(password);
 
-			if (openStackUser.getEmail().endsWith("@letv.com")) {
+			if (openStackUser.getTenantEmail().endsWith("@letv.com")) {
 				openStackUser.setInternalUser(true);
 			}
 
-			if (!openStackUser.getEmail().contains("@") || !openStackUser.getUserId().contains("@")) {
-				throw new OpenStackException(MessageFormat.format("invalid user email or id,email:'{0}',userId:'{1}'.", openStackUser.getEmail(), openStackUser.getUserId()), "用户信息不合法");
+			if (!openStackUser.getTenantEmail().contains("@") || !openStackUser.getTenantUserName().contains("@")) {
+				throw new OpenStackException(MessageFormat.format("invalid user email or id,email:'{0}',userId:'{1}'.", openStackUser.getTenantEmail(), openStackUser.getTenantUserName()), "用户信息不合法");
 			}
 //		} catch (NoSuchAlgorithmException e) {
 //			throw new OpenStackException("后台服务不可用", e);
@@ -166,18 +166,18 @@ public class OpenStackSessionImpl implements IOpenStackSession {
 	}
 
 	private void initUser() throws OpenStackException {
-		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), openStackUser.getUserId(),
-				openStackUser.getPassword());
+		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), openStackUser.getTenantUserName(),
+				openStackUser.getTenantUserPassword());
 		if (!userExists.run()) {
-			new UserRegister(openStackConf.getAdminEndpoint(),openStackConf.getUserRegisterToken(), openStackUser.getUserId(), openStackUser.getPassword(), openStackUser.getEmail()).run();
-			userExists = new UserExists(openStackConf.getPublicEndpoint(), openStackUser.getUserId(), openStackUser.getPassword());
+			new UserRegister(openStackConf.getAdminEndpoint(),openStackConf.getUserRegisterToken(), openStackUser.getTenantUserName(), openStackUser.getTenantUserPassword(), openStackUser.getTenantEmail()).run();
+			userExists = new UserExists(openStackConf.getPublicEndpoint(), openStackUser.getTenantUserName(), openStackUser.getTenantUserPassword());
 			if (!userExists.run()) {
 				throw new OpenStackException(
-						"can not create openstack user:" + openStackUser.getUserId(),
-						"不能创建用户：" + openStackUser.getEmail());
+						"can not create openstack user:" + openStackUser.getTenantUserName(),
+						"不能创建用户：" + openStackUser.getTenantEmail());
 			}
 		}
-		openStackUser.setTenantId(userExists.getTenantId());
+		openStackUser.setOpenStackTenantId(userExists.getTenantId());
 	}
 
 	private void initResources() {

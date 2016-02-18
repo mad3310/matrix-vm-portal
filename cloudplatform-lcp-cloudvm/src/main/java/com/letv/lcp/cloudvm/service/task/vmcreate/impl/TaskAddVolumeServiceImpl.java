@@ -41,13 +41,12 @@ public class TaskAddVolumeServiceImpl extends BaseTask4VmCreateServiceImpl imple
 			
 			tr.setResult(ret);
 			if("success".equals(ret) || "true".equals(ret)) {
-				Long createUser = params.get("createUser")==null?Long.parseLong((String)params.get("userId")):
-					Long.parseLong((String)params.get("createUser"));
+				Long userId = Long.parseLong((String)params.get("userId"));
 				//更新数据库
 				List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class );
 				for (JSONObject json : vmCreateContexts) {
 					VmCreateContext vmCreateContext = JSONObject.parseObject(json.toString(), VmCreateContext. class);
-					this.storageDbService.updateStorage(vmCreateContext.getVolumeDbId(), createUser, 
+					this.storageDbService.updateStorage(vmCreateContext.getVolumeDbId(), userId, 
 							vmCreateContext.getServerDbId(), CloudvmVolumeStatusEnum.IN_USE);
 				}
 				tr.setSuccess(true);

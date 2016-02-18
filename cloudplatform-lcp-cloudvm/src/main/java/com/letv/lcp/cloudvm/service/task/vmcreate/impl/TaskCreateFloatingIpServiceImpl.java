@@ -53,12 +53,11 @@ public class TaskCreateFloatingIpServiceImpl extends BaseTask4VmCreateServiceImp
 		
 		tr.setResult(ret);
 		if("success".equals(ret) || "true".equals(ret)) {
-			Long createUser = params.get("createUser")==null?Long.parseLong((String)params.get("userId")):
-				Long.parseLong((String)params.get("createUser"));
+			Long userId = Long.parseLong((String)params.get("userId"));
 			//更新数据库
 			List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
 			for (VmCreateContext vmCreateContext : vmCreateContexts) {
-				this.networkDbService.updatePublicNetwork(vmCreateContext.getFloatingIpDbId(), createUser, 
+				this.networkDbService.updatePublicNetwork(vmCreateContext.getFloatingIpDbId(), userId, 
 						vmCreateContext.getFloatingIpInstanceId(), vmCreateContext.getPublicIp(), vmCreateContext.getCarrierName(), CloudvmNetworkStatusEnum.AVAILABLE);
 			}
 			params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));

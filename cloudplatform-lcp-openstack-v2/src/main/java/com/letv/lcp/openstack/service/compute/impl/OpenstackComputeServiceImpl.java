@@ -12,7 +12,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.IP;
@@ -48,6 +47,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.session.Session;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.lcp.cloudvm.listener.VmCreateListener;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.cloudvm.model.task.VmCreateContext;
@@ -95,6 +96,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
     private VMManager vmManager;
     @Autowired
     private ICloudvmRegionService cloudvmRegionService;
+    @Autowired
+    private SessionServiceImpl sessionService;
     
 
 	@Override
@@ -109,9 +112,15 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 		List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 		List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
 		String ret = null;
+		Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = Long.parseLong((String)params.get("userId"));
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
 		for (JSONObject jsonObject : vmCreateContexts) {
 			VmCreateContext context = JSONObject.parseObject(jsonObject.toString(), VmCreateContext.class);
-			ret = createOneVm(userId, vmCreateConf, context, params);
+			ret = createOneVm(userId, tenantId, vmCreateConf, context, params);
 			if(!"success".equals(ret)) {
 				break;
 			}
@@ -124,12 +133,12 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	}
 
 	
-	private String createOneVm(Long userId, VMCreateConf2 vmCreateConf, VmCreateContext context, Map<String, Object> params) {
+	private String createOneVm(Long userId, Long tenantId, VMCreateConf2 vmCreateConf, VmCreateContext context, Map<String, Object> params) {
 		CreateServerOptions options = new CreateServerOptions();
 		String sessionId = (String)params.get("uuid");
 		String region = vmCreateConf.getRegion();
 
-		NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
+		NovaApi novaApi = apiService.getNovaApi(tenantId, sessionId);
 		try {
 			if (StringUtils.isNotEmpty(vmCreateConf.getKeyPairName())) {
 				Optional<KeyPairApi> keyPairApiOptional = novaApi.getKeyPairApi(region);
@@ -160,7 +169,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 						.portUuid(context.getSubnetPortInstanceId()).build()));
 			} 
 			if(vmCreateConf.getBindFloatingIp() && StringUtils.isNotEmpty(vmCreateConf.getSharedNetworkId())){
-				NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+				NeutronApi neutronApi = apiService.getNeutronApi(tenantId, sessionId);
 				NetworkApi networkApi = neutronApi.getNetworkApi(region);
 				Network sharedNetwork = networkApi.get(vmCreateConf.getSharedNetworkId());
 				if (sharedNetwork == null || !sharedNetwork.getShared()) {
@@ -222,17 +231,31 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	public String getVmCreatePrepare(Map<String, Object> params) {
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		Long userId = Long.parseLong((String)params.get("userId"));
-		
+		Long tenantId = null;
 		try {
             validationService.validate(vmCreateConf);
             params.put("uuid", UUID.randomUUID().toString());
-            IOpenStackSession openStackSession = openStackService.createSession(userId);
-            openStackSession .init(null);
+            
+            
+            IOpenStackSession openStackSession = null;
+            if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+            	tenantId = Long.parseLong((String)params.get("userId"));
+            	openStackSession = openStackService.createSession(userId);
+            } else {
+            	tenantId = Long.parseLong((String)params.get("tenantId"));
+            	openStackSession = openStackService.createSession(userId, tenantId);
+            }
+            openStackSession.init(null);
+            Session s = new Session();
+            s.setUserId(userId);
+            s.setOpenStackSession(openStackSession);
+            sessionService.setSession(s, null);
+            
             OpenStackServiceImpl.getOpenStackServiceGroup().getResourceService()
-            	.createDefaultSecurityGroupAndRule(this.apiService.getNeutronApi(userId, (String)params.get("uuid")));
+            	.createDefaultSecurityGroupAndRule(this.apiService.getNeutronApi(tenantId, (String)params.get("uuid")));
 		} catch (Exception e) {
 	    	logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "云主机创建准备异常", userId, (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "云主机创建准备异常", userId, JSONObject.toJSONString(params.get("vmCreateConf")));
 	    	return e.getMessage();
 		}
         
@@ -245,12 +268,18 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 		String json = JSONObject.toJSONString(params.get("vmCreateConf"));
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject(json, VMCreateConf2.class);
 		Long userId = Long.parseLong((String)params.get("userId"));
+		Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = userId;
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
 		String sessionId = (String) params.get("uuid");
 		String region = vmCreateConf.getRegion();
 		
-		NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+		NeutronApi neutronApi = apiService.getNeutronApi(tenantId, sessionId);
 		NetworkApi networkApi = neutronApi.getNetworkApi(region);
-		NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
+		NovaApi novaApi = apiService.getNovaApi(tenantId, sessionId);
 
 		try {
 			Subnet privateSubnet = null;
@@ -291,7 +320,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			if (vmCreateConf.getVolumeSize() < 0) {
 				throw new UserOperationException("Data disk size cannot be less than zero", "数据盘大小不能小于0");
 			} else if (vmCreateConf.getVolumeSize() > 0) {
-				VolumeType volumeType = apiService.getCinderApi(userId, sessionId).getVolumeTypeApi(region).get(vmCreateConf.getVolumeTypeId());
+				VolumeType volumeType = apiService.getCinderApi(tenantId, sessionId).getVolumeTypeApi(region).get(vmCreateConf.getVolumeTypeId());
 				if (volumeType == null) {
 					throw new ResourceNotFoundException("Volume Type", "快照", vmCreateConf.getVolumeTypeId());
 				}
@@ -392,11 +421,17 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 	@Override
 	public String checkQuota(Map<String, Object> params) {
 		Long userId = Long.parseLong((String)params.get("userId"));
+		Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = Long.parseLong((String)params.get("userId"));
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
 		String jsonConf = JSONObject.toJSONString(params.get("vmCreateConf"));
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject(jsonConf, VMCreateConf2.class);
 		
 		String uuid = (String) params.get("uuid");
-		NovaApi novaApi = apiService.getNovaApi(userId, uuid);
+		NovaApi novaApi = apiService.getNovaApi(tenantId, uuid);
 		
 		int serverTotalCount = 0, serverTotalVcpus = 0, serverTotalRam = 0;
 		List<Server> servers = novaApi.getServerApi(vmCreateConf.getRegion())
@@ -429,9 +464,14 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 				throw new APINotAvailableException(QuotaApi.class);
 			}
 			
-			IOpenStackSession openStackSession = openStackService.createSession(userId);
+			IOpenStackSession openStackSession = null;
+			if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+				openStackSession = openStackService.createSession(userId);
+			} else {
+				openStackSession = openStackService.createSession(userId, tenantId);
+			}
             openStackSession.init(null);
-			Quota novaQuota = quotaApiOptional.get().getByTenant(openStackSession.getOpenStackUser().getTenantId());
+			Quota novaQuota = quotaApiOptional.get().getByTenant(openStackSession.getOpenStackUser().getOpenStackTenantId());
 			if (novaQuota == null) {
 				throw new OpenStackException("VM quota is not available.",
 						"虚拟机配额不可用。");
@@ -456,7 +496,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-	    	errorEmailService.sendExceptionEmail(e, "云主机创建未通过配额校验", userId, (String) params.get("vmCreateConf"));
+	    	errorEmailService.sendExceptionEmail(e, "云主机创建未通过配额校验", userId, jsonConf);
 	    	return e.getMessage();
 		}
 		return "success";
@@ -468,6 +508,12 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 		List<JSONObject> contexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class);
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		Long userId = Long.parseLong((String)params.get("userId"));
+		Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = userId;
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
 		int i=0;
 		try {
             List<VmCreateContext> unFinishedVms = new LinkedList<VmCreateContext>();
@@ -477,7 +523,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
                     unFinishedVms.add(vmCreateContext);
                 }
             }
-            NeutronApi neutronApi = apiService.getNeutronApi(userId, (String)params.get("uuid"));
+            NeutronApi neutronApi = apiService.getNeutronApi(tenantId, (String)params.get("uuid"));
     		NetworkApi networkApi = neutronApi.getNetworkApi(vmCreateConf.getRegion());
 
             String vmNetworkName = null;
@@ -506,7 +552,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             while (!unFinishedVms.isEmpty()) {
                 for (VmCreateContext vmCreateContext : unFinishedVms
                         .toArray(new VmCreateContext[0])) {
-                    Server server = apiService.getNovaApi(userId, (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion())
+                    Server server = apiService.getNovaApi(tenantId, (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion())
                             .get(vmCreateContext.getServerInstanceId());
                     if (server == null) {
                         unFinishedVms.remove(vmCreateContext);
@@ -548,8 +594,14 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
         List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get( "vmCreateContexts")), List.class );
         List<VmCreateContext> contexts = new ArrayList<VmCreateContext>();
         Long userId = Long.parseLong((String)params.get("userId"));
+        Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = userId;
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
         
-		NovaApi novaApi = apiService.getNovaApi(userId, (String)params.get("uuid"));
+		NovaApi novaApi = apiService.getNovaApi(tenantId, (String)params.get("uuid"));
 		for (JSONObject jsonObject : vmCreateContexts) {
 			VmCreateContext vmCreateContext = JSONObject.parseObject(jsonObject.toString(), VmCreateContext. class);
             contexts.add(vmCreateContext);
@@ -571,7 +623,7 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 					AttachInterfaceApi attachInterfaceApi = attachInterfaceApiOptional.get();
 					
 					Optional<FloatingIPApi> floatingIPApiOptional2 = apiService
-							.getNeutronApi(userId, (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
+							.getNeutronApi(tenantId, (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
 					if (!floatingIPApiOptional2.isPresent()) {
 						throw new APINotAvailableException(FloatingIPApi.class);
 					}
@@ -602,6 +654,12 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 		List<JSONObject> contexts = JSONObject.parseObject(JSONObject.toJSONString( params.get("vmCreateContexts")), List.class);
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
 		Long userId = Long.parseLong((String)params.get("userId"));
+		Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = Long.parseLong((String)params.get("userId"));
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
 		
 		UserModel user = this.userService.getUserById(userId);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -612,10 +670,10 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
         List<Map<String, Object>> vmModelList = new LinkedList<Map<String, Object>>();
         mailMessageModel.put("vmList", vmModelList);
         
-        ServerApi serverApi = apiService.getNovaApi(userId, (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion());
+        ServerApi serverApi = apiService.getNovaApi(tenantId, (String)params.get("uuid")).getServerApi(vmCreateConf.getRegion());
                 
         Optional<FloatingIPApi> floatingIPApiOptional2 = apiService
-				.getNeutronApi(userId, (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
+				.getNeutronApi(tenantId, (String)params.get("uuid")).getFloatingIPApi(vmCreateConf.getRegion());
 		if (!floatingIPApiOptional2.isPresent()) {
 			try {
 				throw new APINotAvailableException(FloatingIPApi.class);

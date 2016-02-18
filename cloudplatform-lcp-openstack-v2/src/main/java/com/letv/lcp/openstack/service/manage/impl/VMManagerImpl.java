@@ -659,7 +659,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         params.put("createTime", format.format(new Date(vm.getCreated())));
 
         MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",
-                openStackUser.getEmail(), "乐视云平台web-portal系统通知",
+                openStackUser.getTenantEmail(), "乐视云平台web-portal系统通知",
                 "cloudvm/createVm.ftl", params);
         mailMessage.setHtml(true);
         OpenStackServiceImpl.getOpenStackServiceGroup().getDefaultEmailSender()
@@ -682,7 +682,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         params.put("bindTime", format.format(new Date()));
 
         MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",
-                openStackUser.getEmail(), "乐视云平台web-portal系统通知",
+                openStackUser.getTenantEmail(), "乐视云平台web-portal系统通知",
                 "cloudvm/bindFloatingIp.ftl", params);
         mailMessage.setHtml(true);
         OpenStackServiceImpl.getOpenStackServiceGroup().getDefaultEmailSender()
@@ -1413,7 +1413,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     @Override
     public void attachVolume(final VMResource vmResource,
                              final VolumeResource volumeResource) throws OpenStackException {
-        volumeManager.checkVolumeOperational(openStackUser.getUserVoUserId(), volumeResource.getRegion(), volumeResource.getId());
+        volumeManager.checkVolumeOperational(openStackUser.getTenantUserId(), volumeResource.getRegion(), volumeResource.getId());
         runWithApi(new ApiRunnable<NovaApi, Void>() {
 
             @Override
@@ -1470,7 +1470,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                         });
 
                 ILocalVolumeService localVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalVolumeService();
-                Long userVoUserId = openStackUser.getUserVoUserId();
+                Long userVoUserId = openStackUser.getTenantUserId();
                 String region = volumeResource.getRegion();
                 Volume volume = ((VolumeResourceImpl) volumeManager.get(region, volumeResource.getId())).volume;
                 localVolumeService.update(userVoUserId, userVoUserId, volumeResource.getRegion(), volume);
@@ -1484,7 +1484,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     @Override
     public void detachVolume(final VMResource vmResource,
                              final VolumeResource volumeResource) throws OpenStackException {
-        volumeManager.checkVolumeOperational(openStackUser.getUserVoUserId(), volumeResource.getRegion(), volumeResource.getId());
+        volumeManager.checkVolumeOperational(openStackUser.getTenantUserId(), volumeResource.getRegion(), volumeResource.getId());
         runWithApi(new ApiRunnable<NovaApi, Void>() {
 
             @Override
@@ -1546,7 +1546,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
                 OpenStackServiceGroup serviceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
                 ILocalVolumeService localVolumeService = serviceGroup.getLocalVolumeService();
-                Long userVoUserId = openStackUser.getUserVoUserId();
+                Long userVoUserId = openStackUser.getTenantUserId();
                 String region = volumeResource.getRegion();
                 String volumeId = volumeResource.getId();
                 localVolumeService.updateStatus(userVoUserId, userVoUserId, region, volumeId, CloudvmVolumeStatus.DETTACHING);
@@ -1670,7 +1670,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     private void recordVmDeleted(String region, String vmId, Flavor flavor) throws OpenStackException {
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
         OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().recordVmDeleted(userVoUserId, region, vmId, flavor);
 
 //        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
@@ -1843,11 +1843,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
         ILocalImageService localImageService = openStackServiceGroup
                 .getLocalImageService();
-        long userVoUserId = openStackUser.getUserVoUserId();
+        long userVoUserId = openStackUser.getTenantUserId();
 
         int vmSnapshotCount = localImageService.countVmSnapshot(userVoUserId, region, null);
         OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-                .checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_VM_SNAPSHOT, vmSnapshotCount + 1);
+                .checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_VM_SNAPSHOT, vmSnapshotCount + 1);
 
         String imageId = serverApi.createImageFromServer(StringUtil.getPrefix(name, 128), vmId);
 

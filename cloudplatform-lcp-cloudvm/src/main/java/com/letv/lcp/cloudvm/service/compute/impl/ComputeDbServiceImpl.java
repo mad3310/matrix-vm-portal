@@ -9,7 +9,9 @@ import com.letv.lcp.cloudvm.service.compute.IComputeDbService;
 import com.letv.portal.enumeration.cloudvm.CloudvmServerStatusEnum;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.lcp.CloudvmServerModel;
+import com.letv.portal.model.cloudvm.lcp.CloudvmServerOperatorModel;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
+import com.letv.portal.service.lcp.ICloudvmServerOperatorService;
 import com.letv.portal.service.lcp.ICloudvmServerService;
 
 @Service("computeDbService")
@@ -19,6 +21,8 @@ public class ComputeDbServiceImpl implements IComputeDbService {
     private ICloudvmServerService cloudvmServerService;
     @Autowired
     private ICloudvmImageService cloudvmImageService;
+    @Autowired
+	private ICloudvmServerOperatorService cloudvmServerOperatorService;
     
     public CloudvmServerModel createServer(Long userId, Long tenantId, String region, Integer size, CloudvmServerStatusEnum status, 
     		String name, String imageInstanceId) {
@@ -62,6 +66,15 @@ public class ComputeDbServiceImpl implements IComputeDbService {
 	@Override
 	public void updateServer(Long id, Long userId, Long publicNetworkId) {
 		updateServer(id, userId, null, null, null, null, null, publicNetworkId);
+	}
+
+	@Override
+	public void saveCloudvmServerOperator(Long userId, Long serverId, Long operatorId) {
+		CloudvmServerOperatorModel operator = new CloudvmServerOperatorModel();
+		operator.setServerId(serverId);
+		operator.setUserId(operatorId);
+		operator.setCreateUser(userId);
+		cloudvmServerOperatorService.insert(operator);
 	}
 
 }

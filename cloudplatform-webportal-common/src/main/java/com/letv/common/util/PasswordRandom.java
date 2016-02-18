@@ -1,6 +1,8 @@
 package com.letv.common.util;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**Program Name: PasswordRandom <br>
  * Description:  随机生成密码串<br>
@@ -37,9 +39,28 @@ public class PasswordRandom {
 		return str.toString();
 	}
 	
+	/**
+	  * @Title: genStrByPattern
+	  * @Description: 根据正则表达式随机生成customLength位密码
+	  * @param len 密码长度 
+	  * @param patt 正则表达式
+	  * @return String  
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年2月18日 下午4:11:47
+	  */
+	public static String genStrByPattern(Integer len, String patt) {
+		Pattern pattern = Pattern.compile(patt);
+		String pwd = genStr(len);
+        while(!pattern.matcher(pwd).matches()) {
+        	pwd = genStr(len);
+        }
+        return pwd;
+	}
+	
 	public static void main(String[] args) {
-		for (int i = 0; i < 100000; i++) {
-			System.out.println(genStr(2));
+		for (int i = 0; i < 1000; i++) {
+			System.out.println(genStrByPattern(8, "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9]{8,30}"));
 		}
 	}
 

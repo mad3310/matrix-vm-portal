@@ -3,6 +3,7 @@ package com.letv.lcp.openstack.service.base;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.model.conf.OpenStackConf;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
+import com.letv.portal.model.cloudvm.CloudvmRegion;
 
 
 /**
@@ -15,15 +16,27 @@ public interface IOpenStackService {
     IOpenStackSession createSession(long userId);
     /**
       * @Title: createSession
+      * @Description: 根据openstack租户id创建openstack session
+      * @param userId 申请用户id
+      * @param tenantId 租户id
+      * @return IOpenStackSession   
+      * @throws 
+      * @author lisuxiao
+      * @date 2016年2月17日 上午11:31:00
+      */
+    IOpenStackSession createSession(Long userId, Long tenantId);
+    /**
+      * @Title: createSession
       * @Description: 创建openstack session
-      * @param userId 用户id  
-      * @param openStackConf openstack调用地址等相关信息
+      * @param applyUserId 申请人id  
+      * @param applyUserName 申请人用户名  
+      * @param vmRegion 集群信息包括调用地址,用户信息  
       * @return IOpenStackSession   
       * @throws 
       * @author lisuxiao
       * @date 2016年1月26日 下午5:58:04
       */
-    IOpenStackSession createSession(long userId, OpenStackConf openStackConf);
+    IOpenStackSession createSession(Long applyUserId, String applyUserName, CloudvmRegion vmRegion);
     
     /**
       * @Title: getOpenStackConfDefault

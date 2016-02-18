@@ -51,7 +51,7 @@ public class CheckNovaQuotaTask implements VmsCreateCheckSubTask {
                 .getNovaApi()
                 .getQuotaApi(region).get()
                 .getByTenant(
-                        context.getVmManager().getOpenStackUser().getTenantId());
+                        context.getVmManager().getOpenStackUser().getOpenStackTenantId());
         if (novaQuota == null) {
             throw new OpenStackException("VM quota is not available.",
                     "虚拟机配额不可用。");

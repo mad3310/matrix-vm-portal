@@ -37,7 +37,7 @@ public class CreateFloatingIpTask extends VmsCreateSubTask {
 				.getApiCache()
 				.getNeutronQuotaApi()
 				.getByTenant(
-						context.getVmManager().getOpenStackUser().getTenantId());
+						context.getVmManager().getOpenStackUser().getOpenStackTenantId());
 		if (quota == null) {
 			throw new OpenStackException("Floating IP quota is not available.",
 					"公网IP配额不可用。");

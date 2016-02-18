@@ -183,7 +183,7 @@ public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> impleme
 		runWithApi(new ApiRunnable<GlanceApi, Void>() {
 			@Override
 			public Void run(GlanceApi glanceApi) throws Exception {
-				long userVoUserId = openStackUser.getUserVoUserId();
+				long userVoUserId = openStackUser.getTenantUserId();
 				ILocalImageService localImageService = OpenStackServiceImpl
 						.getOpenStackServiceGroup().getLocalImageService();
 

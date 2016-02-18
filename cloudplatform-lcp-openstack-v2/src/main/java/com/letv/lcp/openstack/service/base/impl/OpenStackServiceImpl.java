@@ -42,6 +42,7 @@ import com.letv.lcp.openstack.service.session.impl.OpenStackSessionImpl;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.internal.UserExists;
 import com.letv.lcp.openstack.util.internal.UserRegister;
+import com.letv.portal.model.cloudvm.CloudvmRegion;
 import com.letv.portal.model.common.UserVo;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
@@ -221,6 +222,7 @@ public class OpenStackServiceImpl implements IOpenStackService {
 			String userName) {
 		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(userVoUserId, email));
 		openStackUser.setUserName(userName);
+		openStackUser.setApplyUserId(userVoUserId);
 //		openStackUser.setFirstLogin(false);
 		openStackUser.setInternalUser(false);
 
@@ -237,13 +239,25 @@ public class OpenStackServiceImpl implements IOpenStackService {
 	}
 	
 	@Override
-	public IOpenStackSession createSession(long userId, OpenStackConf openStackConf) {
-		UserVo userVo = userService.getUcUserById(userId);
-		String email = userVo.getEmail();
-		String userName = userVo.getUsername();
-		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(userId, email));
-		openStackUser.setUserName(userName);
-		openStackUser.setInternalUser(false);
+	public IOpenStackSession createSession(Long userId, Long tenantId) {
+		CloudvmRegion vmRegion = cloudvmRegionService.selectById(tenantId);
+		return this.createSession(userId, null, vmRegion);
+	}
+	
+	
+	@Override
+	public IOpenStackSession createSession(Long applyUserId, String applyUserName, CloudvmRegion vmRegion) {
+		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(vmRegion.getId(), vmRegion.getTenantEmail(),
+				vmRegion.getTenantName(), vmRegion.getTenantPassword()));
+		openStackUser.setUserName(applyUserName);
+		openStackUser.setApplyUserId(applyUserId);
+		
+		if(vmRegion.getAdminEndpoint()!=null) {
+			openStackConf.setAdminEndpoint(vmRegion.getAdminEndpoint());
+		}
+		if(vmRegion.getPublicEndpoint()!=null) {
+			openStackConf.setPublicEndpoint(vmRegion.getPublicEndpoint());
+		}
 		return new OpenStackSessionImpl(openStackConf, openStackUser);
 	}
 

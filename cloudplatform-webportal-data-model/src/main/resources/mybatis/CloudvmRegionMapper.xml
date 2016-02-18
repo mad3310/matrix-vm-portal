@@ -9,6 +9,11 @@
 
 		<result column="CODE" property="code" />
 		<result column="DISPLAY_NAME" property="displayName" />
+		<result column="ADMIN_ENDPOINT" property="adminEndpoint" />
+		<result column="PUBLIC_ENDPOINT" property="publicEndpoint" />
+		<result column="TENANT_NAME" property="tenantName" />
+		<result column="TENANT_EMAIL" property="tenantEmail" />
+		<result column="TENANT_PASSWORD" property="tenantPassword" />
 		
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -20,7 +25,7 @@
 	
 	<!-- WEBPORTAL_CLOUDVM_REGION table all fields -->
 	<sql id="Base_Column_List">
-		R.ID,R.CODE,R.DISPLAY_NAME,
+		R.ID,R.CODE,R.DISPLAY_NAME,R.ADMIN_ENDPOINT,R.PUBLIC_ENDPOINT,R.TENANT_NAME,R.TENANT_EMAIL,R.TENANT_PASSWORD,
 		R.DELETED,R.CREATE_TIME,R.CREATE_USER,R.UPDATE_TIME,R.UPDATE_USER
 	</sql>
 	

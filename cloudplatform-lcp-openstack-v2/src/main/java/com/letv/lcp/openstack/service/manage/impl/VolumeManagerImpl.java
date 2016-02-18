@@ -449,7 +449,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					}
 
 					VolumeQuota volumeQuota = cinderApi.getQuotaApi(region)
-							.getByTenant(openStackUser.getTenantId());
+							.getByTenant(openStackUser.getOpenStackTenantId());
 					if (volumeQuota == null) {
 						throw new OpenStackException(
 								"Volume quota is not available.", "云硬盘配额不可用。");
@@ -575,7 +575,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			for (Volume volume : volumes) {
 				pureVolumeSize += volume.getSize();
 			}
-			long userVoUserId=openStackUser.getUserVoUserId();
+			long userVoUserId=openStackUser.getTenantUserId();
 			String region=volumeCreateConf.getRegion();
 
 			ILocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
@@ -583,7 +583,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * volumeCreateConf.getSize());
 
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(volumeCreateConf.getRegion())
-					.getByTenant(openStackUser.getTenantId());
+					.getByTenant(openStackUser.getOpenStackTenantId());
 			if (volumeQuota == null) {
 				throw new OpenStackException(
 						"Volume quota is not available.", "云硬盘配额不可用。");
@@ -662,7 +662,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			for (Volume volume : volumes) {
 				pureVolumeSize += volume.getSize();
 			}
-			long userVoUserId=openStackUser.getUserVoUserId();
+			long userVoUserId=openStackUser.getTenantUserId();
 			String region=volumeCreateConf.getRegion();
 
 			ILocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
@@ -670,7 +670,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * volumeCreateConf.getSize());
 
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(volumeCreateConf.getRegion())
-					.getByTenant(openStackUser.getTenantId());
+					.getByTenant(openStackUser.getOpenStackTenantId());
 			if (volumeQuota == null) {
 				throw new OpenStackException(
 						"Volume quota is not available.", "云硬盘配额不可用。");
@@ -725,7 +725,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			}
 		} finally {
 			OpenStackServiceImpl.getOpenStackServiceGroup().getVolumeSyncService().syncVolumeCreated
-					(openStackUser.tenant, volumeCreateConf.getRegion(), toSyncCloudvmVolumeList, new Checker<Volume>() {
+					(openStackUser, volumeCreateConf.getRegion(), toSyncCloudvmVolumeList, new Checker<Volume>() {
 						@Override
 						public boolean check(Volume volume) throws Exception {
 							return volume.getStatus() != Status.CREATING;
@@ -999,7 +999,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					@Override
 					public Void apply() {
 						ICloudvmVolumeService cloudvmVolumeService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmVolumeService();
-						List<CloudvmVolume> cloudvmVolumeList = cloudvmVolumeService.selectByRegion(openStackUser.getUserVoUserId(),region);
+						List<CloudvmVolume> cloudvmVolumeList = cloudvmVolumeService.selectByRegion(openStackUser.getTenantUserId(),region);
 						for (CloudvmVolume cloudvmVolume : cloudvmVolumeList) {
 							idToVolume.put(cloudvmVolume.getVolumeId(), new LocalVolumeResource(cloudvmVolume));
 						}
@@ -1043,7 +1043,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 					throw new ResourceNotFoundException("Volume", "云硬盘", volumeId);
 				}
 
-				VolumeQuota quota = cinderApi.getQuotaApi(region).getByTenant(openStackUser.getTenantId());
+				VolumeQuota quota = cinderApi.getQuotaApi(region).getByTenant(openStackUser.getOpenStackTenantId());
 				if (quota == null) {
 					throw new OpenStackException(
 							"Volume snapshot quota is not available.", "云硬盘快照配额不可用。");
@@ -1051,7 +1051,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				List<? extends Volume> volumes = volumeApi.list().toList();
 				List<? extends Snapshot> snapshots = snapshotApi.list().toList();
 				OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce()
-						.checkQuota(openStackUser.getUserVoUserId(), region, CommonQuotaType.CLOUDVM_VOLUME_SNAPSHOT, snapshots.size() + 1);
+						.checkQuota(openStackUser.getTenantUserId(), region, CommonQuotaType.CLOUDVM_VOLUME_SNAPSHOT, snapshots.size() + 1);
 				if (sumGigabytes(volumes, snapshots) + volume.getSize() > quota.getGigabytes()) {
 					throw new UserOperationException(
 							"Volume snapshot size exceeding the quota.",
@@ -1070,7 +1070,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				snapshotApi.create(volumeId, createSnapshotOptions);
 
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-				localRcCountService.incRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
+				localRcCountService.incRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
 
 				return null;
 			}
@@ -1107,7 +1107,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}
 
 				ILocalRcCountService localRcCountService = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalRcCountService();
-				localRcCountService.decRcCount(openStackUser.getUserVoUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
+				localRcCountService.decRcCount(openStackUser.getTenantUserId(), region, CloudvmRcCountType.VOLUME_SNAPSHOT);
 
 				waitingVolumeSnapshot(snapshotApi, snapshotId, new Checker<Snapshot>() {
 					@Override

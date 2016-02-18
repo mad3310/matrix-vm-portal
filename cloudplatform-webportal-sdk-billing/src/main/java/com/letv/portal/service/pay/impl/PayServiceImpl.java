@@ -29,6 +29,7 @@ import com.letv.common.util.CalendarUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
 import com.letv.lcp.openstack.model.billing.CheckResult;
+import com.letv.lcp.openstack.service.session.IOpenStackSession;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.constant.Constants;
 import com.letv.portal.model.common.UserVo;
@@ -163,7 +164,7 @@ public class PayServiceImpl implements IPayService {
 		//3代表订单支付金额为0或订单金额全部使用账户余额支付时流水编号自己生成
 		if(updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, useAccountPrice)) {
 			//创建应用实例
-			createInstance(orderSubs, null);
+			createInstance(orderSubs, null, true);
 			ret.put("responseUrl", this.PAY_SUCCESS + "/" + orderNumber);
 			ret.put("response", true);
 			
@@ -414,7 +415,7 @@ public class PayServiceImpl implements IPayService {
 					}
 					
 					// ④创建应用实例
-					createInstance(orderSubs, null);
+					createInstance(orderSubs, null, true);
 				}
 				
 				return true;
@@ -511,11 +512,12 @@ public class PayServiceImpl implements IPayService {
 	  * @Description: 创建服务
 	  * @param orderSubs
 	  * @param tenantId 云主机租户id  
+	  * @param sendEmail 创建完成后是否需要发送邮件给申请人 
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2016年1月28日 下午3:15:47
 	  */
-	private void createInstance(final List<OrderSub> orderSubs, final Long tenantId) {
+	private void createInstance(final List<OrderSub> orderSubs, final Long tenantId, final boolean sendEmail) {
 		final List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
 		for (OrderSub orders : orderSubs) {
 			records.add(orders.getProductInfoRecord());
@@ -528,7 +530,7 @@ public class PayServiceImpl implements IPayService {
 					if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
 						logger.debug("调用服务创建：{}-{}", orderSub.getSubscription().getProductId(), orderSub.getProductInfoRecord().getParams());
 						if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
-							hostProductService.createVm(orderSubs, orderSub.getProductInfoRecord().getParams(), records, tenantId);
+							hostProductService.createVm(orderSubs, orderSub.getProductInfoRecord().getParams(), records, tenantId, sendEmail);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
 							hostProductService.createVolume(orderSubs, orderSub.getProductInfoRecord().getParams(), records);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
@@ -564,8 +566,9 @@ public class PayServiceImpl implements IPayService {
 		
 		//4代表审批通过时流水编号自己生成
 		if(updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(4), new Date(), 4, totalPrice)) {
+			IOpenStackSession openstackSession = (IOpenStackSession) this.sessionService.getSession().getOpenStackSession();
 			//创建应用实例
-			createInstance(orderSubs, this.sessionService.getSession().getUserId());
+			createInstance(orderSubs, openstackSession.getOpenStackUser().getTenantUserId(), false);
 		}
 		
 		return ret;

@@ -70,13 +70,21 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
             } else {
             	sessionId = RandomUtil.generateRandomSessionId();
             }
-            final IOpenStackSession openStackSession = this.openStackService.createSession(userId);
+            Long tenantId = null;
+            IOpenStackSession openStackSession = null;
+    		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+    			tenantId = Long.parseLong((String)params.get("userId"));
+    			openStackSession = this.openStackService.createSession(userId);
+    		} else {
+    			tenantId = Long.parseLong((String)params.get("tenantId"));
+    			openStackSession = this.openStackService.createSession(userId, tenantId);
+    		}
             openStackSession.init(null);
             try {
-                CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
+                CinderApi cinderApi = apiService.getCinderApi(tenantId, sessionId);
                 ((VolumeManagerImpl) openStackSession.getVolumeManager()).create(cinderApi, storage, listener, listenerUserData, params);
             } finally {
-                apiService.clearCache(userId, sessionId);
+                apiService.clearCache(tenantId, sessionId);
             }
         } catch (Exception e) {
         	logger.error(e.getMessage(), e);
@@ -137,17 +145,23 @@ public class OpenstackStorageServiceImpl implements IOpenstackStorageService  {
 	@Override
 	public String addVolume(Map<String, Object> params) {
 		Long userId = Long.parseLong((String)params.get("userId"));
+		Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = Long.parseLong((String)params.get("userId"));
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
 		String sessionId = (String)params.get("uuid");
 		VMCreateConf2 vmCreateConf = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateConf")), VMCreateConf2.class);
         List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class );
 		String region = vmCreateConf.getRegion();
 
         OpenStackServiceGroup openStackServiceGroup = OpenStackServiceImpl.getOpenStackServiceGroup();
-        final VolumeApi volumeApi = apiService.getCinderApi(userId, sessionId).getVolumeApi(region);
-        final ServerApi serverApi = apiService.getNovaApi(userId, sessionId).getServerApi(region);
+        final VolumeApi volumeApi = apiService.getCinderApi(tenantId, sessionId).getVolumeApi(region);
+        final ServerApi serverApi = apiService.getNovaApi(tenantId, sessionId).getServerApi(region);
         
         Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = apiService
-				.getNovaApi(userId, sessionId).getVolumeAttachmentApi(region);
+				.getNovaApi(tenantId, sessionId).getVolumeAttachmentApi(region);
         try {
 			if (!volumeAttachmentApiOptional.isPresent()) {
 				throw new APINotAvailableException(VolumeAttachmentApi.class);

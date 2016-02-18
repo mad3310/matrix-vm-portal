@@ -11,6 +11,7 @@
 		<result column="VCPUS" property="vcpus"/>
 		<result column="RAM" property="ram"/>
 		<result column="DISK" property="disk"/>
+		<result column="STORAGE" property="storage"/>
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -20,7 +21,7 @@
 
 	<!-- WEBPORTAL_ADMIN_OP_LOG table all fields -->
 	<sql id="Base_Column_List">
-		f.ID,f.REGION,f.FLAVOR_ID,f.VCPUS,f.RAM,f.DISK,
+		f.ID,f.REGION,f.FLAVOR_ID,f.VCPUS,f.RAM,f.DISK,f.STORAGE,
 		f.DELETED,f.CREATE_TIME,f.CREATE_USER,f.UPDATE_TIME,f.UPDATE_USER
 	</sql>
 

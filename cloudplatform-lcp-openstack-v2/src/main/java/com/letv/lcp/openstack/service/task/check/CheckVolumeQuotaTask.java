@@ -42,7 +42,7 @@ public class CheckVolumeQuotaTask implements VmsCreateCheckSubTask {
                 .getCinderApi()
                 .getQuotaApi(region)
                 .getByTenant(
-                        context.getVmManager().getOpenStackUser().getTenantId());
+                        context.getVmManager().getOpenStackUser().getOpenStackTenantId());
         if (quota == null) {
             throw new OpenStackException("Cinder quota is not available.",
                     "云硬盘的配额不可用。");

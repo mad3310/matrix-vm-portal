@@ -69,14 +69,21 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
             } else {
             	sessionId = RandomUtil.generateRandomSessionId();
             }
-            
-            final IOpenStackSession openStackSession = this.openStackService.createSession(userId);
+            Long tenantId = null;
+            IOpenStackSession openStackSession = null;
+    		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+    			tenantId = Long.parseLong((String)params.get("userId"));
+    			openStackSession = this.openStackService.createSession(userId);
+    		} else {
+    			tenantId = Long.parseLong((String)params.get("tenantId"));
+    			openStackSession = this.openStackService.createSession(userId, tenantId);
+    		}
             openStackSession.init(null);
             try {
-                NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+                NeutronApi neutronApi = apiService.getNeutronApi(tenantId, sessionId);
                 ((NetworkManagerImpl) openStackSession.getNetworkManager()).createFloatingIp(neutronApi, floatingIpCreateConf, listener, listenerUserData, params);
             } finally {
-                apiService.clearCache(userId, sessionId);
+                apiService.clearCache(tenantId, sessionId);
             }
         } catch (Exception e) {
         	logger.error(e.getMessage(), e);
@@ -151,20 +158,25 @@ public class OpenstackNetworkServiceImpl implements IOpenstackNetworkService  {
 		}
 		params.put("vmCreateContexts", contexts);
 		
-		Long userId = Long.parseLong((String)params.get("userId"));
-		Subnet privateSubnet = apiService.getNeutronApi(userId, (String)params.get("uuid")).getSubnetApi(vmCreateConf.getRegion())
+		Long tenantId = null;
+		if(params.get("tenantId")==null) {//当租户id为空时，使用申请人作为租户
+			tenantId = Long.parseLong((String)params.get("userId"));
+		} else {
+			tenantId = Long.parseLong((String)params.get("tenantId"));
+		}
+		Subnet privateSubnet = apiService.getNeutronApi(tenantId, (String)params.get("uuid")).getSubnetApi(vmCreateConf.getRegion())
 				.get(vmCreateConf.getPrivateSubnetId());
 		Network privateNetwork = null;
 		try {
-			privateNetwork = getPrivateNetwork(userId, (String)params.get("uuid"), vmCreateConf, privateSubnet);
+			privateNetwork = getPrivateNetwork(tenantId, (String)params.get("uuid"), vmCreateConf, privateSubnet);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-        	errorEmailService.sendExceptionEmail(e, "创建云主机中的子网获取异常", userId, vmCreateConf.toString());
+        	errorEmailService.sendExceptionEmail(e, "创建云主机中的子网获取异常", tenantId, vmCreateConf.toString());
         	return e.getMessage();
 		}
 
 		for (VmCreateContext vmCreateContext : contexts) {
-			Port subnetPort = apiService.getNeutronApi(userId, (String)params.get("uuid")).getPortApi(vmCreateConf.getRegion())
+			Port subnetPort = apiService.getNeutronApi(tenantId, (String)params.get("uuid")).getPortApi(vmCreateConf.getRegion())
 					.create(Port
 							.createBuilder(privateNetwork.getId())
 							.fixedIps(

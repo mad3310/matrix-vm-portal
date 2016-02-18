@@ -170,7 +170,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 		}
 		
 		String orderTime = (String)billingParams.get("order_time");
-		//用户id,管理员可以为其他申请用户创建云主机
+		//申请人id，该订阅所属人
 		Long userId = paramsDataMap.get("userId")==null?this.sessionService.getSession().getUserId():(Integer)paramsDataMap.get("userId");
 		
 		return validateAndBuy(id, billingParams, orderTime, paramsData, displayData, userId, obj);
@@ -193,6 +193,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 	private boolean validateAndBuy(Long productId, Map<String, Object> billingParams, String orderTime, 
 			String paramsData, String displayData, Long userId, ResultObject obj) {
 		boolean ret = false;
+		String orderNumber = null;
 		//保存各个产品id和元素所有规格对应关系，保存订阅、计算价格时用
 		Map<Long, List<BaseStandard>> productStandards = new HashMap<Long, List<BaseStandard>>();
 		if(productId==Constants.PRODUCT_VM) {//云主机走自己的验证和计算
@@ -210,7 +211,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 				productStandards.put(Constants.PRODUCT_VOLUME, volumeBaseStandards);
 				productStandards.put(Constants.PRODUCT_FLOATINGIP, flatingIpBaseStandards);
 				
-				createSubscriptionAndOrder(pros, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards, userId);
+				orderNumber = createSubscriptionAndOrder(pros, productId, billingParams, orderTime, paramsData, displayData, productStandards, userId);
 			}
 		} else if(productId==Constants.PRODUCT_VOLUME || 
 				productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP) {
@@ -218,39 +219,43 @@ public class ProductManageServiceImpl implements IProductManageService {
 			ret = hostProductService.validateData(productId, billingParams, baseStandards);
 			if(ret) {
 				productStandards.put(productId, baseStandards);
-				createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards, userId);
+				orderNumber = createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, productStandards, userId);
 			}
 		} else {//规划的通用逻辑
 			List<BaseStandard> baseStandards = this.productService.selectBaseStandardByProductId(productId);
 			ret = productService.validateData(productId, billingParams, baseStandards);
 			if(ret) {
 				productStandards.put(productId, baseStandards);
-				createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, obj, productStandards, userId);
+				orderNumber = createSubscriptionAndOrder(null, productId, billingParams, orderTime, paramsData, displayData, productStandards, userId);
 			}
 		}
-		
+		obj.setData(orderNumber);
 		return ret;
 	}
 
-	private void createSubscriptionAndOrder(Set<Class<? extends BillingResource>> pros, Long productId, Map<String, Object> billingParams, String orderTime, 
-			String paramsData, String displayData, ResultObject obj, Map<Long, List<BaseStandard>> productStandards, Long userId) {
+	private String createSubscriptionAndOrder(Set<Class<? extends BillingResource>> pros, Long productId, Map<String, Object> billingParams, String orderTime, 
+			String paramsData, String displayData, Map<Long, List<BaseStandard>> productStandards, Long userId) {
 		Order o = new Order();
 		for(int i=0; i<Integer.parseInt((String)billingParams.get("order_num")); i++) {
 			List<Subscription> subs = new ArrayList<Subscription>();
 			if(productId==Constants.PRODUCT_VM) {
 				if(pros!=null){
 					if(pros.contains(VMResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_VM, paramsData, displayData==null?null:displayData.split(";;")[0], billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(Constants.PRODUCT_VM), userId);
+						createFormAndSubscription(Constants.PRODUCT_VM, paramsData, displayData==null?null:displayData.split(";;")[0], 
+								billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(Constants.PRODUCT_VM), userId);
 					}
 					if(pros.contains(VolumeResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_VOLUME, paramsData, displayData==null?null:displayData.split(";;")[1], billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_VOLUME), userId);
+						createFormAndSubscription(Constants.PRODUCT_VOLUME, paramsData, displayData==null?null:displayData.split(";;")[1], 
+								billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_VOLUME), userId);
 					}
 					if(pros.contains(FloatingIpResource.class)) {
-						createFormAndSubscription(Constants.PRODUCT_FLOATINGIP, paramsData, displayData==null?null:displayData.split(";;")[2], billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_FLOATINGIP), userId);
+						createFormAndSubscription(Constants.PRODUCT_FLOATINGIP, paramsData, displayData==null?null:displayData.split(";;")[2], 
+								billingParams, orderTime, 0, i, subs, productStandards.get(Constants.PRODUCT_FLOATINGIP), userId);
 					}
 				}
 			} else {
-				createFormAndSubscription(productId, paramsData, displayData, billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(productId), userId);
+				createFormAndSubscription(productId, paramsData, displayData, 
+						billingParams, orderTime, i==0?1:0, i, subs, productStandards.get(productId), userId);
 			}
 			
 			if(i==0) {
@@ -260,7 +265,6 @@ public class ProductManageServiceImpl implements IProductManageService {
 				o.setCreateUser(userId);
 				o.setCreateTime(new Timestamp(new Date().getTime()));
 				this.orderService.insert(o);
-				obj.setData(o.getOrderNumber());
 			}
 			
 			for (Subscription sub : subs) {
@@ -271,6 +275,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 			}
 			
 		}
+		return o.getOrderNumber();
 	}
 		
 	
