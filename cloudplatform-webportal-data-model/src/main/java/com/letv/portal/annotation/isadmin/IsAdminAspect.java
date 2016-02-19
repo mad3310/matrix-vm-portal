@@ -1,4 +1,4 @@
-package com.letv.portal.service.isadmin;
+package com.letv.portal.annotation.isadmin;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -19,7 +19,7 @@ public class IsAdminAspect {
 	public void userAccess() {} 
 	
 	@Before(value="com.letv.portal.service.isadmin.IsAdminAspect.userAccess()&&@annotation(an)",argNames="an")
-	public void beforeAdvice(IsAdminAnnotation an) {
+	public void beforeAdvice(IsAdminValid an) {
 		if(an!=null && an.isAdmin().getCode()) {
 			if(!this.sessionServiceImpl.getSession().isAdmin()) {
 				throw new SecurityServiceException("没有权限访问");

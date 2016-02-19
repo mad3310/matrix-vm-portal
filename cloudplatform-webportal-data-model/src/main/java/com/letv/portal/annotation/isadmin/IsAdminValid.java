@@ -1,4 +1,4 @@
-package com.letv.portal.service.isadmin;
+package com.letv.portal.annotation.isadmin;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,6 +10,6 @@ import com.letv.portal.enumeration.IsAdminEnum;
 
 @Retention(RetentionPolicy.RUNTIME) 
 @Target(ElementType.METHOD) 
-public @interface IsAdminAnnotation { 
+public @interface IsAdminValid { 
 	IsAdminEnum isAdmin();
 }

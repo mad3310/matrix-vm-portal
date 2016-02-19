@@ -29,7 +29,9 @@ import com.letv.lcp.openstack.model.billing.CheckResult;
 import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
 import com.letv.lcp.openstack.service.validation.IValidationService;
+import com.letv.portal.annotation.security.SecurityValid;
 import com.letv.portal.constant.Constants;
+import com.letv.portal.enumeration.SecretKeyEnum;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
@@ -49,7 +51,7 @@ import com.letv.portal.vo.cloudvm.form.vm.VmCreateForm;
  *
  */
 @Controller
-@RequestMapping("/rest/service")
+@RequestMapping("/api/service")
 public class ServiceApiController {
 
 	private final static Logger logger = LoggerFactory.getLogger(ServiceApiController.class);
@@ -76,7 +78,8 @@ public class ServiceApiController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/vm",method=RequestMethod.POST)
-	//@IsAdminAnnotation(isAdmin=IsAdminEnum.YES)
+	//@IsAdminValid(isAdmin=IsAdminEnum.YES)
+	@SecurityValid(paramKey="conf", signKey="sign", secretKey=SecretKeyEnum.CMDB)
 	public @ResponseBody ResultObject createVm(HttpServletRequest request, HttpServletResponse response, ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		

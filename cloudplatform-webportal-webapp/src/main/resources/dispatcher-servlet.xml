@@ -18,7 +18,12 @@
 	<aop:aspectj-autoproxy proxy-target-class="true">
         <aop:include name="isAdmin"/>
     </aop:aspectj-autoproxy>
-    <bean id="isAdmin" class="com.letv.portal.service.isadmin.IsAdminAspect"></bean>
+    <bean id="isAdmin" class="com.letv.portal.annotation.isadmin.IsAdminAspect"></bean>
+    
+    <aop:aspectj-autoproxy proxy-target-class="true">
+        <aop:include name="securityAspect"/>
+    </aop:aspectj-autoproxy>
+    <bean id="securityAspect" class="com.letv.portal.annotation.security.SecurityAspect"></bean>
 	
 
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
