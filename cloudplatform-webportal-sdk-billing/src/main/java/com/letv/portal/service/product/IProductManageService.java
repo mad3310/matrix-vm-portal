@@ -13,6 +13,6 @@ public interface IProductManageService {
 	
 	boolean buy(Long id, String paramsData, String displayData, ResultObject obj);
 	
-	CheckResult validateParamsDataByServiceProvider(Long id, String params);
+	CheckResult validateParamsDataByServiceProvider(Long id, String params, boolean auditUser);
 	
 }

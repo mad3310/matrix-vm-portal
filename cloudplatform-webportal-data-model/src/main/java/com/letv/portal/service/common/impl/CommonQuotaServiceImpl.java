@@ -1,21 +1,27 @@
 package com.letv.portal.service.common.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.common.ICommonQuotaDao;
 import com.letv.portal.model.common.CommonQuota;
 import com.letv.portal.model.common.CommonQuotaModule;
 import com.letv.portal.model.common.CommonQuotaType;
+import com.letv.portal.model.common.UserModel;
 import com.letv.portal.service.common.ICommonQuotaService;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.letv.portal.service.common.IUserService;
 
 @Service
 public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> implements ICommonQuotaService {
@@ -24,6 +30,11 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
 
     @Resource
     private ICommonQuotaDao commonQuotaDao;
+    @Autowired
+    private IUserService userService;
+    
+    @Value("${cmdb.user}")
+    private String cmdbUser;
 
     public CommonQuotaServiceImpl() {
         super(CommonQuota.class);
@@ -103,6 +114,7 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
         if (!commonQuotas.isEmpty()) {
             return commonQuotas.get(0);
         } else {
+        	
             CommonQuota commonQuota = new CommonQuota();
             commonQuota.setRegion(region);
             commonQuota.setTenantId(tenantId);
@@ -122,6 +134,11 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
         for (CommonQuota commonQuota : commonQuotas) {
             typeToQuota.put(commonQuota.getType(), commonQuota);
         }
+        UserModel user = this.userService.selectById(tenantId);
+        boolean innerUser = false;
+        if(cmdbUser.contains(user.getEmail().substring(user.getEmail().indexOf("@")))) {
+        	innerUser = true;
+        }
         for (CommonQuotaType quotaType : CommonQuotaType.values()) {
             if (typeToQuota.get(quotaType) == null) {
                 CommonQuota commonQuota = new CommonQuota();
@@ -130,7 +147,11 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
                 commonQuota.setCreateUser(tenantId);
                 commonQuota.setModule(quotaType.getModule());
                 commonQuota.setType(quotaType);
-                commonQuota.setValue(quotaType.getDefaultQuota());
+                if(innerUser) {
+                	commonQuota.setValue(0l);
+                } else {
+                	commonQuota.setValue(quotaType.getDefaultQuota());
+                }
                 insert(commonQuota);
                 commonQuotas.add(commonQuota);
             }
@@ -147,4 +168,38 @@ public class CommonQuotaServiceImpl extends BaseServiceImpl<CommonQuota> impleme
         }
         return typeToValue;
     }
+
+	@Override
+	public void insertOrUpdateQuota(long tenantId, String region,
+			CommonQuotaModule module, CommonQuotaType type, Long value) {
+		 if (StringUtils.isEmpty(region)) {
+            throw new ValidateException("地域不能为空");
+        }
+        if (module == null) {
+            throw new ValidateException("模块不能为空");
+        }
+        if (type == null) {
+            throw new ValidateException("类型不能为空");
+        }
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("tenantId", tenantId);
+        paras.put("region", region);
+        paras.put("module", module);
+        paras.put("type", type);
+        List<CommonQuota> commonQuotas = commonQuotaDao.selectByMap(paras);
+        if (!commonQuotas.isEmpty()) {
+        	CommonQuota commonQuota = commonQuotas.get(0);
+        	commonQuota.setValue(value);
+        	this.commonQuotaDao.update(commonQuota);
+        } else {
+            CommonQuota commonQuota = new CommonQuota();
+            commonQuota.setRegion(region);
+            commonQuota.setTenantId(tenantId);
+            commonQuota.setCreateUser(tenantId);
+            commonQuota.setModule(module);
+            commonQuota.setType(type);
+            commonQuota.setValue(value);
+            this.commonQuotaDao.insert(commonQuota);
+        }
+	}
 }

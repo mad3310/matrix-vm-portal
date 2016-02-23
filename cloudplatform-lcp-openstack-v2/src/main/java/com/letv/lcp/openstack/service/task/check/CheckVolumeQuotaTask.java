@@ -35,9 +35,14 @@ public class CheckVolumeQuotaTask implements VmsCreateCheckSubTask {
         long tenantId = context.getUserId();
         int count = context.getVmCreateConf().getCount();
         ILocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
-        localCommonQuotaSerivce.checkQuota(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME, volumes.size() + count);
-        localCommonQuotaSerivce.checkQuota(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * context.getVmCreateConf().getVolumeSize());
-
+        if(!context.isAuditUser()) {//不是审批用户检查配额
+			localCommonQuotaSerivce.checkQuota(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME, volumes.size() + count);
+			localCommonQuotaSerivce.checkQuota(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * context.getVmCreateConf().getVolumeSize());
+		} else {//审批用户直接增加用户配额
+			localCommonQuotaSerivce.addQuotaWithAuditUser(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME, (long)volumes.size() + count);
+			localCommonQuotaSerivce.addQuotaWithAuditUser(tenantId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, (long)pureVolumeSize + count * context.getVmCreateConf().getVolumeSize());
+		}
+        
         VolumeQuota quota = context
                 .getCinderApi()
                 .getQuotaApi(region)

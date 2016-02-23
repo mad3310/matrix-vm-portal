@@ -455,10 +455,16 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 			if (flavor == null) {
 				throw new ResourceNotFoundException("Flavor", "云主机配置",vmCreateConf.getFlavorId());
 			}
-			localCommonQuotaSerivce.checkQuota(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_VM, servers.size() + vmCreateConf.getCount());
-			localCommonQuotaSerivce.checkQuota(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_CPU, serverTotalVcpus + vmCreateConf.getCount() * flavor.getVcpus());
-			localCommonQuotaSerivce.checkQuota(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_MEMORY, (serverTotalRam + vmCreateConf.getCount() * flavor.getRam()) / 1024);
-
+			if(params.get("auditUser")==null || (Boolean)params.get("auditUser")==false) {//不是审批用户检查配额
+				localCommonQuotaSerivce.checkQuota(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_VM, servers.size() + vmCreateConf.getCount());
+				localCommonQuotaSerivce.checkQuota(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_CPU, serverTotalVcpus + vmCreateConf.getCount() * flavor.getVcpus());
+				localCommonQuotaSerivce.checkQuota(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_MEMORY, (serverTotalRam + vmCreateConf.getCount() * flavor.getRam()) / 1024);
+			} else {//审批用户直接增加用户配额
+				localCommonQuotaSerivce.addQuotaWithAuditUser(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_VM, (long)servers.size() + vmCreateConf.getCount());
+				localCommonQuotaSerivce.addQuotaWithAuditUser(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_CPU, (long)serverTotalVcpus + vmCreateConf.getCount() * flavor.getVcpus());
+				localCommonQuotaSerivce.addQuotaWithAuditUser(userId, vmCreateConf.getRegion(), CommonQuotaType.CLOUDVM_MEMORY, (long)(serverTotalRam + vmCreateConf.getCount() * flavor.getRam()) / 1024);
+			}
+			
 			Optional<QuotaApi> quotaApiOptional = novaApi.getQuotaApi(vmCreateConf.getRegion());
 			if (!quotaApiOptional.isPresent()) {
 				throw new APINotAvailableException(QuotaApi.class);

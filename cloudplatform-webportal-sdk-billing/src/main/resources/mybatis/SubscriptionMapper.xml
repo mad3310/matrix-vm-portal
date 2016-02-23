@@ -205,7 +205,7 @@
 	    	MATRIX_PRODUCT_INFO_RECORD record on subscription.PRODUCT_INFO_RECORD_ID=record.ID
 	        <include refid="Common_Where_Clause" />
 	        and record.INSTANCE_ID is not null
-	        and mbo.STATUS=2
+	        and (mbo.STATUS=2 or mbo.STATUS=4)
 	        <if test="date != null and date != '' ">
 	            and subscription.START_TIME &lt; #{date} and subscription.END_TIME &gt;= #{date}
 	        </if>

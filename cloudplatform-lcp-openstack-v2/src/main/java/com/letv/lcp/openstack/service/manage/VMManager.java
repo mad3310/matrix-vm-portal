@@ -49,7 +49,7 @@ public interface VMManager extends ResourceManager {
 
 	void create2(VMCreateConf2 conf) throws OpenStackException;
 
-	void checkCreate2(VMCreateConf2 conf)throws OpenStackException;
+	void checkCreate2(VMCreateConf2 conf, boolean auditUser)throws OpenStackException;
 
 	void createForBilling(long userId, VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException;
 

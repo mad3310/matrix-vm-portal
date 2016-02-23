@@ -662,13 +662,18 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			for (Volume volume : volumes) {
 				pureVolumeSize += volume.getSize();
 			}
-			long userVoUserId=openStackUser.getTenantUserId();
 			String region=volumeCreateConf.getRegion();
 
 			ILocalCommonQuotaSerivce localCommonQuotaSerivce = OpenStackServiceImpl.getOpenStackServiceGroup().getLocalCommonQuotaSerivce();
-			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME, volumes.size() + count);
-			localCommonQuotaSerivce.checkQuota(userVoUserId, region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * volumeCreateConf.getSize());
-
+			
+			if(params.get("auditUser")==null || (Boolean)params.get("auditUser")==false) {//不是审批用户检查配额
+				localCommonQuotaSerivce.checkQuota(openStackUser.getApplyUserId(), region, CommonQuotaType.CLOUDVM_VOLUME, volumes.size() + count);
+				localCommonQuotaSerivce.checkQuota(openStackUser.getApplyUserId(), region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, pureVolumeSize + count * volumeCreateConf.getSize());
+			} else {//审批用户直接增加用户配额
+				localCommonQuotaSerivce.addQuotaWithAuditUser(openStackUser.getApplyUserId(), region, CommonQuotaType.CLOUDVM_VOLUME, (long)volumes.size() + count);
+				localCommonQuotaSerivce.addQuotaWithAuditUser(openStackUser.getApplyUserId(), region, CommonQuotaType.CLOUDVM_VOLUME_SIZE, (long)pureVolumeSize + count * volumeCreateConf.getSize());
+			}
+			
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(volumeCreateConf.getRegion())
 					.getByTenant(openStackUser.getOpenStackTenantId());
 			if (volumeQuota == null) {

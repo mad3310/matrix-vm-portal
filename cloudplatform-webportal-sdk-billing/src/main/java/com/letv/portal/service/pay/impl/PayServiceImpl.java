@@ -101,7 +101,7 @@ public class PayServiceImpl implements IPayService {
 		for (OrderSub orderSub : orderSubs) {
 			if(orderSub.getSubscription().getBuyType()==0 && "1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
 				CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(orderSub.getSubscription().getProductId(), 
-						orderSub.getProductInfoRecord().getParams());
+						orderSub.getProductInfoRecord().getParams(), false);
 				if(!validateResult.isSuccess()) {
 					logger.info("服务接口提供方验证失败：{}", validateResult.getFailureReason());
 					ret.put("alert", validateResult.getFailureReason());
@@ -164,7 +164,7 @@ public class PayServiceImpl implements IPayService {
 		//3代表订单支付金额为0或订单金额全部使用账户余额支付时流水编号自己生成
 		if(updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), new Date(), 2, useAccountPrice)) {
 			//创建应用实例
-			createInstance(orderSubs, null, true);
+			createInstance(orderSubs, null, false);
 			ret.put("responseUrl", this.PAY_SUCCESS + "/" + orderNumber);
 			ret.put("response", true);
 			
@@ -415,7 +415,7 @@ public class PayServiceImpl implements IPayService {
 					}
 					
 					// ④创建应用实例
-					createInstance(orderSubs, null, true);
+					createInstance(orderSubs, null, false);
 				}
 				
 				return true;
@@ -512,12 +512,12 @@ public class PayServiceImpl implements IPayService {
 	  * @Description: 创建服务
 	  * @param orderSubs
 	  * @param tenantId 云主机租户id  
-	  * @param sendEmail 创建完成后是否需要发送邮件给申请人 
+	  * @param auditUser 是否为审批用户
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2016年1月28日 下午3:15:47
 	  */
-	private void createInstance(final List<OrderSub> orderSubs, final Long tenantId, final boolean sendEmail) {
+	private void createInstance(final List<OrderSub> orderSubs, final Long tenantId, final boolean auditUser) {
 		final List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
 		for (OrderSub orders : orderSubs) {
 			records.add(orders.getProductInfoRecord());
@@ -530,7 +530,7 @@ public class PayServiceImpl implements IPayService {
 					if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
 						logger.debug("调用服务创建：{}-{}", orderSub.getSubscription().getProductId(), orderSub.getProductInfoRecord().getParams());
 						if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
-							hostProductService.createVm(orderSubs, orderSub.getProductInfoRecord().getParams(), records, tenantId, sendEmail);
+							hostProductService.createVm(orderSubs, orderSub.getProductInfoRecord().getParams(), records, tenantId, auditUser);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
 							hostProductService.createVolume(orderSubs, orderSub.getProductInfoRecord().getParams(), records);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_FLOATINGIP) {//公网IP
@@ -568,7 +568,7 @@ public class PayServiceImpl implements IPayService {
 		if(updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(4), new Date(), 4, totalPrice)) {
 			IOpenStackSession openstackSession = (IOpenStackSession) this.sessionService.getSession().getOpenStackSession();
 			//创建应用实例
-			createInstance(orderSubs, openstackSession.getOpenStackUser().getTenantUserId(), false);
+			createInstance(orderSubs, openstackSession.getOpenStackUser().getTenantUserId(), true);
 		}
 		
 		return ret;

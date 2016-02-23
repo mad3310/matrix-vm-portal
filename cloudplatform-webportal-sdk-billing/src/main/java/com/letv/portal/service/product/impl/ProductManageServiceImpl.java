@@ -136,15 +136,16 @@ public class ProductManageServiceImpl implements IProductManageService {
 	  * @Description: 去服务提供方验证参数是否合法
 	  * @param id
 	  * @param params
+	  * @param auditUser
 	  * @return CheckResult   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年10月20日 上午11:27:46
 	  */
-	public CheckResult validateParamsDataByServiceProvider(Long id, String params) {
+	public CheckResult validateParamsDataByServiceProvider(Long id, String params, boolean auditUser) {
 		CheckResult ret = null;
 		if(id==Constants.PRODUCT_VM) {//云主机
-			ret = this.resourceCreateService.checkVmCreatePara(params);
+			ret = this.resourceCreateService.checkVmCreatePara(params, auditUser);
 		} else if(id==Constants.PRODUCT_VOLUME) {//云硬盘
 			ret = this.resourceCreateService.checkVolumeCreatePara(params);
 		} else if(id==Constants.PRODUCT_ROUTER) {//路由器

@@ -142,7 +142,7 @@ public class ResourceCreateServiceImpl implements IResourceCreateService {
     }
 
     @Override
-    public CheckResult checkVmCreatePara(String reqParaJson) {
+    public CheckResult checkVmCreatePara(String reqParaJson, boolean auditUser) {
         try {
             VMCreateConf2 vmCreateConf = JsonUtil.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             }, true);
@@ -151,7 +151,7 @@ public class ResourceCreateServiceImpl implements IResourceCreateService {
             }
             validationService.validate(vmCreateConf);
             IOpenStackSession openStackSession = getOpenStackSession();
-            openStackSession.getVMManager().checkCreate2(vmCreateConf);
+            openStackSession.getVMManager().checkCreate2(vmCreateConf, auditUser);
             return new CheckResult();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

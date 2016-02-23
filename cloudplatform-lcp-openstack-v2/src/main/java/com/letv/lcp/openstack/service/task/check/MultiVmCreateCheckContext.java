@@ -41,12 +41,23 @@ public class MultiVmCreateCheckContext {
     private KeyPair keyPair;
     private Network floatingNetwork;
     private Long userId;
+    private boolean auditUser;
 
     public NovaApi getNovaApi() {
         return novaApi;
     }
 
-    public void setNovaApi(NovaApi novaApi) {
+    public boolean isAuditUser() {
+		return auditUser;
+	}
+
+
+	public void setAuditUser(boolean auditUser) {
+		this.auditUser = auditUser;
+	}
+
+
+	public void setNovaApi(NovaApi novaApi) {
         this.novaApi = novaApi;
     }
 

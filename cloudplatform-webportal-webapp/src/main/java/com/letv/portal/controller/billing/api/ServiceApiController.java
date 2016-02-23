@@ -131,7 +131,7 @@ public class ServiceApiController {
 			
 			
 			//去服务提供方验证参数是否合法
-			CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(Constants.PRODUCT_VM, JSONObject.toJSONString(conf));
+			CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(Constants.PRODUCT_VM, JSONObject.toJSONString(conf), true);
 			if(!validateResult.isSuccess()) {
 				logger.info("虚拟机接口提供方验证失败：{}", validateResult.getFailureReason());
 				response.setStatus(422);
