@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jclouds.openstack.neutron.v2.NeutronApi;
+import org.jclouds.openstack.neutron.v2.extensions.SecurityGroupApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Optional;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
@@ -27,10 +30,12 @@ import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.model.billing.CheckResult;
 import com.letv.lcp.openstack.service.base.IOpenStackService;
+import com.letv.lcp.openstack.service.jclouds.IApiService;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
 import com.letv.lcp.openstack.service.validation.IValidationService;
 import com.letv.portal.annotation.security.SecurityValid;
 import com.letv.portal.constant.Constants;
+import com.letv.portal.controller.cloudvm.Util;
 import com.letv.portal.enumeration.SecretKeyEnum;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
 import com.letv.portal.model.cloudvm.CloudvmImage;
@@ -75,6 +80,8 @@ public class ServiceApiController {
 	private ICloudvmFlavorService cloudvmFlavorService;
 	@Autowired
 	private ICloudvmImageService cloudvmImageService;
+	@Autowired
+    private IApiService apiService;
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/vm",method=RequestMethod.POST)
@@ -111,6 +118,7 @@ public class ServiceApiController {
 			Long userId = insertIfNoUserByEmail(vmCreateForm.getApplyUserEmail(), userName);
 			conf.setUserId(userId);
 			conf.setUserName(userName);
+			conf.setUserEmail(vmCreateForm.getApplyUserEmail());
 			//保存操作者id
 			String[] operatorEmails = vmCreateForm.getOperateUserEmail().split(",");
 			StringBuffer buffer = new StringBuffer();
@@ -128,8 +136,6 @@ public class ServiceApiController {
 				return null;
 			}
 			
-			
-			
 			//去服务提供方验证参数是否合法
 			CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(Constants.PRODUCT_VM, JSONObject.toJSONString(conf), true);
 			if(!validateResult.isSuccess()) {
@@ -140,7 +146,7 @@ public class ServiceApiController {
 				return obj;
 			}
 			
-			if(!productManageService.buy(Constants.PRODUCT_VM, JSONObject.toJSONString(conf), null, obj)) {
+			if(!productManageService.buy(Constants.PRODUCT_PRIVATE_VM, JSONObject.toJSONString(conf), null, obj)) {
 				response.setStatus(422);
 				obj.setResult(0);
 				obj.addMsg("参数合法性验证失败");
@@ -179,11 +185,11 @@ public class ServiceApiController {
 		//根据groupId获取flavorId
 		conf.setFlavorId(vmFlavor.getFlavorId());
 		//根据groupId获取volumeSize
-		conf.setVolumeSize(vmFlavor.getStorage());
+		conf.setVolumeSize(0);
 		
 		//根据imageId获取openstack-imageId
 		conf.setImageId(vmImage.getImageId());
-		//目前只有这一种硬盘类型可用
+		//目前只有这一种硬盘类型可用(私有云没有云硬盘)
 		conf.setVolumeTypeId(CloudvmVolumeType.SATA.getVolumeTypeId());
 		conf.setBindFloatingIp(false);
 		//工具类生产密码
@@ -207,7 +213,7 @@ public class ServiceApiController {
 	}
 	
 	private void createSession(VMCreateConf2 conf, CloudvmRegion vmRegion) throws OpenStackException {
-		openStackSession = openStackService.createSession(conf.getUserId(), conf.getUserName(),
+		openStackSession = openStackService.createSession(conf.getUserId(), conf.getUserEmail(), conf.getUserName(),
 				vmRegion);
         openStackSession.init(null);
         Session s = new Session();

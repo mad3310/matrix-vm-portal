@@ -529,7 +529,7 @@ public class PayServiceImpl implements IPayService {
 					// 进行服务创建
 					if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
 						logger.debug("调用服务创建：{}-{}", orderSub.getSubscription().getProductId(), orderSub.getProductInfoRecord().getParams());
-						if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM) {//云主机
+						if (orderSub.getSubscription().getProductId() == Constants.PRODUCT_VM || orderSub.getSubscription().getProductId() == Constants.PRODUCT_PRIVATE_VM) {//云主机
 							hostProductService.createVm(orderSubs, orderSub.getProductInfoRecord().getParams(), records, tenantId, auditUser);
 						} else if(orderSub.getSubscription().getProductId() == Constants.PRODUCT_VOLUME) {//云硬盘
 							hostProductService.createVolume(orderSubs, orderSub.getProductInfoRecord().getParams(), records);

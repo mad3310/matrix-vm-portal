@@ -12,7 +12,7 @@ public class CloudvmRegion extends BaseModel {
 	private String adminEndpoint;
 	private String publicEndpoint;
 	private String tenantName;
-	private String tenantEmail;
+	private String projectName;
 	private String tenantPassword;
 
 	public CloudvmRegion() {
@@ -64,12 +64,12 @@ public class CloudvmRegion extends BaseModel {
 		this.tenantName = tenantName;
 	}
 
-	public String getTenantEmail() {
-		return tenantEmail;
+	public String getProjectName() {
+		return projectName;
 	}
 
-	public void setTenantEmail(String tenantEmail) {
-		this.tenantEmail = tenantEmail;
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 
 	public String getTenantPassword() {

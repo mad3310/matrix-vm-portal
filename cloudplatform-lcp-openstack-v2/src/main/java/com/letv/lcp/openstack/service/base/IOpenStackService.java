@@ -29,6 +29,7 @@ public interface IOpenStackService {
       * @Title: createSession
       * @Description: 创建openstack session
       * @param applyUserId 申请人id  
+      * @param applyUserEmail 申请人邮箱  
       * @param applyUserName 申请人用户名  
       * @param vmRegion 集群信息包括调用地址,用户信息  
       * @return IOpenStackSession   
@@ -36,7 +37,7 @@ public interface IOpenStackService {
       * @author lisuxiao
       * @date 2016年1月26日 下午5:58:04
       */
-    IOpenStackSession createSession(Long applyUserId, String applyUserName, CloudvmRegion vmRegion);
+    IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmRegion vmRegion);
     
     /**
       * @Title: getOpenStackConfDefault

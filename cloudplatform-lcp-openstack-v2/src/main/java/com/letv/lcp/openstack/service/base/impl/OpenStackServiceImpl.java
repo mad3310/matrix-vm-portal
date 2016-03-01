@@ -1,8 +1,6 @@
 package com.letv.lcp.openstack.service.base.impl;
 
 import java.text.MessageFormat;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 
@@ -43,6 +41,7 @@ import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.internal.UserExists;
 import com.letv.lcp.openstack.util.internal.UserRegister;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
+import com.letv.portal.model.common.UserModel;
 import com.letv.portal.model.common.UserVo;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
@@ -222,9 +221,13 @@ public class OpenStackServiceImpl implements IOpenStackService {
 			String userName) {
 		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(userVoUserId, email));
 		openStackUser.setUserName(userName);
+		openStackUser.setUserEmail(email);
 		openStackUser.setApplyUserId(userVoUserId);
 //		openStackUser.setFirstLogin(false);
 		openStackUser.setInternalUser(false);
+		
+		openStackConf.setPublicEndpoint(publicEndpoint);
+		openStackConf.setAdminEndpoint(adminEndpoint);
 
 		return new OpenStackSessionImpl(
 				openStackConf, openStackUser);
@@ -241,15 +244,17 @@ public class OpenStackServiceImpl implements IOpenStackService {
 	@Override
 	public IOpenStackSession createSession(Long userId, Long tenantId) {
 		CloudvmRegion vmRegion = cloudvmRegionService.selectById(tenantId);
-		return this.createSession(userId, null, vmRegion);
+		UserModel user = this.userService.getUserById(userId);
+		return this.createSession(userId, user.getEmail(), user.getUserName(), vmRegion);
 	}
 	
 	
 	@Override
-	public IOpenStackSession createSession(Long applyUserId, String applyUserName, CloudvmRegion vmRegion) {
-		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(vmRegion.getId(), vmRegion.getTenantEmail(),
-				vmRegion.getTenantName(), vmRegion.getTenantPassword()));
+	public IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmRegion vmRegion) {
+		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(vmRegion.getId(),
+				vmRegion.getTenantName(), vmRegion.getTenantPassword(), vmRegion.getProjectName()));
 		openStackUser.setUserName(applyUserName);
+		openStackUser.setUserEmail(applyUserEmail);
 		openStackUser.setApplyUserId(applyUserId);
 		
 		if(vmRegion.getAdminEndpoint()!=null) {
@@ -273,7 +278,7 @@ public class OpenStackServiceImpl implements IOpenStackService {
 
 	@Override
 	public boolean isUserExists(String tenantName, String password) throws OpenStackException {
-		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(),tenantName,password);
+		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(),tenantName,password,tenantName);
 		return userExists.run();
 	}
 
@@ -298,7 +303,7 @@ public class OpenStackServiceImpl implements IOpenStackService {
 //            openStackUser.setInternalUser(true);
 //        }
 
-        UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), tenantName, password);
+        UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), tenantName, password, tenantName);
         boolean isUserExists = userExists.run();
         if (!isUserExists) {
             UserRegister userRegister = new UserRegister(openStackConf.getAdminEndpoint(),

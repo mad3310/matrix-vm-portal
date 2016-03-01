@@ -30,12 +30,18 @@ public class CheckVmCreateConfTask implements VmsCreateCheckSubTask{
         VMCreateConf2 vmCreateConf = context.getVmCreateConf();
 
         final String region = context.getVmCreateConf().getRegion();
-        if (!context.getNovaApi().getConfiguredRegions().contains(region)
-                || !context.getNeutronApi().getConfiguredRegions()
-                .contains(region)
-                || !context.getCinderApi().getConfiguredRegions()
-                .contains(region)) {
-            throw new RegionNotFoundException(region);
+        if(context.isAuditUser()) {
+        	if(!context.getNovaApi().getConfiguredRegions().contains(region)) {
+        		throw new RegionNotFoundException(region);
+        	}
+        } else {
+        	if (!context.getNovaApi().getConfiguredRegions().contains(region)
+                    || !context.getNeutronApi().getConfiguredRegions()
+                    .contains(region)
+                    || !context.getCinderApi().getConfiguredRegions()
+                    .contains(region)) {
+                throw new RegionNotFoundException(region);
+            }
         }
 
         if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {

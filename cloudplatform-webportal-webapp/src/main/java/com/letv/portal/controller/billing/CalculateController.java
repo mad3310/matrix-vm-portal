@@ -94,7 +94,7 @@ public class CalculateController {
 				ret =  hostCalculateService.calculatePrice(Constants.PRODUCT_VM, map, vmBaseStandards).add(hostCalculateService.calculatePrice(Constants.PRODUCT_VOLUME, map, volumeBaseStandards))
 						.add(hostCalculateService.calculatePrice(Constants.PRODUCT_FLOATINGIP, map, flatingIpBaseStandards));
 			}
-		} else if(id==Constants.PRODUCT_FLOATINGIP || id==Constants.PRODUCT_VOLUME || id==Constants.PRODUCT_ROUTER) {
+		} else if(id==Constants.PRODUCT_FLOATINGIP || id==Constants.PRODUCT_VOLUME || id==Constants.PRODUCT_ROUTER || id==Constants.PRODUCT_PRIVATE_VM) {
 			List<BaseStandard> baseStandards = this.productService.selectBaseStandardByProductId(id);
 			if(hostProductService.validateData(id, map, baseStandards)) {
 				ret =  hostCalculateService.calculatePrice(id, map, baseStandards);

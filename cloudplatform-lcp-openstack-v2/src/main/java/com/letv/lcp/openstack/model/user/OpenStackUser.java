@@ -9,6 +9,7 @@ public class OpenStackUser implements Serializable {
 	public final OpenStackTenant tenant;//openstack租户（创建用户）
 
 	private String userName;//申请人用户名
+	private String userEmail;//申请人邮箱
 	private boolean internalUser;//是否为内部用户
 	private Long applyUserId;//申请人id
 	
@@ -26,6 +27,13 @@ public class OpenStackUser implements Serializable {
 		this.applyUserId = applyUserId;
 	}
 
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
 
 	public long getTenantUserId() {
 		return tenant.userId;
@@ -53,6 +61,10 @@ public class OpenStackUser implements Serializable {
 
 	public String getUserName() {
 		return userName;
+	}
+	
+	public String getProjectName() {
+		return tenant.projectName;
 	}
 
 	public void setUserName(String userName) {

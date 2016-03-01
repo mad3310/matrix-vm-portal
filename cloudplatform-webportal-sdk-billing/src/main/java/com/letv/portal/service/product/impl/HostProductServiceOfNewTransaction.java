@@ -90,7 +90,7 @@ public class HostProductServiceOfNewTransaction {
 				record.setParams(null);
 				record.setInvokeType(null);
 				record.setDescn(null);
-				if (Constants.PRODUCT_VM == record.getProductId()) {
+				if (Constants.PRODUCT_VM == record.getProductId() || Constants.PRODUCT_PRIVATE_VM == record.getProductId()) {
 					record.setInstanceId(region + "_" + vmId);
 					productInfoRecordService.updateBySelective(record);
 				} else if (Constants.PRODUCT_VOLUME == record.getProductId()

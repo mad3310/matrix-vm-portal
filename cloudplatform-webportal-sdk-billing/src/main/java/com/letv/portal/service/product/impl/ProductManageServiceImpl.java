@@ -85,7 +85,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 				}
 			}
 			if(sub.getProductId()==Constants.PRODUCT_VM || sub.getProductId()==Constants.PRODUCT_VOLUME || 
-					sub.getProductId()==Constants.PRODUCT_ROUTER || sub.getProductId()==Constants.PRODUCT_FLOATINGIP) {
+					sub.getProductId()==Constants.PRODUCT_ROUTER || sub.getProductId()==Constants.PRODUCT_FLOATINGIP || sub.getProductId()==Constants.PRODUCT_PRIVATE_VM) {
 				subscriptionDetail.setPrice(this.hostCalculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getElementName(), subscriptionDetail.getStandardValue(),
 						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getElementName()+"_type"), oneBaseStandard));
 			} else {
@@ -102,6 +102,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 	
 	private void transferParamsDateToCalculate(Map<String, Object> params, Long id, Map<String, Object> billingParams) {
 		billingParams.put("orderTime", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
+		StringBuffer buffer = new StringBuffer();
 		if(id==Constants.PRODUCT_VM) {//云主机参数转换
 			FlavorResource flavor = resourceQueryService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
 			VolumeTypeResource volume = this.resourceQueryService.getVolumeType(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("volumeTypeId"));
@@ -126,6 +127,13 @@ public class ProductManageServiceImpl implements IProductManageService {
 			billingParams.put("order_time", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
 		} else if(id==Constants.PRODUCT_FLOATINGIP) {//公网IP
 			billingParams.put("os_broadband", params.get("bandWidth")+"");
+			billingParams.put("order_num", params.get("count")+"");
+			billingParams.put("order_time", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
+		} else if(id==Constants.PRODUCT_PRIVATE_VM) {//私有云-云主机
+			FlavorResource flavor = resourceQueryService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
+			billingParams.put("os_cpu_ram_disk", buffer.append(flavor.getVcpus()).append("_").
+					append(flavor.getRam()).append("_").append(flavor.getDisk()).toString());
+			billingParams.put("os_cpu_ram_disk_type", buffer.toString());
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")==null?params.get("orderTime")+"":params.get("order_time")+"");
 		}
@@ -215,7 +223,7 @@ public class ProductManageServiceImpl implements IProductManageService {
 				orderNumber = createSubscriptionAndOrder(pros, productId, billingParams, orderTime, paramsData, displayData, productStandards, userId);
 			}
 		} else if(productId==Constants.PRODUCT_VOLUME || 
-				productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP) {
+				productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP || productId==Constants.PRODUCT_PRIVATE_VM) {
 			List<BaseStandard> baseStandards = this.productService.selectBaseStandardByProductId(productId);
 			ret = hostProductService.validateData(productId, billingParams, baseStandards);
 			if(ret) {

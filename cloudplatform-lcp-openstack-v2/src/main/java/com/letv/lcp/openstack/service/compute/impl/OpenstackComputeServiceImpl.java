@@ -41,6 +41,7 @@ import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
@@ -56,6 +57,7 @@ import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.exception.ResourceNotFoundException;
 import com.letv.lcp.openstack.exception.UserOperationException;
+import com.letv.lcp.openstack.model.network.impl.NetworkResourceImpl;
 import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.lcp.openstack.service.base.impl.OpenStackServiceImpl;
 import com.letv.lcp.openstack.service.compute.IOpenstackComputeService;
@@ -98,6 +100,8 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
     private ICloudvmRegionService cloudvmRegionService;
     @Autowired
     private SessionServiceImpl sessionService;
+    @Value("${openstack.network.type}")
+    private String networkType;
     
 
 	@Override
@@ -161,19 +165,29 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
 				throw new ResourceNotFoundException("Image", "快照/镜像", vmCreateConf.getSnapshotId());
 			}
 			imageRef = snapshot.getId();
-
-			options.securityGroupNames("default");
+			
+			if(params.get("auditUser")==null || (Boolean)params.get("auditUser")==false) {
+				options.securityGroupNames("default");
+			}
 			
 			if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
 				options.novaNetworks(ImmutableSet.<org.jclouds.openstack.nova.v2_0.domain.Network> of(org.jclouds.openstack.nova.v2_0.domain.Network.builder()
 						.portUuid(context.getSubnetPortInstanceId()).build()));
-			} 
-			if(vmCreateConf.getBindFloatingIp() && StringUtils.isNotEmpty(vmCreateConf.getSharedNetworkId())){
+			} else {
 				NeutronApi neutronApi = apiService.getNeutronApi(tenantId, sessionId);
 				NetworkApi networkApi = neutronApi.getNetworkApi(region);
-				Network sharedNetwork = networkApi.get(vmCreateConf.getSharedNetworkId());
-				if (sharedNetwork == null || !sharedNetwork.getShared()) {
-					throw new ResourceNotFoundException("Shared Network", "共享网络", vmCreateConf.getSharedNetworkId());
+				Network sharedNetwork = null;
+				if(StringUtils.isNotEmpty(vmCreateConf.getSharedNetworkId())) {
+					sharedNetwork = networkApi.get(vmCreateConf.getSharedNetworkId());
+					if (sharedNetwork == null || !sharedNetwork.getShared()) {
+						throw new ResourceNotFoundException("Shared Network", "共享网络", vmCreateConf.getSharedNetworkId());
+					}
+				} else {
+					for (Network network : networkApi.list().concat().toList()) {
+						if (network.getName().contains(networkType)) {//使用内网模式
+							sharedNetwork = network;
+						}
+					}
 				}
 				options.networks(sharedNetwork.getId());
 			}
@@ -251,8 +265,11 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
             s.setOpenStackSession(openStackSession);
             sessionService.setSession(s, null);
             
-            OpenStackServiceImpl.getOpenStackServiceGroup().getResourceService()
+            if(params.get("auditUser")==null || (Boolean)params.get("auditUser")==false) {
+            	OpenStackServiceImpl.getOpenStackServiceGroup().getResourceService()
             	.createDefaultSecurityGroupAndRule(this.apiService.getNeutronApi(tenantId, (String)params.get("uuid")));
+            }
+            
 		} catch (Exception e) {
 	    	logger.error(e.getMessage(), e);
 	    	errorEmailService.sendExceptionEmail(e, "云主机创建准备异常", userId, JSONObject.toJSONString(params.get("vmCreateConf")));

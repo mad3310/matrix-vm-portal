@@ -37,6 +37,7 @@ public class VMCreateConf2 {
 	/**------管理员为其他用户创建所用---start----**/
 	private Long userId;
 	private String userName;
+	private String userEmail;
 	private String operatorIds;//以，隔开多个操作者
 	private String callbackId;
 	private Integer orderTime;
@@ -45,6 +46,16 @@ public class VMCreateConf2 {
 
 	public VMCreateConf2() {
 	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
 
 	public Integer getOrderTime() {
 		return orderTime;
