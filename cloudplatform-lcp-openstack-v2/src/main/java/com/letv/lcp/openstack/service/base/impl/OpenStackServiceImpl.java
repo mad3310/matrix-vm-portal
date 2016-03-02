@@ -250,9 +250,42 @@ public class OpenStackServiceImpl implements IOpenStackService {
 	
 	
 	@Override
+	public IOpenStackSession createAdminSession(Long userId, Long tenantId) {
+		CloudvmRegion vmRegion = cloudvmRegionService.selectById(tenantId);
+		UserModel user = this.userService.getUserById(userId);
+		return createOpenStackSession(userId, user.getEmail(), user.getUserName(), vmRegion, true);
+	}
+	
+	
+	@Override
 	public IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmRegion vmRegion) {
-		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(vmRegion.getId(),
-				vmRegion.getTenantName(), vmRegion.getTenantPassword(), vmRegion.getProjectName()));
+		return createOpenStackSession(applyUserId, applyUserEmail, applyUserName, vmRegion, false);
+	}
+	
+	/**
+	  * @Title: createOpenStackSession
+	  * @Description: 根据申请人及创建用户创建openStackSession
+	  * @param applyUserId 申请人id
+	  * @param applyUserEmail 申请人邮箱
+	  * @param applyUserName 申请人用户名
+	  * @param vmRegion 创建用户信息（一个地域包含创建用户，管理员用户）
+	  * @param isAdmin 是否是管理员用户
+	  * @return IOpenStackSession   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年3月2日 上午11:36:49
+	  */
+	private IOpenStackSession createOpenStackSession(Long applyUserId, String applyUserEmail, String applyUserName, 
+			CloudvmRegion vmRegion, boolean isAdmin) {
+		OpenStackTenant openStackTenant = null;
+		if(isAdmin) {
+			openStackTenant = new OpenStackTenant(vmRegion.getId(),
+					vmRegion.getAdminTenantName(), vmRegion.getAdminTenantPassword(), vmRegion.getAdminProjectName());
+		} else {
+			openStackTenant = new OpenStackTenant(vmRegion.getId(),
+					vmRegion.getTenantName(), vmRegion.getTenantPassword(), vmRegion.getProjectName());
+		}
+		OpenStackUser openStackUser = new OpenStackUser(openStackTenant);
 		openStackUser.setUserName(applyUserName);
 		openStackUser.setUserEmail(applyUserEmail);
 		openStackUser.setApplyUserId(applyUserId);

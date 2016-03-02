@@ -15,6 +15,10 @@
 		<result column="PROJECT_NAME" property="projectName" />
 		<result column="TENANT_PASSWORD" property="tenantPassword" />
 		
+		<result column="ADMIN_TENANT_NAME" property="adminTenantName" />
+		<result column="ADMIN_PROJECT_NAME" property="adminProjectName" />
+		<result column="ADMIN_TENANT_PASSWORD" property="adminTenantPassword" />
+		
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -26,6 +30,7 @@
 	<!-- WEBPORTAL_CLOUDVM_REGION table all fields -->
 	<sql id="Base_Column_List">
 		R.ID,R.CODE,R.DISPLAY_NAME,R.ADMIN_ENDPOINT,R.PUBLIC_ENDPOINT,R.TENANT_NAME,R.PROJECT_NAME,R.TENANT_PASSWORD,
+		R.ADMIN_TENANT_NAME,R.ADMIN_PROJECT_NAME,R.ADMIN_TENANT_PASSWORD,
 		R.DELETED,R.CREATE_TIME,R.CREATE_USER,R.UPDATE_TIME,R.UPDATE_USER
 	</sql>
 	

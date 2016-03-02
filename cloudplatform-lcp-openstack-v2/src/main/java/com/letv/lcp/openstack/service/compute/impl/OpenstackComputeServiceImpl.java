@@ -32,6 +32,7 @@ import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 import org.jclouds.openstack.nova.v2_0.domain.Quota;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
+import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedAttributes;
 import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 import org.jclouds.openstack.nova.v2_0.extensions.AttachInterfaceApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
@@ -57,7 +58,6 @@ import com.letv.lcp.openstack.exception.APINotAvailableException;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.exception.ResourceNotFoundException;
 import com.letv.lcp.openstack.exception.UserOperationException;
-import com.letv.lcp.openstack.model.network.impl.NetworkResourceImpl;
 import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.lcp.openstack.service.base.impl.OpenStackServiceImpl;
 import com.letv.lcp.openstack.service.compute.IOpenstackComputeService;
@@ -72,10 +72,12 @@ import com.letv.lcp.openstack.service.validation.IValidationService;
 import com.letv.lcp.openstack.util.ThreadUtil;
 import com.letv.lcp.openstack.util.Timeout;
 import com.letv.lcp.openstack.util.function.Function0;
+import com.letv.portal.model.cloudvm.lcp.CloudvmServerModel;
 import com.letv.portal.model.common.CommonQuotaType;
 import com.letv.portal.model.common.UserModel;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.common.IUserService;
+import com.letv.portal.service.lcp.ICloudvmServerService;
 
 @Service("openstackComputeService")
 public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
@@ -743,6 +745,32 @@ public class OpenstackComputeServiceImpl implements IOpenstackComputeService  {
                     .sendMessage(mailMessage);
         }
 		return "success";
+	}
+
+	@Override
+	public String getPhysicalHostNameByServerInfo(CloudvmServerModel serverModel) {
+		createSession(serverModel.getCreateUser(), serverModel.getTenantId());
+		NovaApi novaApi = apiService.getNovaApi(serverModel.getTenantId(), serverModel.getRegion());
+		Server server = novaApi.getServerApi(serverModel.getRegion()).get(serverModel.getServerInstanceId());
+		if(server.getExtendedAttributes().isPresent()) {
+        	ServerExtendedAttributes optionalExtend = server.getExtendedAttributes().get();
+        	return optionalExtend.getHypervisorHostName();
+        }
+		return null;
+	}
+	
+	private void createSession(Long userId, Long tenantId) {
+		IOpenStackSession openStackSession = openStackService.createAdminSession(userId, tenantId);
+        try {
+        	openStackSession.init(null);
+		} catch (OpenStackException e) {
+			logger.error("createSession has error:", e);
+			return;
+		}
+        Session s = new Session();
+        s.setUserId(userId);
+        s.setOpenStackSession(openStackSession);
+        sessionService.setSession(s, null);
 	}
 
 }

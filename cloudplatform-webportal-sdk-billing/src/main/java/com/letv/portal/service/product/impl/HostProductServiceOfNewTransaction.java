@@ -15,6 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderSubDetailService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IProductInfoRecordService;
+import com.letv.portal.service.proxy.ICmdbCallbackService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 import com.letv.portal.util.MessageFormatServiceUtil;
@@ -73,6 +75,10 @@ public class HostProductServiceOfNewTransaction {
 	private IOrderSubService orderSubService;
 	@Autowired
 	private IOrderSubDetailService orderSubDetailService;
+	@Autowired
+	private ICmdbCallbackService cmdbCallbackService;
+	@Autowired
+    private TaskExecutor threadPoolTaskExecutor;
 
 	// 服务创建成功后回调
 	@SuppressWarnings("unchecked")
@@ -161,8 +167,16 @@ public class HostProductServiceOfNewTransaction {
 						//更新订阅订单起始时间
 						updateSubscriptionAndOrderTime(orderSubs);
 						for(String id : idNames.keySet()) {
+							final String serverInstanceId = id;
 							//保存最近操作
 					        this.recentOperateService.saveInfo("创建"+productType, idNames.get(id), orderSubs.get(0).getCreateUser(), null);
+					        //启动新线程回调cmdb,保存主机名
+							this.threadPoolTaskExecutor.execute(new Runnable() {
+								@Override
+								public void run() {
+									cmdbCallbackService.saveVmInfo(serverInstanceId);
+								}
+							});
 						}
 					}
 				} else {

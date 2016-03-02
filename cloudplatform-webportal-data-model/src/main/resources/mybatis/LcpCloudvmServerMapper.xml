@@ -82,4 +82,13 @@
 			server.ID = #{id}
 	</select>
 	
+	<select id="selectByServerInstanceId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			LCP_CLOUDVM_SERVER server 
+		where 
+			server.SERVER_INSTANCE_ID = #{serverInstanceId}
+	</select>
+	
 </mapper>

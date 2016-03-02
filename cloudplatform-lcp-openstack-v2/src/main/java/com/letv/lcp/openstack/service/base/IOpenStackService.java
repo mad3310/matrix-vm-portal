@@ -26,6 +26,17 @@ public interface IOpenStackService {
       */
     IOpenStackSession createSession(Long userId, Long tenantId);
     /**
+      * @Title: createAdminSession
+      * @Description: 创建管理员session
+      * @param userId
+      * @param tenantId
+      * @return IOpenStackSession   
+      * @throws 
+      * @author lisuxiao
+      * @date 2016年3月2日 上午11:24:41
+      */
+    IOpenStackSession createAdminSession(Long userId, Long tenantId);
+    /**
       * @Title: createSession
       * @Description: 创建openstack session
       * @param applyUserId 申请人id  

@@ -11,9 +11,13 @@ public class CloudvmRegion extends BaseModel {
 	
 	private String adminEndpoint;
 	private String publicEndpoint;
-	private String tenantName;
-	private String projectName;
-	private String tenantPassword;
+	private String tenantName;//创建用户用户名
+	private String projectName;//创建用户项目
+	private String tenantPassword;//创建用户密码
+	
+	private String adminTenantName;//管理员用户名
+	private String adminTenantPassword;//管理员密码
+	private String adminProjectName;//管理员项目
 
 	public CloudvmRegion() {
 	}
@@ -22,6 +26,31 @@ public class CloudvmRegion extends BaseModel {
 		this();
 		this.code = code;
 		this.displayName = displayName;
+	}
+
+	
+	public String getAdminTenantName() {
+		return adminTenantName;
+	}
+
+	public void setAdminTenantName(String adminTenantName) {
+		this.adminTenantName = adminTenantName;
+	}
+
+	public String getAdminTenantPassword() {
+		return adminTenantPassword;
+	}
+
+	public void setAdminTenantPassword(String adminTenantPassword) {
+		this.adminTenantPassword = adminTenantPassword;
+	}
+
+	public String getAdminProjectName() {
+		return adminProjectName;
+	}
+
+	public void setAdminProjectName(String adminProjectName) {
+		this.adminProjectName = adminProjectName;
 	}
 
 	public String getCode() {
