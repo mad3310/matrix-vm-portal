@@ -6,11 +6,13 @@ import com.letv.portal.model.task.TaskChain;
 import com.letv.portal.model.task.TaskExecuteStatus;
 import com.letv.portal.service.common.impl.BaseServiceImpl;
 import com.letv.portal.service.task.ITaskChainService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +78,17 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
 			}
 		}
 		return 1;// 都没有，则认为正在执行第一步
+	}
+
+	@Override
+	public List<TaskChain> selectNotUndoChainByIndexIdAndOrder(
+			Map<String, Object> params) {
+		return this.taskChainDao.selectNotUndoChainByIndexIdAndOrder(params);
+	}
+
+	@Override
+	public void updateStatusById(TaskChain taskChain) {
+		this.taskChainDao.updateStatusById(taskChain);
 	}
 	
 }

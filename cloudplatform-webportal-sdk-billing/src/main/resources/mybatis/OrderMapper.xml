@@ -31,6 +31,10 @@
 	        (#{orderNumber},#{status},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn},#{payNumber},#{payTime})
 	</insert>
 	
+	<update id="delete" parameterType="Order">
+		delete from MATRIX_BILLING_ORDER where ID = #{id}
+	</update>
+	
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="Order">
 		update MATRIX_BILLING_ORDER

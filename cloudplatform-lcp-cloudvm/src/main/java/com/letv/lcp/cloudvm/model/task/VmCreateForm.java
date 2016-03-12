@@ -1,4 +1,4 @@
-package com.letv.portal.vo.cloudvm.form.vm;
+package com.letv.lcp.cloudvm.model.task;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

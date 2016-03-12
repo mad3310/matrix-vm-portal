@@ -1,5 +1,7 @@
 package com.letv.portal.controller.billing;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -57,7 +59,7 @@ public class ProductController {
 			obj.addMsg(validateResult.getFailureReason());
 			return obj;
 		}
-		if(!productManageService.buy(id, paramsData, displayData, obj)) {
+		if(!productManageService.buy(id, paramsData, displayData, UUID.randomUUID().toString(), obj)) {
 			obj.setResult(0);
 			obj.addMsg("参数合法性验证失败");
 		}

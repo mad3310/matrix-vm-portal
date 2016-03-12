@@ -29,6 +29,7 @@ import com.letv.portal.model.message.Message;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
+import com.letv.portal.service.cmdb.ICmdbCallbackService;
 import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
@@ -38,7 +39,6 @@ import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderSubDetailService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IProductInfoRecordService;
-import com.letv.portal.service.proxy.ICmdbCallbackService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 import com.letv.portal.util.MessageFormatServiceUtil;
@@ -151,7 +151,7 @@ public class HostProductServiceOfNewTransaction {
 	  * @date 2015年10月20日 下午2:37:43
 	  */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, String params, String productType, Map<String, String> idNames){
+	public void checkOrderFinished(final List<OrderSub> orderSubs, int successCount, int failCount, String params, String productType, Map<String, String> idNames){
 		Set<Integer> batch = new HashSet<Integer>();
 		for (OrderSub orderSub : orderSubs) {
 			batch.add(orderSub.getProductInfoRecord().getBatch());
@@ -167,17 +167,17 @@ public class HostProductServiceOfNewTransaction {
 						//更新订阅订单起始时间
 						updateSubscriptionAndOrderTime(orderSubs);
 						for(String id : idNames.keySet()) {
-							final String serverInstanceId = id;
 							//保存最近操作
 					        this.recentOperateService.saveInfo("创建"+productType, idNames.get(id), orderSubs.get(0).getCreateUser(), null);
-					        //启动新线程回调cmdb,保存主机名
-							this.threadPoolTaskExecutor.execute(new Runnable() {
-								@Override
-								public void run() {
-									cmdbCallbackService.saveVmInfo(serverInstanceId);
-								}
-							});
 						}
+						final String groupId = orderSubs.get(0).getProductInfoRecord().getGroupId();
+						//启动新线程回调cmdb,保存主机名
+						this.threadPoolTaskExecutor.execute(new Runnable() {
+							@Override
+							public void run() {
+								cmdbCallbackService.saveVmInfo(groupId);
+							}
+						});
 					}
 				} else {
 					BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(successCount));

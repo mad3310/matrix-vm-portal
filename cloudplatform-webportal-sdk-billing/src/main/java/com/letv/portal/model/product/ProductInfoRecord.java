@@ -18,7 +18,8 @@ public class ProductInfoRecord extends BaseModel{
 	private String params;//页面参数
 	private Long productId;//商品ID,2-云主机
 	private String invokeType;//调用类型，1-去调用，0-不调用
-	private Integer batch;//批次
+	private Integer batch;//批次（一个云主机对应三个产品，但属于一个批次）
+	private String groupId;//组（标识一次购买的产品）
 	private String descn;
 	private String instanceId;//实例ID
 	
@@ -57,6 +58,12 @@ public class ProductInfoRecord extends BaseModel{
 	}
 	public void setDescn(String descn) {
 		this.descn = descn;
+	}
+	public String getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 	
 }

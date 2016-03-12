@@ -41,10 +41,19 @@ public class VMCreateConf2 {
 	private String operatorIds;//以，隔开多个操作者
 	private String callbackId;
 	private Integer orderTime;
+	private String orderId;//cmdb标识
 	/**------管理员为其他用户创建所用---end----**/
 	
 
 	public VMCreateConf2() {
+	}
+	
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 	public String getUserEmail() {

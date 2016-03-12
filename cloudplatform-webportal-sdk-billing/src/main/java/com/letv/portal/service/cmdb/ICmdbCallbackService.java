@@ -1,6 +1,10 @@
-package com.letv.portal.service.proxy;
+package com.letv.portal.service.cmdb;
+
+import java.util.List;
+import java.util.Set;
 
 import com.letv.portal.model.cloudvm.lcp.CloudvmServerModel;
+import com.letv.portal.model.order.OrderSub;
 
 
 /**
@@ -23,11 +27,11 @@ public interface ICmdbCallbackService {
 	/**
 	  * @Title: saveVmInfo
 	  * @Description: 调用cmdb接口完成虚机信息录入cmdb
-	  * @param serverInstanceId void   
+	  * @param groupId 组标识（一组云主机全部创建完成后才进行回调）   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2016年3月2日 下午3:04:38
 	  */
-	void saveVmInfo(String serverInstanceId);
+	void saveVmInfo(String groupId);
 	
 }

@@ -9,6 +9,7 @@
 	    <result column="PARAMS" property="params" />
 	    <result column="PRODUCT_ID" property="productId" />
 	    <result column="BATCH" property="batch" />
+	    <result column="GROUP_ID" property="groupId" />
 	    <result column="INVOKE_TYPE" property="invokeType" />
 	    <result column="DELETED" property="deleted" />
 	    <result column="CREATE_TIME" property="createTime" />
@@ -20,15 +21,15 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    record.ID,record.PARAMS,record.PRODUCT_ID,record.BATCH,record.INVOKE_TYPE,record.DELETED,record.CREATE_TIME,
+	    record.ID,record.PARAMS,record.PRODUCT_ID,record.BATCH,record.GROUP_ID,record.INVOKE_TYPE,record.DELETED,record.CREATE_TIME,
 	    record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN,record.INSTANCE_ID
 	</sql>
 	
 	<insert id="insert" parameterType="ProductInfoRecord" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_PRODUCT_INFO_RECORD 
-	        (PARAMS,PRODUCT_ID,BATCH,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,INSTANCE_ID) 
+	        (PARAMS,PRODUCT_ID,BATCH,GROUP_ID,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,INSTANCE_ID) 
 	    values
-	        (#{params},#{productId},#{batch},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{instanceId})
+	        (#{params},#{productId},#{batch},#{groupId},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{instanceId})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -45,6 +46,9 @@
 	        </if>
 	        <if test="batch != null ">
 	            and record.BATCH=#{batch}
+	        </if>
+	        <if test="groupId != null ">
+	            and record.GROUP_ID=#{groupId}
 	        </if>
 	        <if test="invokeType != null ">
 	            and record.INVOKE_TYPE=#{invokeType}
@@ -90,6 +94,33 @@
 	    	record.INSTANCE_ID=#{instanceId}
 	</select>
 	
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_PRODUCT_INFO_RECORD record
+	    where
+	    	record.ID=#{id}
+	</select>
+	
+	<select id="selectByInstanceId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_PRODUCT_INFO_RECORD record
+	    where
+	    	record.INSTANCE_ID=#{instanceId}
+	</select>
+	
+	<select id="selectByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_PRODUCT_INFO_RECORD record
+	    where
+	    	record.GROUP_ID=#{groupId}
+	</select>
+	
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="ProductInfoRecord">
 		update MATRIX_PRODUCT_INFO_RECORD
@@ -102,6 +133,9 @@
 	        </if>
 	        <if test="batch != null ">
 	            BATCH=#{batch},
+	        </if>
+	        <if test="groupId != null ">
+	            GROUP_ID=#{groupId},
 	        </if>
 	        <if test="invokeType != null ">
 	            INVOKE_TYPE=#{invokeType},
