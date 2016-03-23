@@ -13,6 +13,17 @@ public interface ICloudvmRegionService extends IBaseService<CloudvmRegion> {
 	void remove(Long id);
 
 	CloudvmRegion selectByCode(String code);
+	
+	/**
+	  * @Title: selectByType
+	  * @Description: 根据类型获取region信息，1-私有云，2-公有云
+	  * @param type
+	  * @return List<CloudvmRegion>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年3月15日 下午4:59:28
+	  */
+	List<CloudvmRegion> selectByType(String type);
 
 	List<CloudvmRegion> selectAll();
 }

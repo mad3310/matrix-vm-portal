@@ -1,7 +1,12 @@
 package com.letv.portal.service.cmdb.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,18 +23,19 @@ import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.model.billing.CheckResult;
 import com.letv.lcp.openstack.service.base.IOpenStackService;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
+import com.letv.portal.model.cloudvm.CloudvmCluster;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
 import com.letv.portal.model.cloudvm.CloudvmImage;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
 import com.letv.portal.model.cloudvm.CloudvmVolumeType;
 import com.letv.portal.model.common.UserModel;
-import com.letv.portal.model.order.Order;
+import com.letv.portal.service.cloudvm.ICloudvmClusterService;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmImageService;
+import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cmdb.ICmdbService;
 import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.order.IOrderService;
-import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductManageService;
 
 @Service("cmdbService")
@@ -52,12 +58,33 @@ public class CmdbServiceImpl implements ICmdbService {
 	IProductManageService productManageService;
 	@Autowired
 	IOrderService orderService;
+	@Autowired
+	ICloudvmRegionService cloudvmRegionService;
+	@Autowired
+	ICloudvmClusterService cloudvmClusterService;
 	
-	public VMCreateConf2 getCreateVmConf(VmCreateForm vmCreateForm, CloudvmRegion vmRegion) {
+	public VMCreateConf2 getCreateVmConf(VmCreateForm vmCreateForm, CloudvmCluster vmCluster) {
 		
-		CloudvmFlavor vmFlavor = cloudvmFlavorService.selectById(Long.parseLong(vmCreateForm.getGroupId()));
-		CloudvmImage vmImage = cloudvmImageService.selectById(Long.parseLong(vmCreateForm.getImageId()));
-		if(vmRegion==null || vmFlavor==null || vmImage==null) {
+		//CloudvmFlavor vmFlavor = cloudvmFlavorService.selectById(Long.parseLong(vmCreateForm.getGroupId()));
+		//CloudvmImage vmImage = cloudvmImageService.selectById(Long.parseLong(vmCreateForm.getImageId()));
+
+		//if(vmRegion==null || vmFlavor==null || vmImage==null) {
+		//	return null;
+		//}
+		
+		
+		Map<String, Object> vmParams = new HashMap<String, Object>();
+		vmParams.put("cloudvmClusterId", vmCreateForm.getClusterId());
+		vmParams.put("name", vmCreateForm.getImageName());
+		List<CloudvmImage> vmImages = cloudvmImageService.selectByMap(vmParams);
+		vmParams.clear();
+		vmParams.put("cloudvmClusterId", vmCreateForm.getClusterId());
+		vmParams.put("vcpus", vmCreateForm.getCpu());
+		vmParams.put("ram", vmCreateForm.getRam());
+		vmParams.put("disk", vmCreateForm.getDisk());
+		List<CloudvmFlavor> vmFlavors = cloudvmFlavorService.selectByMap(vmParams);
+		
+		if(vmImages==null || vmImages.size()==0 || vmFlavors==null || vmFlavors.size()==0) {
 			return null;
 		}
 		
@@ -65,14 +92,14 @@ public class CmdbServiceImpl implements ICmdbService {
 		//工具类生产默认主机名称，规则：申请人邮箱前缀-当前年月日-序号
 		String userName = vmCreateForm.getApplyUserEmail().substring(0, vmCreateForm.getApplyUserEmail().indexOf("@"));
 		conf.setName(userName+CalendarUtil.getDateString(new Date(), CalendarUtil.SHORT_DATE_FORMAT_NO_DASH));
-		conf.setRegion(vmRegion.getCode());
+		conf.setRegion(vmCluster.getCode());
 		//根据groupId获取flavorId
-		conf.setFlavorId(vmFlavor.getFlavorId());
+		conf.setFlavorId(vmFlavors.get(0).getFlavorId());
 		//根据groupId获取volumeSize
 		conf.setVolumeSize(0);
 		
 		//根据imageId获取openstack-imageId
-		conf.setImageId(vmImage.getImageId());
+		conf.setImageId(vmImages.get(0).getImageId());
 		//目前只有这一种硬盘类型可用(私有云没有云硬盘)
 		conf.setVolumeTypeId(CloudvmVolumeType.SATA.getVolumeTypeId());
 		conf.setBindFloatingIp(false);
@@ -112,9 +139,9 @@ public class CmdbServiceImpl implements ICmdbService {
 		return user.getId();
 	}
 	
-	public void createSession(VMCreateConf2 conf, CloudvmRegion vmRegion) throws OpenStackException {
+	public void createSession(VMCreateConf2 conf, CloudvmCluster vmCluster) throws OpenStackException {
 		openStackSession = openStackService.createSession(conf.getUserId(), conf.getUserEmail(), conf.getUserName(),
-				vmRegion);
+				vmCluster);
         openStackSession.init(null);
         Session s = new Session();
         s.setUserId(conf.getUserId());
@@ -140,5 +167,100 @@ public class CmdbServiceImpl implements ICmdbService {
 		}
 		
 	}
+
+	@Override
+	public List<Map<String, Object>> getFlavorsByClusterId(Long clusterId) {
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		List<CloudvmFlavor> flavors = this.cloudvmFlavorService.selectByClusterId(clusterId);
+		for (CloudvmFlavor cloudvmFlavor : flavors) {
+			Map<String, Object> flavor = new HashMap<String, Object>();
+			flavor.put("id", cloudvmFlavor.getId());
+			flavor.put("name", cloudvmFlavor.getName());
+			flavor.put("cpu", cloudvmFlavor.getVcpus());
+			flavor.put("ram", cloudvmFlavor.getRam());
+			flavor.put("disk", cloudvmFlavor.getDisk());
+			ret.add(flavor);
+		}
+		return ret;
+	}
+
+	@Override
+	public List<Map<String, Object>> getImagesByClusterId(Long clusterId) {
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		List<CloudvmImage> images = this.cloudvmImageService.selectByClusterId(clusterId);
+		for (CloudvmImage cloudvmImage : images) {
+			Map<String, Object> image = new HashMap<String, Object>();
+			image.put("id", cloudvmImage.getId());
+			image.put("name", cloudvmImage.getName());
+			ret.add(image);
+		}
+		return ret;
+	}
+
+	@Override
+	public List<Map<String, Object>> getClusters(Map<String,Object> params) {
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		params.put("type", "1");
+		List<CloudvmRegion> regions = this.cloudvmRegionService.selectByMap(params);
+		for (CloudvmRegion cloudvmRegion : regions) {
+			List<CloudvmCluster> clusters = this.cloudvmClusterService.selectByRegionId(cloudvmRegion.getId());
+			for (CloudvmCluster cloudvmCluster : clusters) {
+				Map<String, Object> region = new HashMap<String, Object>();
+				region.put("id", cloudvmCluster.getId());
+				region.put("name", cloudvmCluster.getName());
+				ret.add(region);
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public List<Map<String, Object>> getFlavors() {
+		List<CloudvmRegion> regions = this.cloudvmRegionService.selectByType("1");
+		Set<String> judgeRepeat = new HashSet<String>();
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		for (CloudvmRegion cloudvmRegion : regions) {
+			List<CloudvmCluster> clusters = this.cloudvmClusterService.selectByRegionId(cloudvmRegion.getId());
+			for (CloudvmCluster cloudvmCluster : clusters) {
+				List<CloudvmFlavor> flavors = this.cloudvmFlavorService.selectByClusterId(cloudvmCluster.getId());
+				for (CloudvmFlavor cloudvmFlavor : flavors) {
+					if(!judgeRepeat.contains(cloudvmFlavor.getName())) {
+						judgeRepeat.add(cloudvmFlavor.getName());
+						Map<String, Object> flavor = new HashMap<String, Object>();
+						flavor.put("name", cloudvmFlavor.getName());
+						flavor.put("cpu", cloudvmFlavor.getVcpus());
+						flavor.put("ram", cloudvmFlavor.getRam());
+						flavor.put("disk", cloudvmFlavor.getDisk());
+						ret.add(flavor);
+					}
+				}
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public List<Map<String, Object>> getImages() {
+		List<CloudvmRegion> regions = this.cloudvmRegionService.selectByType("1");
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		Set<String> judgeRepeat = new HashSet<String>();
+		for (CloudvmRegion cloudvmRegion : regions) {
+			List<CloudvmCluster> clusters = cloudvmClusterService.selectByRegionId(cloudvmRegion.getId());
+			for (CloudvmCluster cloudvmCluster : clusters) {
+				List<CloudvmImage> images = this.cloudvmImageService.selectByClusterId(cloudvmCluster.getId());
+				for (CloudvmImage cloudvmImage : images) {
+					if(!judgeRepeat.contains(cloudvmImage.getName())) {
+						judgeRepeat.add(cloudvmImage.getName());
+						Map<String, Object> image = new HashMap<String, Object>();
+						image.put("id", cloudvmImage.getName());
+						image.put("name", cloudvmImage.getName());
+						ret.add(image);
+					}
+				}
+			}
+		}
+		return ret;
+	}
+
 	
 }

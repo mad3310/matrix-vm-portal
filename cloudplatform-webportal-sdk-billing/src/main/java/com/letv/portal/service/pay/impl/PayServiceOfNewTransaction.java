@@ -41,8 +41,9 @@ public class PayServiceOfNewTransaction {
 		}
 		return b;
 	}
-
-	private boolean updateOrderPayInfo(long orderId, String orderNumber,
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public boolean updateOrderPayInfo(long orderId, String orderNumber,
 			Date payTime, Integer status, BigDecimal accountMoney) {
 		Order o = new Order();
 		o.setId(orderId);

@@ -160,7 +160,7 @@ public class HostProductServiceOfNewTransaction {
 			logger.info(productType+"创建全部回调完成.");
 			
 			Map<String, Object> serviceParams = transResult(params);
-			
+			logger.info(orderSubs.get(0).getOrder().getStatus()+"===============orderStatus======================");
 			try {
 				if(orderSubs.get(0).getOrder().getStatus()==4) {//审批通过
 					if(successCount>0) {

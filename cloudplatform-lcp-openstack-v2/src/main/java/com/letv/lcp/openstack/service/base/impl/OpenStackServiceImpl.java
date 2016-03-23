@@ -40,9 +40,11 @@ import com.letv.lcp.openstack.service.session.impl.OpenStackSessionImpl;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.internal.UserExists;
 import com.letv.lcp.openstack.util.internal.UserRegister;
+import com.letv.portal.model.cloudvm.CloudvmCluster;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
 import com.letv.portal.model.common.UserModel;
 import com.letv.portal.model.common.UserVo;
+import com.letv.portal.service.cloudvm.ICloudvmClusterService;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
@@ -108,6 +110,8 @@ public class OpenStackServiceImpl implements IOpenStackService {
 
 	@Autowired
 	private ICloudvmRegionService cloudvmRegionService;
+	@Autowired
+	private ICloudvmClusterService cloudvmClusterService;
 
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
@@ -243,23 +247,23 @@ public class OpenStackServiceImpl implements IOpenStackService {
 	
 	@Override
 	public IOpenStackSession createSession(Long userId, Long tenantId) {
-		CloudvmRegion vmRegion = cloudvmRegionService.selectById(tenantId);
+		CloudvmCluster vmCluster = cloudvmClusterService.selectById(tenantId);
 		UserModel user = this.userService.getUserById(userId);
-		return this.createSession(userId, user.getEmail(), user.getUserName(), vmRegion);
+		return this.createSession(userId, user.getEmail(), user.getUserName(), vmCluster);
 	}
 	
 	
 	@Override
 	public IOpenStackSession createAdminSession(Long userId, Long tenantId) {
-		CloudvmRegion vmRegion = cloudvmRegionService.selectById(tenantId);
+		CloudvmCluster vmCluster = cloudvmClusterService.selectById(tenantId);
 		UserModel user = this.userService.getUserById(userId);
-		return createOpenStackSession(userId, user.getEmail(), user.getUserName(), vmRegion, true);
+		return createOpenStackSession(userId, user.getEmail(), user.getUserName(), vmCluster, true);
 	}
 	
 	
 	@Override
-	public IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmRegion vmRegion) {
-		return createOpenStackSession(applyUserId, applyUserEmail, applyUserName, vmRegion, false);
+	public IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmCluster vmCluster) {
+		return createOpenStackSession(applyUserId, applyUserEmail, applyUserName, vmCluster, false);
 	}
 	
 	/**
@@ -268,7 +272,7 @@ public class OpenStackServiceImpl implements IOpenStackService {
 	  * @param applyUserId 申请人id
 	  * @param applyUserEmail 申请人邮箱
 	  * @param applyUserName 申请人用户名
-	  * @param vmRegion 创建用户信息（一个地域包含创建用户，管理员用户）
+	  * @param vmCluster 创建用户信息（一个地域包含创建用户，管理员用户）
 	  * @param isAdmin 是否是管理员用户
 	  * @return IOpenStackSession   
 	  * @throws 
@@ -276,25 +280,25 @@ public class OpenStackServiceImpl implements IOpenStackService {
 	  * @date 2016年3月2日 上午11:36:49
 	  */
 	private IOpenStackSession createOpenStackSession(Long applyUserId, String applyUserEmail, String applyUserName, 
-			CloudvmRegion vmRegion, boolean isAdmin) {
+			CloudvmCluster vmCluster, boolean isAdmin) {
 		OpenStackTenant openStackTenant = null;
 		if(isAdmin) {
-			openStackTenant = new OpenStackTenant(vmRegion.getId(),
-					vmRegion.getAdminTenantName(), vmRegion.getAdminTenantPassword(), vmRegion.getAdminProjectName());
+			openStackTenant = new OpenStackTenant(vmCluster.getId(),
+					vmCluster.getAdminTenantName(), vmCluster.getAdminTenantPassword(), vmCluster.getAdminProjectName());
 		} else {
-			openStackTenant = new OpenStackTenant(vmRegion.getId(),
-					vmRegion.getTenantName(), vmRegion.getTenantPassword(), vmRegion.getProjectName());
+			openStackTenant = new OpenStackTenant(vmCluster.getId(),
+					vmCluster.getTenantName(), vmCluster.getTenantPassword(), vmCluster.getProjectName());
 		}
 		OpenStackUser openStackUser = new OpenStackUser(openStackTenant);
 		openStackUser.setUserName(applyUserName);
 		openStackUser.setUserEmail(applyUserEmail);
 		openStackUser.setApplyUserId(applyUserId);
 		
-		if(vmRegion.getAdminEndpoint()!=null) {
-			openStackConf.setAdminEndpoint(vmRegion.getAdminEndpoint());
+		if(vmCluster.getAdminEndpoint()!=null) {
+			openStackConf.setAdminEndpoint(vmCluster.getAdminEndpoint());
 		}
-		if(vmRegion.getPublicEndpoint()!=null) {
-			openStackConf.setPublicEndpoint(vmRegion.getPublicEndpoint());
+		if(vmCluster.getPublicEndpoint()!=null) {
+			openStackConf.setPublicEndpoint(vmCluster.getPublicEndpoint());
 		}
 		return new OpenStackSessionImpl(openStackConf, openStackUser);
 	}

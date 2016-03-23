@@ -9,12 +9,13 @@ public class CloudvmFlavor extends BaseModel {
 
     private static final long serialVersionUID = -2079817238965628633L;
 
+    private String name;
+    private String cloudvmClusterId;
     private String region;
     private String flavorId;
     private Integer vcpus;
     private Integer ram;
     private Integer disk;
-    private Integer storage;
 
     public CloudvmFlavor() {
     }
@@ -29,12 +30,20 @@ public class CloudvmFlavor extends BaseModel {
     }
 
     
-    public Integer getStorage() {
-		return storage;
+    public String getName() {
+		return name;
 	}
 
-	public void setStorage(Integer storage) {
-		this.storage = storage;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCloudvmClusterId() {
+		return cloudvmClusterId;
+	}
+
+	public void setCloudvmClusterId(String cloudvmClusterId) {
+		this.cloudvmClusterId = cloudvmClusterId;
 	}
 
 	public String getFlavorId() {

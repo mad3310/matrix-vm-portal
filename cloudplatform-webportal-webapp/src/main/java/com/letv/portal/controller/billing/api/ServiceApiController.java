@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,8 +26,8 @@ import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.service.jclouds.IApiService;
 import com.letv.lcp.openstack.service.validation.IValidationService;
 import com.letv.portal.constant.Constants;
-import com.letv.portal.model.cloudvm.CloudvmRegion;
-import com.letv.portal.service.cloudvm.ICloudvmRegionService;
+import com.letv.portal.model.cloudvm.CloudvmCluster;
+import com.letv.portal.service.cloudvm.ICloudvmClusterService;
 import com.letv.portal.service.cmdb.ICmdbService;
 import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductManageService;
@@ -46,7 +47,7 @@ public class ServiceApiController {
 	@Autowired
     private IValidationService validationService;
 	@Autowired
-	private ICloudvmRegionService cloudvmRegionService;
+	private ICloudvmClusterService cloudvmClusterService;
 	@Autowired
 	IPayService payService;
 	@Autowired
@@ -56,6 +57,17 @@ public class ServiceApiController {
 	@Autowired
 	private IProductManageService productManageService;
 
+	/**
+	  * @Title: createVm
+	  * @Description: 创建云主机
+	  * @param request
+	  * @param response
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年3月21日 下午3:53:45
+	  */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/vm",method=RequestMethod.POST)
 	//@IsAdminValid(isAdmin=IsAdminEnum.YES)
@@ -80,9 +92,11 @@ public class ServiceApiController {
 			}
 			
 			//通过clusterId获取region信息
-			CloudvmRegion vmRegion = cloudvmRegionService.selectById(Long.parseLong(vmCreateForm.getClusterId()));
+			//CloudvmRegion vmRegion = cloudvmRegionService.selectById(Long.parseLong(vmCreateForm.getClusterId()));
+			//通过clusterId获取cluster信息
+			CloudvmCluster vmCluster = cloudvmClusterService.selectById(Long.parseLong(vmCreateForm.getClusterId()));
 			
-			VMCreateConf2 conf = cmdbService.getCreateVmConf(vmCreateForm, vmRegion);
+			VMCreateConf2 conf = cmdbService.getCreateVmConf(vmCreateForm, vmCluster);
 			if(conf == null) {
 				obj.setResult(0);
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -91,17 +105,20 @@ public class ServiceApiController {
 			conf.setOrderId((String)params.get("orderId"));
 			
 			try {
-				cmdbService.createSession(conf, vmRegion);
+				//创建云主机session
+				cmdbService.createSession(conf, vmCluster);
 			} catch (OpenStackException e) {
 				logger.error("createSession has error:", e);
 				throw new MatrixException(e.getMessage(), e);
 			}
 			
+			//创建订单订阅
 			cmdbService.createVmInfo(Constants.PRODUCT_PRIVATE_VM, JSONObject.toJSONString(conf), groupId, obj);
 			if(obj.getResult()==0) {
 				return obj;
 			}
 			String orderNumber = (String) obj.getData();
+			//审批通过并调用创建云主机
 			Map<String, Object> ret = payService.approve(orderNumber);
 			
 			if(null != ret.get("alert")) {
@@ -118,6 +135,52 @@ public class ServiceApiController {
 	}
 	
 	
+	/**
+	  * @Title: getFlavorsByRegionId
+	  * @Description: 根据集群获取云主机配置信息
+	  * @param clusterId
+	  * @param response
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年3月21日 下午3:54:02
+	  */
+	@RequestMapping(value="/{clusterId}/flavors",method=RequestMethod.GET)
+	//@SecurityValid(paramKey="conf", signKey="sign", secretKey=SecretKeyEnum.CMDB)
+	public @ResponseBody ResultObject getFlavorsByClusterId(@PathVariable Long clusterId, HttpServletResponse response, ResultObject obj) {
+		obj.setData(this.cmdbService.getFlavorsByClusterId(clusterId));
+		return obj;
+	}
+	
+	@RequestMapping(value="/flavors",method=RequestMethod.GET)
+	//@SecurityValid(paramKey="conf", signKey="sign", secretKey=SecretKeyEnum.CMDB)
+	public @ResponseBody ResultObject getFlavors(HttpServletResponse response, ResultObject obj) {
+		obj.setData(this.cmdbService.getFlavors());
+		return obj;
+	}
+	
+	@RequestMapping(value="/clusters",method=RequestMethod.GET)
+	//@SecurityValid(paramKey="conf", signKey="sign", secretKey=SecretKeyEnum.CMDB)
+	public @ResponseBody ResultObject getClusters(HttpServletRequest request, HttpServletResponse response, ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.cmdbService.getClusters(params));
+		return obj;
+	}
+	
+	@RequestMapping(value="/{clusterId}/images",method=RequestMethod.GET)
+	//@SecurityValid(paramKey="conf", signKey="sign", secretKey=SecretKeyEnum.CMDB)
+	public @ResponseBody ResultObject getImagesByRegionId(@PathVariable Long clusterId, HttpServletResponse response, ResultObject obj) {
+		obj.setData(this.cmdbService.getImagesByClusterId(clusterId));
+		return obj;
+	}
+	
+	@RequestMapping(value="/images",method=RequestMethod.GET)
+	//@SecurityValid(paramKey="conf", signKey="sign", secretKey=SecretKeyEnum.CMDB)
+	public @ResponseBody ResultObject getImages(HttpServletResponse response, ResultObject obj) {
+		obj.setData(this.cmdbService.getImages());
+		return obj;
+	}
 	
 	
 

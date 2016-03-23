@@ -208,4 +208,9 @@ public class CloudvmImageServiceImpl extends BaseServiceImpl<CloudvmImage>
         paras.put("imageType", CloudvmImageType.IMAGE);
         return cloudvmImageDao.selectAllImageOrVmSnapshot(paras);
     }
+
+	@Override
+	public List<CloudvmImage> selectByClusterId(long clusterId) {
+		return this.cloudvmImageDao.selectByClusterId(clusterId);
+	}
 }

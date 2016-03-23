@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.lcp.cloudvm.listener.FloatingIpCreateListener;
 import com.letv.lcp.cloudvm.listener.VmCreateListener;
@@ -134,6 +136,7 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 
 	//创建云主机
 	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void createVm(final List<OrderSub> orderSubs, final String params, 
 			final List<ProductInfoRecord> records, Long tenantId, boolean auditUser) {
 		logger.info("开始创建云主机！");

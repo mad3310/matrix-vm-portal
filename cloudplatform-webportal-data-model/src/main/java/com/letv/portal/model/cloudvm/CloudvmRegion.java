@@ -8,16 +8,7 @@ public class CloudvmRegion extends BaseModel {
 
 	private String code;
 	private String displayName;
-	
-	private String adminEndpoint;
-	private String publicEndpoint;
-	private String tenantName;//创建用户用户名
-	private String projectName;//创建用户项目
-	private String tenantPassword;//创建用户密码
-	
-	private String adminTenantName;//管理员用户名
-	private String adminTenantPassword;//管理员密码
-	private String adminProjectName;//管理员项目
+	private String type;
 
 	public CloudvmRegion() {
 	}
@@ -28,29 +19,12 @@ public class CloudvmRegion extends BaseModel {
 		this.displayName = displayName;
 	}
 
-	
-	public String getAdminTenantName() {
-		return adminTenantName;
+	public String getType() {
+		return type;
 	}
 
-	public void setAdminTenantName(String adminTenantName) {
-		this.adminTenantName = adminTenantName;
-	}
-
-	public String getAdminTenantPassword() {
-		return adminTenantPassword;
-	}
-
-	public void setAdminTenantPassword(String adminTenantPassword) {
-		this.adminTenantPassword = adminTenantPassword;
-	}
-
-	public String getAdminProjectName() {
-		return adminProjectName;
-	}
-
-	public void setAdminProjectName(String adminProjectName) {
-		this.adminProjectName = adminProjectName;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getCode() {
@@ -67,46 +41,6 @@ public class CloudvmRegion extends BaseModel {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
-	}
-
-	public String getAdminEndpoint() {
-		return adminEndpoint;
-	}
-
-	public void setAdminEndpoint(String adminEndpoint) {
-		this.adminEndpoint = adminEndpoint;
-	}
-
-	public String getPublicEndpoint() {
-		return publicEndpoint;
-	}
-
-	public void setPublicEndpoint(String publicEndpoint) {
-		this.publicEndpoint = publicEndpoint;
-	}
-
-	public String getTenantName() {
-		return tenantName;
-	}
-
-	public void setTenantName(String tenantName) {
-		this.tenantName = tenantName;
-	}
-
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
-
-	public String getTenantPassword() {
-		return tenantPassword;
-	}
-
-	public void setTenantPassword(String tenantPassword) {
-		this.tenantPassword = tenantPassword;
 	}
 
 }

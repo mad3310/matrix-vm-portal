@@ -3,7 +3,7 @@ package com.letv.lcp.openstack.service.base;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.model.conf.OpenStackConf;
 import com.letv.lcp.openstack.service.session.IOpenStackSession;
-import com.letv.portal.model.cloudvm.CloudvmRegion;
+import com.letv.portal.model.cloudvm.CloudvmCluster;
 
 
 /**
@@ -42,13 +42,13 @@ public interface IOpenStackService {
       * @param applyUserId 申请人id  
       * @param applyUserEmail 申请人邮箱  
       * @param applyUserName 申请人用户名  
-      * @param vmRegion 集群信息包括调用地址,用户信息  
+      * @param vmCluster 集群信息包括调用地址,用户信息  
       * @return IOpenStackSession   
       * @throws 
       * @author lisuxiao
       * @date 2016年1月26日 下午5:58:04
       */
-    IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmRegion vmRegion);
+    IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmCluster vmCluster);
     
     /**
       * @Title: getOpenStackConfDefault

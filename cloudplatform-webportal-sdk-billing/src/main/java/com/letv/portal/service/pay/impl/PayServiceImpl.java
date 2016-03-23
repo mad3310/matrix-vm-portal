@@ -565,7 +565,7 @@ public class PayServiceImpl implements IPayService {
 		BigDecimal totalPrice = getValidOrderPrice(orderSubs);
 		
 		//4代表审批通过时流水编号自己生成
-		if(updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(4), new Date(), 4, totalPrice)) {
+		if(this.payServiceOfNewTransaction.updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(4), new Date(), 4, totalPrice)) {
 			IOpenStackSession openstackSession = (IOpenStackSession) this.sessionService.getSession().getOpenStackSession();
 			//创建应用实例
 			createInstance(orderSubs, openstackSession.getOpenStackUser().getTenantUserId(), true);

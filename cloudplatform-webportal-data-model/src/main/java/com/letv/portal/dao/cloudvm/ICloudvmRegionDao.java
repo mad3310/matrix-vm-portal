@@ -8,4 +8,6 @@ import com.letv.portal.model.cloudvm.CloudvmRegion;
 
 public interface ICloudvmRegionDao extends IBaseDao<CloudvmRegion> {
 	public List<CloudvmRegion> selectByCode(HashMap<String, Object> params);
+	
+	public List<CloudvmRegion> selectByType(String type);
 }

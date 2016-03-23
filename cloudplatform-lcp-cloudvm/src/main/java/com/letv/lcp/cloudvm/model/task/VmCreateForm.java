@@ -17,7 +17,45 @@ public class VmCreateForm {
 	private String operateUserEmail;
 	private String callbackId;//申请组id（回调注册信息时使用）
 	
+	private String cpu;
+	private String ram;
+	private String disk;
+	private String imageName;
 	
+	
+	
+	public String getCpu() {
+		return cpu;
+	}
+
+	public void setCpu(String cpu) {
+		this.cpu = cpu;
+	}
+
+	public String getRam() {
+		return ram;
+	}
+
+	public void setRam(String ram) {
+		this.ram = ram;
+	}
+
+	public String getDisk() {
+		return disk;
+	}
+
+	public void setDisk(String disk) {
+		this.disk = disk;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
 	@NotBlank
 	public String getCallbackId() {
 		return callbackId;
@@ -27,7 +65,7 @@ public class VmCreateForm {
 		this.callbackId = callbackId;
 	}
 
-	@NotBlank
+	//@NotBlank
 	public String getGroupId() {
 		return groupId;
 	}
@@ -60,7 +98,7 @@ public class VmCreateForm {
 		this.operateUserEmail = operateUserEmail;
 	}
 
-	@NotBlank
+	//@NotBlank
 	public String getImageId() {
 		return imageId;
 	}

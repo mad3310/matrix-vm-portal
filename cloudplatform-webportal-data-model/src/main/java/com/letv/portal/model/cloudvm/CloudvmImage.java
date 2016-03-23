@@ -2,8 +2,6 @@ package com.letv.portal.model.cloudvm;
 
 import com.letv.common.model.BaseModel;
 
-import java.util.Date;
-
 /**
  * Created by zhouxianguang on 2015/9/30.
  */
@@ -11,6 +9,7 @@ public class CloudvmImage extends BaseModel {
 
     private static final long serialVersionUID = -8649677463047922945L;
 
+    private Long cloudvmClusterId;
     private String region;
     private String imageId;
     private String name;
@@ -25,7 +24,17 @@ public class CloudvmImage extends BaseModel {
     private String serverId;
     private String serverName;
 
-    public String getServerId() {
+    
+
+	public Long getCloudvmClusterId() {
+		return cloudvmClusterId;
+	}
+
+	public void setCloudvmClusterId(Long cloudvmClusterId) {
+		this.cloudvmClusterId = cloudvmClusterId;
+	}
+
+	public String getServerId() {
         return serverId;
     }
 
