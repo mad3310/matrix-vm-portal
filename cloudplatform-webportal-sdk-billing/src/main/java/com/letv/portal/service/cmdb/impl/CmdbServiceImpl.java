@@ -63,7 +63,7 @@ public class CmdbServiceImpl implements ICmdbService {
 	@Autowired
 	ICloudvmClusterService cloudvmClusterService;
 	
-	public VMCreateConf2 getCreateVmConf(VmCreateForm vmCreateForm, CloudvmCluster vmCluster) {
+	public VMCreateConf2 collectCreateVmConf(VmCreateForm vmCreateForm, CloudvmCluster vmCluster) {
 		
 		//CloudvmFlavor vmFlavor = cloudvmFlavorService.selectById(Long.parseLong(vmCreateForm.getGroupId()));
 		//CloudvmImage vmImage = cloudvmImageService.selectById(Long.parseLong(vmCreateForm.getImageId()));

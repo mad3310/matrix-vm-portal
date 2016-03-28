@@ -96,7 +96,7 @@ public class ServiceApiController {
 			//通过clusterId获取cluster信息
 			CloudvmCluster vmCluster = cloudvmClusterService.selectById(Long.parseLong(vmCreateForm.getClusterId()));
 			
-			VMCreateConf2 conf = cmdbService.getCreateVmConf(vmCreateForm, vmCluster);
+			VMCreateConf2 conf = cmdbService.collectCreateVmConf(vmCreateForm, vmCluster);
 			if(conf == null) {
 				obj.setResult(0);
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -19,7 +19,7 @@ import com.letv.portal.model.cloudvm.CloudvmRegion;
  */
 public interface ICmdbService {
 	
-	VMCreateConf2 getCreateVmConf(VmCreateForm vmCreateForm, CloudvmCluster vmCluster);
+	VMCreateConf2 collectCreateVmConf(VmCreateForm vmCreateForm, CloudvmCluster vmCluster);
 	
 	void createSession(VMCreateConf2 conf, CloudvmCluster vmCluster) throws OpenStackException;
 	
