@@ -39,6 +39,8 @@ public class CmdbCallbackServiceImpl implements ICmdbCallbackService {
 	private IProductInfoRecordService productInfoRecordService;
 	@Value("${cmdb.callback.url}")
 	private String cmdbCallbackUrl;
+	@Value("${cmdb.callback.token}")
+	private String cmdbCallbackToken;
 	@Autowired
 	RetryUtil retryUtil;
 	
@@ -86,6 +88,7 @@ public class CmdbCallbackServiceImpl implements ICmdbCallbackService {
 				final Map<String, String> postInfo = new HashMap<String, String>();
 				postInfo.put("callbackdata", JSONObject.toJSONString(infos));
 				postInfo.put("orderid", (String)recordParam.get("orderId"));
+				postInfo.put("link_token", cmdbCallbackToken);
 				
 				return HttpClient.post(cmdbCallbackUrl, postInfo, 1000, 2000, null, null);
 			}
