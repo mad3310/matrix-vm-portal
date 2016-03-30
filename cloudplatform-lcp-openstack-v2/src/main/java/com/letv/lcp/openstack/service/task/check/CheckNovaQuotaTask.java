@@ -43,15 +43,22 @@ public class CheckNovaQuotaTask implements VmsCreateCheckSubTask {
         Long userId = context.getUserId();
         int count = context.getVmCreateConf().getCount();
         Flavor flavor = context.getFlavor();
-        localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_VM, servers.size() + count);
-        localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_CPU, serverTotalVcpus + count * flavor.getVcpus());
-        localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_MEMORY, (serverTotalRam + count * flavor.getRam()) / 1024);
-
+        
+        if(!context.isAuditUser()) {//不是审批用户检查配额
+        	localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_VM, servers.size() + count);
+            localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_CPU, serverTotalVcpus + count * flavor.getVcpus());
+            localCommonQuotaSerivce.checkQuota(userId, region, CommonQuotaType.CLOUDVM_MEMORY, (serverTotalRam + count * flavor.getRam()) / 1024);
+		} else {//审批用户直接增加用户配额
+			localCommonQuotaSerivce.addQuotaWithAuditUser(userId, region, CommonQuotaType.CLOUDVM_VM, (long)servers.size() + count);
+			localCommonQuotaSerivce.addQuotaWithAuditUser(userId, region, CommonQuotaType.CLOUDVM_CPU, (long)serverTotalVcpus + count * flavor.getVcpus());
+			localCommonQuotaSerivce.addQuotaWithAuditUser(userId, region, CommonQuotaType.CLOUDVM_MEMORY, (long)(serverTotalRam + count * flavor.getRam()) / 1024);
+		}
+        
         Quota novaQuota = context
                 .getNovaApi()
                 .getQuotaApi(region).get()
                 .getByTenant(
-                        context.getVmManager().getOpenStackUser().getTenantId());
+                        context.getVmManager().getOpenStackUser().getOpenStackTenantId());
         if (novaQuota == null) {
             throw new OpenStackException("VM quota is not available.",
                     "虚拟机配额不可用。");

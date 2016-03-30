@@ -6,6 +6,7 @@ import com.letv.lcp.cloudvm.listener.VmCreateListener;
 import com.letv.lcp.cloudvm.model.compute.ComputeModel;
 import com.letv.lcp.cloudvm.model.task.VMCreateConf2;
 import com.letv.lcp.cloudvm.service.resource.IResourceService;
+import com.letv.portal.model.cloudvm.lcp.CloudvmServerModel;
 
 
 public interface IComputeService extends IResourceService<ComputeModel>  {
@@ -89,4 +90,14 @@ public interface IComputeService extends IResourceService<ComputeModel>  {
 	  * @date 2016年1月11日 下午6:55:06
 	  */
 	String emailVmsCreated(Map<String, Object> params);
+	/**
+	  * @Title: getPhysicalHostNameByServerInfo
+	  * @Description: 根据虚机信息获取该物理机的主机名
+	  * @param serverModel 
+	  * @return String 主机名  
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年3月2日 下午1:45:27
+	  */
+	String getPhysicalHostNameByServerInfo(CloudvmServerModel serverModel); 
 }

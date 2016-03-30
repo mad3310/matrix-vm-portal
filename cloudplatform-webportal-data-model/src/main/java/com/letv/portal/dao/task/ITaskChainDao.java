@@ -15,7 +15,11 @@ public interface ITaskChainDao extends IBaseDao<TaskChain> {
 	TaskChain selectFailedChainByIndex(TaskChain tc);
 
 	List<TaskChain> selectAllChainByIndexId(Long chainIndexId);
+	
+	List<TaskChain> selectNotUndoChainByIndexIdAndOrder(Map<String, Object> params);
 
 	void updateAfterDoingChainStatus(Map<String, Object> params);
+	
+	void updateStatusById(TaskChain tc);
 
 }

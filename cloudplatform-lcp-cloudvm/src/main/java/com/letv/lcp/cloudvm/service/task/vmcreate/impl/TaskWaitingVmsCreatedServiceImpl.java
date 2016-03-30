@@ -26,16 +26,16 @@ public class TaskWaitingVmsCreatedServiceImpl extends BaseTask4VmCreateServiceIm
 		if(vmCreateConf.getVolumeSize() > 0 || vmCreateConf.getBindFloatingIp()) {
 			ret = computeService.waitingVmsCreated(params);
 			logger.info("等待云主机创建完成，结果：{}", ret);
+			
+			tr.setResult(ret);
+			if("success".equals(ret) || "true".equals(ret)) {
+				tr.setSuccess(true);
+				tr.setParams(params);
+			} else {
+				tr.setSuccess(false);
+			}
 		} else {
-			ret = "success";
-		}
-		
-		tr.setResult(ret);
-		if("success".equals(ret) || "true".equals(ret)) {
-			tr.setSuccess(true);
-			tr.setParams(params);
-		} else {
-			tr.setSuccess(false);
+			tr.setResult("skip");
 		}
 		
 		return tr;

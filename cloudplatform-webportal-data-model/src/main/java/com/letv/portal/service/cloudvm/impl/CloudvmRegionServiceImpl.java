@@ -116,4 +116,9 @@ public class CloudvmRegionServiceImpl extends BaseServiceImpl<CloudvmRegion>
 				.selectByMap(new HashMap<String, Object>());
 		return regions;
 	}
+
+	@Override
+	public List<CloudvmRegion> selectByType(String type) {
+		return this.cloudvmRegionDao.selectByType(type);
+	}
 }

@@ -15,6 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ import com.letv.portal.model.message.Message;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
+import com.letv.portal.service.cmdb.ICmdbCallbackService;
 import com.letv.portal.service.common.IUserService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
@@ -73,6 +75,10 @@ public class HostProductServiceOfNewTransaction {
 	private IOrderSubService orderSubService;
 	@Autowired
 	private IOrderSubDetailService orderSubDetailService;
+	@Autowired
+	private ICmdbCallbackService cmdbCallbackService;
+	@Autowired
+    private TaskExecutor threadPoolTaskExecutor;
 
 	// 服务创建成功后回调
 	@SuppressWarnings("unchecked")
@@ -90,7 +96,7 @@ public class HostProductServiceOfNewTransaction {
 				record.setParams(null);
 				record.setInvokeType(null);
 				record.setDescn(null);
-				if (Constants.PRODUCT_VM == record.getProductId()) {
+				if (Constants.PRODUCT_VM == record.getProductId() || Constants.PRODUCT_PRIVATE_VM == record.getProductId()) {
 					record.setInstanceId(region + "_" + vmId);
 					productInfoRecordService.updateBySelective(record);
 				} else if (Constants.PRODUCT_VOLUME == record.getProductId()
@@ -145,7 +151,7 @@ public class HostProductServiceOfNewTransaction {
 	  * @date 2015年10月20日 下午2:37:43
 	  */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount, String params, String productType, Map<String, String> idNames){
+	public void checkOrderFinished(final List<OrderSub> orderSubs, int successCount, int failCount, String params, String productType, Map<String, String> idNames){
 		Set<Integer> batch = new HashSet<Integer>();
 		for (OrderSub orderSub : orderSubs) {
 			batch.add(orderSub.getProductInfoRecord().getBatch());
@@ -153,79 +159,96 @@ public class HostProductServiceOfNewTransaction {
 		if(successCount+failCount==batch.size()){
 			logger.info(productType+"创建全部回调完成.");
 			
-			
 			Map<String, Object> serviceParams = transResult(params);
-			
-			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(successCount));
-			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(failCount));
-			
+			logger.info(orderSubs.get(0).getOrder().getStatus()+"===============orderStatus======================");
 			try {
-				//处理冻结金额(减少成功个数冻结余额，转移失败个数冻结金额到可用余额)
-				billUserAmountService.dealFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice, failPrice, (String)serviceParams.get("name"), productType);
-				
-				//有成功的
-				if(succPrice.compareTo(new BigDecimal(0))==1) {
-					//更新订阅订单起始时间
-					updateSubscriptionAndOrderTime(orderSubs);
-					
-					SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
-					//生成用户账单。
-					billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
-							df.format(new Date()), succPrice.toString());
-					
-					//服务创建成功后保存服务创建成功通知
-			        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			        Date d = new Date();
-			        StringBuffer buffer = new StringBuffer();
-			        buffer.append("您在").append(sdf.format(d)).append("购买的").append(successCount).append("台").append(productType).append("已成功创建，详细信息如下:");
-			        
-			        Map<String, Object> messageModel = new HashMap<String, Object>();
-			        messageModel.put("warn", "注意：如不能正常使用，可及时联系运维人员。");
-			        messageModel.put("introduce", buffer.toString());
-			        if(Constant.OPENSTACK.equals(productType)) {
-			        	messageModel.put("isVm", true);
-			        } else {
-			        	messageModel.put("isVm", false);
-			        }
-
-					List<Map<String, Object>> resModelList = new LinkedList<Map<String, Object>>();
-					messageModel.put("resList", resModelList);
-					
-					for(String id : idNames.keySet()) {
-						//保存最近操作
-				        this.recentOperateService.saveInfo("创建"+productType, idNames.get(id), orderSubs.get(0).getCreateUser(), null);
-				        
-						Map<String, Object> resModel = new HashMap<String, Object>();
-						resModel.put("region", orderSubs.get(0).getSubscription().getBaseRegionName());
-						resModel.put("type", orderSubs.get(0).getSubscription().getProductName());
-						resModel.put("id", id);
-						resModel.put("name", idNames.get(id));
-						if(Constant.OPENSTACK.equals(productType)) {
-							resModel.put("userName", "root");
-							resModel.put("password", serviceParams.get("adminPass"));
+				if(orderSubs.get(0).getOrder().getStatus()==4) {//审批通过
+					if(successCount>0) {
+						//更新订阅订单起始时间
+						updateSubscriptionAndOrderTime(orderSubs);
+						for(String id : idNames.keySet()) {
+							//保存最近操作
+					        this.recentOperateService.saveInfo("创建"+productType, idNames.get(id), orderSubs.get(0).getCreateUser(), null);
 						}
-						resModelList.add(resModel);
+						final String groupId = orderSubs.get(0).getProductInfoRecord().getGroupId();
+						//启动新线程回调cmdb,保存主机名
+						this.threadPoolTaskExecutor.execute(new Runnable() {
+							@Override
+							public void run() {
+								cmdbCallbackService.saveVmInfo(groupId);
+							}
+						});
 					}
+				} else {
+					BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(successCount));
+					BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(batch.size())).multiply(new BigDecimal(failCount));
 					
-					String str = messageFormatServiceUtil.format("message/messageCreateNotice.ftl", messageModel);
-			        
-			        Message msg = new Message();
-			        msg.setMsgTitle(productType+"创建成功");
-			        msg.setMsgContent(str);
-			        msg.setMsgStatus("0");//未读
-			        msg.setMsgType("2");//个人消息
-			        msg.setCreatedTime(d);
-			        messageProxyService.saveMessage(orderSubs.get(0).getCreateUser(), msg);
-			    }
-				
-				if(failPrice.compareTo(new BigDecimal(0))==1) {
-					//发送用户通知
-					Long createUser = orderSubs.get(0).getCreateUser();
-					UserVo ucUser = this.userService.getUcUserById(createUser);
-					if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
-					this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
+					//处理冻结金额(减少成功个数冻结余额，转移失败个数冻结金额到可用余额)
+					billUserAmountService.dealFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice, failPrice, (String)serviceParams.get("name"), productType);
+					
+					//有成功的
+					if(succPrice.compareTo(new BigDecimal(0))==1) {
+						//更新订阅订单起始时间
+						updateSubscriptionAndOrderTime(orderSubs);
+						
+						SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
+						//生成用户账单。
+						billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getSubscription().getProductId()+"", orderSubs.get(0).getOrderId(), 
+								df.format(new Date()), succPrice.toString());
+						
+						//服务创建成功后保存服务创建成功通知
+				        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				        Date d = new Date();
+				        StringBuffer buffer = new StringBuffer();
+				        buffer.append("您在").append(sdf.format(d)).append("购买的").append(successCount).append("台").append(productType).append("已成功创建，详细信息如下:");
+				        
+				        Map<String, Object> messageModel = new HashMap<String, Object>();
+				        messageModel.put("warn", "注意：如不能正常使用，可及时联系运维人员。");
+				        messageModel.put("introduce", buffer.toString());
+				        if(Constant.OPENSTACK.equals(productType)) {
+				        	messageModel.put("isVm", true);
+				        } else {
+				        	messageModel.put("isVm", false);
+				        }
+	
+						List<Map<String, Object>> resModelList = new LinkedList<Map<String, Object>>();
+						messageModel.put("resList", resModelList);
+						
+						for(String id : idNames.keySet()) {
+							//保存最近操作
+					        this.recentOperateService.saveInfo("创建"+productType, idNames.get(id), orderSubs.get(0).getCreateUser(), null);
+					        
+							Map<String, Object> resModel = new HashMap<String, Object>();
+							resModel.put("region", orderSubs.get(0).getSubscription().getBaseRegionName());
+							resModel.put("type", orderSubs.get(0).getSubscription().getProductName());
+							resModel.put("id", id);
+							resModel.put("name", idNames.get(id));
+							if(Constant.OPENSTACK.equals(productType)) {
+								resModel.put("userName", "root");
+								resModel.put("password", serviceParams.get("adminPass"));
+							}
+							resModelList.add(resModel);
+						}
+						
+						String str = messageFormatServiceUtil.format("message/messageCreateNotice.ftl", messageModel);
+				        
+				        Message msg = new Message();
+				        msg.setMsgTitle(productType+"创建成功");
+				        msg.setMsgContent(str);
+				        msg.setMsgStatus("0");//未读
+				        msg.setMsgType("2");//个人消息
+				        msg.setCreatedTime(d);
+				        messageProxyService.saveMessage(orderSubs.get(0).getCreateUser(), msg);
+				    }
+					
+					if(failPrice.compareTo(new BigDecimal(0))==1) {
+						//发送用户通知
+						Long createUser = orderSubs.get(0).getCreateUser();
+						UserVo ucUser = this.userService.getUcUserById(createUser);
+						if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
+						this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云产品创建失败，退回账户"+failPrice+"元，请登录网站lcp.letvcloud.com进行确认！如有问题，可拨打客服电话400-055-6060。");
+					}
 				}
-				
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				StringBuffer sb = new StringBuffer();//发生异常时参数记录

@@ -36,4 +36,9 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServerModel
         return cloudvmServerDao;
     }
 
+	@Override
+	public CloudvmServerModel selectByServerInstanceId(String serverInstanceId) {
+		return this.cloudvmServerDao.selectByServerInstanceId(serverInstanceId);
+	}
+
 }

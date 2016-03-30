@@ -35,6 +35,12 @@ public class LocalCommonQuotaServiceImpl implements ILocalCommonQuotaSerivce {
         }
     }
 
+	@Override
+	public void addQuotaWithAuditUser(long tenantId, String region,
+			CommonQuotaType type, Long value) throws OpenStackException {
+		commonQuotaService.insertOrUpdateQuota(tenantId, region, type.getModule(), type, value);
+	}
+
 //    @Override
 //    public void updateLocalCommonQuotaService(final long userVoUserId, final String osTenantId, final NovaApi novaApi, final NeutronApi neutronApi, final CinderApi cinderApi) throws OpenStackException {
 //        ThreadUtil.concurrentRunAndWait(new Function0<Void>() {

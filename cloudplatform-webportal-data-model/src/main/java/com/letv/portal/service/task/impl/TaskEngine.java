@@ -138,8 +138,13 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("executeOrder", tc.getExecuteOrder());
 		map.put("chainIndexId", tc.getChainIndexId());
-		map.put("status", TaskExecuteStatus.UNDO);
-		this.taskChainService.updateAfterDoingChainStatus(map);
+		//map.put("status", TaskExecuteStatus.UNDO);
+		List<TaskChain> taskChains = this.taskChainService.selectNotUndoChainByIndexIdAndOrder(map);
+		for (TaskChain taskChain : taskChains) {
+			taskChain.setStatus(TaskExecuteStatus.UNDO);
+			this.taskChainService.updateStatusById(taskChain);
+		}
+		//this.taskChainService.updateAfterDoingChainStatus(map);
 		return tc;
 	}
 	

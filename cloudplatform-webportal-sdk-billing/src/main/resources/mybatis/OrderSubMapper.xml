@@ -53,6 +53,7 @@
 			<result column="PARAMS" property="params" />
 		    <result column="RECORD_PRODUCT_ID" property="productId" />
 		    <result column="BATCH" property="batch" />
+		    <result column="GROUP_ID" property="groupId" />
 		    <result column="INVOKE_TYPE" property="invokeType" />
 		    <result column="INSTANCE_ID" property="instanceId" />
 		    <result column="RECORD_DESCN" property="descn" />
@@ -178,7 +179,7 @@
 	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,region.NAME BASE_REGION_NAME,
 	        od.ID INNER_ORDER_ID,od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.PAY_TIME,od.DESCN ORDER_DESCN,od.CREATE_TIME ORDER_CREATE_TIME,od.UPDATE_TIME ORDER_UPDATE_TIME,
 	        record.PARAMS,record.PRODUCT_ID RECORD_PRODUCT_ID,record.INVOKE_TYPE,
-	        record.ID RECORD_ID,record.INSTANCE_ID,record.DESCN RECORD_DESCN,record.BATCH,od.ACCOUNT_PRICE
+	        record.ID RECORD_ID,record.INSTANCE_ID,record.DESCN RECORD_DESCN,record.BATCH,record.GROUP_ID,od.ACCOUNT_PRICE
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
 	    left join

@@ -1,5 +1,7 @@
 package com.letv.portal.service.product;
 
+import java.util.List;
+
 import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.service.common.IBaseService;
 
@@ -19,4 +21,15 @@ public interface IProductInfoRecordService extends IBaseService<ProductInfoRecor
 	  * @date 2015年12月11日 下午3:42:08
 	  */
 	Long selectIdByInstanceId(String instanceId);
+	/**
+	  * @Title: selectByInstanceId
+	  * @Description: 根据实例id获取商品信息
+	  * @param instanceId
+	  * @return ProductInfoRecord   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年3月9日 下午12:00:55
+	  */
+	ProductInfoRecord selectByInstanceId(String instanceId);
+	List<ProductInfoRecord> selectByGroupId(String groupId);
 }

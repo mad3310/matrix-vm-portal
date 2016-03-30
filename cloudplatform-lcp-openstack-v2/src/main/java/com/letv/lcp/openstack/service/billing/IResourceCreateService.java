@@ -19,7 +19,7 @@ import com.letv.lcp.openstack.model.storage.VolumeTypeResource;
 public interface IResourceCreateService {
     void createVm(long userId, String reqParaJson, VmCreateListener vmCreateListener, Object listenerUserData) throws MatrixException;
 
-    CheckResult checkVmCreatePara(String reqParaJson);
+    CheckResult checkVmCreatePara(String reqParaJson, boolean auditUser);
 
     Set<Class<? extends BillingResource>> getResourceTypesOfVmCreatePara(String reqParaJson) throws MatrixException;
 

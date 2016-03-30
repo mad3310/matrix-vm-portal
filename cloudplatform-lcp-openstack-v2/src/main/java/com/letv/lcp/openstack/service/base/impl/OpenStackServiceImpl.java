@@ -40,7 +40,11 @@ import com.letv.lcp.openstack.service.session.impl.OpenStackSessionImpl;
 import com.letv.lcp.openstack.util.ExceptionUtil;
 import com.letv.lcp.openstack.util.internal.UserExists;
 import com.letv.lcp.openstack.util.internal.UserRegister;
+import com.letv.portal.model.cloudvm.CloudvmCluster;
+import com.letv.portal.model.cloudvm.CloudvmRegion;
+import com.letv.portal.model.common.UserModel;
 import com.letv.portal.model.common.UserVo;
+import com.letv.portal.service.cloudvm.ICloudvmClusterService;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
@@ -106,6 +110,8 @@ public class OpenStackServiceImpl implements IOpenStackService {
 
 	@Autowired
 	private ICloudvmRegionService cloudvmRegionService;
+	@Autowired
+	private ICloudvmClusterService cloudvmClusterService;
 
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
@@ -219,8 +225,13 @@ public class OpenStackServiceImpl implements IOpenStackService {
 			String userName) {
 		OpenStackUser openStackUser = new OpenStackUser(new OpenStackTenant(userVoUserId, email));
 		openStackUser.setUserName(userName);
+		openStackUser.setUserEmail(email);
+		openStackUser.setApplyUserId(userVoUserId);
 //		openStackUser.setFirstLogin(false);
 		openStackUser.setInternalUser(false);
+		
+		openStackConf.setPublicEndpoint(publicEndpoint);
+		openStackConf.setAdminEndpoint(adminEndpoint);
 
 		return new OpenStackSessionImpl(
 				openStackConf, openStackUser);
@@ -232,6 +243,64 @@ public class OpenStackServiceImpl implements IOpenStackService {
         String email = userVo.getEmail();
         String userName = userVo.getUsername();
         return this.createSession(userId, email, userName);
+	}
+	
+	@Override
+	public IOpenStackSession createSession(Long userId, Long tenantId) {
+		CloudvmCluster vmCluster = cloudvmClusterService.selectById(tenantId);
+		UserModel user = this.userService.getUserById(userId);
+		return this.createSession(userId, user.getEmail(), user.getUserName(), vmCluster);
+	}
+	
+	
+	@Override
+	public IOpenStackSession createAdminSession(Long userId, Long tenantId) {
+		CloudvmCluster vmCluster = cloudvmClusterService.selectById(tenantId);
+		UserModel user = this.userService.getUserById(userId);
+		return createOpenStackSession(userId, user.getEmail(), user.getUserName(), vmCluster, true);
+	}
+	
+	
+	@Override
+	public IOpenStackSession createSession(Long applyUserId, String applyUserEmail, String applyUserName, CloudvmCluster vmCluster) {
+		return createOpenStackSession(applyUserId, applyUserEmail, applyUserName, vmCluster, false);
+	}
+	
+	/**
+	  * @Title: createOpenStackSession
+	  * @Description: 根据申请人及创建用户创建openStackSession
+	  * @param applyUserId 申请人id
+	  * @param applyUserEmail 申请人邮箱
+	  * @param applyUserName 申请人用户名
+	  * @param vmCluster 创建用户信息（一个地域包含创建用户，管理员用户）
+	  * @param isAdmin 是否是管理员用户
+	  * @return IOpenStackSession   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2016年3月2日 上午11:36:49
+	  */
+	private IOpenStackSession createOpenStackSession(Long applyUserId, String applyUserEmail, String applyUserName, 
+			CloudvmCluster vmCluster, boolean isAdmin) {
+		OpenStackTenant openStackTenant = null;
+		if(isAdmin) {
+			openStackTenant = new OpenStackTenant(vmCluster.getId(),
+					vmCluster.getAdminTenantName(), vmCluster.getAdminTenantPassword(), vmCluster.getAdminProjectName());
+		} else {
+			openStackTenant = new OpenStackTenant(vmCluster.getId(),
+					vmCluster.getTenantName(), vmCluster.getTenantPassword(), vmCluster.getProjectName());
+		}
+		OpenStackUser openStackUser = new OpenStackUser(openStackTenant);
+		openStackUser.setUserName(applyUserName);
+		openStackUser.setUserEmail(applyUserEmail);
+		openStackUser.setApplyUserId(applyUserId);
+		
+		if(vmCluster.getAdminEndpoint()!=null) {
+			openStackConf.setAdminEndpoint(vmCluster.getAdminEndpoint());
+		}
+		if(vmCluster.getPublicEndpoint()!=null) {
+			openStackConf.setPublicEndpoint(vmCluster.getPublicEndpoint());
+		}
+		return new OpenStackSessionImpl(openStackConf, openStackUser);
 	}
 
 	@Override
@@ -246,7 +315,7 @@ public class OpenStackServiceImpl implements IOpenStackService {
 
 	@Override
 	public boolean isUserExists(String tenantName, String password) throws OpenStackException {
-		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(),tenantName,password);
+		UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(),tenantName,password,tenantName);
 		return userExists.run();
 	}
 
@@ -271,7 +340,7 @@ public class OpenStackServiceImpl implements IOpenStackService {
 //            openStackUser.setInternalUser(true);
 //        }
 
-        UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), tenantName, password);
+        UserExists userExists = new UserExists(openStackConf.getPublicEndpoint(), tenantName, password, tenantName);
         boolean isUserExists = userExists.run();
         if (!isUserExists) {
             UserRegister userRegister = new UserRegister(openStackConf.getAdminEndpoint(),
@@ -323,4 +392,15 @@ public class OpenStackServiceImpl implements IOpenStackService {
     public static OpenStackConf getOpenStackConf() {
         return INSTANCE.openStackConf;
     }
+
+	@Override
+	public OpenStackConf getOpenStackConfDefault() {
+		OpenStackConf openStackConf = new OpenStackConf();
+		openStackConf.setPublicEndpoint(publicEndpoint);
+		openStackConf.setAdminEndpoint(adminEndpoint);
+		openStackConf.setUserRegisterToken(userRegisterToken);
+		openStackConf.setRouterGatewayBandWidth(Integer.parseInt(routerGatewayBandWidth));
+		openStackConf.setBasicUserName(basicUserName);
+		return openStackConf;
+	}
 }

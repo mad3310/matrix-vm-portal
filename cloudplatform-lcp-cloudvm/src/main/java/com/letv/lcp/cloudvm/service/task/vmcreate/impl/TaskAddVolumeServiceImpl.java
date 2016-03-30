@@ -38,23 +38,25 @@ public class TaskAddVolumeServiceImpl extends BaseTask4VmCreateServiceImpl imple
 		if(vmCreateConf.getVolumeSize() > 0) {
 			ret = storageService.addVolume(params);
 			logger.info("云主机创建完成后添加硬盘，结果：{}", ret);
-		} else {
-			ret = "success";
-		}
-		
-		tr.setResult(ret);
-		if("success".equals(ret) || "true".equals(ret)) {
-			//更新数据库
-			List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class );
-			for (JSONObject json : vmCreateContexts) {
-				VmCreateContext vmCreateContext = JSONObject.parseObject(json.toString(), VmCreateContext. class);
-				this.storageDbService.updateStorage(vmCreateContext.getVolumeDbId(), Long.parseLong((String)params.get("userId")), 
-						vmCreateContext.getServerDbId(), CloudvmVolumeStatusEnum.IN_USE);
+			
+			tr.setResult(ret);
+			if("success".equals(ret) || "true".equals(ret)) {
+				Long userId = Long.parseLong((String)params.get("userId"));
+				//更新数据库
+				List<JSONObject> vmCreateContexts = JSONObject.parseObject(JSONObject.toJSONString(params.get("vmCreateContexts")), List.class );
+				for (JSONObject json : vmCreateContexts) {
+					VmCreateContext vmCreateContext = JSONObject.parseObject(json.toString(), VmCreateContext. class);
+					this.storageDbService.updateStorage(vmCreateContext.getVolumeDbId(), userId, 
+							vmCreateContext.getServerDbId(), CloudvmVolumeStatusEnum.IN_USE);
+				}
+				tr.setSuccess(true);
+				tr.setParams(params);
+			} else {
+				tr.setSuccess(false);
 			}
-			tr.setSuccess(true);
-			tr.setParams(params);
 		} else {
-			tr.setSuccess(false);
+			//跳过该步骤
+			tr.setResult("skip");
 		}
 		
 		return tr;

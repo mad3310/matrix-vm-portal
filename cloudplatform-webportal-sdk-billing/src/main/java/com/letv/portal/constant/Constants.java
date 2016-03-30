@@ -23,6 +23,8 @@ public class Constants {
 	
 	public static final long PRODUCT_ROUTER = 5;//路由器
 	
+	public static final long PRODUCT_PRIVATE_VM = 6;//私有云-云主机
+	
 	public static final String SERVICE_PROVIDER_OPENSTACK = "openstack";//服务提供方
 	
 	public static final String PRODUCT_INFO_ID_NAME = "product_info_id_name";//产品信息缓存key

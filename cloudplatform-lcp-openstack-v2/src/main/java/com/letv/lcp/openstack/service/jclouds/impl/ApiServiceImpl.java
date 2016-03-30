@@ -118,7 +118,10 @@ public class ApiServiceImpl implements IApiService {
             OpenStackUser openStackUser = openStackSession.getOpenStackUser();
             openStackTenant = openStackUser.tenant;
 
-            sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+            if(sessionId==null) {
+            	sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+            }
+            
         } else {
             UserVo user = userService.getUcUserById(userId);
 

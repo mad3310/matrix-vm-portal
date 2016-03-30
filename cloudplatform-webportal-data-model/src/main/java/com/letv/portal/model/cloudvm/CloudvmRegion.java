@@ -8,6 +8,7 @@ public class CloudvmRegion extends BaseModel {
 
 	private String code;
 	private String displayName;
+	private String type;
 
 	public CloudvmRegion() {
 	}
@@ -16,6 +17,14 @@ public class CloudvmRegion extends BaseModel {
 		this();
 		this.code = code;
 		this.displayName = displayName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getCode() {

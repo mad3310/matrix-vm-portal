@@ -91,6 +91,15 @@
 		where ID=#{id}
 	</update>
 	
+	<update id="updateStatusById" parameterType="TaskChain">
+		update 
+			WEBPORTAL_TASK_CHAIN
+		set 
+			STATUS=#{status}
+		where
+			ID=#{id}
+	</update>
+	
 	<select id="selectNextChainByIndexAndOrder" resultMap="BaseResultMap" parameterType="TaskChain">
 		select
 		<include refid="Base_Column_List" />
@@ -110,6 +119,15 @@
 		from WEBPORTAL_TASK_CHAIN tc 
 		join WEBPORTAL_TEMPLATE_TASK_DETAIL ttd on ttd.id = tc.TASK_DETAIL_ID
 		where tc.CHAIN_INDEX_ID = #{chainIndexId}
+	</select>
+	<select id="selectNotUndoChainByIndexIdAndOrder" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_TASK_CHAIN tc 
+		where 
+			tc.CHAIN_INDEX_ID = #{chainIndexId} and tc.EXECUTE_ORDER>#{executeOrder}
+			and tc.STATUS != "UNDO"
 	</select>
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select

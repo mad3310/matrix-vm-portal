@@ -2,59 +2,50 @@ package com.letv.lcp.openstack.model.user;
 
 import java.io.Serializable;
 
-public class OpenStackUser implements Serializable{
+public class OpenStackUser implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5937930998427002260L;
 
-	public final OpenStackTenant tenant;
+	public final OpenStackTenant tenant;//openstack租户（创建用户）
 
-//	private long userVoUserId;
-//	private String userId;
-//	private String password;
-//	private String email;
-	private String userName;
-//	private boolean firstLogin;
-	private boolean internalUser;
-	private String tenantId;
+	private String userName;//申请人用户名
+	private String userEmail;//申请人邮箱
+	private boolean internalUser;//是否为内部用户
+	private Long applyUserId;//申请人id
 	
-	public OpenStackUser(OpenStackTenant tenant){
+
+	public OpenStackUser(OpenStackTenant tenant) {
 		this.tenant = tenant;
 	}
 
-		public long getUserVoUserId() {
+	public Long getApplyUserId() {
+		return applyUserId;
+	}
+
+
+	public void setApplyUserId(Long applyUserId) {
+		this.applyUserId = applyUserId;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+	public long getTenantUserId() {
 		return tenant.userId;
 	}
-//
-//	public void setUserVoUserId(long userVoUserId) {
-//		this.userVoUserId = userVoUserId;
-//	}
-//
-	public String getUserId() {
+
+	public String getTenantUserName() {
 		return tenant.tenantName;
 	}
-//
-//	public void setUserId(String userId) {
-//		this.userId = userId;
-//	}
-//
-	public String getPassword() {
+
+	public String getTenantUserPassword() {
 		return tenant.password;
 	}
-//
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
-
-//	public boolean getFirstLogin() {
-//		return firstLogin;
-//	}
-//
-//	public void setFirstLogin(boolean firstLogin) {
-//		this.firstLogin = firstLogin;
-//	}
 
 	public boolean getInternalUser() {
 		return internalUser;
@@ -64,28 +55,28 @@ public class OpenStackUser implements Serializable{
 		this.internalUser = internalUser;
 	}
 
-	public String getEmail() {
+	public String getTenantEmail() {
 		return tenant.email;
 	}
-//
-//	public void setEmail(String email) {
-//		this.email = email;
-//	}
-//
+
 	public String getUserName() {
 		return userName;
+	}
+	
+	public String getProjectName() {
+		return tenant.projectName;
 	}
 
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	public String getTenantId() {
-		return tenantId;
+	public String getOpenStackTenantId() {
+		return tenant.openStackTenantId;
 	}
 
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
+	public void setOpenStackTenantId(String tenantId) {
+		tenant.openStackTenantId = tenantId;
 	}
 
 }

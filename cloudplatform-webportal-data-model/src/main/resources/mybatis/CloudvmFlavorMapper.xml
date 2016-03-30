@@ -6,7 +6,9 @@
 	<!-- Result Map -->
 	<resultMap id="BaseResultMap" type="CloudvmFlavor">
 		<result column="ID" property="id" />
+		<result column="NAME" property="name"/>
 		<result column="REGION" property="region"/>
+		<result column="CLOUDVM_CLUSTER_ID" property="cloudvmClusterId"/>
 		<result column="FLAVOR_ID" property="flavorId" />
 		<result column="VCPUS" property="vcpus"/>
 		<result column="RAM" property="ram"/>
@@ -20,7 +22,7 @@
 
 	<!-- WEBPORTAL_ADMIN_OP_LOG table all fields -->
 	<sql id="Base_Column_List">
-		f.ID,f.REGION,f.FLAVOR_ID,f.VCPUS,f.RAM,f.DISK,
+		f.ID,f.NAME,f.REGION,f.CLOUDVM_CLUSTER_ID,f.FLAVOR_ID,f.VCPUS,f.RAM,f.DISK,
 		f.DELETED,f.CREATE_TIME,f.CREATE_USER,f.UPDATE_TIME,f.UPDATE_USER
 	</sql>
 
@@ -31,8 +33,14 @@
 			<if test="id != null  ">
 				and f.ID=#{id}
 			</if>
+			<if test="name != null ">
+				and f.NAME=#{name}
+			</if>
 			<if test="region != null ">
 				and f.REGION=#{region}
+			</if>
+			<if test="cloudvmClusterId != null ">
+				and f.CLOUDVM_CLUSTER_ID=#{cloudvmClusterId}
 			</if>
 			<if test="flavorId != null ">
 				and f.FLAVOR_ID=#{flavorId}
@@ -67,10 +75,10 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="CloudvmFlavor" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_CLOUDVM_FLAVOR(REGION,FLAVOR_ID,VCPUS,RAM,DISK,
+		WEBPORTAL_CLOUDVM_FLAVOR(NAME,REGION,CLOUDVM_CLUSTER_ID,FLAVOR_ID,VCPUS,RAM,DISK,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{region},#{flavorId},#{vcpus},#{ram},#{disk},#{deleted},now(),null,null,null)
+		#{name},#{region},#{cloudvmClusterId},#{flavorId},#{vcpus},#{ram},#{disk},#{deleted},now(),null,null,null)
 	</insert>
 
 	<!-- 更新 -->
@@ -78,7 +86,9 @@
 		update WEBPORTAL_CLOUDVM_FLAVOR
 		set
 		ID=#{id},
+		NAME=#{name},
 		REGION=#{region},
+		CLOUDVM_CLUSTER_ID=#{cloudvmClusterId},
 		FLAVOR_ID=#{flavorId},
 		VCPUS=#{vcpus},
 		RAM=#{ram},
@@ -98,6 +108,14 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CLOUDVM_FLAVOR f
 		<include refid="Example_Where_Clause" />
+	</select>
+	<select id="selectByClusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_CLOUDVM_FLAVOR f
+		where
+			f.CLOUDVM_CLUSTER_ID = #{clusterId};
 	</select>
 
 	<!-- 物理删除 -->

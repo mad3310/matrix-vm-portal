@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmClusterDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmCluster">
+		<result column="ID" property="id" />
+
+		<result column="CLOUDVM_REGION_ID" property="cloudvmRegionId" />
+		<result column="CODE" property="code" />
+		<result column="NAME" property="name" />
+		<result column="ADMIN_ENDPOINT" property="adminEndpoint" />
+		<result column="PUBLIC_ENDPOINT" property="publicEndpoint" />
+		<result column="TENANT_NAME" property="tenantName" />
+		<result column="PROJECT_NAME" property="projectName" />
+		<result column="TENANT_PASSWORD" property="tenantPassword" />
+		
+		<result column="ADMIN_TENANT_NAME" property="adminTenantName" />
+		<result column="ADMIN_PROJECT_NAME" property="adminProjectName" />
+		<result column="ADMIN_TENANT_PASSWORD" property="adminTenantPassword" />
+		
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		R.ID,R.CLOUDVM_REGION_ID,R.CODE,R.NAME,R.ADMIN_ENDPOINT,R.PUBLIC_ENDPOINT,R.TENANT_NAME,R.PROJECT_NAME,R.TENANT_PASSWORD,
+		R.ADMIN_TENANT_NAME,R.ADMIN_PROJECT_NAME,R.ADMIN_TENANT_PASSWORD,
+		R.DELETED,R.CREATE_TIME,R.CREATE_USER,R.UPDATE_TIME,R.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and R.ID=#{id}
+			</if>
+			<if test="cloudvmRegionId != null  ">
+				and R.CLOUDVM_REGION_ID=#{cloudvmRegionId}
+			</if>
+			<if test="code != null  and code != ''  and code != 'null'">
+				and R.CODE like CONCAT('%',#{code},'%') escape '^'
+			</if>
+			<if test="name != null  and name != ''  and name != 'null'">
+				and R.DISPLAY_NAME=#{name}
+			</if>
+			<if test="deleted != null  ">
+				and R.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and R.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and R.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and R.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and R.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmCluster" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_CLUSTER(CLOUDVM_REGION_ID,CODE,NAME,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{cloudvmRegionId},#{code},#{name},#{deleted},now(),#{createUser},now(),#{updateUser})
+	</insert>
+
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmCluster">
+		delete from WEBPORTAL_CLOUDVM_CLUSTER where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+			<include refid="Base_Column_List" /> 
+			from WEBPORTAL_CLOUDVM_CLUSTER R
+			where  R.ID = #{id};
+	</select>
+	
+	<select id="selectByCode" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_CLUSTER R WHERE R.CODE = #{code}
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByModelCount" resultType="java.lang.Integer"
+		parameterType="CloudvmCluster">
+		select count(1) from WEBPORTAL_CLOUDVM_CLUSTER R
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_CLOUDVM_CLUSTER R
+		<include refid="Example_Where_Clause" />
+	</select>
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_CLUSTER R
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id !=null  ">
+				and R.ID=#{params.id}
+			</if>
+			<if test="params != null and params.code != null  and params.code != ''  and params.code != 'null'">
+				and R.CODE like CONCAT('%','${params.code}','%') escape '^'
+			</if>
+			<if test="params != null and params.deleted != null  ">
+				and R.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and R.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and R.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and R.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and R.UPDATE_USER=#{params.updateUser}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_CLUSTER R
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY R.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
+	</select>
+	
+	<select id="selectByRegionId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_CLOUDVM_CLUSTER R
+		where
+			R.CLOUDVM_REGION_ID = #{regionId};
+	</select>
+	
+</mapper>   

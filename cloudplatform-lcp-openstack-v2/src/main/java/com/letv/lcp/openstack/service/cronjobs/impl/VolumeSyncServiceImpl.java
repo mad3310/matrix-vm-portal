@@ -14,7 +14,7 @@ import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.lcp.openstack.exception.OpenStackException;
 import com.letv.lcp.openstack.model.erroremail.ErrorMailMessageModel;
-import com.letv.lcp.openstack.model.user.OpenStackTenant;
+import com.letv.lcp.openstack.model.user.OpenStackUser;
 import com.letv.lcp.openstack.service.cronjobs.IVolumeSyncService;
 import com.letv.lcp.openstack.service.erroremail.IErrorEmailService;
 import com.letv.lcp.openstack.service.local.ILocalVolumeService;
@@ -69,17 +69,17 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements IV
     }
 
     @Override
-    public void syncVolumeCreated(final OpenStackTenant tenant, final String region, final List<Volume> volumes
+    public void syncVolumeCreated(final OpenStackUser openStackUser, final String region, final List<Volume> volumes
             , final Checker<Volume> checker) {
         if (volumes != null && !volumes.isEmpty()) {
             ThreadUtil.asyncExec(new Function0<Void>() {
                 @Override
                 public Void apply() throws Exception {
                     for (Volume volume : volumes) {
-                        localVolumeService.create(tenant.userId, tenant.userId, region, volume);
+                        localVolumeService.create(openStackUser.getApplyUserId(), openStackUser.getApplyUserId(), region, volume);
                     }
 
-                    UserApiCache apiCache = new UserApiCache(tenant);
+                    UserApiCache apiCache = new UserApiCache(openStackUser.tenant);
                     try {
                         List<Volume> unFinishedVolumes = new LinkedList<Volume>();
                         unFinishedVolumes.addAll(volumes);
@@ -93,7 +93,7 @@ public class VolumeSyncServiceImpl extends AbstractSyncServiceImpl implements IV
                                     unFinishedVolumes.remove(volume);
                                 } else if (checker.check(latestVolume)) {
                                     unFinishedVolumes.remove(volume);
-                                    localVolumeService.update(tenant.userId, tenant.userId, region, latestVolume);
+                                    localVolumeService.update(openStackUser.getApplyUserId(), openStackUser.getApplyUserId(), region, latestVolume);
                                 }
                             }
                             Thread.sleep(1000);

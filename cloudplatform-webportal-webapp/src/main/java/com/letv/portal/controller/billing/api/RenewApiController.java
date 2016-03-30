@@ -105,7 +105,7 @@ public class RenewApiController {
 		transferParams(map, subDetails);
 
 		if(productId==Constants.PRODUCT_VM || productId==Constants.PRODUCT_VOLUME ||
-				productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP) {//云主机走自己的验证和计算
+				productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP || productId==Constants.PRODUCT_PRIVATE_VM) {//云主机走自己的验证和计算
 			if(hostProductService.validateData(productId, map)) {
 				ret =  hostCalculateService.calculatePrice(productId, map);
 			}
@@ -215,7 +215,7 @@ public class RenewApiController {
 	private BigDecimal getOrderTotalPrice(Long productId, Subscription sub, List<SubscriptionDetail> subDetails, String orderTime, Map<String, Object> billingParams) {
 		for (SubscriptionDetail subscriptionDetail : subDetails) {
 			if(productId==Constants.PRODUCT_VM || productId==Constants.PRODUCT_VOLUME ||
-					productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP) {
+					productId==Constants.PRODUCT_ROUTER || productId==Constants.PRODUCT_FLOATINGIP || productId==Constants.PRODUCT_PRIVATE_VM) {
 				subscriptionDetail.setPrice(this.hostCalculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getElementName(), subscriptionDetail.getStandardValue(),
 						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getElementName()+"_type")));
 			} else {

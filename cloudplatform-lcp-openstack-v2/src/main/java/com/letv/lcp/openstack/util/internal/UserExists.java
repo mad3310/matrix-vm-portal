@@ -32,7 +32,8 @@ public class UserExists {
 //			.getLogger(UserExists.class);
 
 	private final String endpoint;
-	private final String tenantName;
+	private final String projectName;
+	private final String userName;
 	private final String password;
 
 	private String tenantId;
@@ -41,19 +42,20 @@ public class UserExists {
 //		this(endpoint,tenant.tenantName,tenant.password);
 //	}
 
-	public UserExists(String endpoint, String tenantName, String password) {
+	public UserExists(String endpoint, String userName, String password, String projectName) {
 		this.endpoint = endpoint;
-		this.tenantName = tenantName;
+		this.userName = userName;
 		this.password = password;
+		this.projectName = projectName;
 	}
 
 	@SuppressWarnings("resource")
 	public boolean run() throws OpenStackException {
 		boolean status = false;
 
-		if (this.tenantName == null) {
+		if (this.projectName == null) {
 			throw new OpenStackException("OpenStack user name is null.", "后台错误");
-		} else if (this.tenantName.isEmpty()) {
+		} else if (this.projectName.isEmpty()) {
 			throw new OpenStackException(
 					"OpenStack user name is an empty string.", "后台错误");
 		}
@@ -71,9 +73,9 @@ public class UserExists {
 			body.p("auth", body_Auth);
 			Params body_Auth_PasswordCredentials = new Params();
 			body_Auth.p("passwordCredentials", body_Auth_PasswordCredentials);
-			body_Auth_PasswordCredentials.p("username", this.tenantName).p(
+			body_Auth_PasswordCredentials.p("username", this.userName).p(
 					"password", this.password);
-			body_Auth.p("tenantName", this.tenantName);
+			body_Auth.p("tenantName", this.projectName);
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			StringWriter stringWriter = new StringWriter();

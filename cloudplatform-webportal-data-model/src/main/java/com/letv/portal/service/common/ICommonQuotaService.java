@@ -15,6 +15,20 @@ public interface ICommonQuotaService extends IBaseService<CommonQuota> {
     CommonQuota get(long tenantId, String region, CommonQuotaModule module, CommonQuotaType type);
 
     CommonQuota insertDefaultAndGet(long tenantId, String region, CommonQuotaModule module, CommonQuotaType type);
+    
+    /**
+      * @Title: insertOrUpdateQuota
+      * @Description: 新增或修改用户配额（审批流程中专用）
+      * @param tenantId
+      * @param region
+      * @param module
+      * @param type
+      * @param value void   
+      * @throws 
+      * @author lisuxiao
+      * @date 2016年2月22日 下午2:04:24
+      */
+    void insertOrUpdateQuota(long tenantId, String region, CommonQuotaModule module, CommonQuotaType type, Long value);
 
     List<CommonQuota> insertDefaultAndSelectByRegion(long tenantId, String region);
 

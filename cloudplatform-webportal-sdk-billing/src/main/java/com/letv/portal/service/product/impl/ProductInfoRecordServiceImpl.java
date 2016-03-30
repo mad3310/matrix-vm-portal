@@ -1,5 +1,7 @@
 package com.letv.portal.service.product.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,16 @@ public class ProductInfoRecordServiceImpl extends BaseServiceImpl<ProductInfoRec
 	@Override
 	public Long selectIdByInstanceId(String instanceId) {
 		return this.productInfoRecordDao.selectIdByInstanceId(instanceId);
+	}
+
+	@Override
+	public ProductInfoRecord selectByInstanceId(String instanceId) {
+		return this.productInfoRecordDao.selectByInstanceId(instanceId);
+	}
+
+	@Override
+	public List<ProductInfoRecord> selectByGroupId(String groupId) {
+		return this.productInfoRecordDao.selectByGroupId(groupId);
 	}
 
 

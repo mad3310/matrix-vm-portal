@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.lcp.cloudvm.listener.FloatingIpCreateListener;
 import com.letv.lcp.cloudvm.listener.VmCreateListener;
@@ -134,13 +136,21 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 
 	//创建云主机
 	@Override
-	public void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records) {
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public void createVm(final List<OrderSub> orderSubs, final String params, 
+			final List<ProductInfoRecord> records, Long tenantId, boolean auditUser) {
 		logger.info("开始创建云主机！");
 		
 		Map<String, Object> createInfo = new HashMap<String, Object>();
+		//所属用户(申请用户)
 		createInfo.put("userId", orderSubs.get(0).getCreateUser()+""); 
+		//云主机租户id
+		if(tenantId!=null) {
+			createInfo.put("tenantId", tenantId+""); 
+		}
 		createInfo.put("vmCreateConf", params); 
 		createInfo.put("orderNumber", orderSubs.get(0).getOrder().getOrderNumber()); 
+		createInfo.put("auditUser", auditUser); 
 		
 		//添加监听器
 		this.listenerManagerService.addListener(orderSubs.get(0).getOrder().getOrderNumber(), new VmCreateListener() {

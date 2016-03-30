@@ -18,11 +18,14 @@ public interface IHostProductService extends IProductService {
 	  * @param orderSubs 一个订单下所有的子订单
 	  * @param params 创建服务的参数
 	  * @param records 回调需要处理的数据 
+	  * @param tenantId 云主机创建租户id 
+	  * @param auditUser 是否是审批用户
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年12月16日 下午3:51:10
 	  */
-	void createVm(final List<OrderSub> orderSubs, final String params, final List<ProductInfoRecord> records);
+	void createVm(final List<OrderSub> orderSubs, final String params, 
+			final List<ProductInfoRecord> records, Long tenantId, boolean auditUser);
 	/**
 	  * @Title: createVolume
 	  * @Description: 创建云硬盘

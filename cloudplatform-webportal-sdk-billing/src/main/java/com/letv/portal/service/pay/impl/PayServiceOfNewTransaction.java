@@ -23,7 +23,7 @@ public class PayServiceOfNewTransaction {
 	public boolean validateOrderStatus(Order order, Map<String, Object> ret) {
 		boolean b = false;
 		if (0 == order.getStatus().intValue()) {
-			updateOrderPayInfo(order.getId(), null, null, 3, null);// 支付中
+			updateOrderPayInfo(order.getId(), null, null, 3, null);// 支付中or审批中
 			b = true;
 		} else if (1 == order.getStatus().intValue()) {
 			ret.put("alert", "订单状态已失效");
@@ -34,13 +34,16 @@ public class PayServiceOfNewTransaction {
 				&& new Date().getTime() - order.getUpdateTime().getTime() > 3000) {
 			updateOrderPayInfo(order.getId(), null, null, null, null);// 更新修改时间
 			b = true;
+		} else if(4 == order.getStatus().intValue()) {
+			ret.put("alert", "审批通过");
 		} else {
 			ret.put("alert", "支付中");
 		}
 		return b;
 	}
-
-	private boolean updateOrderPayInfo(long orderId, String orderNumber,
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public boolean updateOrderPayInfo(long orderId, String orderNumber,
 			Date payTime, Integer status, BigDecimal accountMoney) {
 		Order o = new Order();
 		o.setId(orderId);

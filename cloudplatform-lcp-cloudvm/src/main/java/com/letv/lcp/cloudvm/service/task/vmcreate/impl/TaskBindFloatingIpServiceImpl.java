@@ -40,25 +40,27 @@ public class TaskBindFloatingIpServiceImpl extends BaseTask4VmCreateServiceImpl 
 		if(vmCreateConf.getBindFloatingIp()) {
 			ret = computeService.bindFloatingIp(params);
 			logger.info("云主机创建完成后绑定公网IP，结果：{}", ret);
-		} else {
-			ret = "success";
-		}
-		
-		tr.setResult(ret);
-		if("success".equals(ret) || "true".equals(ret)) {
-			//更新数据库
-			List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
-			for (VmCreateContext vmCreateContext : vmCreateContexts) {
-				this.computeDbService.updateServer(vmCreateContext.getServerDbId(), Long.parseLong((String)params.get("userId")), 
-						vmCreateContext.getFloatingIpDbId());
-				this.networkDbService.updatePublicNetwork(vmCreateContext.getVolumeDbId(), Long.parseLong((String)params.get("userId")),
-						CloudvmNetworkStatusEnum.BINDED);
+			
+			tr.setResult(ret);
+			if("success".equals(ret) || "true".equals(ret)) {
+				Long userId = Long.parseLong((String)params.get("userId"));
+				//更新数据库
+				List<VmCreateContext> vmCreateContexts = (List<VmCreateContext>) params.get("vmCreateContexts");
+				for (VmCreateContext vmCreateContext : vmCreateContexts) {
+					this.computeDbService.updateServer(vmCreateContext.getServerDbId(), userId, 
+							vmCreateContext.getFloatingIpDbId());
+					this.networkDbService.updatePublicNetwork(vmCreateContext.getVolumeDbId(), userId,
+							CloudvmNetworkStatusEnum.BINDED);
+				}
+				params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));
+				tr.setSuccess(true);
+				tr.setParams(params);
+			} else {
+				tr.setSuccess(false);
 			}
-			params.put("vmCreateContexts", JSONObject.toJSON(vmCreateContexts));
-			tr.setSuccess(true);
-			tr.setParams(params);
 		} else {
-			tr.setSuccess(false);
+			//跳过该步骤
+			tr.setResult("skip");
 		}
 		
 		return tr;

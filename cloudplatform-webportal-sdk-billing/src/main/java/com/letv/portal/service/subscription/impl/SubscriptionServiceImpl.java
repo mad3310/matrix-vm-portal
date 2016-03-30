@@ -93,8 +93,8 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 
 
 	@Override
-	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime, List<BaseStandard> baseStandards) {
-		return createSubscription(id, map, productInfoRecordId, date, orderTime, sessionService.getSession().getUserId(), 0, baseStandards);
+	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime, List<BaseStandard> baseStandards, Long userId) {
+		return createSubscription(id, map, productInfoRecordId, date, orderTime, userId, 0, baseStandards);
 	}
 	
 	private Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date date, String orderTime, Long userId, Integer buyType, List<BaseStandard> baseStandards) {

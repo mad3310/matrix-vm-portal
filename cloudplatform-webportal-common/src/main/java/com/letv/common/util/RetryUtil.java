@@ -33,10 +33,17 @@ public class RetryUtil {
     public void retry(IRetry<Object, Boolean> process, int times, ErrorMailMessageModel mailMessageModel) {
     	Object result = null;
         for (int i = 0; i < times; i++) {
-        	result = process.execute();
-            if (process.analyzeResult(result)) {
-                return;
-            }
+        	try {
+				result = process.execute();
+				if (process.analyzeResult(result)) {
+				    return;
+				}
+			} catch (Exception e1) {
+				if(null != mailMessageModel) {
+		        	exceptionEmailServiceUtil.sendErrorEmail(mailMessageModel.getExceptionMessage(), 
+							mailMessageModel.getExceptionContent()+"返回结果:"+result, mailMessageModel.getRequestUrl());
+		        }
+			}
             try {
 				Thread.sleep(1000l);
 			} catch (InterruptedException e) {

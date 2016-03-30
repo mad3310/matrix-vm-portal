@@ -1,5 +1,7 @@
 package com.letv.portal.controller.billing;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -50,14 +52,14 @@ public class ProductController {
 	@RequestMapping(value="/buy/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String displayData, ResultObject obj) {
 		//去服务提供方验证参数是否合法
-		CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(id, paramsData);
+		CheckResult validateResult = productManageService.validateParamsDataByServiceProvider(id, paramsData, false);
 		if(!validateResult.isSuccess()) {
 			logger.info("虚拟机接口提供方验证失败：{}", validateResult.getFailureReason());
 			obj.setResult(0);
 			obj.addMsg(validateResult.getFailureReason());
 			return obj;
 		}
-		if(!productManageService.buy(id, paramsData, displayData, obj)) {
+		if(!productManageService.buy(id, paramsData, displayData, UUID.randomUUID().toString(), obj)) {
 			obj.setResult(0);
 			obj.addMsg("参数合法性验证失败");
 		}

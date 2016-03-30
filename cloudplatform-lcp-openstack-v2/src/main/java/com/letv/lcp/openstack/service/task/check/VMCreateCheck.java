@@ -17,13 +17,15 @@ public class VMCreateCheck {
     private VMManagerImpl vmManager;
     private NetworkManagerImpl networkManager;
     private VolumeManagerImpl volumeManager;
+    private boolean auditUser;
 
     public VMCreateCheck(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
-                         NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager) {
+                         NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager, boolean auditUser) {
         this.vmCreateConf = vmCreateConf;
         this.vmManager = vmManager;
         this.networkManager = networkManager;
         this.volumeManager = volumeManager;
+        this.auditUser = auditUser;
     }
 
     public void run() throws OpenStackException {
@@ -34,7 +36,8 @@ public class VMCreateCheck {
                 multiVmCreateCheckContext.setVmManager(vmManager);
                 multiVmCreateCheckContext.setNetworkManager(networkManager);
                 multiVmCreateCheckContext.setVolumeManager(volumeManager);
-                multiVmCreateCheckContext.setUserId(vmManager.getOpenStackUser().getUserVoUserId());
+                multiVmCreateCheckContext.setUserId(vmManager.getOpenStackUser().getApplyUserId());
+                multiVmCreateCheckContext.setAuditUser(auditUser);
 
                 List<VmsCreateCheckSubTask> tasks = new ArrayList<VmsCreateCheckSubTask>();
                 tasks.add(new CheckVmCreateConfTask());

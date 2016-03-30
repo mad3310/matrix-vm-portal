@@ -22,6 +22,15 @@ public class CloudvmServerModel extends BaseModel {
     private Long publicNetworkId;//公网id
     private Long imageId;//镜像id
     
+    private String zabbixHosts;//对应zabbix删除container时候需要的标识
+    
+    
+	public String getZabbixHosts() {
+		return zabbixHosts;
+	}
+	public void setZabbixHosts(String zabbixHosts) {
+		this.zabbixHosts = zabbixHosts;
+	}
 	public String getRegion() {
 		return region;
 	}
