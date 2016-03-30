@@ -156,10 +156,10 @@
                     <scanIntervalSeconds>3</scanIntervalSeconds>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>80</port>
+                            <port>8083</port>
                         </connector>
                         <connector implementation="org.mortbay.jetty.security.SslSocketConnector">
-                            <port>443</port>
+                            <port>442</port>
                             <maxIdleTime>60000</maxIdleTime>
                             <keystore>${project.build.directory}/jetty-ssl.keystore</keystore>
                             <password>jetty6</password>

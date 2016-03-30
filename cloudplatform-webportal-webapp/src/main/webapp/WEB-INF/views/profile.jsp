@@ -7,9 +7,10 @@
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="shortcut icon" href="http://i3.letvimg.com/lc05_lecloud/201601/12/10/21/favicon.ico">
-    <link rel="stylesheet" href="/stylesheets/vendor/vendor-7184beb203.css">
-    <link rel="stylesheet" href="/stylesheets/common-9a4679b888.css">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/style-profile-d86d0b8502.css">
+	<link rel="stylesheet" href="/stylesheets/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/stylesheets/vendor/toaster.css">
+    <link rel="stylesheet" href="/stylesheets/common.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style-profile.css">
     <title>控制台-乐视云平台</title>
 </head>
 <style>
@@ -25,6 +26,6 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <script type="text/javascript" src="/javascripts/dist/require.min.js" data-main="/javascripts/dist/dashboard-main-build-1452841089561.js"></script>
+    <script type="text/javascript" src="/javascripts/dist/require.min.js" data-main="/apps/dashboard/main.js"></script>
 </body>
 </html>
